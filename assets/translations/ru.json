@@ -1,0 +1,22 @@
+{
+  "main_screen": "Главная",
+
+  "element": "Элемент",
+  "project": "Проект",
+  "product": "Продукт",
+  "category": "Категория",
+
+  "create": "Создать",
+  "update": "Изменить",
+  "add_title": "Добавить {}",
+  "create_title": "Cоздать {}",
+  "update_title": "Изменить {}",
+  "name_field": "Название {}*",
+  "description_field": "Описание {}",
+  "type": "Тип",
+
+  "Edit": "Изменить",
+  "Delete": "Удалить",
+  "Copy": "Копировать",
+  "Cut": "Вставить"
+}

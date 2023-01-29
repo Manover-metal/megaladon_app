@@ -1,0 +1,22 @@
+{
+  "main_screen": "Main Screen",
+
+  "element": "Element",
+  "project": "Project",
+  "product": "Product",
+  "category": "Category",
+
+  "create": "Create",
+  "update": "Update",
+  "add_title": "Add {}",
+  "create_title": "Create {}",
+  "update_title": "Update {}",
+  "name_field": "Name {}*",
+  "description_field": "Description {}",
+  "type": "Type",
+
+  "Edit": "Edit",
+  "Delete": "Delete",
+  "Copy": "Copy",
+  "Cut": "Cut"
+}
