@@ -20,7 +20,7 @@ class _$AppRouter extends RootStackRouter {
     InitialRouter.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _EmptyRouteWidget(),
+        child: SplashScreen(),
       );
     },
     LoginRoute.name: (routeData) {
@@ -65,13 +65,31 @@ class _$AppRouter extends RootStackRouter {
         child: VerifyScreen(),
       );
     },
-    HomeRoute.name: (routeData) {
+    CreateOfferRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: HomeScreen(),
+        child: CreateOfferScreen(),
       );
     },
     OrderRouter.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: _EmptyRouteWidget(),
+      );
+    },
+    ShopRouter.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: _EmptyRouteWidget(),
+      );
+    },
+    AdRouter.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: _EmptyRouteWidget(),
+      );
+    },
+    ProfileRouter.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
         child: _EmptyRouteWidget(),
@@ -101,6 +119,54 @@ class _$AppRouter extends RootStackRouter {
         child: ListExecutorsScreen(),
       );
     },
+    DetailsOfferRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: DetailsOfferScreen(),
+      );
+    },
+    ReviewRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: ReviewScreen(),
+      );
+    },
+    ListShopsRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: ListShopsScreen(),
+      );
+    },
+    DetailsShopRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: DetailsShopScreen(),
+      );
+    },
+    TradingAdsRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: TradingAdsScreen(),
+      );
+    },
+    DetailsAdRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: DetailsAdScreen(),
+      );
+    },
+    MyAdsRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: MyAdsScreen(),
+      );
+    },
+    ProfileRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: ProfileScreen(),
+      );
+    },
   };
 
   @override
@@ -110,9 +176,11 @@ class _$AppRouter extends RootStackRouter {
           path: '/',
           children: [
             RouteConfig(
-              HomeRoute.name,
+              '#redirect',
               path: '',
               parent: InitialRouter.name,
+              redirectTo: 'order',
+              fullMatch: true,
             ),
             RouteConfig(
               OrderRouter.name,
@@ -139,6 +207,67 @@ class _$AppRouter extends RootStackRouter {
                   path: 'list-executors-screen',
                   parent: OrderRouter.name,
                 ),
+                RouteConfig(
+                  DetailsOfferRoute.name,
+                  path: 'details-offer-screen',
+                  parent: OrderRouter.name,
+                ),
+                RouteConfig(
+                  ReviewRoute.name,
+                  path: 'review-screen',
+                  parent: OrderRouter.name,
+                ),
+              ],
+            ),
+            RouteConfig(
+              ShopRouter.name,
+              path: 'shop',
+              parent: InitialRouter.name,
+              children: [
+                RouteConfig(
+                  ListShopsRoute.name,
+                  path: '',
+                  parent: ShopRouter.name,
+                ),
+                RouteConfig(
+                  DetailsShopRoute.name,
+                  path: 'details-shop-screen',
+                  parent: ShopRouter.name,
+                ),
+              ],
+            ),
+            RouteConfig(
+              AdRouter.name,
+              path: 'ad',
+              parent: InitialRouter.name,
+              children: [
+                RouteConfig(
+                  TradingAdsRoute.name,
+                  path: '',
+                  parent: AdRouter.name,
+                ),
+                RouteConfig(
+                  DetailsAdRoute.name,
+                  path: 'details-ad-screen',
+                  parent: AdRouter.name,
+                ),
+                RouteConfig(
+                  MyAdsRoute.name,
+                  path: 'my-ads-screen',
+                  parent: AdRouter.name,
+                ),
+              ],
+            ),
+            RouteConfig(
+              ProfileRouter.name,
+              path: 'profile',
+              parent: InitialRouter.name,
+              children: [
+                RouteConfig(
+                  ProfileRoute.name,
+                  path: '',
+                  parent: ProfileRouter.name,
+                )
               ],
             ),
           ],
@@ -171,11 +300,15 @@ class _$AppRouter extends RootStackRouter {
           VerifyRoute.name,
           path: '/verify-screen',
         ),
+        RouteConfig(
+          CreateOfferRoute.name,
+          path: '/create-offer-screen',
+        ),
       ];
 }
 
 /// generated route for
-/// [_EmptyRouteWidget]
+/// [SplashScreen]
 class InitialRouter extends PageRouteInfo<void> {
   const InitialRouter({List<PageRouteInfo>? children})
       : super(
@@ -272,15 +405,15 @@ class VerifyRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [HomeScreen]
-class HomeRoute extends PageRouteInfo<void> {
-  const HomeRoute()
+/// [CreateOfferScreen]
+class CreateOfferRoute extends PageRouteInfo<void> {
+  const CreateOfferRoute()
       : super(
-          HomeRoute.name,
-          path: '',
+          CreateOfferRoute.name,
+          path: '/create-offer-screen',
         );
 
-  static const String name = 'HomeRoute';
+  static const String name = 'CreateOfferRoute';
 }
 
 /// generated route for
@@ -294,6 +427,45 @@ class OrderRouter extends PageRouteInfo<void> {
         );
 
   static const String name = 'OrderRouter';
+}
+
+/// generated route for
+/// [_EmptyRouteWidget]
+class ShopRouter extends PageRouteInfo<void> {
+  const ShopRouter({List<PageRouteInfo>? children})
+      : super(
+          ShopRouter.name,
+          path: 'shop',
+          initialChildren: children,
+        );
+
+  static const String name = 'ShopRouter';
+}
+
+/// generated route for
+/// [_EmptyRouteWidget]
+class AdRouter extends PageRouteInfo<void> {
+  const AdRouter({List<PageRouteInfo>? children})
+      : super(
+          AdRouter.name,
+          path: 'ad',
+          initialChildren: children,
+        );
+
+  static const String name = 'AdRouter';
+}
+
+/// generated route for
+/// [_EmptyRouteWidget]
+class ProfileRouter extends PageRouteInfo<void> {
+  const ProfileRouter({List<PageRouteInfo>? children})
+      : super(
+          ProfileRouter.name,
+          path: 'profile',
+          initialChildren: children,
+        );
+
+  static const String name = 'ProfileRouter';
 }
 
 /// generated route for
@@ -342,4 +514,100 @@ class ListExecutorsRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'ListExecutorsRoute';
+}
+
+/// generated route for
+/// [DetailsOfferScreen]
+class DetailsOfferRoute extends PageRouteInfo<void> {
+  const DetailsOfferRoute()
+      : super(
+          DetailsOfferRoute.name,
+          path: 'details-offer-screen',
+        );
+
+  static const String name = 'DetailsOfferRoute';
+}
+
+/// generated route for
+/// [ReviewScreen]
+class ReviewRoute extends PageRouteInfo<void> {
+  const ReviewRoute()
+      : super(
+          ReviewRoute.name,
+          path: 'review-screen',
+        );
+
+  static const String name = 'ReviewRoute';
+}
+
+/// generated route for
+/// [ListShopsScreen]
+class ListShopsRoute extends PageRouteInfo<void> {
+  const ListShopsRoute()
+      : super(
+          ListShopsRoute.name,
+          path: '',
+        );
+
+  static const String name = 'ListShopsRoute';
+}
+
+/// generated route for
+/// [DetailsShopScreen]
+class DetailsShopRoute extends PageRouteInfo<void> {
+  const DetailsShopRoute()
+      : super(
+          DetailsShopRoute.name,
+          path: 'details-shop-screen',
+        );
+
+  static const String name = 'DetailsShopRoute';
+}
+
+/// generated route for
+/// [TradingAdsScreen]
+class TradingAdsRoute extends PageRouteInfo<void> {
+  const TradingAdsRoute()
+      : super(
+          TradingAdsRoute.name,
+          path: '',
+        );
+
+  static const String name = 'TradingAdsRoute';
+}
+
+/// generated route for
+/// [DetailsAdScreen]
+class DetailsAdRoute extends PageRouteInfo<void> {
+  const DetailsAdRoute()
+      : super(
+          DetailsAdRoute.name,
+          path: 'details-ad-screen',
+        );
+
+  static const String name = 'DetailsAdRoute';
+}
+
+/// generated route for
+/// [MyAdsScreen]
+class MyAdsRoute extends PageRouteInfo<void> {
+  const MyAdsRoute()
+      : super(
+          MyAdsRoute.name,
+          path: 'my-ads-screen',
+        );
+
+  static const String name = 'MyAdsRoute';
+}
+
+/// generated route for
+/// [ProfileScreen]
+class ProfileRoute extends PageRouteInfo<void> {
+  const ProfileRoute()
+      : super(
+          ProfileRoute.name,
+          path: '',
+        );
+
+  static const String name = 'ProfileRoute';
 }

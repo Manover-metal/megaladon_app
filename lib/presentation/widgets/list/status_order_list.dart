@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:megaladon/presentation/widgets/card/status_order_card.dart';
 
-class StatusOrdersList extends StatelessWidget {
+class StatusList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

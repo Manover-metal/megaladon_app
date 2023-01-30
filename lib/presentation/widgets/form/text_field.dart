@@ -11,7 +11,7 @@ class TextFieldApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
+      margin: EdgeInsets.symmetric(vertical: 5),
       child: TextField(
 
         controller: controller,

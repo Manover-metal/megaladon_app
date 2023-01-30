@@ -4,7 +4,7 @@ import 'package:megaladon/presentation/widgets/card/shop_card.dart';
 import 'package:megaladon/presentation/widgets/list/status_order_list.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 
-class TradingAdsScreen extends StatelessWidget {
+class MyAdsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +17,7 @@ class TradingAdsScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     HeaderAppBar(isMenu: true, ),
-                    Text('Торговая площадка')
+                    Text('Мои объявления')
                   ],
                 ),
               ),
@@ -26,8 +26,8 @@ class TradingAdsScreen extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: List.generate(5, (index) {
-                      return AdCard();
-                    }
+                    return AdCard();
+                  }
                   ),
                 ),
               )

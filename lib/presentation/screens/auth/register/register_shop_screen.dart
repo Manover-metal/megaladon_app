@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/text_field.dart';
+import 'package:megaladon/presentation/widgets/list/file_delete_list.dart';
 
 class RegisterShopScreen extends StatelessWidget {
   @override
@@ -34,22 +35,7 @@ class RegisterShopScreen extends StatelessWidget {
                 OutlinedButtonApp(text: 'Добавить контактное лицо'),
 
                 Text('Прайс листы',),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text('Прайс-лист на изделия....xls (5,2 Мб)'),
-                    ),
-                    Icon(Icons.delete_outline)
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text('Прайс-лист на изделия....xls (5,2 Мб)'),
-                    ),
-                    Icon(Icons.delete_outline)
-                  ],
-                ),
+                FileDeleteList(),
                 OutlinedButtonApp(text: 'Добавить прайс-лист'),
 
 

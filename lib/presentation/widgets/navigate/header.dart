@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:megaladon/core/get.dart';
+import 'package:megaladon/presentation/widgets/drawer/drawer_app.dart';
 
 class HeaderAppBar extends StatelessWidget {
 
@@ -24,7 +26,7 @@ class HeaderAppBar extends StatelessWidget {
   };
 
   _showDrawer(BuildContext context) => () {
-    Scaffold.of(context).openDrawer();
+    getItApp.get<GlobalKey<ScaffoldState>>().currentState?.openDrawer();
   };
 
   @override
