@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/form/text_field.dart';
+import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class LoginScreen extends StatelessWidget {
   @override
@@ -12,11 +13,9 @@ class LoginScreen extends StatelessWidget {
           child: Container(
             padding: EdgeInsets.all(20),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text('Авторизация',
-                  textAlign: TextAlign.center,
-                ),
+                TitleApp('Авторизация'),
+                SizedBox(height: 20,),
                 TextFieldApp(),
                 TextFieldApp(),
                 Text('забыли пароль'),

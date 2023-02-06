@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/form/text_field.dart';
+import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class RegisterExecutorScreen extends StatelessWidget {
   @override
@@ -12,7 +13,8 @@ class RegisterExecutorScreen extends StatelessWidget {
             padding: EdgeInsets.all(20),
             child: Column(
               children: [
-                Text('Регистрация исполнителя',),
+                TitleApp('Регистрация исполнителя'),
+                SizedBox(height: 20,),
                 TextFieldApp(),
                 TextFieldApp(),
                 TextFieldApp(),

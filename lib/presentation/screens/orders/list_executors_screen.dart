@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:megaladon/presentation/widgets/card/offer_card.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
+import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class ListExecutorsScreen extends StatelessWidget {
   @override
@@ -15,7 +16,9 @@ class ListExecutorsScreen extends StatelessWidget {
                 HeaderAppBar(
                   isBack: true,
                 ),
-                Text('Исполнители'),
+                TitleApp('Исполнители'),
+                SizedBox(height: 20,),
+
                 ...List.generate(3, (index) {
                   return OfferCard();
                 })

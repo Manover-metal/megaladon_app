@@ -3,6 +3,7 @@ import 'package:megaladon/presentation/widgets/card/order_card.dart';
 import 'package:megaladon/presentation/widgets/drawer/drawer_app.dart';
 import 'package:megaladon/presentation/widgets/list/status_order_list.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
+import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class ListOrdersScreen extends StatelessWidget {
   @override
@@ -17,7 +18,9 @@ class ListOrdersScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     HeaderAppBar(isMenu: true, ),
-                    Text('Заказы')
+                    TitleApp('Заказы'),
+                    SizedBox(height: 20,),
+
                   ],
                 ),
               ),

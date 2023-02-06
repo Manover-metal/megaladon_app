@@ -3,6 +3,7 @@ import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/text_field.dart';
 import 'package:megaladon/presentation/widgets/list/file_delete_list.dart';
+import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class RegisterShopScreen extends StatelessWidget {
   @override
@@ -14,13 +15,15 @@ class RegisterShopScreen extends StatelessWidget {
             padding: EdgeInsets.all(20),
             child: Column(
               children: [
-                Text('Регистрация исполнителя',),
+                TitleApp('Регистрация исполнителя'),
+                SizedBox(height: 20,),
                 TextFieldApp(),
                 TextFieldApp(),
                 TextFieldApp(),
                 TextFieldApp(),
 
-                Text('Контактная информация',),
+                TitleApp('Контактная информация'),
+                SizedBox(height: 20,),
                 TextFieldApp(),
                 TextFieldApp(),
                 TextFieldApp(),
@@ -34,7 +37,8 @@ class RegisterShopScreen extends StatelessWidget {
                 TextFieldApp(),
                 OutlinedButtonApp(text: 'Добавить контактное лицо'),
 
-                Text('Прайс листы',),
+                TitleApp('Прайс листы'),
+                SizedBox(height: 20,),
                 FileDeleteList(),
                 OutlinedButtonApp(text: 'Добавить прайс-лист'),
 

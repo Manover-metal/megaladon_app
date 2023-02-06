@@ -8,12 +8,17 @@ class StatusList extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: [
-          StatusOrderCard(),
-          StatusOrderCard(),
-          StatusOrderCard(),
-          StatusOrderCard(),
-          StatusOrderCard(),
-        ],
+          SizedBox(width: 20),
+          ...List.generate(20, (index) {
+            return Row(
+              children: [
+                StatusOrderCard(),
+                SizedBox(width: 10,),
+
+              ],
+            );
+          })
+        ]
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/text_field.dart';
+import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
   @override
@@ -13,7 +14,8 @@ class ForgotPasswordScreen extends StatelessWidget {
             padding: EdgeInsets.all(20),
             child: Column(
               children: [
-                Text('Восстановление пароля'),
+                TitleApp('Восстановление пароля'),
+                SizedBox(height: 20,),
                 TextFieldApp(),
                 ElevatedButtonApp(text: 'Отправить пароль'),
                 OutlinedButtonApp(text: 'Отмена')

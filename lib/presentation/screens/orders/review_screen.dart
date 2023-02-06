@@ -6,6 +6,7 @@ import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/picker/star_picker.dart';
 import 'package:megaladon/presentation/widgets/form/text_field.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
+import 'package:megaladon/presentation/widgets/text/title.dart';
 import 'package:megaladon/presentation/widgets/tiles/executor_tile.dart';
 
 class ReviewScreen extends StatelessWidget {
@@ -26,7 +27,8 @@ class ReviewScreen extends StatelessWidget {
                 HeaderAppBar(
                   isBack: true,
                 ),
-                Text('Отзыв по заказу №1321412313'),
+                TitleApp('Отзыв по заказу №1321412313'),
+                SizedBox(height: 20,),
                 ExecutorTile(),
                 SizedBox(height: 20,),
                 StarPicker(),

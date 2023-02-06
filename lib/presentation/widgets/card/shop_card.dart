@@ -15,17 +15,27 @@ class ShopCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: _onTap(context),
-      child: Container(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          children: [
-            ShopTile(),
-            DataTile(title: 'Cфера деятельности: ', data: 'Продажа металлопроката'),
-            DataTile(title: 'Рейтинг: ', data: '4.5'),
-            DataTile(title: 'Местоположение: ', data: 'г, Нур Султан'),
-          ],
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10),
+      child: InkWell(
+        onTap: _onTap(context),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
+          padding: EdgeInsets.all(10),
+          child: Column(
+            children: [
+              ShopTile(),
+              SizedBox(height: 5,),
+              DataTile(title: 'Деятельность: ', data: 'Продажа металлопроката'),
+              DataTile(title: 'Рейтинг: ', data: '4.5'),
+              DataTile(title: 'Местоположение: ', data: 'г, Нур Султан'),
+              SizedBox(height: 5,),
+
+            ],
+          ),
         ),
       ),
     );

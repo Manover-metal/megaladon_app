@@ -42,7 +42,6 @@ class HeaderAppBar extends StatelessWidget {
               child: const Icon(
                 Icons.menu,
                 size: 30,
-                color: Colors.black,
               ),
             )
           else if(isBack) GestureDetector(
@@ -50,7 +49,6 @@ class HeaderAppBar extends StatelessWidget {
               child: const Icon(
                 Icons.arrow_back_ios,
                 size: 30,
-                color: Colors.black,
               ),
             )
           else Container(),

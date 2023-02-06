@@ -30,8 +30,6 @@ class SplashScreen extends StatelessWidget {
 
           currentIndex: tabsRouter.activeIndex,
           onTap: tabsRouter.setActiveIndex,
-          selectedItemColor: Colors.orange,
-          unselectedItemColor: Colors.orange.shade300,
           showUnselectedLabels: true,
           type: BottomNavigationBarType.fixed,
           items: [

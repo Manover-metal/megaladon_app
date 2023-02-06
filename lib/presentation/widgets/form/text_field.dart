@@ -11,9 +11,9 @@ class TextFieldApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 50,
       margin: EdgeInsets.symmetric(vertical: 5),
       child: TextField(
-
         controller: controller,
         decoration: InputDecoration(
           icon: icon,

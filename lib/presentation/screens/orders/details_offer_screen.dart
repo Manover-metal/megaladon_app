@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
+import 'package:megaladon/presentation/widgets/text/title.dart';
 import 'package:megaladon/presentation/widgets/tiles/data_tile.dart';
 import 'package:megaladon/presentation/widgets/tiles/executor_tile.dart';
 
@@ -17,7 +18,9 @@ class DetailsOfferScreen extends StatelessWidget {
                 HeaderAppBar(
                   isBack: true,
                 ),
-                Text('Предложение исполнителя'),
+                TitleApp('Предложение исполнителя'),
+                SizedBox(height: 20,),
+
                 ExecutorTile(),
                 SizedBox(height: 20,),
                 DataTile(title: 'Актуален до: ', data: '31-10-2022',),

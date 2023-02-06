@@ -1,0 +1,37 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flutter/material.dart';
+
+ThemeData themeLight = FlexThemeData.light(
+  scheme: FlexScheme.shark,
+  surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
+  blendLevel: 20,
+  appBarOpacity: 0.95,
+  tooltipsMatchBackground: true,
+  subThemesData: const FlexSubThemesData(
+    blendOnLevel: 20,
+    blendOnColors: false,
+    defaultRadius: 10.0,
+    textButtonSchemeColor: SchemeColor.secondaryContainer,
+    elevatedButtonSchemeColor: SchemeColor.secondaryContainer,
+    outlinedButtonSchemeColor: SchemeColor.secondaryContainer,
+    toggleButtonsSchemeColor: SchemeColor.secondaryContainer,
+    switchSchemeColor: SchemeColor.primaryContainer,
+    unselectedToggleIsColored: true,
+    inputDecoratorRadius: 10.0,
+    inputDecoratorUnfocusedBorderIsColored: false,
+    fabSchemeColor: SchemeColor.secondaryContainer,
+    chipSchemeColor: SchemeColor.secondaryContainer,
+    dialogBackgroundSchemeColor: SchemeColor.background,
+    navigationBarSelectedLabelSchemeColor: SchemeColor.secondaryContainer,
+    navigationBarUnselectedLabelSchemeColor: SchemeColor.secondary,
+    navigationBarSelectedIconSchemeColor: SchemeColor.secondaryContainer,
+    navigationBarUnselectedIconSchemeColor: SchemeColor.secondary,
+    navigationBarIndicatorSchemeColor: SchemeColor.background,
+    navigationBarIndicatorOpacity: 0.00,
+    navigationBarBackgroundSchemeColor: SchemeColor.background,
+    navigationBarHeight: 80.0,
+    navigationRailIndicatorOpacity: 0.06,
+  ),
+  visualDensity: FlexColorScheme.comfortablePlatformDensity,
+  useMaterial3: true,
+);

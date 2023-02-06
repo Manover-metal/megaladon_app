@@ -4,6 +4,7 @@ import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/text_field.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
+import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class CreateOfferScreen extends StatelessWidget {
 
@@ -21,7 +22,8 @@ class CreateOfferScreen extends StatelessWidget {
             child: Column(
               children: [
                 HeaderAppBar(isBack: true,),
-                Text('Отклик на заказ №321231231'),
+                TitleApp('Отклик на заказ №321231231'),
+                SizedBox(height: 20,),
                 TextFieldApp(label: 'Актуален до:', icon: Icon(Icons.calendar_month),),
                 TextFieldApp(label: 'Актуален до:', icon: Icon(Icons.watch_later_outlined),),
                 TextFieldApp(label: 'Цена:', icon: Icon(Icons.credit_card),),

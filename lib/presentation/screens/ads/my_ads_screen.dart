@@ -3,6 +3,7 @@ import 'package:megaladon/presentation/widgets/card/ad_card.dart';
 import 'package:megaladon/presentation/widgets/card/shop_card.dart';
 import 'package:megaladon/presentation/widgets/list/status_order_list.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
+import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class MyAdsScreen extends StatelessWidget {
   @override
@@ -17,7 +18,8 @@ class MyAdsScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     HeaderAppBar(isMenu: true, ),
-                    Text('Мои объявления')
+                    TitleApp('Мои объявления'),
+                    SizedBox(height: 20,),
                   ],
                 ),
               ),
