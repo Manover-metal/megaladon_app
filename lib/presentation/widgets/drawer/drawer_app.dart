@@ -21,8 +21,8 @@ class DrawerApp extends StatelessWidget {
     context.router.push(const RegisterExecutorRoute());
   };
 
-  _registerShop(BuildContext context) => () {
-    context.router.push(const RegisterShopRoute());
+  _registerStore(BuildContext context) => () {
+    context.router.push(const RegisterStoreRoute());
 
   };
 
@@ -63,7 +63,7 @@ class DrawerApp extends StatelessWidget {
             ],
             ...[
               DrawerRouteTile(text: 'Заказы', page: InitialRouter(children: [OrderRouter()]),),
-              DrawerRouteTile(text: 'Магазины', page: InitialRouter(children: [ShopRouter()]),),
+              DrawerRouteTile(text: 'Магазины', page: InitialRouter(children: [StoreRouter()]),),
               DrawerRouteTile(text: 'Торговая площадка', page: InitialRouter(children: [AdRouter()]),),
               Divider(thickness: 1,)
             ],
@@ -76,7 +76,7 @@ class DrawerApp extends StatelessWidget {
               ),
               OutlinedButtonApp(
                 text: 'Регистрация магазина',
-                onPressed: _registerShop(context),
+                onPressed: _registerStore(context),
               ),
             ],
           ],

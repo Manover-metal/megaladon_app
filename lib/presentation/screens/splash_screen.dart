@@ -3,8 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/core/get.dart';
 import 'package:megaladon/presentation/routing/router.dart';
-import 'package:megaladon/presentation/screens/home_screen.dart';
-import 'package:megaladon/presentation/screens/shop/list_shops_screen.dart';
 import 'package:megaladon/presentation/widgets/drawer/drawer_app.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -21,7 +19,7 @@ class SplashScreen extends StatelessWidget {
       lazyLoad: true,
       routes: [
         OrderRouter(),
-        ShopRouter(),
+        StoreRouter(),
         AdRouter(),
         ProfileRouter(),
       ],
@@ -42,8 +40,8 @@ class SplashScreen extends StatelessWidget {
             ),
             BottomNavigationBarItem(
               icon: GestureDetector(
-                child: Icon(Icons.shop),
-                onDoubleTap: _doubleTap(context, const ShopRouter()),
+                child: Icon(Icons.store),
+                onDoubleTap: _doubleTap(context, const StoreRouter()),
               ),
               label: 'Магазины',
             ),

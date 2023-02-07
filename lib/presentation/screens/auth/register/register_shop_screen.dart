@@ -5,7 +5,7 @@ import 'package:megaladon/presentation/widgets/form/text_field.dart';
 import 'package:megaladon/presentation/widgets/list/file_delete_list.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
-class RegisterShopScreen extends StatelessWidget {
+class RegisterStoreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

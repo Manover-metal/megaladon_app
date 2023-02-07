@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ShopTile extends StatelessWidget {
+class StoreTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(

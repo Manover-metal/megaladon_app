@@ -6,7 +6,7 @@ import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 import 'package:megaladon/presentation/widgets/tiles/data_tile.dart';
 
-class DetailsShopScreen extends StatelessWidget {
+class DetailsStoreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

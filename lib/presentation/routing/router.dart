@@ -11,7 +11,6 @@ import 'package:megaladon/presentation/screens/auth/register/register_user_scree
 import 'package:megaladon/presentation/screens/auth/reset_password_screen.dart';
 import 'package:megaladon/presentation/screens/auth/verify_screen.dart';
 import 'package:megaladon/presentation/screens/forms/offer/create_offer_screen.dart';
-import 'package:megaladon/presentation/screens/home_screen.dart';
 import 'package:megaladon/presentation/screens/orders/details_offer_screen.dart';
 import 'package:megaladon/presentation/screens/orders/details_order_screen.dart';
 import 'package:megaladon/presentation/screens/orders/list_executors_screen.dart';
@@ -19,8 +18,8 @@ import 'package:megaladon/presentation/screens/orders/list_my_orders_screen.dart
 import 'package:megaladon/presentation/screens/orders/list_orders_screen.dart';
 import 'package:megaladon/presentation/screens/orders/review_screen.dart';
 import 'package:megaladon/presentation/screens/profile/profile_screen.dart';
-import 'package:megaladon/presentation/screens/shop/details_shop_screen.dart';
-import 'package:megaladon/presentation/screens/shop/list_shops_screen.dart';
+import 'package:megaladon/presentation/screens/store/details_store_screen.dart';
+import 'package:megaladon/presentation/screens/store/list_stores_screen.dart';
 import 'package:megaladon/presentation/screens/splash_screen.dart';
 
 part 'router.gr.dart';
@@ -49,12 +48,12 @@ const List<AutoRoute> ad = [
 
 ];
 
-const List<AutoRoute> shop = [
+const List<AutoRoute> store = [
   AutoRoute(
-      page: ListShopsScreen,
+      page: ListStoresScreen,
       path: ''
   ),
-  AutoRoute(page: DetailsShopScreen),
+  AutoRoute(page: DetailsStoreScreen),
 
 ];
 
@@ -78,7 +77,7 @@ const List<AutoRoute> auth = [
 
   AutoRoute(page: RegisterUserScreen),
   AutoRoute(page: RegisterExecutorScreen),
-  AutoRoute(page: RegisterShopScreen),
+  AutoRoute(page: RegisterStoreScreen),
   AutoRoute(page: VerifyScreen),
 ];
 
@@ -100,9 +99,9 @@ const List<AutoRoute> auth = [
         ),
         AutoRoute(
             page: _EmptyRouteWidget,
-            name: 'ShopRouter',
-            path: 'shop',
-            children: shop
+            name: 'StoreRouter',
+            path: 'store',
+            children: store
         ),
         AutoRoute(
             page: _EmptyRouteWidget,

@@ -53,10 +53,10 @@ class _$AppRouter extends RootStackRouter {
         child: RegisterExecutorScreen(),
       );
     },
-    RegisterShopRoute.name: (routeData) {
+    RegisterStoreRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: RegisterShopScreen(),
+        child: RegisterStoreScreen(),
       );
     },
     VerifyRoute.name: (routeData) {
@@ -77,7 +77,7 @@ class _$AppRouter extends RootStackRouter {
         child: _EmptyRouteWidget(),
       );
     },
-    ShopRouter.name: (routeData) {
+    StoreRouter.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
         child: _EmptyRouteWidget(),
@@ -131,16 +131,16 @@ class _$AppRouter extends RootStackRouter {
         child: ReviewScreen(),
       );
     },
-    ListShopsRoute.name: (routeData) {
+    ListStoresRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: ListShopsScreen(),
+        child: ListStoresScreen(),
       );
     },
-    DetailsShopRoute.name: (routeData) {
+    DetailsStoreRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: DetailsShopScreen(),
+        child: DetailsStoreScreen(),
       );
     },
     TradingAdsRoute.name: (routeData) {
@@ -220,19 +220,19 @@ class _$AppRouter extends RootStackRouter {
               ],
             ),
             RouteConfig(
-              ShopRouter.name,
-              path: 'shop',
+              StoreRouter.name,
+              path: 'store',
               parent: InitialRouter.name,
               children: [
                 RouteConfig(
-                  ListShopsRoute.name,
+                  ListStoresRoute.name,
                   path: '',
-                  parent: ShopRouter.name,
+                  parent: StoreRouter.name,
                 ),
                 RouteConfig(
-                  DetailsShopRoute.name,
-                  path: 'details-shop-screen',
-                  parent: ShopRouter.name,
+                  DetailsStoreRoute.name,
+                  path: 'details-store-screen',
+                  parent: StoreRouter.name,
                 ),
               ],
             ),
@@ -293,8 +293,8 @@ class _$AppRouter extends RootStackRouter {
           path: '/register-executor-screen',
         ),
         RouteConfig(
-          RegisterShopRoute.name,
-          path: '/register-shop-screen',
+          RegisterStoreRoute.name,
+          path: '/register-store-screen',
         ),
         RouteConfig(
           VerifyRoute.name,
@@ -381,15 +381,15 @@ class RegisterExecutorRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [RegisterShopScreen]
-class RegisterShopRoute extends PageRouteInfo<void> {
-  const RegisterShopRoute()
+/// [RegisterStoreScreen]
+class RegisterStoreRoute extends PageRouteInfo<void> {
+  const RegisterStoreRoute()
       : super(
-          RegisterShopRoute.name,
-          path: '/register-shop-screen',
+          RegisterStoreRoute.name,
+          path: '/register-store-screen',
         );
 
-  static const String name = 'RegisterShopRoute';
+  static const String name = 'RegisterStoreRoute';
 }
 
 /// generated route for
@@ -431,15 +431,15 @@ class OrderRouter extends PageRouteInfo<void> {
 
 /// generated route for
 /// [_EmptyRouteWidget]
-class ShopRouter extends PageRouteInfo<void> {
-  const ShopRouter({List<PageRouteInfo>? children})
+class StoreRouter extends PageRouteInfo<void> {
+  const StoreRouter({List<PageRouteInfo>? children})
       : super(
-          ShopRouter.name,
-          path: 'shop',
+          StoreRouter.name,
+          path: 'store',
           initialChildren: children,
         );
 
-  static const String name = 'ShopRouter';
+  static const String name = 'StoreRouter';
 }
 
 /// generated route for
@@ -541,27 +541,27 @@ class ReviewRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [ListShopsScreen]
-class ListShopsRoute extends PageRouteInfo<void> {
-  const ListShopsRoute()
+/// [ListStoresScreen]
+class ListStoresRoute extends PageRouteInfo<void> {
+  const ListStoresRoute()
       : super(
-          ListShopsRoute.name,
+          ListStoresRoute.name,
           path: '',
         );
 
-  static const String name = 'ListShopsRoute';
+  static const String name = 'ListStoresRoute';
 }
 
 /// generated route for
-/// [DetailsShopScreen]
-class DetailsShopRoute extends PageRouteInfo<void> {
-  const DetailsShopRoute()
+/// [DetailsStoreScreen]
+class DetailsStoreRoute extends PageRouteInfo<void> {
+  const DetailsStoreRoute()
       : super(
-          DetailsShopRoute.name,
-          path: 'details-shop-screen',
+          DetailsStoreRoute.name,
+          path: 'details-store-screen',
         );
 
-  static const String name = 'DetailsShopRoute';
+  static const String name = 'DetailsStoreRoute';
 }
 
 /// generated route for
