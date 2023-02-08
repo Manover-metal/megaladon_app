@@ -21,12 +21,6 @@ const AuthModelSchema = CollectionSchema(
       id: 0,
       name: r'token',
       type: IsarType.string,
-    ),
-    r'type': PropertySchema(
-      id: 1,
-      name: r'type',
-      type: IsarType.byte,
-      enumMap: _AuthModeltypeEnumValueMap,
     )
   },
   estimateSize: _authModelEstimateSize,
@@ -65,7 +59,6 @@ void _authModelSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.token);
-  writer.writeByte(offsets[1], object.type.index);
 }
 
 AuthModel _authModelDeserialize(
@@ -77,8 +70,6 @@ AuthModel _authModelDeserialize(
   final object = AuthModel();
   object.id = id;
   object.token = reader.readStringOrNull(offsets[0]);
-  object.type = _AuthModeltypeValueEnumMap[reader.readByteOrNull(offsets[1])] ??
-      TokenTypeModel.user;
   return object;
 }
 
@@ -91,24 +82,10 @@ P _authModelDeserializeProp<P>(
   switch (propertyId) {
     case 0:
       return (reader.readStringOrNull(offset)) as P;
-    case 1:
-      return (_AuthModeltypeValueEnumMap[reader.readByteOrNull(offset)] ??
-          TokenTypeModel.user) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
 }
-
-const _AuthModeltypeEnumValueMap = {
-  'user': 0,
-  'executor': 1,
-  'store': 2,
-};
-const _AuthModeltypeValueEnumMap = {
-  0: TokenTypeModel.user,
-  1: TokenTypeModel.executor,
-  2: TokenTypeModel.store,
-};
 
 Id _authModelGetId(AuthModel object) {
   return object.id;
@@ -399,59 +376,6 @@ extension AuthModelQueryFilter
       ));
     });
   }
-
-  QueryBuilder<AuthModel, AuthModel, QAfterFilterCondition> typeEqualTo(
-      TokenTypeModel value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'type',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<AuthModel, AuthModel, QAfterFilterCondition> typeGreaterThan(
-    TokenTypeModel value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'type',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<AuthModel, AuthModel, QAfterFilterCondition> typeLessThan(
-    TokenTypeModel value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'type',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<AuthModel, AuthModel, QAfterFilterCondition> typeBetween(
-    TokenTypeModel lower,
-    TokenTypeModel upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'type',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
 }
 
 extension AuthModelQueryObject
@@ -470,18 +394,6 @@ extension AuthModelQuerySortBy on QueryBuilder<AuthModel, AuthModel, QSortBy> {
   QueryBuilder<AuthModel, AuthModel, QAfterSortBy> sortByTokenDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'token', Sort.desc);
-    });
-  }
-
-  QueryBuilder<AuthModel, AuthModel, QAfterSortBy> sortByType() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'type', Sort.asc);
-    });
-  }
-
-  QueryBuilder<AuthModel, AuthModel, QAfterSortBy> sortByTypeDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'type', Sort.desc);
     });
   }
 }
@@ -511,18 +423,6 @@ extension AuthModelQuerySortThenBy
       return query.addSortBy(r'token', Sort.desc);
     });
   }
-
-  QueryBuilder<AuthModel, AuthModel, QAfterSortBy> thenByType() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'type', Sort.asc);
-    });
-  }
-
-  QueryBuilder<AuthModel, AuthModel, QAfterSortBy> thenByTypeDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'type', Sort.desc);
-    });
-  }
 }
 
 extension AuthModelQueryWhereDistinct
@@ -531,12 +431,6 @@ extension AuthModelQueryWhereDistinct
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'token', caseSensitive: caseSensitive);
-    });
-  }
-
-  QueryBuilder<AuthModel, AuthModel, QDistinct> distinctByType() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'type');
     });
   }
 }
@@ -552,12 +446,6 @@ extension AuthModelQueryProperty
   QueryBuilder<AuthModel, String?, QQueryOperations> tokenProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'token');
-    });
-  }
-
-  QueryBuilder<AuthModel, TokenTypeModel, QQueryOperations> typeProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'type');
     });
   }
 }

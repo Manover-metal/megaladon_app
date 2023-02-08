@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:megaladon/core/dio/index.dart';
 import 'package:megaladon/core/isar/index.dart';
+import 'package:megaladon/data/models/auth_model.dart';
 
 class AuthRepository {
 
@@ -64,15 +65,15 @@ class AuthRepository {
   }
 
 
-  _read() {
-
+  Future<AuthModel?> read() async {
+    return await IsarService.I.authModels.get(0);
   }
 
-  _write() {
+  write() {
     // IsarService.I.
   }
 
-  _delete() {
+  delete() {
 
   }
 }
