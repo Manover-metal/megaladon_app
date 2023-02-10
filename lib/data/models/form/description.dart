@@ -1,6 +1,16 @@
 import 'package:formz/formz.dart';
 
-enum DescriptionValidationError { limit }
+enum DescriptionValidationError {
+  limit;
+
+  @override
+  String toString() {
+    switch(this) {
+      case DescriptionValidationError.limit:
+        return 'Описание превысело 1000 символов';
+    }
+  }
+}
 
 class DescriptionFormModel extends FormzInput<String, DescriptionValidationError> {
   const DescriptionFormModel.pure() : super.pure('');

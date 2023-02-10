@@ -1,7 +1,17 @@
 
 import 'package:formz/formz.dart';
 
-enum TitleValidationError { empty }
+enum TitleValidationError {
+  empty;
+
+  @override
+  String toString() {
+    switch(this) {
+      case TitleValidationError.empty:
+        return 'Заголок пустой';
+    }
+  }
+}
 
 class TitleFormModel extends FormzInput<String, TitleValidationError> {
   const TitleFormModel.pure() : super.pure('');

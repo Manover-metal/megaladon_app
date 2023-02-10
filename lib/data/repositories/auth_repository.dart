@@ -18,23 +18,7 @@ class AuthRepository {
     });
   }
 
-  Future register({
-    required String name,
-    required String phone,
-    required String password,
-    required String passwordConfirmation,
-    required int cityId
-  }) async {
-    return ApiService.I.post('/auth/register', data: {
-      "name": name,
-      "phone": phone,
-      "password": password,
-      "password_confirmation": passwordConfirmation,
-      "city_id": cityId
-    }).then((value) {
-      return value;
-    });
-  }
+
 
   Future confirmRegister({
     required String phone,

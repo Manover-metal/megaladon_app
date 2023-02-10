@@ -1,7 +1,17 @@
 
 import 'package:formz/formz.dart';
 
-enum PhoneValidationError { empty }
+enum PhoneValidationError {
+  empty;
+
+  @override
+  String toString() {
+    switch(this) {
+      case PhoneValidationError.empty:
+        return 'Телефон пустой';
+    }
+  }
+}
 
 class PhoneFormModel extends FormzInput<String, PhoneValidationError> {
   const PhoneFormModel.pure() : super.pure('');

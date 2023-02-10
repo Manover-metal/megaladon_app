@@ -1,7 +1,19 @@
 
 import 'package:formz/formz.dart';
 
-enum EmailValidationError { empty, notEmail }
+enum EmailValidationError {
+  empty, notEmail;
+
+  @override
+  String toString() {
+    switch(this) {
+      case EmailValidationError.notEmail:
+        return 'Не является Email-ом';
+      case EmailValidationError.empty:
+        return 'Email пустой';
+    }
+  }
+}
 
 class EmailFormModel extends FormzInput<String, EmailValidationError> {
   const EmailFormModel.pure() : super.pure('');

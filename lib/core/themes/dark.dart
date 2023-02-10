@@ -7,12 +7,12 @@ enum ColorSchemeApp {
   surface(Color.fromRGBO(251, 191, 36, 1)),
   onSurface(Color.fromRGBO(251, 191, 36, 1)),
   onBackgroud(Color.fromRGBO(30, 30, 30, 1)),
-  background(Color.fromRGBO(30, 30, 30, 1)),
+  background(Color.fromRGBO(23, 23, 23, 1)),
   bodyText(Colors.white),
   hiddenContainer(Color.fromRGBO(199, 196, 194, 1.0)),
   hidden(Color.fromRGBO(199, 196, 194, 1.0)),
   onHidden(Color.fromRGBO(251, 191, 36, 1)),
-  error(Color.fromRGBO(239, 68, 68, 1)),
+  error(Color.fromRGBO(241, 92, 92, 1.0)),
   onError(Colors.white),
   success(Color.fromRGBO(5, 150, 105, 1)),
   onSuccess(Colors.white),
@@ -31,7 +31,6 @@ TextTheme _textTheme = TextTheme(
       fontSize: 27,
       color: ColorSchemeApp.primary.color,
       fontWeight: FontWeight.w600
-
     ),
     bodyMedium: TextStyle(
       fontSize: 16,
@@ -43,7 +42,7 @@ TextTheme _textTheme = TextTheme(
     ),
     titleLarge: TextStyle(
       color: ColorSchemeApp.bodyText.color
-    )
+    ),
 );
 
 ThemeData themeDark =  FlexThemeData.dark(

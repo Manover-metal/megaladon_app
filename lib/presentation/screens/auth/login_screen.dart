@@ -8,6 +8,7 @@ import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/form/text_field.dart';
+import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -55,43 +56,63 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  _listenerAuth(BuildContext context, AuthState state) => () {
-      print(state);
-  };
+  _listenerAuth(BuildContext context, AuthState state) {
+    if(state is AuthLoginState) {
+      context.router.replace(InitialRouter(
+          children: [
+            ProfileRouter()
+          ]
+      ));
+    }else if(state is AuthErrorState) {
+      showErrorSnackBar(context, state.error);
+    }
+  }
 
-  _listenerForm(BuildContext context, AuthFormState state) => () {
-    print(state);
-  };
+  _listenerForm(BuildContext context, AuthFormState state) {
+    if(state.status.isInvalid) {
+      if(state.phone.invalid) showErrorSnackBar(context, state.phone.error.toString());
+      else if(state.password.invalid) showErrorSnackBar(context, state.password.error.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            padding: EdgeInsets.all(20),
-            child: MultiBlocListener(
-              listeners: [
-                BlocListener<AuthBloc, AuthState>(listener: _listenerAuth),
-                BlocListener<AuthFormCubit, AuthFormState>(listener: _listenerForm)
+        child: Container(
+          padding: EdgeInsets.all(20),
+          child: MultiBlocListener(
+            listeners: [
+              BlocListener<AuthBloc, AuthState>(listener: _listenerAuth),
+              BlocListener<AuthFormCubit, AuthFormState>(listener: _listenerForm)
+            ],
+            child: Column(
+              children: [
+                Spacer(),
+                TitleApp('Авторизация'),
+                // Spacer(),
+                SizedBox(height: 20,),
+                TextFieldApp(
+                  icon: Icon(Icons.person),
+                  label: 'Телефон',
+                  controller: _phone,
+                ),
+                TextFieldApp(
+                  icon: Icon(Icons.lock),
+                  label: 'Пароль',
+                  controller: _password,
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Text('забыли пароль?',
+                    style: Theme.of(context).textTheme.bodySmall
+                  ),
+                ),
+                SizedBox(height: 25,),
+                ElevatedButtonApp(text: 'Войти', onPressed: _login),
+                OutlinedButtonApp(text: 'Регистрация', onPressed: _register),
+                Spacer(flex: 3),
               ],
-              child: Column(
-                children: [
-                  TitleApp('Авторизация'),
-                  SizedBox(height: 20,),
-                  TextFieldApp(
-                    label: 'Телефон',
-                    controller: _phone,
-                  ),
-                  TextFieldApp(
-                    label: 'Пароль',
-                    controller: _password,
-                  ),
-                  Text('забыли пароль?'),
-                  ElevatedButtonApp(text: 'Войти', onPressed: _login),
-                  OutlinedButtonApp(text: 'Регистрация', onPressed: _register)
-                ],
-              ),
             ),
           ),
         ),
