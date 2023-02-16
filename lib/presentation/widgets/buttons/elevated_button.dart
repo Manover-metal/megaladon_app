@@ -9,7 +9,11 @@ class ElevatedButtonApp extends StatelessWidget {
 
   Widget? _getText() {
     if(text != null) {
-      return Text(text!, textAlign: TextAlign.center,);
+      return Text(text!, textAlign: TextAlign.center,
+        // style: TextStyle(
+        //   fontSize: 25
+        // ),
+      );
     }
     return null;
   }

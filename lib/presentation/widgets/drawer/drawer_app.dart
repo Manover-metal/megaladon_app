@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
@@ -23,10 +25,11 @@ class DrawerApp extends StatelessWidget {
 
   _registerStore(BuildContext context) => () {
     context.router.push(const RegisterStoreRoute());
-
   };
 
-  _logout () {}
+  _logout (BuildContext context) => () {
+    context.read<AuthBloc>().add(AuthLogoutEvent());
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -36,38 +39,55 @@ class DrawerApp extends StatelessWidget {
         padding: EdgeInsets.all(20),
         child: Column(
           children: [
-            ...[
-              ElevatedButtonApp(
-                text: 'Войти',
-                onPressed: _login(context),
-              ),
-              OutlinedButtonApp(
-                text: 'Регистрация',
-                onPressed: _registerUser(context),
-              ),
-            ],
-            ...[
-              DrawerRouteTile(text: 'Мои заказы', page: InitialRouter(
+            BlocBuilder<AuthBloc, AuthState>(
+              builder: (BuildContext context, state) {
+                return Column(
                   children: [
-                    OrderRouter(children: [ListMyOrdersRoute()])
+                    if(state is! AuthLoginState)...[
+                      ElevatedButtonApp(
+                        text: 'Войти',
+                        onPressed: _login(context),
+                      ),
+                      OutlinedButtonApp(
+                        text: 'Регистрация',
+                        onPressed: _registerUser(context),
+                      ),
+                    ],
+                    if(state is AuthLoginState) ...[
+                      DrawerRouteTile(text: 'Мои заказы', page: InitialRouter(
+                        children: [
+                          OrderRouter(children: [ListMyOrdersRoute()])
+                        ],
+                      ),
+                      ),
+                      DrawerRouteTile(text: 'Мои объявления', page: InitialRouter(
+                        children: [
+                          AdRouter(children: [MyAdsRoute()])
+                        ],
+                      ),
+                      ),
+                      Divider(thickness: 1,)
+                    ],
                   ],
-                ),
-              ),
-              DrawerRouteTile(text: 'Мои объявления', page: InitialRouter(
-                  children: [
-                    AdRouter(children: [MyAdsRoute()])
-                  ],
-                ),
-              ),
-              Divider(thickness: 1,)
-            ],
+                );
+              }
+            ),
+
             ...[
               DrawerRouteTile(text: 'Заказы', page: InitialRouter(children: [OrderRouter()]),),
               DrawerRouteTile(text: 'Магазины', page: InitialRouter(children: [StoreRouter()]),),
               DrawerRouteTile(text: 'Торговая площадка', page: InitialRouter(children: [AdRouter()]),),
               Divider(thickness: 1,)
             ],
-            DrawerTile(text: 'Выход', callback: _logout),
+            BlocBuilder<AuthBloc, AuthState>(
+              builder: (context, state) {
+                if(state is AuthLoginState) {
+                  return DrawerTile(text: 'Выход', callback: _logout(context));
+                } else {
+                  return Container();
+                }
+              },
+            ),
             Spacer(),
             ...[
               ElevatedButtonApp(

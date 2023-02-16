@@ -4,11 +4,13 @@ class AuthFormState extends Equatable {
   final FormzStatus status;
   final PhoneFormModel phone;
   final PasswordFormModel password;
+  final int countTry;
 
   const AuthFormState({
     this.status = FormzStatus.pure,
     this.phone = const PhoneFormModel.dirty(''),
-    this.password = const PasswordFormModel.dirty('')
+    this.password = const PasswordFormModel.dirty(''),
+    this.countTry = 0
   });
 
   @override
@@ -17,12 +19,14 @@ class AuthFormState extends Equatable {
   AuthFormState copyWith ({
     FormzStatus? status,
     PhoneFormModel? phone,
-    PasswordFormModel? password
+    PasswordFormModel? password,
+    int? countTry
   }) {
     return AuthFormState(
         status: status ?? this.status,
         phone: phone ?? this.phone,
-        password: password ?? this.password
+        password: password ?? this.password,
+        countTry: countTry ?? this.countTry
     );
   }
 }

@@ -8,6 +8,7 @@ import 'package:megaladon/core/themes/dark.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/form/auth/auth_form_cubit.dart';
 import 'package:megaladon/logic/form/register/register_user/register_user_form_cubit.dart';
+import 'package:megaladon/logic/form/verify/verify_form_cubit.dart';
 import 'package:megaladon/logic/register/register_user/register_user_bloc.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -50,7 +51,11 @@ class App extends StatelessWidget {
         BlocProvider<RegisterUserFormCubit>(
             create: (context) => RegisterUserFormCubit()
         ),
+        BlocProvider<VerifyFormCubit>(
+            create: (context) => VerifyFormCubit()
+        ),
         BlocProvider<AuthBloc>(
+            lazy: false,
             create: (context) => AuthBloc()..add(AuthInitialEvent())
         ),
         BlocProvider<RegisterUserBloc>(

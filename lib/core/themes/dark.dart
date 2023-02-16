@@ -77,7 +77,6 @@ ThemeData themeDark =  FlexThemeData.dark(
     navigationBarHeight: 80.0,
     navigationRailIndicatorOpacity: 0.08,
     inputDecoratorSchemeColor: SchemeColor.secondaryContainer,
-
   ),
 
   visualDensity: FlexColorScheme.comfortablePlatformDensity,

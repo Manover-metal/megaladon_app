@@ -1,10 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:megaladon/core/dio/index.dart';
+import 'package:megaladon/core/dio/interceptors/auth_interceptors.dart';
 import 'package:megaladon/core/isar/index.dart';
 import 'package:megaladon/data/models/auth_model.dart';
 
 class AuthRepository {
-
+  AuthInterceptor? interceptor;
 
   Future login({
     required String phone,
@@ -34,7 +35,9 @@ class AuthRepository {
 
   Future logout() async {
     return ApiService.I.delete('/auth/logout').then((value) {
-      return value;
+      delete();
+    }).catchError((err) {
+      delete();
     });
   }
 
@@ -50,14 +53,29 @@ class AuthRepository {
 
 
   Future<AuthModel?> read() async {
-    return await IsarService.I.authModels.get(0);
+    AuthModel? auth = await IsarService.I.authModels.get(1);
+    print(auth);
+    if(auth != null) {
+      _addInterceptor(auth);
+    }
+    return auth;
   }
 
-  write() {
-    // IsarService.I.
+  write(AuthModel auth) async {
+    _addInterceptor(auth);
+    await IsarService.I.writeTxn(() async {
+      IsarService.I.authModels.put(auth);
+    });
   }
 
-  delete() {
+  _addInterceptor(AuthModel auth) {
+    interceptor = AuthInterceptor(auth.token!);
+    ApiService.addInterceptors(interceptor!);
+  }
 
+  delete() async {
+    await IsarService.I.writeTxn(() async {
+      await IsarService.I.authModels.clear();
+    });
   }
 }

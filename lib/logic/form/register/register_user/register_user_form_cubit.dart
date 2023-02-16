@@ -35,6 +35,7 @@ class RegisterUserFormCubit extends Cubit<RegisterUserFormState> {
         password: passwordForm,
         passwordConfirmation: passwordConfirmationForm,
         status: status,
+        countTry: state.countTry + 1
     );
     emit(stateNew);
     return stateNew.status.isValid;

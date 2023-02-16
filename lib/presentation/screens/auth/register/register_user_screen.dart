@@ -35,20 +35,26 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
 
   _listenerForm(BuildContext context, RegisterUserFormState state) {
     if(state.status.isInvalid) {
-      if(state.name.invalid) showErrorSnackBar(context, state.name.error.toString());
-      else if(state.phone.invalid) showErrorSnackBar(context, state.phone.error.toString());
-      else if(state.password.invalid) showErrorSnackBar(context, state.password.error.toString());
-      else if(state.passwordConfirmation.invalid) showErrorSnackBar(context, state.passwordConfirmation.error.toString());
+      if(state.name.invalid) {
+        showErrorSnackBar(context, state.name.error.toString());
+      } else if(state.phone.invalid) {
+        showErrorSnackBar(context, state.phone.error.toString());
+      } else if(state.password.invalid) {
+        showErrorSnackBar(context, state.password.error.toString());
+      } else if(state.passwordConfirmation.invalid) {
+        showErrorSnackBar(context, state.passwordConfirmation.error.toString());
+      }
     }
   }
 
-  _listenRegister(BuildContext context, RegisterUserState state) {
+  _listenRegister(bool isListener) => (BuildContext context, RegisterUserState state) {
     if(state is RegisterUserSuccess) {
-      context.router.replace(VerifyRoute());
-    }else if(state is RegisterUserError) {
+      String phone = context.read<RegisterUserFormCubit>().state.phone.value;
+      context.router.replace(VerifyRoute(phone: phone));
+    } else if(state is RegisterUserError && isListener) {
       showErrorSnackBar(context, state.error);
     }
-  }
+  };
 
   _register() {
     if(_checkForm()) {
@@ -64,7 +70,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
 
   @override
   void initState() {
-    _listenRegister(context, context.read<RegisterUserBloc>().state);
+    _listenRegister(false)(context, context.read<RegisterUserBloc>().state);
     _nameController = TextEditingController();
     _phoneController = TextEditingController();
     _passwordController = TextEditingController();
@@ -90,7 +96,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
             listener: _listenerForm,
           ),
           BlocListener<RegisterUserBloc, RegisterUserState>(
-            listener: _listenRegister,
+            listener: _listenRegister(true),
           ),
         ],
         child: SafeArea(

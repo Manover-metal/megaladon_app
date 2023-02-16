@@ -60,9 +60,13 @@ class _$AppRouter extends RootStackRouter {
       );
     },
     VerifyRoute.name: (routeData) {
+      final args = routeData.argsAs<VerifyRouteArgs>();
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: VerifyScreen(),
+        child: VerifyScreen(
+          key: args.key,
+          phone: args.phone,
+        ),
       );
     },
     CreateOfferRoute.name: (routeData) {
@@ -394,14 +398,36 @@ class RegisterStoreRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [VerifyScreen]
-class VerifyRoute extends PageRouteInfo<void> {
-  const VerifyRoute()
-      : super(
+class VerifyRoute extends PageRouteInfo<VerifyRouteArgs> {
+  VerifyRoute({
+    Key? key,
+    required String phone,
+  }) : super(
           VerifyRoute.name,
           path: '/verify-screen',
+          args: VerifyRouteArgs(
+            key: key,
+            phone: phone,
+          ),
         );
 
   static const String name = 'VerifyRoute';
+}
+
+class VerifyRouteArgs {
+  const VerifyRouteArgs({
+    this.key,
+    required this.phone,
+  });
+
+  final Key? key;
+
+  final String phone;
+
+  @override
+  String toString() {
+    return 'VerifyRouteArgs{key: $key, phone: $phone}';
+  }
 }
 
 /// generated route for

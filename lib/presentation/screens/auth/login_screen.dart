@@ -8,6 +8,7 @@ import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/form/text_field.dart';
+import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
@@ -25,32 +26,32 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _login() {
-    AuthFormState state = context.read<AuthFormCubit>().state;
-
-    if(state.status.isValidated) {
-      context.read<AuthBloc>().add(AuthLoginEvent(state.phone.value, state.password.value));
+    if(_checkForm()) {
+      context.read<AuthBloc>().add(AuthLoginEvent(
+          _phone.value.text,
+          _password.value.text
+        )
+      );
     }
-  }
-
-  _changePassword() {
-    context.read<AuthFormCubit>().changePassword(_password.value.text);
-  }
-
-  _changeEmail() {
-    context.read<AuthFormCubit>().changeEmail(_phone.value.text);
   }
 
   @override
   void initState() {
-    _password = TextEditingController()..addListener(_changePassword);
-    _phone = TextEditingController()..addListener(_changeEmail);
+    _password = TextEditingController();
+    _phone = TextEditingController();
     super.initState();
+  }
+
+  _checkForm() {
+    AuthFormCubit form = context.read<AuthFormCubit>();
+    return form.checkLogin(
+        phone: _phone.value.text,
+        password: _password.value.text,
+    );
   }
 
   @override
   void dispose() {
-    _password.removeListener(_changePassword);
-    _phone.removeListener(_changeEmail);
     _password.dispose();
     _phone.dispose();
     super.dispose();
@@ -58,20 +59,25 @@ class _LoginScreenState extends State<LoginScreen> {
 
   _listenerAuth(BuildContext context, AuthState state) {
     if(state is AuthLoginState) {
-      context.router.replace(InitialRouter(
+      context.router.navigate(InitialRouter(
           children: [
             ProfileRouter()
           ]
       ));
-    }else if(state is AuthErrorState) {
+    } else if(state is AuthErrorState) {
       showErrorSnackBar(context, state.error);
+    } else if(state is AuthTransitionVerify) {
+      context.router.replace(VerifyRoute(phone: _phone.value.text));
     }
   }
 
   _listenerForm(BuildContext context, AuthFormState state) {
     if(state.status.isInvalid) {
-      if(state.phone.invalid) showErrorSnackBar(context, state.phone.error.toString());
-      else if(state.password.invalid) showErrorSnackBar(context, state.password.error.toString());
+      if(state.phone.invalid) {
+        showErrorSnackBar(context, state.phone.error.toString());
+      } else if(state.password.invalid) {
+        showErrorSnackBar(context, state.password.error.toString());
+      }
     }
   }
 
@@ -109,7 +115,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 SizedBox(height: 25,),
-                ElevatedButtonApp(text: 'Войти', onPressed: _login),
+                BlocBuilder<AuthBloc, AuthState>(
+                  builder: (context, state) {
+                    if(state is AuthLoadingState) {
+                      return ElevatedButtonApp(child: Loader(), onPressed: (){});
+                    }
+                    return ElevatedButtonApp(text: 'Войти', onPressed: _login);
+                  }
+                ),
                 OutlinedButtonApp(text: 'Регистрация', onPressed: _register),
                 Spacer(flex: 3),
               ],
