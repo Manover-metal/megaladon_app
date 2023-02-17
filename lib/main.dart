@@ -10,9 +10,11 @@ import 'package:megaladon/logic/form/auth/auth_form_cubit.dart';
 import 'package:megaladon/logic/form/register/register_user/register_user_form_cubit.dart';
 import 'package:megaladon/logic/form/verify/verify_form_cubit.dart';
 import 'package:megaladon/logic/register/register_user/register_user_bloc.dart';
+import 'package:megaladon/logic/screens/advert/my/advert_screen_my_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'core/get.dart';
+import 'logic/screens/advert/main/advert_screen_main_cubit.dart';
 // import 'generated/locale_keys.g.dart';
 
 void main() async {
@@ -60,6 +62,12 @@ class App extends StatelessWidget {
         ),
         BlocProvider<RegisterUserBloc>(
             create: (context) => RegisterUserBloc()
+        ),
+        BlocProvider<AdvertScreenMainCubit>(
+            create: (context) => AdvertScreenMainCubit()
+        ),
+        BlocProvider<AdvertScreenMyCubit>(
+            create: (context) => AdvertScreenMyCubit()
         )
       ],
       child: MaterialApp.router(

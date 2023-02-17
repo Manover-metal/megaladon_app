@@ -1,5 +1,5 @@
 import 'package:isar/isar.dart';
-import 'package:megaladon/data/models/auth_model.dart';
+import 'package:megaladon/data/models/auth/auth_model.dart';
 
 class IsarService {
   static late Isar _isar;

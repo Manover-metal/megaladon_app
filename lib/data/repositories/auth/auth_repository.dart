@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:megaladon/core/dio/index.dart';
 import 'package:megaladon/core/dio/interceptors/auth_interceptors.dart';
 import 'package:megaladon/core/isar/index.dart';
-import 'package:megaladon/data/models/auth_model.dart';
+import 'package:megaladon/data/models/auth/auth_model.dart';
 
 class AuthRepository {
   AuthInterceptor? interceptor;

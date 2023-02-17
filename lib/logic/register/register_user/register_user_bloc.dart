@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:megaladon/data/repositories/register_repository.dart';
+import 'package:megaladon/data/repositories/auth/register_repository.dart';
 
 part 'register_user_event.dart';
 part 'register_user_state.dart';

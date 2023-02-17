@@ -57,7 +57,7 @@ class SplashScreen extends StatelessWidget {
                 child: Icon(Icons.person),
                 onDoubleTap: _doubleTap(context, const ProfileRouter()),
               ),
-              label: 'Объявления',
+              label: 'Профиль',
             ),
           ],
         );

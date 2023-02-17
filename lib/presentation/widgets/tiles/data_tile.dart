@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class DataTile extends StatelessWidget {
   final String title;
@@ -8,15 +9,29 @@ class DataTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 5.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Text(title,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                fontSize: 18
+              ),
+            ),
+          ),
+          Expanded(
+            child: Text(data,
+              textAlign: TextAlign.right,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontSize: 18
+              ),
+            ),
 
-      children: [
-        Text(title),
-        Expanded(
-          child: Text(data),
-        )
-      ],
+          )
+        ],
+      ),
     );
   }
 

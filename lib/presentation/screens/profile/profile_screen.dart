@@ -19,6 +19,7 @@ class ProfileScreen extends StatelessWidget {
                   radius: MediaQuery.of(context).size.width / 6,
                   backgroundColor: Colors.grey.shade300,
                 ),
+                SizedBox(height: 20,),
                 DataTile(title: 'Имя: ', data: 'Cергей'),
                 DataTile(title: 'Номер: ', data: '+7 747 940 0950'),
                 DataTile(title: 'Местоположение: ', data: 'г.Караганда'),
