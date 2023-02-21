@@ -5,11 +5,11 @@ import 'package:megaladon/data/models/advert_model.dart';
 class AdvertRepository {
   Future index(AdvertIndexRequestParams params) => ApiService.I
       .get('/adverts', queryParameters: params.toData())
-      .then((value) => AdvertModel.listFromJson(value.data['list']));
+      .then((value) => AdvertModel.listFromJsonMini(value.data['list']));
 
   Future indexMy(AdvertIndexRequestParams params) => ApiService.I
       .get('/adverts/my', queryParameters: params.toData())
-      .then((value) => AdvertModel.listFromJson(value.data['list']));
+      .then((value) => AdvertModel.listFromJsonMini(value.data['list']));
 
   Future info(int id) => ApiService.I
       .get('/adverts/$id',)

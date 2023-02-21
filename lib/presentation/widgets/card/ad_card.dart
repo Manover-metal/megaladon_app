@@ -2,13 +2,18 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/core/themes/dark.dart';
+import 'package:megaladon/data/models/advert_model.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/tiles/ad_tile.dart';
 
 class AdCard extends StatelessWidget {
 
+  final AdvertModel advert;
+
+  const AdCard({super.key, required this.advert});
+
   _onTap(BuildContext context) => () {
-    context.router.push(const DetailsAdRoute());
+    context.router.push(DetailsAdRoute(id: advert.id));
   };
 
   @override
@@ -26,12 +31,12 @@ class AdCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              AdTile(),
+              AdTile(advert: advert,),
               SizedBox(height: 5,),
 
-              Text('Учитывая ключевые сценарии поведения, синтетическое тестирование требует от нас анализа системы массового участия....'),
+              Text(advert.description),
               SizedBox(height: 10,),
-              Text('Цена: 25 000 ₸',
+              Text('Цена: ${advert.price} ₸',
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   color: ColorSchemeApp.success.color,
                   fontWeight: FontWeight.w600

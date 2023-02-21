@@ -38,7 +38,8 @@ class OrderIndexRequestParams {
   OrderIndexSort sort = OrderIndexSort.id;
 
   toData() {
-    return {
+    print(last.name);
+    final data = {
       'startRow': startRow,
       'rowsPerPage': rowsPerPage,
       'last': last.name,
@@ -47,6 +48,8 @@ class OrderIndexRequestParams {
       'desc': desc? 1: 0,
       'sort': sort.name
     };
+    print(data);
+    return data;
   }
 }
 enum OrderIndexPeriod {

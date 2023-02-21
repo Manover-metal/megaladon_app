@@ -9,23 +9,22 @@ class AdvertScreenMainCubit extends Cubit<AdvertScreenMainState> {
   final AdvertRepository _repository = AdvertRepository();
   AdvertScreenMainCubit() : super(AdvertScreenMainInitial());
 
-  Future fetch() async {
+  Future fetch({AdvertIndexRequestParams? params}) async {
+    AdvertIndexRequestParams mainParams = params ?? state.params;
+
     emit(AdvertScreenMainLoader());
-    await _repository.index(state.params).then((value) {
-      if(state is AdvertScreenMainSuccess) {
-        if(state.params.startRow == 0) {
-          emit(AdvertScreenMainSuccess(adverts: value, params: state.params));
-        } else {
-          emit(AdvertScreenMainSuccess(
-            adverts: [...(state as AdvertScreenMainSuccess).adverts, value],
-            params: state.params
-          ));
-        }
+    return await _repository.index(mainParams).then((value) {
+      print(value);
+      if(mainParams.startRow == 0) {
+        emit(AdvertScreenMainSuccess(adverts: value, params: mainParams));
       } else {
-        emit(AdvertScreenMainSuccess(adverts: value, params: state.params));
+        emit(AdvertScreenMainSuccess(
+          adverts: [...(state as AdvertScreenMainSuccess).adverts, value],
+          params: mainParams
+        ));
       }
-    }).catchError((Error error) {
-      print(error.stackTrace);
+    }).catchError((error) {
+      print(error);
       emit(AdvertScreenMainError());
     });
   }

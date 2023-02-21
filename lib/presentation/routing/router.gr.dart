@@ -154,9 +154,13 @@ class _$AppRouter extends RootStackRouter {
       );
     },
     DetailsAdRoute.name: (routeData) {
+      final args = routeData.argsAs<DetailsAdRouteArgs>();
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: DetailsAdScreen(),
+        child: DetailsAdScreen(
+          key: args.key,
+          id: args.id,
+        ),
       );
     },
     MyAdsRoute.name: (routeData) {
@@ -604,14 +608,36 @@ class TradingAdsRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [DetailsAdScreen]
-class DetailsAdRoute extends PageRouteInfo<void> {
-  const DetailsAdRoute()
-      : super(
+class DetailsAdRoute extends PageRouteInfo<DetailsAdRouteArgs> {
+  DetailsAdRoute({
+    Key? key,
+    required int id,
+  }) : super(
           DetailsAdRoute.name,
           path: 'details-ad-screen',
+          args: DetailsAdRouteArgs(
+            key: key,
+            id: id,
+          ),
         );
 
   static const String name = 'DetailsAdRoute';
+}
+
+class DetailsAdRouteArgs {
+  const DetailsAdRouteArgs({
+    this.key,
+    required this.id,
+  });
+
+  final Key? key;
+
+  final int id;
+
+  @override
+  String toString() {
+    return 'DetailsAdRouteArgs{key: $key, id: $id}';
+  }
 }
 
 /// generated route for

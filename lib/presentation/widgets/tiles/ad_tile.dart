@@ -1,7 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:megaladon/data/models/advert_model.dart';
 
 class AdTile extends StatelessWidget {
+
+  final AdvertModel advert;
+
+  const AdTile({super.key, required this.advert});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -20,7 +26,7 @@ class AdTile extends StatelessWidget {
             SizedBox(width: 10,),
             Expanded(
                 flex: 8,
-                child: Text('Продаю металический лист 500*1500очень большой заголовок задания')
+                child: Text(advert.title)
             )
           ],
         ),

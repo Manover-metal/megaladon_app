@@ -16,48 +16,63 @@ class _TradingAdsScreenState extends State<TradingAdsScreen> {
 
   @override
   void initState() {
-    context.read<AdvertScreenMainCubit>().fetch();
+    _onRefresh();
     super.initState();
+  }
+
+  Future _onRefresh() async {
+    await context.read<AdvertScreenMainCubit>().fetch();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  children: [
-                    HeaderAppBar(isMenu: true,),
-                    TitleApp('Торговая площадка'),
-                    SizedBox(height: 20,),
-                  ],
-                ),
+        child: RefreshIndicator(
+          color: Colors.white,
+          onRefresh: _onRefresh,
+          child: SingleChildScrollView(
+            child: Container(
+              constraints: BoxConstraints(
+                minHeight: MediaQuery.of(context).size.height
               ),
-              StatusList(),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: BlocBuilder<AdvertScreenMainCubit, AdvertScreenMainState>(
-                  builder: (context, state) {
-                    if(state is AdvertScreenMainSuccess) {
-                      return Column(
-                        children: state.adverts.map((advert) {
-                          return AdCard();
-                        }).toList(),
-                      );
-                    }
-                    else if(state is AdvertScreenMainLoader) {
-                      return const Loader();
-                    }
-                    return Container();
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      children: [
+                        HeaderAppBar(isMenu: true,),
+                        TitleApp('Торговая площадка'),
+                        SizedBox(height: 20,),
+                      ],
+                    ),
+                  ),
+                  StatusList(),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: BlocBuilder<AdvertScreenMainCubit, AdvertScreenMainState>(
+                      builder: (context, state) {
+                        if(state is AdvertScreenMainSuccess) {
+                          return Column(
+                            children: state.adverts.map((advert) {
+                              return AdCard(advert: advert,);
+                            }).toList(),
+                          );
+                        }
+                        else if(state is AdvertScreenMainLoader) {
+                          return const Loader();
+                        } else if(state is AdvertScreenMainError) {
+                          return Text('error');
+                        }
+                        return Container();
 
-                  },
-                ),
-              )
-            ],
+                      },
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
         ),
       ),

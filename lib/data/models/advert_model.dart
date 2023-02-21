@@ -1,36 +1,43 @@
 import 'package:equatable/equatable.dart';
+import 'package:megaladon/core/utils/parser.dart';
 
 class AdvertModel extends Equatable {
+  final int id;
   final String title;
   final String description;
-  final int price;
-  final int categoryId;
-  final String additionalPhone;
+  final String price;
+  final int? categoryId;
+  final String? additionalPhone;
+  final List media;
 
   const AdvertModel({
+    required this.id,
     required this.title,
     required this.description,
     required this.price,
-    required this.categoryId,
-    required this.additionalPhone
+    this.categoryId,
+    this.additionalPhone,
+    required this.media
   });
 
-  static AdvertModel fromJson(data) {
+  static AdvertModel fromJsonMini(data) {
+    print(data);
     return AdvertModel(
+        id: data['id'],
         title: data['title'],
         description: data['description'],
         price: data['price'],
-        categoryId: data['category_id'],
-        additionalPhone: data['additional_phone']
+        media: data['media'],
     );
   }
 
-  static List<AdvertModel> listFromJson(List data) {
+  static List<AdvertModel> listFromJsonMini(List data) {
+    print(data);
     return data.map<AdvertModel>((advert) {
-      return AdvertModel.fromJson(advert);
+      return AdvertModel.fromJsonMini(advert);
     }).toList();
   }
 
   @override
-  List<Object?> get props => [title, description, price, categoryId, additionalPhone];
+  List<Object?> get props => [id, title, description, price, categoryId, additionalPhone, media];
 }

@@ -10,7 +10,11 @@ import 'package:megaladon/logic/form/auth/auth_form_cubit.dart';
 import 'package:megaladon/logic/form/register/register_user/register_user_form_cubit.dart';
 import 'package:megaladon/logic/form/verify/verify_form_cubit.dart';
 import 'package:megaladon/logic/register/register_user/register_user_bloc.dart';
+import 'package:megaladon/logic/screens/advert/details/advert_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/advert/my/advert_screen_my_cubit.dart';
+import 'package:megaladon/logic/screens/orders/details/order_screen_details_cubit.dart';
+import 'package:megaladon/logic/screens/orders/main/order_screen_main_cubit.dart';
+import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'core/get.dart';
@@ -68,7 +72,19 @@ class App extends StatelessWidget {
         ),
         BlocProvider<AdvertScreenMyCubit>(
             create: (context) => AdvertScreenMyCubit()
-        )
+        ),
+        BlocProvider<OrderScreenMainCubit>(
+            create: (context) => OrderScreenMainCubit()
+        ),
+        BlocProvider<OrderScreenMyCubit>(
+            create: (context) => OrderScreenMyCubit()
+        ),
+        BlocProvider<OrderScreenDetailsCubit>(
+            create: (context) => OrderScreenDetailsCubit()
+        ),
+        BlocProvider<AdvertScreenDetailsCubit>(
+            create: (context) => AdvertScreenDetailsCubit()
+        ),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,

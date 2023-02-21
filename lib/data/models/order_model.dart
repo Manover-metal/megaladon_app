@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class OrderModel extends Equatable {
+  final int id;
   final String title;
   final String description;
   final int price;
@@ -8,6 +9,7 @@ class OrderModel extends Equatable {
   final String additionalPhone;
 
   const OrderModel({
+    required this.id,
     required this.title,
     required this.description,
     required this.price,
@@ -17,6 +19,7 @@ class OrderModel extends Equatable {
 
   static OrderModel fromJson(data) {
     return OrderModel(
+        id: data['id'],
         title: data['title'],
         description: data['description'],
         price: data['price'],
