@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/core/get.dart';
 import 'package:megaladon/presentation/routing/router.dart';
+import 'package:megaladon/presentation/widgets/bottom_sheet/add_anything_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/drawer/drawer_app.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -11,15 +12,17 @@ class SplashScreen extends StatelessWidget {
     context.router.navigate(page);
   };
 
-  Widget tabTile(BuildContext context, bool isActive) {
-    return Icon(Icons.add_shopping_cart_outlined,
-      color: isActive? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onBackground,
-
-    );
-  }
-
   _handleClick(TabsRouter tabsRouter, int index) => () {
     tabsRouter.setActiveIndex(index);
+  };
+
+  _add(BuildContext context) => () async {
+    bool? result = await showModalBottomSheet(
+        useRootNavigator: true,
+        context: context,
+        elevation: 100,
+        builder: (_) => AddAnythingBottomSheet()
+    );
   };
 
   @override
@@ -70,7 +73,7 @@ class SplashScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 FloatingActionButton(
-                  onPressed: () {},
+                  onPressed: _add(context),
                   child: Icon(Icons.add, color: Theme.of(context).colorScheme.background, size: 40,),
                   backgroundColor: Theme.of(context).colorScheme.primary,
                 ),
