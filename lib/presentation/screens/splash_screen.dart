@@ -48,23 +48,26 @@ class SplashScreen extends StatelessWidget {
                 children: [
                   Tab(icon: Icons.add_shopping_cart_outlined,
                     isActive: 0 == tabsRouter.activeIndex,
-                    callback: _handleClick(tabsRouter, 0),
+                    click: _handleClick(tabsRouter, 0),
+                    doubleClick: _doubleTap(context, InitialRouter(children: [OrderRouter()])),
                   ),
                   Tab(icon: Icons.store,
                     isActive: 1 == tabsRouter.activeIndex,
-                    callback: _handleClick(tabsRouter, 1),
+                    click: _handleClick(tabsRouter, 1),
+                    doubleClick: _doubleTap(context, InitialRouter(children: [StoreRouter()])),
 
                   ),
                   SizedBox(width: 50,),
                   Tab(icon: Icons.account_balance_wallet_sharp,
                     isActive: 2 == tabsRouter.activeIndex,
-                    callback: _handleClick(tabsRouter, 2),
+                    click: _handleClick(tabsRouter, 2),
+                    doubleClick: _doubleTap(context, InitialRouter(children: [AdRouter()])),
 
                   ),
                   Tab(icon: Icons.person,
                     isActive: 3 == tabsRouter.activeIndex,
-                    callback: _handleClick(tabsRouter, 3),
-
+                    click: _handleClick(tabsRouter, 3),
+                    doubleClick: _doubleTap(context, InitialRouter(children: [ProfileRouter()])),
                   ),
                 ],
               )
@@ -82,44 +85,6 @@ class SplashScreen extends StatelessWidget {
             )
           ],
         );
-
-        return BottomNavigationBar(
-          currentIndex: tabsRouter.activeIndex,
-          onTap: tabsRouter.setActiveIndex,
-          showUnselectedLabels: true,
-          type: BottomNavigationBarType.shifting,
-          landscapeLayout: BottomNavigationBarLandscapeLayout.linear,
-          items: [
-            BottomNavigationBarItem(
-              icon: GestureDetector(
-                child: Icon(Icons.add_shopping_cart_outlined),
-                onDoubleTap: _doubleTap(context, const OrderRouter()),
-              ),
-              label: 'Заказы',
-            ),
-            BottomNavigationBarItem(
-              icon: GestureDetector(
-                child: Icon(Icons.store),
-                onDoubleTap: _doubleTap(context, const StoreRouter()),
-              ),
-              label: 'Магазины',
-            ),
-            BottomNavigationBarItem(
-              icon: GestureDetector(
-                  child: Icon(Icons.account_balance_wallet_sharp),
-                onDoubleTap: _doubleTap(context, const AdRouter()),
-              ),
-              label: 'Объявления',
-            ),
-            BottomNavigationBarItem(
-              icon: GestureDetector(
-                child: Icon(Icons.person),
-                onDoubleTap: _doubleTap(context, const ProfileRouter()),
-              ),
-              label: 'Профиль',
-            ),
-          ],
-        );
       },
     );
   }
@@ -128,9 +93,10 @@ class SplashScreen extends StatelessWidget {
 class Tab extends StatelessWidget {
   final IconData icon;
   final bool isActive;
-  final VoidCallback callback;
+  final VoidCallback click;
+  final VoidCallback doubleClick;
 
-  const Tab({super.key, required this.icon, required this.isActive, required this.callback});
+  const Tab({super.key, required this.icon, required this.isActive, required this.click, required this.doubleClick});
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +105,8 @@ class Tab extends StatelessWidget {
         color: isActive? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSecondary,
         size:  isActive? 30 : 25,
       ),
-      onTap: callback,
+      onTap: click,
+      onDoubleTap: doubleClick,
     );
   }
 }

@@ -15,6 +15,8 @@ import 'package:megaladon/logic/screens/advert/my/advert_screen_my_cubit.dart';
 import 'package:megaladon/logic/screens/orders/details/order_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/orders/main/order_screen_main_cubit.dart';
 import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
+import 'package:megaladon/logic/screens/store/details/store_screen_details_cubit.dart';
+import 'package:megaladon/logic/screens/store/main/store_screen_main_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'core/get.dart';
@@ -84,6 +86,12 @@ class App extends StatelessWidget {
         ),
         BlocProvider<AdvertScreenDetailsCubit>(
             create: (context) => AdvertScreenDetailsCubit()
+        ),
+        BlocProvider<StoreScreenMainCubit>(
+            create: (context) => StoreScreenMainCubit()
+        ),
+        BlocProvider<StoreScreenDetailsCubit>(
+            create: (context) => StoreScreenDetailsCubit()
         ),
       ],
       child: MaterialApp.router(
