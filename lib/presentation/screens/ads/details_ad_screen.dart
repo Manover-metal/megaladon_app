@@ -11,6 +11,7 @@ import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 import 'package:megaladon/presentation/widgets/tiles/user_tile.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailsAdScreen extends StatefulWidget {
 
@@ -30,72 +31,93 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
     super.initState();
   }
 
+  _call(String phone) => ()  {
+    final Uri uri = Uri(
+      scheme: 'tel',
+      path: phone,
+    );
+    launchUrl(uri);
+  };
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            child: BlocBuilder<AdvertScreenDetailsCubit, AdvertScreenDetailsState>(
-              builder: (context, state) {
-                if(state is AdvertScreenDetailsSuccess) {
-                  return Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Column(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Column(
+                      children: [
+                        HeaderAppBar(isBack: true,),
+                        TitleApp('Объявление'),
+                        SizedBox(height: 20,),
+                      ],
+                    ),
+                  ),
+                  BlocBuilder<AdvertScreenDetailsCubit, AdvertScreenDetailsState>(
+                    builder: (context, state) {
+                      if(state is AdvertScreenDetailsSuccess) {
+                        return Column(
                           children: [
-                            HeaderAppBar(isBack: true,),
-                            TitleApp('Объявление'),
-                            SizedBox(height: 20,),
-                            Text(
-                                'Изготовить скользящие опоры DN-5000 под стойки опорных башней очень большой заголовок задания'),
-                            Text(
-                                'Учитывая ключевые сценарии поведения, синтетическое тестирование требует от нас анализа системы массового участия. Есть над чем задуматься: предприниматели в сети интернет освещают чрезвычайно интересные особенности картины в целом, однако.'),
-                            SizedBox(height: 20,),
-                            SubTitleApp('Прикреплённые файлы'),
-                            SizedBox(height: 10,),
-                            FileDownloadList(),
-                          ],
-                        ),
-                      ),
-                      Divider(thickness: 1),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Цена: до 25 000 ₸'),
-                            SizedBox(height: 10,),
-                            UserTile(),
-                            SizedBox(height: 20),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20.0),
+                              child: Column(
+                                children: [
+                                  Text(state.advert.title),
+                                  Text(state.advert.description),
+                                  SizedBox(height: 20,),
+                                  if(state.advert.media.isEmpty) SubTitleApp('Нет прикреплённых файлов')
+                                  else ...[
+                                    SubTitleApp('Прикреплённые файлы'),
+                                    SizedBox(height: 10,),
+                                    FileDownloadList(),
+                                  ],
 
-                            ...[
-                              ElevatedButtonApp(
-                                text: 'Позвонить',
+                                ],
                               ),
-                              OutlinedButtonApp(text: 'Задать вопрос в чате'),
-                            ],
-                            ...[
-                              ElevatedButtonApp(
-                                text: 'Изменить',
+                            ),
+                            Divider(thickness: 1),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Цена: до ${state.advert.price} ₸'),
+                                  SizedBox(height: 10,),
+                                  UserTile(user: state.advert.user!),
+                                  SizedBox(height: 20),
+                                  ...[
+                                    ElevatedButtonApp(
+                                      text: 'Позвонить',
+                                      onPressed: _call(state.advert.additionalPhone!),
+                                    ),
+                                    OutlinedButtonApp(
+                                        text: 'Задать вопрос в чате'),
+                                  ],
+                                  ...[
+                                    ElevatedButtonApp(
+                                      text: 'Изменить',
+                                    ),
+                                  ]
+                                ],
                               ),
-                            ]
+                            )
                           ],
-                        ),
-                      )
-
-
-                    ],
-                  );
-                }else if(state is AdvertScreenDetailsLoader) {
-                  return Loader();
-                } else if(state is AdvertScreenDetailsError) {
-                  return Text('error');
-                }
-                return Container();
-              },
-            ),
+                        );
+                      } else if(state is AdvertScreenDetailsLoader) {
+                        return Loader();
+                      } else if(state is AdvertScreenDetailsError) {
+                        return Text('error');
+                      }
+                      return Container();
+                    },
+                  )
+                ],
+              )
           ),
         ),
       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/repositories/advert_repository.dart';
 import 'package:megaladon/logic/screens/advert/my/advert_screen_my_cubit.dart';
+import 'package:megaladon/presentation/widgets/bottom_sheet/filter_my_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/card/ad_card.dart';
 import 'package:megaladon/presentation/widgets/card/store_card.dart';
 import 'package:megaladon/presentation/widgets/list/status_order_list.dart';
@@ -24,6 +25,18 @@ class _MyAdsScreenState extends State<MyAdsScreen> {
 
   Future _onRefresh() async {
     context.read<AdvertScreenMyCubit>().fetch();
+  }
+
+  _showFilter() async {
+    bool? result = await showModalBottomSheet(
+        useRootNavigator: true,
+        context: context,
+        elevation: 100,
+        builder: (_) => FilterMyAdBottomSheet()
+    );
+    if(result != null) {
+      context.read<AdvertScreenMyCubit>().fetch();
+    }
   }
 
 
@@ -50,7 +63,16 @@ class _MyAdsScreenState extends State<MyAdsScreen> {
                       ],
                     ),
                   ),
-                  StatusList(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: InkWell(
+                        child: Icon(Icons.filter_alt),
+                        onTap: _showFilter,
+                      ),
+                    ),
+                  ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: BlocBuilder<AdvertScreenMyCubit, AdvertScreenMyState>(

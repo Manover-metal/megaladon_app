@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/logic/screens/advert/main/advert_screen_main_cubit.dart';
+import 'package:megaladon/presentation/widgets/bottom_sheet/filter_ad_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/card/ad_card.dart';
 import 'package:megaladon/presentation/widgets/list/status_order_list.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
@@ -22,6 +23,18 @@ class _TradingAdsScreenState extends State<TradingAdsScreen> {
 
   Future _onRefresh() async {
     await context.read<AdvertScreenMainCubit>().fetch();
+  }
+
+  _showFilter() async {
+    bool? result = await showModalBottomSheet(
+        useRootNavigator: true,
+        context: context,
+        elevation: 100,
+        builder: (_) => FilterAdBottomSheet()
+    );
+    if(result != null) {
+      context.read<AdvertScreenMainCubit>().fetch();
+    }
   }
 
   @override
@@ -48,7 +61,16 @@ class _TradingAdsScreenState extends State<TradingAdsScreen> {
                       ],
                     ),
                   ),
-                  StatusList(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: InkWell(
+                        child: Icon(Icons.filter_alt),
+                        onTap: _showFilter,
+                      ),
+                    ),
+                  ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: BlocBuilder<AdvertScreenMainCubit, AdvertScreenMainState>(

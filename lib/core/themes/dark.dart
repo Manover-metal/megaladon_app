@@ -11,7 +11,7 @@ enum ColorSchemeApp {
   bodyText(Colors.white),
   hiddenContainer(Color.fromRGBO(199, 196, 194, 1.0)),
   hidden(Color.fromRGBO(199, 196, 194, 1.0)),
-  onHidden(Color.fromRGBO(251, 191, 36, 1)),
+  onHidden(Color.fromRGBO(222, 167, 27, 1.0)),
   error(Color.fromRGBO(241, 92, 92, 1.0)),
   onError(Colors.white),
   success(Color.fromRGBO(5, 150, 105, 1)),

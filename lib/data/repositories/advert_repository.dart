@@ -13,7 +13,7 @@ class AdvertRepository {
 
   Future info(int id) => ApiService.I
       .get('/adverts/$id',)
-      .then((value) => value.data);
+      .then((value) => AdvertModel.fromJsonAll(value.data['advert']));
 
   Future create() => ApiService.I
       .post('/adverts',)
@@ -30,7 +30,7 @@ class AdvertRepository {
 
 class AdvertIndexRequestParams {
   int startRow = 0;
-  int rowsPerPage = 15;
+  int rowsPerPage = 30;
   int? priceMin;
   int? priceMax;
   AdvertIndexPeriod last = AdvertIndexPeriod.last3day;
@@ -53,9 +53,9 @@ enum AdvertIndexPeriod {
   @override
   String toString() {
     switch(this) {
-      case AdvertIndexPeriod.last3day: return 'За 3 дня';
-      case AdvertIndexPeriod.last7day: return 'За неделю';
-      case AdvertIndexPeriod.last30day: return 'За месяц';
+      case AdvertIndexPeriod.last3day: return '3 дня';
+      case AdvertIndexPeriod.last7day: return 'неделю';
+      case AdvertIndexPeriod.last30day: return 'месяц';
     }
   }
 }

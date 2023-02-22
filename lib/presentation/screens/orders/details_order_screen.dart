@@ -63,7 +63,7 @@ class DetailsOrderScreen extends StatelessWidget {
                       Text('Допустимый: до 75 000 ₸'),
                       SizedBox(height: 20,),
 
-                      UserTile(),
+                      // UserTile(),
                       SizedBox(height: 20,),
 
                       ...[

@@ -11,6 +11,17 @@ class SplashScreen extends StatelessWidget {
     context.router.navigate(page);
   };
 
+  Widget tabTile(BuildContext context, bool isActive) {
+    return Icon(Icons.add_shopping_cart_outlined,
+      color: isActive? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onBackground,
+
+    );
+  }
+
+  _handleClick(TabsRouter tabsRouter, int index) => () {
+    tabsRouter.setActiveIndex(index);
+  };
+
   @override
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
@@ -24,12 +35,57 @@ class SplashScreen extends StatelessWidget {
         ProfileRouter(),
       ],
       bottomNavigationBuilder: (_, tabsRouter) {
-        return BottomNavigationBar(
+        return Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            Container(
+              height: 75,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Tab(icon: Icons.add_shopping_cart_outlined,
+                    isActive: 0 == tabsRouter.activeIndex,
+                    callback: _handleClick(tabsRouter, 0),
+                  ),
+                  Tab(icon: Icons.store,
+                    isActive: 1 == tabsRouter.activeIndex,
+                    callback: _handleClick(tabsRouter, 1),
 
+                  ),
+                  SizedBox(width: 50,),
+                  Tab(icon: Icons.account_balance_wallet_sharp,
+                    isActive: 2 == tabsRouter.activeIndex,
+                    callback: _handleClick(tabsRouter, 2),
+
+                  ),
+                  Tab(icon: Icons.person,
+                    isActive: 3 == tabsRouter.activeIndex,
+                    callback: _handleClick(tabsRouter, 3),
+
+                  ),
+                ],
+              )
+            ),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                FloatingActionButton(
+                  onPressed: () {},
+                  child: Icon(Icons.add, color: Theme.of(context).colorScheme.background, size: 40,),
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                ),
+                SizedBox(height: 15,)
+              ],
+            )
+          ],
+        );
+
+        return BottomNavigationBar(
           currentIndex: tabsRouter.activeIndex,
           onTap: tabsRouter.setActiveIndex,
           showUnselectedLabels: true,
-          type: BottomNavigationBarType.fixed,
+          type: BottomNavigationBarType.shifting,
+          landscapeLayout: BottomNavigationBarLandscapeLayout.linear,
           items: [
             BottomNavigationBarItem(
               icon: GestureDetector(
@@ -62,6 +118,25 @@ class SplashScreen extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+}
+
+class Tab extends StatelessWidget {
+  final IconData icon;
+  final bool isActive;
+  final VoidCallback callback;
+
+  const Tab({super.key, required this.icon, required this.isActive, required this.callback});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      child: Icon(icon,
+        color: isActive? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSecondary,
+        size:  isActive? 30 : 25,
+      ),
+      onTap: callback,
     );
   }
 }

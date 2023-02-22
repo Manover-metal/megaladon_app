@@ -4,6 +4,7 @@ abstract class AdvertScreenMainState extends Equatable {
   final AdvertIndexRequestParams params;
 
   AdvertScreenMainState({required this.params});
+
 }
 
 class AdvertScreenMainInitial extends AdvertScreenMainState {
