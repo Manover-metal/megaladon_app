@@ -27,6 +27,7 @@ class _FilterAdBottomSheetState extends State<FilterAdBottomSheet> {
     params.priceMin = from;
     params.priceMax = before;
     params.last = _indexPeriodPickerController.value;
+    params.startRow = 0;
     context.read<AdvertScreenMainCubit>().changeParams(params);
     context.router.pop(true);
   }
@@ -44,6 +45,7 @@ class _FilterAdBottomSheetState extends State<FilterAdBottomSheet> {
   void dispose() {
     _fromController.dispose();
     _beforeController.dispose();
+    _indexPeriodPickerController.dispose();
     super.dispose();
   }
 

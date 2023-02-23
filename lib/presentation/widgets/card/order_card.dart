@@ -1,12 +1,17 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:megaladon/data/models/order_model.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 
 class OrderCard extends StatelessWidget {
 
+  final OrderModel order;
+
+  const OrderCard({super.key, required this.order});
+
   _onTap(BuildContext context) => () {
-    context.router.push(const DetailsOrderRoute());
+    context.router.push(DetailsOrderRoute(orderId: order.id));
   };
 
   @override
@@ -26,8 +31,8 @@ class OrderCard extends StatelessWidget {
                 padding: EdgeInsets.all(10),
                 child: Column(
                   children: [
-                    Text('Изготовить скользящие опоры DN-5000 под стойки опорных башней очень большой за...'),
-                    Text('Но убеждённость некоторых оппонентов позволяет оценить значение приоритизации разума над эмоциями. Не следует, однако, забывать, что.'),
+                    Text(order.title),
+                    Text(order.description),
                     SizedBox(
                       height: 30,
                     ),
@@ -35,7 +40,7 @@ class OrderCard extends StatelessWidget {
                       children: [
                         Icon(Icons.people),
                         SizedBox(width: 10,),
-                        Text('Предложений: 10')
+                        Text('Предложений: ${order.countOffers}')
                       ],
                     ),
                     SizedBox(height: 10,),
@@ -54,7 +59,7 @@ class OrderCard extends StatelessWidget {
                     Expanded(
                       child: Container(
                           padding: EdgeInsets.symmetric(vertical: 20),
-                          child: Text('25.01.2005', textAlign: TextAlign.center,)
+                          child: Text(order.createdAt, textAlign: TextAlign.center,)
                       )
                     ),
                     Container(
@@ -64,7 +69,7 @@ class OrderCard extends StatelessWidget {
                     Expanded(
                         child: Container(
                             padding: EdgeInsets.symmetric(vertical: 20),
-                            child: Text('В работе', textAlign: TextAlign.center,)
+                            child: Text(order.status, textAlign: TextAlign.center,)
                         )
                     )
                   ],

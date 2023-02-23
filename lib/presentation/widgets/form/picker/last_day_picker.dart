@@ -2,14 +2,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/Picker.dart';
+import 'package:megaladon/data/models/request/index_period_enum.dart';
 import 'package:megaladon/data/repositories/advert_repository.dart';
 
 Future<List<int>?> showIndexPeriodPicker(BuildContext context) async {
   return await Picker(
     backgroundColor: Theme.of(context).colorScheme.background,
-    adapter: PickerDataAdapter<AdvertIndexPeriod>(
-        data: AdvertIndexPeriod.values.map((e) {
-          return PickerItem<AdvertIndexPeriod>(
+    adapter: PickerDataAdapter<IndexPeriod>(
+        data: IndexPeriod.values.map((e) {
+          return PickerItem<IndexPeriod>(
               text: Text(e.toString()),
               value: e
           );
@@ -23,14 +24,14 @@ Future<List<int>?> showIndexPeriodPicker(BuildContext context) async {
 }
 
 
-class IndexPeriodPickerController extends ValueNotifier<AdvertIndexPeriod> {
+class IndexPeriodPickerController extends ValueNotifier<IndexPeriod> {
 
 
-  IndexPeriodPickerController(AdvertIndexPeriod period) : super(period);
+  IndexPeriodPickerController(IndexPeriod period) : super(period);
 
 
 
-  void _changeIndexPeriod(AdvertIndexPeriod period) {
+  void _changeIndexPeriod(IndexPeriod period) {
     value = period;
     notifyListeners();
   }
@@ -53,7 +54,7 @@ class _IndexPeriodPickerState extends State<IndexPeriodPicker> {
     List<int>? result = await showIndexPeriodPicker(context);
 
     if(result != null) {
-      AdvertIndexPeriod period = AdvertIndexPeriod.values[result[0]];
+      IndexPeriod period = IndexPeriod.values[result[0]];
       widget.controller._changeIndexPeriod(period);
       _textController.value = TextEditingValue(text: period.toString());
     }
@@ -78,7 +79,7 @@ class _IndexPeriodPickerState extends State<IndexPeriodPicker> {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
       child: ValueListenableBuilder(
-        builder: (BuildContext context, AdvertIndexPeriod period, Widget? child) {
+        builder: (BuildContext context, IndexPeriod period, Widget? child) {
           return TextField(
             controller: _textController,
             onTap: _handleClick(context),

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:megaladon/core/dio/index.dart';
 import 'package:megaladon/data/models/advert_model.dart';
+import 'package:megaladon/data/models/request/index_period_enum.dart';
 
 class AdvertRepository {
   Future index(AdvertIndexRequestParams params) => ApiService.I
@@ -33,7 +34,7 @@ class AdvertIndexRequestParams {
   int rowsPerPage = 30;
   int? priceMin;
   int? priceMax;
-  AdvertIndexPeriod last = AdvertIndexPeriod.last3day;
+  IndexPeriod last = IndexPeriod.last3day;
 
   toData() {
     return {
@@ -43,19 +44,5 @@ class AdvertIndexRequestParams {
       'price_min': priceMin,
       'price_max': priceMax
     };
-  }
-}
-enum AdvertIndexPeriod {
-  last3day,
-  last7day,
-  last30day;
-
-  @override
-  String toString() {
-    switch(this) {
-      case AdvertIndexPeriod.last3day: return '3 дня';
-      case AdvertIndexPeriod.last7day: return 'неделю';
-      case AdvertIndexPeriod.last30day: return 'месяц';
-    }
   }
 }

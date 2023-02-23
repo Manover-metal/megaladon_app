@@ -1,0 +1,93 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:megaladon/data/repositories/order_repository.dart';
+import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
+import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
+import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
+import 'package:megaladon/presentation/widgets/form/picker/dictionary/order_category_picker.dart';
+import 'package:megaladon/presentation/widgets/form/picker/last_day_picker.dart';
+import 'package:megaladon/presentation/widgets/form/text_number_field.dart';
+import 'package:megaladon/presentation/widgets/text/title.dart';
+
+class FilterMyOrderBottomSheet extends StatefulWidget {
+  @override
+  State<FilterMyOrderBottomSheet> createState() => _FilterMyOrderBottomSheetState();
+}
+
+class _FilterMyOrderBottomSheetState extends State<FilterMyOrderBottomSheet> {
+  late IndexPeriodPickerController _indexPeriodPickerController;
+  late CityPickerController _cityPickerController;
+  late OrderCategoryPickerController _orderCategoryPickerController;
+
+
+  _back() {
+    OrderIndexRequestParams params = context.read<OrderScreenMyCubit>().state.params;
+    params.startRow = 0;
+    params.last = _indexPeriodPickerController.value;
+    if(_cityPickerController.value.id != -1) {
+      params.city = _cityPickerController.value;
+    }
+    if(_orderCategoryPickerController.value.id != -1) {
+      params.category = _orderCategoryPickerController.value;
+    }
+    context.read<OrderScreenMyCubit>().fetch(params: params);
+    context.router.pop(true);
+  }
+
+  @override
+  void initState() {
+    OrderScreenMyState state = context.read<OrderScreenMyCubit>().state;
+    _indexPeriodPickerController = IndexPeriodPickerController(state.params.last);
+    _cityPickerController = CityPickerController(state.params.city);
+    _orderCategoryPickerController = OrderCategoryPickerController(state.params.category);
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _indexPeriodPickerController.dispose();
+    _cityPickerController.dispose();
+    _orderCategoryPickerController.dispose();
+
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Container(
+        color: Theme.of(context).colorScheme.background,
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        child: Column(
+          children: [
+            TitleApp('Фильтр'),
+            Divider(thickness: 1,height: 20,),
+            Row(
+              children: [
+                Expanded(
+                  child: CityPicker(label: 'Город', controller: _cityPickerController,),
+                )
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: OrderCategoryPicker(label: 'Категория', controller: _orderCategoryPickerController,),
+                )
+              ],
+            ),
+            SizedBox(height: 30,),
+            ElevatedButtonApp(
+                text: 'Применить',
+                onPressed: _back
+            ),
+            SizedBox(height: 30,),
+          ],
+        ),
+      ),
+    );
+  }
+}

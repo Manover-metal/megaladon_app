@@ -112,9 +112,13 @@ class _$AppRouter extends RootStackRouter {
       );
     },
     DetailsOrderRoute.name: (routeData) {
+      final args = routeData.argsAs<DetailsOrderRouteArgs>();
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: DetailsOrderScreen(),
+        child: DetailsOrderScreen(
+          key: args.key,
+          orderId: args.orderId,
+        ),
       );
     },
     ListExecutorsRoute.name: (routeData) {
@@ -142,9 +146,13 @@ class _$AppRouter extends RootStackRouter {
       );
     },
     DetailsStoreRoute.name: (routeData) {
+      final args = routeData.argsAs<DetailsStoreRouteArgs>();
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: DetailsStoreScreen(),
+        child: DetailsStoreScreen(
+          key: args.key,
+          storeId: args.storeId,
+        ),
       );
     },
     TradingAdsRoute.name: (routeData) {
@@ -524,14 +532,36 @@ class ListMyOrdersRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [DetailsOrderScreen]
-class DetailsOrderRoute extends PageRouteInfo<void> {
-  const DetailsOrderRoute()
-      : super(
+class DetailsOrderRoute extends PageRouteInfo<DetailsOrderRouteArgs> {
+  DetailsOrderRoute({
+    Key? key,
+    required int orderId,
+  }) : super(
           DetailsOrderRoute.name,
           path: 'details-order-screen',
+          args: DetailsOrderRouteArgs(
+            key: key,
+            orderId: orderId,
+          ),
         );
 
   static const String name = 'DetailsOrderRoute';
+}
+
+class DetailsOrderRouteArgs {
+  const DetailsOrderRouteArgs({
+    this.key,
+    required this.orderId,
+  });
+
+  final Key? key;
+
+  final int orderId;
+
+  @override
+  String toString() {
+    return 'DetailsOrderRouteArgs{key: $key, orderId: $orderId}';
+  }
 }
 
 /// generated route for
@@ -584,14 +614,36 @@ class ListStoresRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [DetailsStoreScreen]
-class DetailsStoreRoute extends PageRouteInfo<void> {
-  const DetailsStoreRoute()
-      : super(
+class DetailsStoreRoute extends PageRouteInfo<DetailsStoreRouteArgs> {
+  DetailsStoreRoute({
+    Key? key,
+    required int storeId,
+  }) : super(
           DetailsStoreRoute.name,
           path: 'details-store-screen',
+          args: DetailsStoreRouteArgs(
+            key: key,
+            storeId: storeId,
+          ),
         );
 
   static const String name = 'DetailsStoreRoute';
+}
+
+class DetailsStoreRouteArgs {
+  const DetailsStoreRouteArgs({
+    this.key,
+    required this.storeId,
+  });
+
+  final Key? key;
+
+  final int storeId;
+
+  @override
+  String toString() {
+    return 'DetailsStoreRouteArgs{key: $key, storeId: $storeId}';
+  }
 }
 
 /// generated route for

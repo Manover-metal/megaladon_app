@@ -3,8 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/repositories/advert_repository.dart';
-import 'package:megaladon/logic/screens/advert/details/advert_screen_details_cubit.dart';
-import 'package:megaladon/logic/screens/advert/main/advert_screen_main_cubit.dart';
 import 'package:megaladon/logic/screens/advert/my/advert_screen_my_cubit.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/form/picker/last_day_picker.dart';
@@ -19,6 +17,8 @@ class FilterMyAdBottomSheet extends StatefulWidget {
 class _FilterMyAdBottomSheetState extends State<FilterMyAdBottomSheet> {
   late TextEditingController _fromController;
   late TextEditingController _beforeController;
+  late IndexPeriodPickerController _indexPeriodPickerController;
+
 
   _back() {
     AdvertIndexRequestParams params = context.read<AdvertScreenMyCubit>().state.params;
@@ -27,6 +27,7 @@ class _FilterMyAdBottomSheetState extends State<FilterMyAdBottomSheet> {
     params.priceMin = from;
     params.priceMax = before;
     params.startRow = 0;
+    params.last = _indexPeriodPickerController.value;
     context.read<AdvertScreenMyCubit>().fetch(params: params);
     context.router.pop(true);
   }
@@ -36,6 +37,7 @@ class _FilterMyAdBottomSheetState extends State<FilterMyAdBottomSheet> {
     AdvertScreenMyState state = context.read<AdvertScreenMyCubit>().state;
     _fromController = TextEditingController(text: state.params.priceMin != null ? state.params.priceMin.toString() : '');
     _beforeController = TextEditingController(text: state.params.priceMax != null ? state.params.priceMax.toString() : '');
+    _indexPeriodPickerController = IndexPeriodPickerController(state.params.last);
     super.initState();
   }
 
@@ -43,6 +45,7 @@ class _FilterMyAdBottomSheetState extends State<FilterMyAdBottomSheet> {
   void dispose() {
     _fromController.dispose();
     _beforeController.dispose();
+    _indexPeriodPickerController.dispose();
     super.dispose();
   }
 
@@ -80,6 +83,13 @@ class _FilterMyAdBottomSheetState extends State<FilterMyAdBottomSheet> {
                   Expanded(child: TextNumberFieldApp(controller: _beforeController)),
                 ],
               ),
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: IndexPeriodPicker(label: 'За последние период', controller: _indexPeriodPickerController,),
+                )
+              ],
             ),
             SizedBox(height: 30,),
             ElevatedButtonApp(

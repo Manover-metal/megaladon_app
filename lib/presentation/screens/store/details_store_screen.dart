@@ -9,7 +9,24 @@ import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 import 'package:megaladon/presentation/widgets/tiles/data_tile.dart';
 
-class DetailsStoreScreen extends StatelessWidget {
+class DetailsStoreScreen extends StatefulWidget {
+
+  final int storeId;
+
+  const DetailsStoreScreen({super.key, required this.storeId});
+
+  @override
+  State<DetailsStoreScreen> createState() => _DetailsStoreScreenState();
+}
+
+class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
+
+  @override
+  void initState() {
+    context.read<StoreScreenDetailsCubit>().fetch(id: widget.storeId);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,24 +42,32 @@ class DetailsStoreScreen extends StatelessWidget {
                     if(state is StoreScreenDetailsSuccess) {
                       return Column(
                         children: [
-                          TitleApp('TOO "Стальной Алхимик"'),
+                          TitleApp(state.store.name!),
                           SizedBox(height: 20,),
-
                           CircleAvatar(
                             radius: MediaQuery.of(context).size.width / 6,
                             backgroundColor:  Colors.grey.shade300,
                           ),
-                          DataTile(title: 'Адрес:', data: 'Республика Казахстан, г. Караганда, ул. Заводская 17/2'),
-                          DataTile(title: 'Email:', data: 'mailto@mail.ru'),
-                          DataTile(title: 'Телефон:', data: '+7 (123) 456-78-91'),
-                          DataTile(title: 'Сайт:', data: 'steel-astana.kz'),
-                          DataTile(title: 'Описание:', data: 'Как принято считать, непосредственные участники технического прогресса объединены в целые кластеры'),
+                          DataTile(title: 'Адрес:', data: state.store.fullAddress),
+                          // Column(
+                          //   children: state.store.contacts.m,
+                          // )
+                          // DataTile(title: 'Email:', data: 'mailto@mail.ru'),
+                          // DataTile(title: 'Телефон:', data: '+7 (123) 456-78-91'),
+                          // DataTile(title: 'Сайт:', data: 'steel-astana.kz'),
+                          // DataTile(title: 'Описание:', data: 'Как принято считать, непосредственные участники технического прогресса объединены в целые кластеры'),
                           SizedBox(height: 20,),
 
-                          SubTitleApp('Прайс Лист'),
-                          SizedBox(height: 10,),
+                          if(state.store.prices!.isEmpty) SubTitleApp('Нет прайс листа')
+                          else ...[
+                            SubTitleApp('Прайс лист'),
+                            SizedBox(height: 10,),
+                            FileDownloadList(),
+                            SizedBox(height: 10,),
 
-                          FileDownloadList(),
+                          ],
+
+
                           ElevatedButtonApp(text: 'Позвонить'),
                           OutlinedButtonApp(text: 'Написать'),
                         ],
@@ -63,5 +88,4 @@ class DetailsStoreScreen extends StatelessWidget {
       ),
     );
   }
-
 }

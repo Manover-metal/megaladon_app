@@ -1,19 +1,22 @@
 import 'package:dio/dio.dart';
 import 'package:megaladon/core/dio/index.dart';
+import 'package:megaladon/data/models/dictionary/city_model.dart';
+import 'package:megaladon/data/models/dictionary/order_category_model.dart';
 import 'package:megaladon/data/models/order_model.dart';
+import 'package:megaladon/data/models/request/index_period_enum.dart';
 
 class OrderRepository {
   Future index(OrderIndexRequestParams params) => ApiService.I
       .get('/order', queryParameters: params.toData())
-      .then((value) => OrderModel.listFromJson(value.data['list']));
+      .then((value) => OrderModel.listFromJsonMini(value.data['list']));
 
   Future indexMy(OrderIndexRequestParams params) => ApiService.I
       .get('/order/my', queryParameters: params.toData())
-      .then((value) => OrderModel.listFromJson(value.data['list']));
+      .then((value) => OrderModel.listFromJsonMini(value.data['list']));
 
   Future info(int id) => ApiService.I
       .get('/order/$id',)
-      .then((value) => value.data);
+      .then((value) => OrderModel.fromJsonFull(value.data['order']));
 
   Future create() => ApiService.I
       .post('/order',)
@@ -32,38 +35,23 @@ class OrderIndexRequestParams {
   int startRow = 0;
   int rowsPerPage = 15;
   bool desc = false;
-  int? priceMin;
-  int? priceMax;
-  OrderIndexPeriod last = OrderIndexPeriod.last3day;
+  CityModel? city;
+  OrderCategoryModel? category;
+  IndexPeriod last = IndexPeriod.last3day;
   OrderIndexSort sort = OrderIndexSort.id;
 
   toData() {
-    print(last.name);
     final data = {
       'startRow': startRow,
       'rowsPerPage': rowsPerPage,
       'last': last.name,
-      'price_min': priceMin,
-      'price_max': priceMax,
       'desc': desc? 1: 0,
-      'sort': sort.name
+      'sort': sort.name,
+      'city_id': city?.id,
+      'category_id': category?.id
     };
     print(data);
     return data;
-  }
-}
-enum OrderIndexPeriod {
-  last3day,
-  last7day,
-  last30day;
-
-  @override
-  String toString() {
-    switch(this) {
-      case OrderIndexPeriod.last3day: return 'За 3 дня';
-      case OrderIndexPeriod.last7day: return 'За неделю';
-      case OrderIndexPeriod.last30day: return 'За месяц';
-    }
   }
 }
 

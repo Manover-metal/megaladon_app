@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/repositories/order_repository.dart';
 import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
+import 'package:megaladon/presentation/widgets/bottom_sheet/filters/filter_order_my_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/card/order_card.dart';
 import 'package:megaladon/presentation/widgets/drawer/drawer_app.dart';
 import 'package:megaladon/presentation/widgets/list/status_order_list.dart';
@@ -24,6 +25,18 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
 
   Future _onRefresh() async {
     context.read<OrderScreenMyCubit>().fetch();
+  }
+
+  _showFilter() async {
+    bool? result = await showModalBottomSheet(
+        useRootNavigator: true,
+        context: context,
+        elevation: 100,
+        builder: (_) => FilterMyOrderBottomSheet()
+    );
+    if(result != null) {
+      context.read<OrderScreenMyCubit>().fetch();
+    }
   }
 
   @override
@@ -49,15 +62,24 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
                       ],
                     ),
                   ),
-                  StatusList(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: InkWell(
+                        child: Icon(Icons.filter_alt),
+                        onTap: _showFilter,
+                      ),
+                    ),
+                  ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: BlocBuilder<OrderScreenMyCubit, OrderScreenMyState>(
                       builder: (context, state) {
                         if(state is OrderScreenMySuccess) {
                           return Column(
-                            children: state.orders.map((advert) {
-                              return OrderCard();
+                            children: state.orders.map((order) {
+                              return OrderCard(order: order);
                             }).toList(),
                           );
                         }

@@ -6,6 +6,7 @@ import 'package:megaladon/core/dio/index.dart';
 import 'package:megaladon/core/isar/index.dart';
 import 'package:megaladon/core/themes/dark.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
+import 'package:megaladon/logic/dictionary/dictionary_cubit.dart';
 import 'package:megaladon/logic/form/auth/auth_form_cubit.dart';
 import 'package:megaladon/logic/form/register/register_user/register_user_form_cubit.dart';
 import 'package:megaladon/logic/form/verify/verify_form_cubit.dart';
@@ -92,6 +93,10 @@ class App extends StatelessWidget {
         ),
         BlocProvider<StoreScreenDetailsCubit>(
             create: (context) => StoreScreenDetailsCubit()
+        ),
+        BlocProvider<DictionaryCubit>(
+            lazy: false,
+            create: (context) => DictionaryCubit()..initial()
         ),
       ],
       child: MaterialApp.router(

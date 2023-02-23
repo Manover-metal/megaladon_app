@@ -1,7 +1,7 @@
 class UserModel {
   final int id;
   final String name;
-  final String phone;
+  final String? phone;
   final String? photo;
   final int countOrders;
 
