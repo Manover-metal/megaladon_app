@@ -33,7 +33,7 @@ class StoreCard extends StatelessWidget {
             children: [
               StoreTile(store: store),
               SizedBox(height: 5,),
-              if(store.type != null) DataTile(title: 'Деятельность: ', data: store.type?.name ?? ''),
+              DataTile(title: 'Деятельность: ', data: store.type?.name ?? ''),
               DataTile(title: 'Рейтинг: ', data: store.rating!),
               DataTile(title: 'Местоположение: ', data: store.fullAddress),
               SizedBox(height: 5,),

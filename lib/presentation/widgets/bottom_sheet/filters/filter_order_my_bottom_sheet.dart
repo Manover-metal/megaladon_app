@@ -32,7 +32,7 @@ class _FilterMyOrderBottomSheetState extends State<FilterMyOrderBottomSheet> {
     if(_orderCategoryPickerController.value.id != -1) {
       params.category = _orderCategoryPickerController.value;
     }
-    context.read<OrderScreenMyCubit>().fetch(params: params);
+    context.read<OrderScreenMyCubit>().changeParams(params);
     context.router.pop(true);
   }
 

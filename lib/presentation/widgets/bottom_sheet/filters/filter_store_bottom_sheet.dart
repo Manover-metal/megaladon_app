@@ -27,7 +27,7 @@ class _FilterStoreBottomSheetState extends State<FilterStoreBottomSheet> {
     if(_storeTypePickerController.value.id != -1) {
       params.type = _storeTypePickerController.value;
     }
-    context.read<StoreScreenMainCubit>().fetch(params: params);
+    context.read<StoreScreenMainCubit>().changeParams(params);
     context.router.pop(true);
   }
 

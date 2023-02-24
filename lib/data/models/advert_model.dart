@@ -50,9 +50,9 @@ class AdvertModel extends Equatable {
       description: data['description'],
       price: data['price'],
       media: data['media'],
-      category: data['category'] != null? CategoryModel.fromJson(data['category']) : null,
+      category: data['category'] != null ? CategoryModel.fromJson(data['category']) : null,
       additionalPhone: data['additional_phone'],
-      user: data['user'] != null? UserModel.fromJson(data['user']): null
+      user: data['user'] != null ? UserModel.fromJson(data['user']) : null
     );
   }
 

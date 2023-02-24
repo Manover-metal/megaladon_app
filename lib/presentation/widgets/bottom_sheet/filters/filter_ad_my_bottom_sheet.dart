@@ -28,7 +28,7 @@ class _FilterMyAdBottomSheetState extends State<FilterMyAdBottomSheet> {
     params.priceMax = before;
     params.startRow = 0;
     params.last = _indexPeriodPickerController.value;
-    context.read<AdvertScreenMyCubit>().fetch(params: params);
+    context.read<AdvertScreenMyCubit>().changeParams(params);
     context.router.pop(true);
   }
 
