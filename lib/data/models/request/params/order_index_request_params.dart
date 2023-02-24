@@ -1,7 +1,7 @@
 import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/dictionary/order_category_model.dart';
 import 'package:megaladon/data/models/request/index_period_enum.dart';
-import 'package:megaladon/data/repositories/order_repository.dart';
+import 'package:megaladon/data/models/request/order_index_sort_enum.dart';
 
 class OrderIndexRequestParams {
   int startRow = 0;

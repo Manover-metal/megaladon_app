@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/logic/screens/orders/main/order_screen_main_cubit.dart';
 import 'package:megaladon/presentation/widgets/bottom_sheet/filters/filter_order_bottom_sheet.dart';
+import 'package:megaladon/presentation/widgets/bottom_sheet/sort/sort_order_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/card/order_card.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
@@ -36,6 +37,18 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
     }
   }
 
+  _showSort() async {
+    bool? result = await showModalBottomSheet(
+        useRootNavigator: true,
+        context: context,
+        elevation: 100,
+        builder: (_) => SortOrderBottomSheet()
+    );
+    if(result != null) {
+      context.read<OrderScreenMainCubit>().fetch();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,19 +64,26 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
                         child: Column(
                           children: [
                             HeaderAppBar(isMenu: true, ),
-                            TitleApp('Мои заказы'),
+                            TitleApp('Заказы'),
                             SizedBox(height: 20,),
                           ],
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: InkWell(
-                            child: Icon(Icons.filter_alt),
-                            onTap: _showFilter,
-                          ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            InkWell(
+                              child: Icon(Icons.sort),
+                              onTap: _showSort,
+                            ),
+                            SizedBox(width: 10,),
+                            InkWell(
+                              child: Icon(Icons.filter_alt),
+                              onTap: _showFilter,
+                            ),
+                          ],
                         ),
                       ),
                     ],
