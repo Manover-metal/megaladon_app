@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:megaladon/data/models/request/params/advert_index_request_params.dart';
 import 'package:megaladon/data/repositories/advert_repository.dart';
 import 'package:megaladon/logic/screens/advert/my/advert_screen_my_cubit.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';

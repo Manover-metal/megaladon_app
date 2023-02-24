@@ -43,81 +43,91 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Column(
-                      children: [
-                        HeaderAppBar(isBack: true,),
-                        TitleApp('Объявление'),
-                        SizedBox(height: 20,),
-                      ],
-                    ),
-                  ),
-                  BlocBuilder<AdvertScreenDetailsCubit, AdvertScreenDetailsState>(
-                    builder: (context, state) {
-                      if(state is AdvertScreenDetailsSuccess) {
-                        return Column(
+        child: NestedScrollView(
+          headerSliverBuilder: (context, isBool) {
+            return [
+              SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Column(
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20.0),
-                              child: Column(
-                                children: [
-                                  Text(state.advert.title),
-                                  Text(state.advert.description),
-                                  SizedBox(height: 20,),
-                                  if(state.advert.media.isEmpty) SubTitleApp('Нет прикреплённых файлов')
-                                  else ...[
-                                    SubTitleApp('Прикреплённые файлы'),
-                                    SizedBox(height: 10,),
-                                    FileDownloadList(),
-                                  ],
-
-                                ],
-                              ),
-                            ),
-                            Divider(thickness: 1),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 20),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Цена: до ${state.advert.price} ₸'),
-                                  SizedBox(height: 10,),
-                                  UserTile(user: state.advert.user!),
-                                  SizedBox(height: 20),
-                                  ...[
-                                    ElevatedButtonApp(
-                                      text: 'Позвонить',
-                                      onPressed: _call(state.advert.additionalPhone!),
-                                    ),
-                                    OutlinedButtonApp(
-                                        text: 'Задать вопрос в чате'),
-                                  ],
-                                  ...[
-                                    ElevatedButtonApp(
-                                      text: 'Изменить',
-                                    ),
-                                  ]
-                                ],
-                              ),
-                            )
+                            HeaderAppBar(isBack: true,),
+                            TitleApp('Объявление'),
+                            SizedBox(height: 20,),
                           ],
-                        );
-                      } else if(state is AdvertScreenDetailsLoader) {
-                        return Loader();
-                      } else if(state is AdvertScreenDetailsError) {
-                        return Text('error');
-                      }
-                      return Container();
-                    },
+                        ),
+                      ),
+                    ],
                   )
-                ],
-              )
+              ),
+            ];
+          },
+          body: SingleChildScrollView(
+            child: Container(
+                constraints: BoxConstraints(
+                    minHeight: MediaQuery.of(context).size.height
+                ),
+                child: BlocBuilder<AdvertScreenDetailsCubit, AdvertScreenDetailsState>(
+                  builder: (context, state) {
+                    if(state is AdvertScreenDetailsSuccess) {
+                      return Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Column(
+                              children: [
+                                Text(state.advert.title),
+                                Text(state.advert.description),
+                                SizedBox(height: 20,),
+                                if(state.advert.media.isEmpty) SubTitleApp('Нет прикреплённых файлов')
+                                else ...[
+                                  SubTitleApp('Прикреплённые файлы'),
+                                  SizedBox(height: 10,),
+                                  FileDownloadList(),
+                                ],
+
+                              ],
+                            ),
+                          ),
+                          Divider(thickness: 1),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Цена: до ${state.advert.price} ₸'),
+                                SizedBox(height: 10,),
+                                UserTile(user: state.advert.user!),
+                                SizedBox(height: 20),
+                                ...[
+                                  ElevatedButtonApp(
+                                    text: 'Позвонить',
+                                    onPressed: _call(state.advert.additionalPhone!),
+                                  ),
+                                  OutlinedButtonApp(
+                                      text: 'Задать вопрос в чате'),
+                                ],
+                                ...[
+                                  ElevatedButtonApp(
+                                    text: 'Изменить',
+                                  ),
+                                ]
+                              ],
+                            ),
+                          )
+                        ],
+                      );
+                    } else if(state is AdvertScreenDetailsLoader) {
+                      return Loader();
+                    } else if(state is AdvertScreenDetailsError) {
+                      return Text('error');
+                    }
+                    return Container();
+                  },
+                )
+            ),
           ),
         ),
       ),

@@ -31,57 +31,67 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                HeaderAppBar(isBack: true),
-                BlocBuilder<StoreScreenDetailsCubit, StoreScreenDetailsState>(
-                  builder: (context, state) {
-                    if(state is StoreScreenDetailsSuccess) {
-                      return Column(
-                        children: [
-                          TitleApp(state.store.name!),
-                          SizedBox(height: 20,),
-                          CircleAvatar(
-                            radius: MediaQuery.of(context).size.width / 6,
-                            backgroundColor:  Colors.grey.shade300,
-                          ),
-                          DataTile(title: 'Адрес:', data: state.store.fullAddress),
-                          // Column(
-                          //   children: state.store.contacts.m,
-                          // )
-                          // DataTile(title: 'Email:', data: 'mailto@mail.ru'),
-                          // DataTile(title: 'Телефон:', data: '+7 (123) 456-78-91'),
-                          // DataTile(title: 'Сайт:', data: 'steel-astana.kz'),
-                          // DataTile(title: 'Описание:', data: 'Как принято считать, непосредственные участники технического прогресса объединены в целые кластеры'),
-                          SizedBox(height: 20,),
+        child: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool isBool) {
+            return [
+              SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: HeaderAppBar(isBack: true),
+                  )
+              ),
+            ];
+          },
+          body: SingleChildScrollView(
+            child: Container(
+              constraints: BoxConstraints(
+                  minHeight: MediaQuery.of(context).size.height
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: BlocBuilder<StoreScreenDetailsCubit, StoreScreenDetailsState>(
+                builder: (context, state) {
+                  if(state is StoreScreenDetailsSuccess) {
+                    return Column(
+                      children: [
+                        TitleApp(state.store.name!),
+                        SizedBox(height: 20,),
+                        CircleAvatar(
+                          radius: MediaQuery.of(context).size.width / 6,
+                          backgroundColor:  Colors.grey.shade300,
+                        ),
+                        DataTile(title: 'Адрес:', data: state.store.fullAddress),
+                        // Column(
+                        //   children: state.store.contacts.m,
+                        // )
+                        // DataTile(title: 'Email:', data: 'mailto@mail.ru'),
+                        // DataTile(title: 'Телефон:', data: '+7 (123) 456-78-91'),
+                        // DataTile(title: 'Сайт:', data: 'steel-astana.kz'),
+                        // DataTile(title: 'Описание:', data: 'Как принято считать, непосредственные участники технического прогресса объединены в целые кластеры'),
+                        SizedBox(height: 20,),
 
-                          if(state.store.prices!.isEmpty) SubTitleApp('Нет прайс листа')
-                          else ...[
-                            SubTitleApp('Прайс лист'),
-                            SizedBox(height: 10,),
-                            FileDownloadList(),
-                            SizedBox(height: 10,),
+                        if(state.store.prices!.isEmpty) SubTitleApp('Нет прайс листа')
+                        else ...[
+                          SubTitleApp('Прайс лист'),
+                          SizedBox(height: 10,),
+                          FileDownloadList(),
+                          SizedBox(height: 10,),
 
-                          ],
-
-
-                          ElevatedButtonApp(text: 'Позвонить'),
-                          OutlinedButtonApp(text: 'Написать'),
                         ],
-                      );
-                    }
-                    else if(state is StoreScreenDetailsLoader) {
-                      return Loader();
-                    } else if(state is StoreScreenDetailsError) {
-                      return Text('error');
-                    }
-                    return Container();
-                  },
-                )
-              ],
+
+
+                        ElevatedButtonApp(text: 'Позвонить'),
+                        OutlinedButtonApp(text: 'Написать'),
+                      ],
+                    );
+                  }
+                  else if(state is StoreScreenDetailsLoader) {
+                    return Loader();
+                  } else if(state is StoreScreenDetailsError) {
+                    return Text('error');
+                  }
+                  return Container();
+                },
+              ),
             ),
           ),
         ),

@@ -43,54 +43,66 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: RefreshIndicator(
-          onRefresh: _onRefresh,
-          child: SingleChildScrollView(
-            child: Container(
-              constraints: BoxConstraints(
-                  minHeight: MediaQuery.of(context).size.height
-              ),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      children: [
-                        HeaderAppBar(isMenu: true, ),
-                        TitleApp('Мои заказы'),
-                        SizedBox(height: 20,),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: InkWell(
-                        child: Icon(Icons.filter_alt),
-                        onTap: _showFilter,
+        child: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool isBool) {
+            return [
+              SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          children: [
+                            HeaderAppBar(isMenu: true, ),
+                            TitleApp('Мои заказы'),
+                            SizedBox(height: 20,),
+                          ],
+                        ),
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: BlocBuilder<OrderScreenMyCubit, OrderScreenMyState>(
-                      builder: (context, state) {
-                        if(state is OrderScreenMySuccess) {
-                          return Column(
-                            children: state.orders.map((order) {
-                              return OrderCard(order: order);
-                            }).toList(),
-                          );
-                        }
-                        else if(state is OrderScreenMyLoader) {
-                          return const Loader();
-                        }
-                        return Container();
-                      },
-                    ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: InkWell(
+                            child: Icon(Icons.filter_alt),
+                            onTap: _showFilter,
+                          ),
+                        ),
+                      ),
+                    ],
                   )
-                ],
+              ),
+            ];
+          },
+          body: RefreshIndicator(
+            onRefresh: _onRefresh,
+            child: SingleChildScrollView(
+              child: Container(
+                constraints: BoxConstraints(
+                    minHeight: MediaQuery.of(context).size.height
+                ),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: BlocBuilder<OrderScreenMyCubit, OrderScreenMyState>(
+                        builder: (context, state) {
+                          if(state is OrderScreenMySuccess) {
+                            return Column(
+                              children: state.orders.map((order) {
+                                return OrderCard(order: order);
+                              }).toList(),
+                            );
+                          }
+                          else if(state is OrderScreenMyLoader) {
+                            return const Loader();
+                          }
+                          return Container();
+                        },
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ),

@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:megaladon/core/dio/index.dart';
 import 'package:megaladon/data/models/advert_model.dart';
 import 'package:megaladon/data/models/request/index_period_enum.dart';
+import 'package:megaladon/data/models/request/params/advert_index_request_params.dart';
 
 class AdvertRepository {
   Future index(AdvertIndexRequestParams params) => ApiService.I
@@ -27,22 +28,4 @@ class AdvertRepository {
   Future delete(int id) => ApiService.I
       .delete('/adverts/$id/delete',)
       .then((value) => value.data);
-}
-
-class AdvertIndexRequestParams {
-  int startRow = 0;
-  int rowsPerPage = 30;
-  int? priceMin;
-  int? priceMax;
-  IndexPeriod last = IndexPeriod.last3day;
-
-  toData() {
-    return {
-      'startRow': startRow,
-      'rowsPerPage': rowsPerPage,
-      'last': last.name,
-      'price_min': priceMin,
-      'price_max': priceMax
-    };
-  }
 }

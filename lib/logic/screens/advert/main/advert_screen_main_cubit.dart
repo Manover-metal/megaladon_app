@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:megaladon/data/models/advert_model.dart';
+import 'package:megaladon/data/models/request/params/advert_index_request_params.dart';
 import 'package:megaladon/data/repositories/advert_repository.dart';
 
 part 'advert_screen_main_state.dart';

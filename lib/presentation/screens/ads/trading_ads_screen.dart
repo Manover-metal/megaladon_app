@@ -41,37 +41,46 @@ class _TradingAdsScreenState extends State<TradingAdsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: RefreshIndicator(
-          color: Colors.white,
-          onRefresh: _onRefresh,
-          child: SingleChildScrollView(
-            child: Container(
-              constraints: BoxConstraints(
-                minHeight: MediaQuery.of(context).size.height
-              ),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      children: [
-                        HeaderAppBar(isMenu: true,),
-                        TitleApp('Торговая площадка'),
-                        SizedBox(height: 20,),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: InkWell(
-                        child: Icon(Icons.filter_alt),
-                        onTap: _showFilter,
+        child: NestedScrollView(
+            headerSliverBuilder: (BuildContext context, bool isBool) {
+              return [
+                SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          children: [
+                            HeaderAppBar(isMenu: true,),
+                            TitleApp('Торговая площадка'),
+                            SizedBox(height: 20,),
+                          ],
+                        ),
                       ),
-                    ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: InkWell(
+                            child: Icon(Icons.filter_alt),
+                            onTap: _showFilter,
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ),
+              ];
+            },
+            body: RefreshIndicator(
+              color: Colors.white,
+              onRefresh: _onRefresh,
+              child: SingleChildScrollView(
+                child: Container(
+                  constraints: BoxConstraints(
+                      minHeight: MediaQuery.of(context).size.height
                   ),
-                  Padding(
+                  child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: BlocBuilder<AdvertScreenMainCubit, AdvertScreenMainState>(
                       builder: (context, state) {
@@ -91,11 +100,10 @@ class _TradingAdsScreenState extends State<TradingAdsScreen> {
 
                       },
                     ),
-                  )
-                ],
+                  ),
+                ),
               ),
             ),
-          ),
         ),
       ),
     );

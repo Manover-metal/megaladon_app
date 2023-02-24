@@ -41,32 +41,45 @@ class _ListStoresScreenState extends State<ListStoresScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: RefreshIndicator(
-          onRefresh: _onRefresh,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
+        child: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool isBool) {
+            return [
+              SliverToBoxAdapter(
                   child: Column(
                     children: [
-                      HeaderAppBar(isMenu: true,),
-                      TitleApp('Магазины'),
-                      SizedBox(height: 20,),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          children: [
+                            HeaderAppBar(isMenu: true,),
+                            TitleApp('Магазины'),
+                            SizedBox(height: 20,),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: InkWell(
+                            child: Icon(Icons.filter_alt),
+                            onTap: _showFilter,
+                          ),
+                        ),
+                      ),
                     ],
-                  ),
+                  )
+              ),
+            ];
+          },
+          body: RefreshIndicator(
+            onRefresh: _onRefresh,
+            child: SingleChildScrollView(
+              child: Container(
+                constraints: BoxConstraints(
+                    minHeight: MediaQuery.of(context).size.height
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: InkWell(
-                      child: Icon(Icons.filter_alt),
-                      onTap: _showFilter,
-                    ),
-                  ),
-                ),
-                BlocBuilder<StoreScreenMainCubit, StoreScreenMainState>(
+                child: BlocBuilder<StoreScreenMainCubit, StoreScreenMainState>(
                   builder: (context, state) {
                     if(state is StoreScreenMainSuccess) {
                       return Padding(
@@ -85,11 +98,9 @@ class _ListStoresScreenState extends State<ListStoresScreen> {
                       return Text('error');
                     }
                     return Container();
-                    
-                    
                   },
-                )
-              ],
+                ),
+              ),
             ),
           ),
         ),
