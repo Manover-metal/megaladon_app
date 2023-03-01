@@ -21,6 +21,7 @@ import 'package:megaladon/logic/screens/store/main/store_screen_main_cubit.dart'
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'core/get.dart';
+import 'core/themes/light.dart';
 import 'logic/screens/advert/main/advert_screen_main_cubit.dart';
 // import 'generated/locale_keys.g.dart';
 
@@ -107,6 +108,7 @@ class App extends StatelessWidget {
         supportedLocales: context.supportedLocales,
         locale: context.locale,
         darkTheme: themeDark,
+        theme: themeDark,
         themeMode: ThemeMode.system,
       ),
     );
