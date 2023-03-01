@@ -77,8 +77,6 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
                           SizedBox(height: 10,),
 
                         ],
-
-
                         ElevatedButtonApp(text: 'Позвонить'),
                         OutlinedButtonApp(text: 'Написать'),
                       ],

@@ -24,7 +24,6 @@ class PasswordConfirmationFormModel extends FormzInput<String, PasswordConfirmat
     if (password != value) {
       return PasswordConfirmationValidationError.notMatch;
     }
-
     return null;
   }
 }
