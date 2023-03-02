@@ -12,7 +12,7 @@ class Loader extends StatelessWidget {
       child: Center(
         child: CircularProgressIndicator(
           strokeWidth: 4,
-          color: Theme.of(context).colorScheme.background,
+          color: Theme.of(context).colorScheme.secondary,
         ),
       ),
     );

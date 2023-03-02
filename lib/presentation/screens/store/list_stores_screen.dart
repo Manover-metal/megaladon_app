@@ -93,7 +93,7 @@ class _ListStoresScreenState extends State<ListStoresScreen> {
                       );
                     }
                     else if(state is StoreScreenMainLoader) {
-                      return const Loader();
+                      return const Loader(padding: 10,);
                     } else if(state is StoreScreenMainError) {
                       return Text('error');
                     }

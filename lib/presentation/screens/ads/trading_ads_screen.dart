@@ -92,7 +92,7 @@ class _TradingAdsScreenState extends State<TradingAdsScreen> {
                           );
                         }
                         else if(state is AdvertScreenMainLoader) {
-                          return const Loader();
+                          return const Loader(padding: 10,);
                         } else if(state is AdvertScreenMainError) {
                           return Text('error');
                         }

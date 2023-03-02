@@ -112,7 +112,7 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
                             );
                           }
                           else if(state is OrderScreenMainLoader) {
-                            return const Loader();
+                            return const Loader(padding: 10,);
                           } else if(state is OrderScreenMainError) {
                             return Text('error');
                           }

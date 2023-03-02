@@ -83,7 +83,7 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
                     );
                   }
                   else if(state is StoreScreenDetailsLoader) {
-                    return Loader();
+                    return Loader(padding: 10,);
                   } else if(state is StoreScreenDetailsError) {
                     return Text('error');
                   }

@@ -120,7 +120,7 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                         ],
                       );
                     } else if(state is AdvertScreenDetailsLoader) {
-                      return Loader();
+                      return Loader(padding: 10,);
                     } else if(state is AdvertScreenDetailsError) {
                       return Text('error');
                     }
