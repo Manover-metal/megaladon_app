@@ -107,7 +107,7 @@ class App extends StatelessWidget {
         supportedLocales: context.supportedLocales,
         locale: context.locale,
         darkTheme: themeDark,
-        themeMode: ThemeMode.system,
+        themeMode: ThemeMode.dark,
       ),
     );
   }
