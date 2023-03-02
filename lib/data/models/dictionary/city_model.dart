@@ -5,13 +5,21 @@ class CityModel {
   CityModel({required this.id, required this.name});
 
   static CityModel fromJson(data) {
-    return CityModel(
-      id: data['id'],
-      name: data['title'],
-    );
+    try {
+      return CityModel(
+        id: data['id'],
+        name: data['title'],
+      );
+    } catch(e) {
+      return CityModel.nothing;
+    }
   }
 
   static List<CityModel> listFromJson(data) {
     return data.map<CityModel>((city) => CityModel.fromJson(city)).toList();
   }
+
+  static CityModel get nothing => CityModel(id: -1, name: '');
+
+
 }

@@ -28,7 +28,7 @@ Future<List<int>?> showServiceTypePicker(BuildContext context, List<ServiceTypeM
 class ServiceTypePickerController extends ValueNotifier<ServiceTypeModel> {
 
 
-  ServiceTypePickerController(ServiceTypeModel period) : super(period);
+  ServiceTypePickerController({ServiceTypeModel? period}) : super(period ?? ServiceTypeModel.nothing);
 
 
 
@@ -68,7 +68,7 @@ class _ServiceTypePickerState extends State<ServiceTypePicker> {
 
   @override
   void initState() {
-    _textController = TextEditingController(text: widget.controller.value.toString());
+    _textController = TextEditingController(text: widget.controller.value.name);
     super.initState();
   }
 
@@ -81,7 +81,7 @@ class _ServiceTypePickerState extends State<ServiceTypePicker> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
+      height: 60,
       child: ValueListenableBuilder(
         builder: (BuildContext context, ServiceTypeModel serviceType, Widget? child) {
           return TextField(
@@ -91,7 +91,9 @@ class _ServiceTypePickerState extends State<ServiceTypePicker> {
                 labelText: widget.label,
                 labelStyle: TextStyle(
                     fontSize: 18
-                )
+                ),
+                contentPadding: EdgeInsets.symmetric(horizontal: 10)
+
             ),
           );
         },

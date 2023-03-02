@@ -6,13 +6,19 @@ class OrderCategoryModel {
   OrderCategoryModel({required this.id, required this.name});
 
   static OrderCategoryModel fromJson(data) {
-    return OrderCategoryModel(
-      id: data['id'],
-      name: data['name'],
-    );
+    try {
+      return OrderCategoryModel(
+        id: data['id'],
+        name: data['name'],
+      );
+    } catch(e) {
+      return OrderCategoryModel.nothing;
+    }
   }
 
   static List<OrderCategoryModel> listFromJson(data) {
     return data.map<OrderCategoryModel>((city) => OrderCategoryModel.fromJson(city)).toList();
   }
+
+  static OrderCategoryModel get nothing => OrderCategoryModel(id: -1, name: '');
 }

@@ -39,8 +39,8 @@ class _FilterMyOrderBottomSheetState extends State<FilterMyOrderBottomSheet> {
   void initState() {
     OrderScreenMyState state = context.read<OrderScreenMyCubit>().state;
     _indexPeriodPickerController = IndexPeriodPickerController(state.params.last);
-    _cityPickerController = CityPickerController(state.params.city);
-    _orderCategoryPickerController = OrderCategoryPickerController(state.params.category);
+    _cityPickerController = CityPickerController(city: state.params.city);
+    _orderCategoryPickerController = OrderCategoryPickerController(category: state.params.category);
 
     super.initState();
   }

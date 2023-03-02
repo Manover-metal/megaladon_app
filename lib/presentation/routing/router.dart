@@ -10,7 +10,9 @@ import 'package:megaladon/presentation/screens/auth/register/register_shop_scree
 import 'package:megaladon/presentation/screens/auth/register/register_user_screen.dart';
 import 'package:megaladon/presentation/screens/auth/reset_password_screen.dart';
 import 'package:megaladon/presentation/screens/auth/verify_screen.dart';
+import 'package:megaladon/presentation/screens/forms/ad/create_ad_screen.dart';
 import 'package:megaladon/presentation/screens/forms/offer/create_offer_screen.dart';
+import 'package:megaladon/presentation/screens/forms/order/create_order_screen.dart';
 import 'package:megaladon/presentation/screens/orders/details_offer_screen.dart';
 import 'package:megaladon/presentation/screens/orders/details_order_screen.dart';
 import 'package:megaladon/presentation/screens/orders/list_executors_screen.dart';
@@ -23,10 +25,6 @@ import 'package:megaladon/presentation/screens/store/list_stores_screen.dart';
 import 'package:megaladon/presentation/screens/splash_screen.dart';
 
 part 'router.gr.dart';
-
-const List<AutoRoute> forms = [
-  AutoRoute(page: CreateOfferScreen)
-];
 
 
 const List<AutoRoute> profile = [
@@ -44,8 +42,6 @@ const List<AutoRoute> ad = [
   ),
   AutoRoute(page: DetailsAdScreen),
   AutoRoute(page: MyAdsScreen),
-
-
 ];
 
 const List<AutoRoute> store = [
@@ -54,7 +50,6 @@ const List<AutoRoute> store = [
       path: ''
   ),
   AutoRoute(page: DetailsStoreScreen),
-
 ];
 
 const List<AutoRoute> order = [
@@ -79,6 +74,13 @@ const List<AutoRoute> auth = [
   AutoRoute(page: RegisterExecutorScreen),
   AutoRoute(page: RegisterStoreScreen),
   AutoRoute(page: VerifyScreen),
+];
+
+const List<AutoRoute> form = [
+  AutoRoute(page: CreateAdScreen),
+  AutoRoute(page: CreateOrderScreen),
+  AutoRoute(page: CreateOfferScreen)
+
 ];
 
 
@@ -118,7 +120,7 @@ const List<AutoRoute> auth = [
       ]
     ),
     ...auth,
-    ...forms,
+    ...form
   ],
 )
 

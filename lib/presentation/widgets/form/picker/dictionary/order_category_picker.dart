@@ -29,7 +29,7 @@ Future<List<int>?> showOrderCategoryPicker(BuildContext context, List<OrderCateg
 class OrderCategoryPickerController extends ValueNotifier<OrderCategoryModel> {
 
 
-  OrderCategoryPickerController(OrderCategoryModel? category) : super(category ?? OrderCategoryModel(id: -1, name: ''));
+  OrderCategoryPickerController({OrderCategoryModel? category}) : super(category ?? OrderCategoryModel.nothing);
 
 
 
@@ -83,7 +83,7 @@ class _OrderCategoryPickerState extends State<OrderCategoryPicker> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
+      height: 60,
       child: ValueListenableBuilder(
         builder: (BuildContext context, OrderCategoryModel orderCategory, Widget? child) {
           return TextField(
@@ -93,7 +93,9 @@ class _OrderCategoryPickerState extends State<OrderCategoryPicker> {
                 labelText: widget.label,
                 labelStyle: TextStyle(
                     fontSize: 18
-                )
+                ),
+                contentPadding: EdgeInsets.symmetric(horizontal: 10)
+
             ),
           );
         },

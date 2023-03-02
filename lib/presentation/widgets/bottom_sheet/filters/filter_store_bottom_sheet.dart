@@ -34,8 +34,8 @@ class _FilterStoreBottomSheetState extends State<FilterStoreBottomSheet> {
   @override
   void initState() {
     StoreScreenMainState state = context.read<StoreScreenMainCubit>().state;
-    _cityPickerController = CityPickerController(state.params.city);
-    _storeTypePickerController = StoreTypePickerController(state.params.type);
+    _cityPickerController = CityPickerController(city: state.params.city);
+    _storeTypePickerController = StoreTypePickerController(type: state.params.type);
     super.initState();
   }
 

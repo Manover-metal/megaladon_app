@@ -27,7 +27,7 @@ Future<List<int>?> showAdvertCategoryPicker(BuildContext context, List<AdvertCat
 class AdvertCategoryPickerController extends ValueNotifier<AdvertCategoryModel> {
 
 
-  AdvertCategoryPickerController(AdvertCategoryModel period) : super(period);
+  AdvertCategoryPickerController({ AdvertCategoryModel? period}) : super(period ?? AdvertCategoryModel.nothing);
 
 
 
@@ -66,7 +66,7 @@ class _AdvertCategoryPickerState extends State<AdvertCategoryPicker> {
 
   @override
   void initState() {
-    _textController = TextEditingController(text: widget.controller.value.toString());
+    _textController = TextEditingController(text: widget.controller.value.name);
     super.initState();
   }
 
@@ -79,7 +79,7 @@ class _AdvertCategoryPickerState extends State<AdvertCategoryPicker> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
+      height: 60,
       child: ValueListenableBuilder(
         builder: (BuildContext context, AdvertCategoryModel advertCategory, Widget? child) {
           return TextField(
@@ -89,7 +89,9 @@ class _AdvertCategoryPickerState extends State<AdvertCategoryPicker> {
                 labelText: widget.label,
                 labelStyle: TextStyle(
                     fontSize: 18
-                )
+                ),
+                contentPadding: EdgeInsets.symmetric(horizontal: 10)
+
             ),
           );
         },

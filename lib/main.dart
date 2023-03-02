@@ -8,6 +8,8 @@ import 'package:megaladon/core/themes/dark.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/dictionary/dictionary_cubit.dart';
 import 'package:megaladon/logic/form/auth/auth_form_cubit.dart';
+import 'package:megaladon/logic/form/create/ad/ad_create_form_cubit.dart';
+import 'package:megaladon/logic/form/create/order/order_create_form_cubit.dart';
 import 'package:megaladon/logic/form/register/register_user/register_user_form_cubit.dart';
 import 'package:megaladon/logic/form/verify/verify_form_cubit.dart';
 import 'package:megaladon/logic/register/register_user/register_user_bloc.dart';
@@ -98,6 +100,12 @@ class App extends StatelessWidget {
             lazy: false,
             create: (context) => DictionaryCubit()..initial()
         ),
+        BlocProvider<AdCreateFormCubit>(
+            create: (context) => AdCreateFormCubit()
+        ),
+        BlocProvider<OrderCreateFormCubit>(
+            create: (context) => OrderCreateFormCubit()
+        )
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,

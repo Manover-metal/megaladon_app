@@ -8,7 +8,7 @@ import 'package:megaladon/logic/screens/advert/details/advert_screen_details_cub
 import 'package:megaladon/logic/screens/advert/main/advert_screen_main_cubit.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/form/picker/last_day_picker.dart';
-import 'package:megaladon/presentation/widgets/form/text_number_field.dart';
+import 'package:megaladon/presentation/widgets/form/field/text_number_field.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class FilterAdBottomSheet extends StatefulWidget {

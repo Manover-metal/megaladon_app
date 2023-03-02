@@ -72,15 +72,15 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             InkWell(
-                              child: Icon(Icons.sort),
+                              child: Icon(Icons.sort, size: 30),
                               onTap: _showSort,
                             ),
                             SizedBox(width: 10,),
                             InkWell(
-                              child: Icon(Icons.filter_alt),
+                              child: Icon(Icons.filter_alt, size: 30),
                               onTap: _showFilter,
                             ),
                           ],

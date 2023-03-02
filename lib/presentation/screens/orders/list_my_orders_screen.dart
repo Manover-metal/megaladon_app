@@ -64,7 +64,7 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
                         child: Align(
                           alignment: Alignment.centerRight,
                           child: InkWell(
-                            child: Icon(Icons.filter_alt),
+                            child: Icon(Icons.filter_alt,  size: 30),
                             onTap: _showFilter,
                           ),
                         ),

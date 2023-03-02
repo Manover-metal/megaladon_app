@@ -1,6 +1,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:megaladon/core/dio/interceptors/error_interceptors.dart';
 
 class ApiService {
   static late Dio _dio;
@@ -13,6 +14,7 @@ class ApiService {
      _dio.options.headers.addAll({
        'Accept': 'application/json'
      });
+     addInterceptors(ErrorInterceptor());
   }
 
   static Dio get I => _dio;

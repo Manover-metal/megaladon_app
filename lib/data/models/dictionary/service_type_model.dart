@@ -5,13 +5,20 @@ class ServiceTypeModel {
   ServiceTypeModel({required this.id, required this.name});
 
   static ServiceTypeModel fromJson(data) {
-    return ServiceTypeModel(
-      id: data['id'],
-      name: data['name'],
-    );
+    try {
+      return ServiceTypeModel(
+        id: data['id'],
+        name: data['name'],
+      );
+    } catch(e) {
+      return ServiceTypeModel.nothing;
+    }
   }
 
   static List<ServiceTypeModel> listFromJson(data) {
     return data.map<ServiceTypeModel>((city) => ServiceTypeModel.fromJson(city)).toList();
   }
+
+  static ServiceTypeModel get nothing => ServiceTypeModel(id: -1, name: '');
+
 }

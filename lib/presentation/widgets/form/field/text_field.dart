@@ -19,6 +19,9 @@ class TextFieldApp extends StatelessWidget {
         decoration: InputDecoration(
           icon: icon,
           labelText: label,
+          labelStyle: TextStyle(
+              fontSize: 18
+          ),
           contentPadding: EdgeInsets.symmetric(horizontal: 10)
         ),
       ),

@@ -12,7 +12,7 @@ import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/order_category_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/last_day_picker.dart';
-import 'package:megaladon/presentation/widgets/form/text_number_field.dart';
+import 'package:megaladon/presentation/widgets/form/field/text_number_field.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class SortOrderBottomSheet extends StatefulWidget {

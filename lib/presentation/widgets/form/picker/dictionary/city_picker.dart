@@ -28,7 +28,7 @@ Future<List<int>?> showCityPicker(BuildContext context, List<CityModel> cities) 
 class CityPickerController extends ValueNotifier<CityModel> {
 
 
-  CityPickerController(CityModel? city) : super(city ?? CityModel(id: -1, name: ''));
+  CityPickerController({CityModel? city}) : super(city ?? CityModel.nothing);
 
 
 
@@ -81,7 +81,7 @@ class _CityPickerState extends State<CityPicker> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
+      height: 60,
       child: ValueListenableBuilder(
         builder: (BuildContext context, CityModel city, Widget? child) {
           return TextField(
@@ -91,7 +91,9 @@ class _CityPickerState extends State<CityPicker> {
                 labelText: widget.label,
                 labelStyle: TextStyle(
                     fontSize: 18
-                )
+                ),
+                contentPadding: EdgeInsets.symmetric(horizontal: 10)
+
             ),
           );
         },

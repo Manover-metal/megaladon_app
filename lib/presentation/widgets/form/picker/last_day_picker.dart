@@ -77,7 +77,7 @@ class _IndexPeriodPickerState extends State<IndexPeriodPicker> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
+      height: 60,
       child: ValueListenableBuilder(
         builder: (BuildContext context, IndexPeriod period, Widget? child) {
           return TextField(
@@ -87,7 +87,9 @@ class _IndexPeriodPickerState extends State<IndexPeriodPicker> {
                 labelText: widget.label,
                 labelStyle: TextStyle(
                     fontSize: 18
-                )
+                ),
+                contentPadding: EdgeInsets.symmetric(horizontal: 10)
+
             ),
           );
         },

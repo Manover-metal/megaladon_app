@@ -69,6 +69,18 @@ class _$AppRouter extends RootStackRouter {
         ),
       );
     },
+    CreateAdRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: CreateAdScreen(),
+      );
+    },
+    CreateOrderRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: CreateOrderScreen(),
+      );
+    },
     CreateOfferRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
@@ -317,6 +329,14 @@ class _$AppRouter extends RootStackRouter {
           path: '/verify-screen',
         ),
         RouteConfig(
+          CreateAdRoute.name,
+          path: '/create-ad-screen',
+        ),
+        RouteConfig(
+          CreateOrderRoute.name,
+          path: '/create-order-screen',
+        ),
+        RouteConfig(
           CreateOfferRoute.name,
           path: '/create-offer-screen',
         ),
@@ -440,6 +460,30 @@ class VerifyRouteArgs {
   String toString() {
     return 'VerifyRouteArgs{key: $key, phone: $phone}';
   }
+}
+
+/// generated route for
+/// [CreateAdScreen]
+class CreateAdRoute extends PageRouteInfo<void> {
+  const CreateAdRoute()
+      : super(
+          CreateAdRoute.name,
+          path: '/create-ad-screen',
+        );
+
+  static const String name = 'CreateAdRoute';
+}
+
+/// generated route for
+/// [CreateOrderScreen]
+class CreateOrderRoute extends PageRouteInfo<void> {
+  const CreateOrderRoute()
+      : super(
+          CreateOrderRoute.name,
+          path: '/create-order-screen',
+        );
+
+  static const String name = 'CreateOrderRoute';
 }
 
 /// generated route for

@@ -6,13 +6,21 @@ class AdvertCategoryModel {
   AdvertCategoryModel({required this.id, required this.name});
 
   static AdvertCategoryModel fromJson(data) {
-    return AdvertCategoryModel(
-      id: data['id'],
-      name: data['name'],
-    );
+    print(data);
+    try {
+      return AdvertCategoryModel(
+        id: data['id'],
+        name: data['name'],
+      );
+    } catch(e) {
+      return AdvertCategoryModel.nothing;
+    }
   }
 
   static List<AdvertCategoryModel> listFromJson(data) {
     return data.map<AdvertCategoryModel>((city) => AdvertCategoryModel.fromJson(city)).toList();
   }
+
+  static AdvertCategoryModel get nothing => AdvertCategoryModel(id: -1, name: '');
+
 }

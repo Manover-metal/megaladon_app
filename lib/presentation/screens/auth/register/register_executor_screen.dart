@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
-import 'package:megaladon/presentation/widgets/form/text_field.dart';
+import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class RegisterExecutorScreen extends StatelessWidget {

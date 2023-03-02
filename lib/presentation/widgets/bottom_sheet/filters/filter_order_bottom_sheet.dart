@@ -11,7 +11,7 @@ import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/order_category_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/last_day_picker.dart';
-import 'package:megaladon/presentation/widgets/form/text_number_field.dart';
+import 'package:megaladon/presentation/widgets/form/field/text_number_field.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class FilterOrderBottomSheet extends StatefulWidget {
@@ -44,8 +44,8 @@ class _FilterOrderBottomSheetState extends State<FilterOrderBottomSheet> {
   void initState() {
     OrderScreenMainState state = context.read<OrderScreenMainCubit>().state;
     _indexPeriodPickerController = IndexPeriodPickerController(state.params.last);
-    _cityPickerController = CityPickerController(state.params.city);
-    _orderCategoryPickerController = OrderCategoryPickerController(state.params.category);
+    _cityPickerController = CityPickerController(city: state.params.city);
+    _orderCategoryPickerController = OrderCategoryPickerController(category: state.params.category);
     super.initState();
   }
 
