@@ -1,4 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:megaladon/data/models/dictionary/city_model.dart';
+import 'package:megaladon/data/models/dictionary/order_category_model.dart';
 import 'package:megaladon/data/models/executor_model.dart';
 import 'package:megaladon/data/models/user_model.dart';
 
@@ -10,10 +12,13 @@ class OrderModel extends Equatable {
   final String createdAt;
   final int countOffers;
 
-  final String? priceMin;
+
+  final String? priceRecommended;
   final String? priceMax;
   final UserModel? user;
+  final OrderCategoryModel? category;
   final ExecutorModel? executor;
+  final CityModel? city;
   final List? files;
 
   const OrderModel({
@@ -23,11 +28,13 @@ class OrderModel extends Equatable {
     required this.status,
     required this.createdAt,
     required this.countOffers,
-    this.priceMin,
+    this.priceRecommended,
     this.priceMax,
     this.user,
     this.executor,
-    this.files
+    this.files,
+    this.category,
+    this.city
   });
 
   static OrderModel fromJsonMini(data) {
@@ -36,7 +43,7 @@ class OrderModel extends Equatable {
         id: data['id'],
         title: data['title'],
         description: data['description'],
-        priceMin: data['price_min'],
+        priceRecommended: data['price_recommended'],
         priceMax: data['price_max'],
         status: data['status'],
         createdAt: data['created_at'],
@@ -51,7 +58,7 @@ class OrderModel extends Equatable {
       id: data['id'],
       title: data['title'],//
       description: data['description'],//
-      priceMin: data['price_recommended'],//
+      priceRecommended: data['price_recommended'],//
       priceMax: data['price_max'],//
       status: data['status'],//
       createdAt: data['created_at'],//
@@ -59,6 +66,8 @@ class OrderModel extends Equatable {
       user: data['user'] != null? UserModel.fromJson(data['user']): null,
       executor: data['executor'] != null? ExecutorModel.fromJson(data['executor']): null,
       files: data['files'],
+      category: data['category'] != null? OrderCategoryModel.fromJson(data['category']): null,
+      city: data['city'] != null ? CityModel.fromJson(data['city']): null
     );
   }
 
@@ -69,5 +78,5 @@ class OrderModel extends Equatable {
   }
 
   @override
-  List<Object?> get props => [title, description, priceMin, priceMax];
+  List<Object?> get props => [title, description, priceRecommended, priceMax];
 }

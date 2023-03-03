@@ -13,7 +13,6 @@ class TextNumberFieldApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 60,
-      margin: EdgeInsets.symmetric(vertical: 5),
       child: TextField(
         inputFormatters: [
           FilteringTextInputFormatter.digitsOnly

@@ -1,13 +1,13 @@
-part of 'ad_create_form_cubit.dart';
+part of 'ad_update_form_cubit.dart';
 
-enum AdCreateForm {
+enum AdUpdateForm {
   filled,
   loaded,
   error,
   success
 }
 
-class AdCreateFormState extends Equatable {
+class AdUpdateFormState extends Equatable {
   final FormzStatus status;
   final DescriptionFormModel description;
   final TitleFormModel title;
@@ -17,7 +17,7 @@ class AdCreateFormState extends Equatable {
   final int countTry;
 
 
-  const AdCreateFormState({
+  const AdUpdateFormState({
     this.status = FormzStatus.pure,
     this.description = const DescriptionFormModel.pure(),
     this.title = const TitleFormModel.pure(),
@@ -31,17 +31,17 @@ class AdCreateFormState extends Equatable {
   @override
   List<Object?> get props => [status, description, price, title, category, city, countTry];
 
-  AdCreateFormState copyWith({
+  AdUpdateFormState copyWith({
     FormzStatus? status,
     DescriptionFormModel? description,
     TitleFormModel? title,
     AdvertCategoryFormModel? category,
     CityFormModel? city,
     int? countTry,
-    AdCreateForm? state,
+    AdUpdateForm? state,
     PriceFormModel? price
   }) {
-    return AdCreateFormState(
+    return AdUpdateFormState(
       status: status ?? this.status,
       description: description ?? this.description,
       title: title ?? this.title,

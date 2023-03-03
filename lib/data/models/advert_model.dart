@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:megaladon/core/utils/parser.dart';
 import 'package:megaladon/data/models/category_model.dart';
+import 'package:megaladon/data/models/dictionary/advert_category_model.dart';
+import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/user_model.dart';
 
 class AdvertModel extends Equatable {
@@ -8,7 +10,8 @@ class AdvertModel extends Equatable {
   final String title;
   final String description;
   final String price;
-  final CategoryModel? category;
+  final AdvertCategoryModel? category;
+  final CityModel? city;
   final String? additionalPhone;
   final List media;
   final UserModel? user;
@@ -20,6 +23,7 @@ class AdvertModel extends Equatable {
     required this.price,
     this.category,
     this.additionalPhone,
+    this.city,
     required this.media,
     this.user
   });
@@ -50,7 +54,7 @@ class AdvertModel extends Equatable {
       description: data['description'],
       price: data['price'],
       media: data['media'],
-      category: data['category'] != null ? CategoryModel.fromJson(data['category']) : null,
+      category: data['category'] != null ? AdvertCategoryModel.fromJson(data['category']) : null,
       additionalPhone: data['additional_phone'],
       user: data['user'] != null ? UserModel.fromJson(data['user']) : null
     );

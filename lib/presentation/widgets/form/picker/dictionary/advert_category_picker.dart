@@ -27,12 +27,12 @@ Future<List<int>?> showAdvertCategoryPicker(BuildContext context, List<AdvertCat
 class AdvertCategoryPickerController extends ValueNotifier<AdvertCategoryModel> {
 
 
-  AdvertCategoryPickerController({ AdvertCategoryModel? period}) : super(period ?? AdvertCategoryModel.nothing);
+  AdvertCategoryPickerController({ AdvertCategoryModel? category}) : super(category ?? AdvertCategoryModel.nothing);
 
 
 
-  void _changeAdvertCategory(AdvertCategoryModel period) {
-    value = period;
+  void _changeAdvertCategory(AdvertCategoryModel category) {
+    value = category;
     notifyListeners();
   }
 }

@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:megaladon/data/models/advert_model.dart';
+import 'package:megaladon/data/models/order_model.dart';
 import 'package:megaladon/presentation/screens/ads/details_ad_screen.dart';
 import 'package:megaladon/presentation/screens/ads/my_ads_screen.dart';
 import 'package:megaladon/presentation/screens/ads/trading_ads_screen.dart';
@@ -11,8 +13,10 @@ import 'package:megaladon/presentation/screens/auth/register/register_user_scree
 import 'package:megaladon/presentation/screens/auth/reset_password_screen.dart';
 import 'package:megaladon/presentation/screens/auth/verify_screen.dart';
 import 'package:megaladon/presentation/screens/forms/ad/create_ad_screen.dart';
+import 'package:megaladon/presentation/screens/forms/ad/update_ad_screen.dart';
 import 'package:megaladon/presentation/screens/forms/offer/create_offer_screen.dart';
 import 'package:megaladon/presentation/screens/forms/order/create_order_screen.dart';
+import 'package:megaladon/presentation/screens/forms/order/update_order_screen.dart';
 import 'package:megaladon/presentation/screens/orders/details_offer_screen.dart';
 import 'package:megaladon/presentation/screens/orders/details_order_screen.dart';
 import 'package:megaladon/presentation/screens/orders/list_executors_screen.dart';
@@ -79,6 +83,8 @@ const List<AutoRoute> auth = [
 const List<AutoRoute> form = [
   AutoRoute(page: CreateAdScreen),
   AutoRoute(page: CreateOrderScreen),
+  AutoRoute(page: UpdateAdScreen),
+  AutoRoute(page: UpdateOrderScreen),
   AutoRoute(page: CreateOfferScreen)
 
 ];

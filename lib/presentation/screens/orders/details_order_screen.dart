@@ -98,7 +98,7 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Желаемый бюджет: до ${state.order.priceMin} ₸'),
+                              Text('Желаемый бюджет: до ${state.order.priceRecommended} ₸'),
                               Text('Допустимый: до ${state.order.priceMax} ₸'),
                               SizedBox(height: 20,),
 
