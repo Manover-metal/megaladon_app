@@ -12,15 +12,16 @@ import 'package:megaladon/data/models/form/price.dart';
 import 'package:megaladon/data/models/form/title.dart';
 import 'package:megaladon/data/models/form/title.dart';
 import 'package:megaladon/data/models/request/params/advert_create_request_params.dart';
+import 'package:megaladon/data/models/request/params/advert_update_request_params.dart';
 import 'package:megaladon/data/repositories/advert_repository.dart';
 
-part 'ad_create_form_state.dart';
+part 'ad_update_form_state.dart';
 
-class AdCreateFormCubit extends Cubit<AdCreateFormState> {
+class AdUpdateFormCubit extends Cubit<AdUpdateFormState> {
   final AdvertRepository _repository = AdvertRepository();
-  AdCreateFormCubit() : super(AdCreateFormState());
+  AdUpdateFormCubit() : super(AdUpdateFormState());
 
-  checkCreate({
+  checkUpdate({
     required String title,
     required String description,
     required int? price,
@@ -41,7 +42,7 @@ class AdCreateFormCubit extends Cubit<AdCreateFormState> {
       priceForm
     ]);
 
-    AdCreateFormState stateNew = state.copyWith(
+    AdUpdateFormState stateNew = state.copyWith(
         title: titleForm,
         description: descriptionForm,
         status: status,
@@ -54,8 +55,8 @@ class AdCreateFormCubit extends Cubit<AdCreateFormState> {
     return stateNew.status.isValid;
   }
 
-  Future<AdvertModel> createFetch() async {
-    return _repository.create(AdvertCreateRequestParams(
+  Future<AdvertModel> updateFetch(int id) async {
+    return _repository.update(id, AdvertUpdateRequestParams(
       title: state.title.value,
       description: state.title.value,
       price: state.price.value!,

@@ -1,6 +1,8 @@
 import 'package:megaladon/core/dio/index.dart';
 import 'package:megaladon/data/models/order_model.dart';
+import 'package:megaladon/data/models/request/params/order_create_request_params.dart';
 import 'package:megaladon/data/models/request/params/order_index_request_params.dart';
+import 'package:megaladon/data/models/request/params/order_update_request_params.dart';
 
 class OrderRepository {
   Future index(OrderIndexRequestParams params) => ApiService.I
@@ -15,13 +17,13 @@ class OrderRepository {
       .get('/order/$id',)
       .then((value) => OrderModel.fromJsonFull(value.data['order']));
 
-  Future create() => ApiService.I
-      .post('/order',)
-      .then((value) => value.data);
+  Future<OrderModel> create(OrderCreateRequestParams params) => ApiService.I
+      .post('/order', queryParameters: params.toData())
+      .then((value) => OrderModel.fromJsonFull(value.data['order']));
 
-  Future update(int id) => ApiService.I
-      .post('/order/$id/update',)
-      .then((value) => value.data);
+  Future<OrderModel> update(int id, OrderUpdateRequestParams params) => ApiService.I
+      .post('/order/$id/update', data: params.toData())
+      .then((value) => OrderModel.fromJsonFull(value.data['order']));
 
   Future delete(int id) => ApiService.I
       .delete('/order/$id/delete',)

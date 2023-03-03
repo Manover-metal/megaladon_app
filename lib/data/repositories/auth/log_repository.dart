@@ -21,7 +21,9 @@ class TelegramLogerRepository {
   }
 
   sendLog(error, stacktrace) {
+    print('error');
     if (kDebugMode) {
+      print('aaaa');
       print(error);
     }else {
       teledart.sendMessage(chatId, '$error\n$stacktrace');

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:megaladon/logic/form/create/ad/ad_create_form_cubit.dart';
 import 'package:megaladon/logic/form/create/order/order_create_form_cubit.dart';
+import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/description_field.dart';
@@ -27,8 +28,8 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
   late TextEditingController _descriptionController;
 
   late CityPickerController _cityController;
-  late TextEditingController _minPriceController;
-  late TextEditingController _maxPriceController;
+  late TextEditingController _priceMaxController;
+  late TextEditingController _priceRecommendedController;
 
   _back() {
     context.router.pop();
@@ -36,7 +37,19 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
 
   _create() {
     if(_checkForm()) {
+      context.read<OrderCreateFormCubit>().createFetch().then((value) {
+        context.router.navigate(InitialRouter(
+          children: [
+            OrderRouter(
+              children: [
+                DetailsOrderRoute(orderId: value.id)
+              ]
+            )
+          ]
+        ));
+      }).catchError((error) {
 
+      });
     }
   }
 
@@ -46,7 +59,9 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
         title: _titleController.value.text,
         description: _descriptionController.value.text,
         category: _orderCategoryController.value,
-        city: _cityController.value
+        city: _cityController.value,
+        priceMax: int.tryParse(_priceMaxController.value.text),
+        priceRecommended: int.tryParse(_priceRecommendedController.value.text)
     );
   }
 
@@ -69,8 +84,8 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
     _orderCategoryController = OrderCategoryPickerController();
     _titleController = TextEditingController();
     _cityController = CityPickerController();
-    _minPriceController = TextEditingController();
-    _maxPriceController = TextEditingController();
+    _priceMaxController = TextEditingController();
+    _priceRecommendedController = TextEditingController();
     _descriptionController = TextEditingController();
     super.initState();
   }
@@ -82,9 +97,9 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
     _orderCategoryController.dispose();
     _titleController.dispose();
     _cityController.dispose();
-    _minPriceController.dispose();
-    _maxPriceController.dispose();
-
+    _descriptionController.dispose();
+    _priceMaxController.dispose();
+    _priceRecommendedController.dispose();
     super.dispose();
   }
 
@@ -104,9 +119,8 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                 TextFieldApp(controller: _titleController, label: 'Заголовок',),
                 CityPicker(label: 'Город', controller: _cityController),
                 DescriptionFieldApp(label: 'Описание', controller: _descriptionController),
-                TextNumberFieldApp(label: 'Желаемый бюджет (не обязательно)', controller: _minPriceController,),
-                TextNumberFieldApp(label: 'Допустимый бюджет (не обязательно)', controller: _maxPriceController,),
-                // BlocConsumer(builder: builder, listener: listener)
+                TextNumberFieldApp(label: 'Желаемый бюджет (не обязательно)', controller: _priceMaxController,),
+                TextNumberFieldApp(label: 'Допустимый бюджет (не обязательно)', controller: _priceRecommendedController,),
                 BlocListener<OrderCreateFormCubit, OrderCreateFormState>(
                   listener: _listenerForm,
                   child: ElevatedButtonApp(text: 'Создать', onPressed: _create,),

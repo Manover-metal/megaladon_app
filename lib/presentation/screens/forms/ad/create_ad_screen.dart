@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:megaladon/logic/form/create/ad/ad_create_form_cubit.dart';
+import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/description_field.dart';
@@ -22,7 +23,7 @@ class CreateAdScreen extends StatefulWidget {
 
 class _CreateAdScreenState extends State<CreateAdScreen> {
   late AdvertCategoryPickerController _advertCategoryController;
-  late TextEditingController _nameController;
+  late TextEditingController _titleController;
   late TextEditingController _descriptionController;
 
   late CityPickerController _cityController;
@@ -34,15 +35,26 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
   
   _create() {
     if(_checkForm()) {
-      
+      context.read<AdCreateFormCubit>().createFetch().then((value) {
+        context.router.navigate(InitialRouter(
+          children: [
+            AdRouter(
+              children: [DetailsAdRoute(id: value.id)]
+            )
+          ]
+        ));
+      }).catchError((error) {
+
+      });
     }
   }
 
   _checkForm() {
     AdCreateFormCubit form = context.read<AdCreateFormCubit>();
     return form.checkCreate(
-      name: _nameController.value.text,
+      title: _titleController.value.text,
       description: _descriptionController.value.text,
+      price: int.tryParse(_priceController.value.text),
       category: _advertCategoryController.value,
       city: _cityController.value
     );
@@ -50,8 +62,8 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
 
   _listenerForm(BuildContext context, AdCreateFormState state) {
     if(state.status.isInvalid) {
-      if(state.name.invalid) {
-        showErrorSnackBar(context, state.name.error.toString());
+      if(state.title.invalid) {
+        showErrorSnackBar(context, state.title.error.toString());
       } else if(state.description.invalid) {
         showErrorSnackBar(context, state.description.error.toString());
       } else if(state.category.invalid) {
@@ -65,7 +77,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
   @override
   void initState() {
     _advertCategoryController = AdvertCategoryPickerController();
-    _nameController = TextEditingController();
+    _titleController = TextEditingController();
     _cityController = CityPickerController();
     _priceController = TextEditingController();
     _descriptionController = TextEditingController();
@@ -77,10 +89,10 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
   @override
   void dispose() {
     _advertCategoryController.dispose();
-    _nameController.dispose();
+    _titleController.dispose();
     _cityController.dispose();
     _priceController.dispose();
-
+    _descriptionController.dispose();
     super.dispose();
   }
 
@@ -97,7 +109,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
                 TitleApp('Создать объявление'),
                 SizedBox(height: 30),
                 AdvertCategoryPicker(label: 'Категория', controller: _advertCategoryController),
-                TextFieldApp(controller: _nameController, label: 'Название',),
+                TextFieldApp(controller: _titleController, label: 'Название',),
                 CityPicker(label: 'Город', controller: _cityController),
                 DescriptionFieldApp(label: 'Описание', controller: _descriptionController),
                 TextNumberFieldApp(label: 'Цена', controller: _priceController,),

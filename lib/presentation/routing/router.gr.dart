@@ -81,6 +81,26 @@ class _$AppRouter extends RootStackRouter {
         child: CreateOrderScreen(),
       );
     },
+    UpdateAdRoute.name: (routeData) {
+      final args = routeData.argsAs<UpdateAdRouteArgs>();
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: UpdateAdScreen(
+          key: args.key,
+          advert: args.advert,
+        ),
+      );
+    },
+    UpdateOrderRoute.name: (routeData) {
+      final args = routeData.argsAs<UpdateOrderRouteArgs>();
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: UpdateOrderScreen(
+          key: args.key,
+          order: args.order,
+        ),
+      );
+    },
     CreateOfferRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
@@ -337,6 +357,14 @@ class _$AppRouter extends RootStackRouter {
           path: '/create-order-screen',
         ),
         RouteConfig(
+          UpdateAdRoute.name,
+          path: '/update-ad-screen',
+        ),
+        RouteConfig(
+          UpdateOrderRoute.name,
+          path: '/update-order-screen',
+        ),
+        RouteConfig(
           CreateOfferRoute.name,
           path: '/create-offer-screen',
         ),
@@ -484,6 +512,74 @@ class CreateOrderRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'CreateOrderRoute';
+}
+
+/// generated route for
+/// [UpdateAdScreen]
+class UpdateAdRoute extends PageRouteInfo<UpdateAdRouteArgs> {
+  UpdateAdRoute({
+    Key? key,
+    required AdvertModel advert,
+  }) : super(
+          UpdateAdRoute.name,
+          path: '/update-ad-screen',
+          args: UpdateAdRouteArgs(
+            key: key,
+            advert: advert,
+          ),
+        );
+
+  static const String name = 'UpdateAdRoute';
+}
+
+class UpdateAdRouteArgs {
+  const UpdateAdRouteArgs({
+    this.key,
+    required this.advert,
+  });
+
+  final Key? key;
+
+  final AdvertModel advert;
+
+  @override
+  String toString() {
+    return 'UpdateAdRouteArgs{key: $key, advert: $advert}';
+  }
+}
+
+/// generated route for
+/// [UpdateOrderScreen]
+class UpdateOrderRoute extends PageRouteInfo<UpdateOrderRouteArgs> {
+  UpdateOrderRoute({
+    Key? key,
+    required OrderModel order,
+  }) : super(
+          UpdateOrderRoute.name,
+          path: '/update-order-screen',
+          args: UpdateOrderRouteArgs(
+            key: key,
+            order: order,
+          ),
+        );
+
+  static const String name = 'UpdateOrderRoute';
+}
+
+class UpdateOrderRouteArgs {
+  const UpdateOrderRouteArgs({
+    this.key,
+    required this.order,
+  });
+
+  final Key? key;
+
+  final OrderModel order;
+
+  @override
+  String toString() {
+    return 'UpdateOrderRouteArgs{key: $key, order: $order}';
+  }
 }
 
 /// generated route for

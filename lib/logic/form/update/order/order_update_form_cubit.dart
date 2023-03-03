@@ -14,15 +14,16 @@ import 'package:megaladon/data/models/form/title.dart';
 import 'package:megaladon/data/models/form/title.dart';
 import 'package:megaladon/data/models/order_model.dart';
 import 'package:megaladon/data/models/request/params/order_create_request_params.dart';
+import 'package:megaladon/data/models/request/params/order_update_request_params.dart';
 import 'package:megaladon/data/repositories/order_repository.dart';
 
-part 'order_create_form_state.dart';
+part 'order_update_form_state.dart';
 
-class OrderCreateFormCubit extends Cubit<OrderCreateFormState> {
+class OrderUpdateFormCubit extends Cubit<OrderUpdateFormState> {
   final OrderRepository _repository = OrderRepository();
-  OrderCreateFormCubit() : super(OrderCreateFormState());
+  OrderUpdateFormCubit() : super(OrderUpdateFormState());
 
-  checkCreate({
+  checkUpdate({
     required String title,
     required String description,
     required int? priceMax,
@@ -48,7 +49,7 @@ class OrderCreateFormCubit extends Cubit<OrderCreateFormState> {
       priceRecommendedFormModel
     ]);
 
-    OrderCreateFormState stateNew = state.copyWith(
+    OrderUpdateFormState stateNew = state.copyWith(
         title: titleForm,
         description: descriptionForm,
         status: status,
@@ -62,8 +63,8 @@ class OrderCreateFormCubit extends Cubit<OrderCreateFormState> {
     return stateNew.status.isValid;
   }
 
-  Future<OrderModel> createFetch() async {
-    return _repository.create(OrderCreateRequestParams(
+  Future<OrderModel> updateFetch(int id) async {
+    return _repository.update(id, OrderUpdateRequestParams(
         title: state.title.value,
         description: state.title.value,
         priceMax: state.priceMax.value!,
