@@ -11,6 +11,8 @@ import 'package:megaladon/logic/form/auth/auth_form_cubit.dart';
 import 'package:megaladon/logic/form/create/ad/ad_create_form_cubit.dart';
 import 'package:megaladon/logic/form/create/order/order_create_form_cubit.dart';
 import 'package:megaladon/logic/form/register/register_user/register_user_form_cubit.dart';
+import 'package:megaladon/logic/form/update/ad/ad_update_form_cubit.dart';
+import 'package:megaladon/logic/form/update/order/order_update_form_cubit.dart';
 import 'package:megaladon/logic/form/verify/verify_form_cubit.dart';
 import 'package:megaladon/logic/register/register_user/register_user_bloc.dart';
 import 'package:megaladon/logic/screens/advert/details/advert_screen_details_cubit.dart';
@@ -105,6 +107,12 @@ class App extends StatelessWidget {
         ),
         BlocProvider<OrderCreateFormCubit>(
             create: (context) => OrderCreateFormCubit()
+        ),
+        BlocProvider<AdUpdateFormCubit>(
+            create: (context) => AdUpdateFormCubit()
+        ),
+        BlocProvider<OrderUpdateFormCubit>(
+            create: (context) => OrderUpdateFormCubit()
         )
       ],
       child: MaterialApp.router(

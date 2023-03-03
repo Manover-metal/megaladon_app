@@ -92,7 +92,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
     _titleController.dispose();
     _cityController.dispose();
     _priceController.dispose();
-
+    _descriptionController.dispose();
     super.dispose();
   }
 

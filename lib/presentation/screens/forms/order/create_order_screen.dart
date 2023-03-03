@@ -97,6 +97,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
     _orderCategoryController.dispose();
     _titleController.dispose();
     _cityController.dispose();
+    _descriptionController.dispose();
     _priceMaxController.dispose();
     _priceRecommendedController.dispose();
     super.dispose();
