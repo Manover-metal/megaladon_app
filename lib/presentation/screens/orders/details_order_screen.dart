@@ -136,7 +136,7 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                       ],
                     );
                   } else if(state is OrderScreenDetailsLoader) {
-                    return Loader();
+                    return Loader(padding: 10,);
                   } else if(state is OrderScreenDetailsError) {
                     return Text('error');
                   }

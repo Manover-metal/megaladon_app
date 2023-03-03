@@ -93,7 +93,7 @@ class _MyAdsScreenState extends State<MyAdsScreen> {
                             );
                           }
                           else if(state is AdvertScreenMyLoader) {
-                            return const Loader();
+                            return const Loader(padding: 10,);
                           }
                           return Container();
                         },

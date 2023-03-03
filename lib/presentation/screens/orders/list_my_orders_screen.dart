@@ -95,7 +95,7 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
                             );
                           }
                           else if(state is OrderScreenMyLoader) {
-                            return const Loader();
+                            return const Loader(padding: 10,);
                           }
                           return Container();
                         },
