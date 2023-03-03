@@ -30,9 +30,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await dotenv.load(fileName: '.env');
+  initializeGetIt();
   await IsarService.initialize();
   ApiService.initialize();
-  initializeGetIt();
 
   runApp(
     EasyLocalization(

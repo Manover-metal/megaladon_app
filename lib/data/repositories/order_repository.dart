@@ -1,5 +1,6 @@
 import 'package:megaladon/core/dio/index.dart';
 import 'package:megaladon/data/models/order_model.dart';
+import 'package:megaladon/data/models/request/params/order_create_request_params.dart';
 import 'package:megaladon/data/models/request/params/order_index_request_params.dart';
 
 class OrderRepository {
@@ -15,9 +16,9 @@ class OrderRepository {
       .get('/order/$id',)
       .then((value) => OrderModel.fromJsonFull(value.data['order']));
 
-  Future create() => ApiService.I
-      .post('/order',)
-      .then((value) => value.data);
+  Future<OrderModel> create(OrderCreateRequestParams params) => ApiService.I
+      .post('/order', queryParameters: params.toData())
+      .then((value) => OrderModel.fromJsonFull(value.data['order']));
 
   Future update(int id) => ApiService.I
       .post('/order/$id/update',)

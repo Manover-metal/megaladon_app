@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:megaladon/core/dio/index.dart';
 import 'package:megaladon/data/models/advert_model.dart';
 import 'package:megaladon/data/models/request/index_period_enum.dart';
+import 'package:megaladon/data/models/request/params/advert_create_request_params.dart';
 import 'package:megaladon/data/models/request/params/advert_index_request_params.dart';
 
 class AdvertRepository {
@@ -17,9 +18,9 @@ class AdvertRepository {
       .get('/adverts/$id',)
       .then((value) => AdvertModel.fromJsonAll(value.data['advert']));
 
-  Future create() => ApiService.I
-      .post('/adverts',)
-      .then((value) => value.data);
+  Future<AdvertModel> create(AdvertCreateRequestParams params) => ApiService.I
+      .post('/adverts', data: params.toData())
+      .then((value) => AdvertModel.fromJsonAll(value.data['advert']));
 
   Future update(int id) => ApiService.I
       .post('/adverts/$id/update',)
