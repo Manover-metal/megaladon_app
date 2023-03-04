@@ -24,39 +24,28 @@ import 'package:megaladon/presentation/screens/store/details_store_screen.dart';
 import 'package:megaladon/presentation/screens/store/list_stores_screen.dart';
 import 'package:megaladon/presentation/screens/splash_screen.dart';
 
+import '../screens/profile/settings_screen.dart';
+
 part 'router.gr.dart';
 
-
 const List<AutoRoute> profile = [
-  AutoRoute(
-      page: ProfileScreen,
-      path: ''
-  )
+  AutoRoute(page: ProfileScreen, path: ''),
+  AutoRoute(page: SettingsScreen),
 ];
 
-
 const List<AutoRoute> ad = [
-  AutoRoute(
-      page: TradingAdsScreen,
-      path: ''
-  ),
+  AutoRoute(page: TradingAdsScreen, path: ''),
   AutoRoute(page: DetailsAdScreen),
   AutoRoute(page: MyAdsScreen),
 ];
 
 const List<AutoRoute> store = [
-  AutoRoute(
-      page: ListStoresScreen,
-      path: ''
-  ),
+  AutoRoute(page: ListStoresScreen, path: ''),
   AutoRoute(page: DetailsStoreScreen),
 ];
 
 const List<AutoRoute> order = [
-  AutoRoute(
-    page: ListOrdersScreen,
-    path: ''
-  ),
+  AutoRoute(page: ListOrdersScreen, path: ''),
   AutoRoute(page: ListMyOrdersScreen),
   AutoRoute(page: DetailsOrderScreen),
   AutoRoute(page: ListExecutorsScreen),
@@ -66,10 +55,8 @@ const List<AutoRoute> order = [
 
 const List<AutoRoute> auth = [
   AutoRoute(page: LoginScreen),
-
   AutoRoute(page: ForgotPasswordScreen),
   AutoRoute(page: ResetPasswordScreen),
-
   AutoRoute(page: RegisterUserScreen),
   AutoRoute(page: RegisterExecutorScreen),
   AutoRoute(page: RegisterStoreScreen),
@@ -80,50 +67,39 @@ const List<AutoRoute> form = [
   AutoRoute(page: CreateAdScreen),
   AutoRoute(page: CreateOrderScreen),
   AutoRoute(page: CreateOfferScreen)
-
 ];
-
 
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Screen,Route',
   routes: <AutoRoute>[
-    AutoRoute(page: SplashScreen,
-      name: 'InitialRouter',
-      path: '/',
-      children: [
-        AutoRoute(
+    AutoRoute(page: SplashScreen, name: 'InitialRouter', path: '/', children: [
+      AutoRoute(
           page: _EmptyRouteWidget,
           name: 'OrderRouter',
           path: 'order',
           children: order,
-          initial: true
-        ),
-        AutoRoute(
-            page: _EmptyRouteWidget,
-            name: 'StoreRouter',
-            path: 'store',
-            children: store
-        ),
-        AutoRoute(
-            page: _EmptyRouteWidget,
-            name: 'AdRouter',
-            path: 'ad',
-            children: ad
-        ),
-        AutoRoute(
-            page: _EmptyRouteWidget,
-            name: 'ProfileRouter',
-            path: 'profile',
-            children: profile
-        )
-      ]
-    ),
+          initial: true),
+      AutoRoute(
+          page: _EmptyRouteWidget,
+          name: 'StoreRouter',
+          path: 'store',
+          children: store),
+      AutoRoute(
+          page: _EmptyRouteWidget, name: 'AdRouter', path: 'ad', children: ad),
+      AutoRoute(
+          page: _EmptyRouteWidget,
+          name: 'ProfileRouter',
+          path: 'profile',
+          children: profile),
+
+      // create_ratkum
+     
+    ]),
     ...auth,
     ...form
   ],
 )
-
 class AppRouter extends _$AppRouter {}
 
 class _EmptyRouteWidget extends StatelessWidget {
