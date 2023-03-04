@@ -24,7 +24,7 @@ class ReviewScreen extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                HeaderAppBar(
+                const HeaderAppBar(
                   isBack: true,
                 ),
                 TitleApp('Отзыв по заказу №1321412313'),
