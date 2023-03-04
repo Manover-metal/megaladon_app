@@ -45,30 +45,30 @@ class _MyAdsScreenState extends State<MyAdsScreen> {
           headerSliverBuilder: (context, isBool) {
             return [
               SliverToBoxAdapter(
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Column(
-                          children: [
-                            HeaderAppBar(isMenu: true, ),
-                            TitleApp('Мои объявления'),
-                            SizedBox(height: 20,),
-                          ],
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
+                        children: [
+                          HeaderAppBar(isMenu: true, ),
+                          TitleApp('Мои объявления'),
+                          SizedBox(height: 20,),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: InkWell(
+                          child: Icon(Icons.filter_alt,  size: 30),
+                          onTap: _showFilter,
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: InkWell(
-                            child: Icon(Icons.filter_alt,  size: 30),
-                            onTap: _showFilter,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
+                    ),
+                  ],
+                )
               ),
             ];
           },

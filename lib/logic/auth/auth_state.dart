@@ -1,7 +1,8 @@
 part of 'auth_bloc.dart';
 
 abstract class AuthState extends Equatable {
-  const AuthState();
+  final bool isAuth;
+  const AuthState({this.isAuth = false});
 }
 
 class AuthInitial extends AuthState {
@@ -12,7 +13,8 @@ class AuthInitial extends AuthState {
 class AuthLoginState extends AuthState {
   final AuthModel auth;
 
-  const AuthLoginState(this.auth);
+
+  const AuthLoginState(this.auth): super(isAuth: true);
 
   @override
   List<Object?> get props => [auth];

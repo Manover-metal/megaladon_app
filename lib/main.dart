@@ -17,6 +17,8 @@ import 'package:megaladon/logic/form/verify/verify_form_cubit.dart';
 import 'package:megaladon/logic/register/register_user/register_user_bloc.dart';
 import 'package:megaladon/logic/screens/advert/details/advert_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/advert/my/advert_screen_my_cubit.dart';
+import 'package:megaladon/logic/screens/offers/details/offer_screen_details_cubit.dart';
+import 'package:megaladon/logic/screens/offers/list/offer_screen_main_cubit.dart';
 import 'package:megaladon/logic/screens/orders/details/order_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/orders/main/order_screen_main_cubit.dart';
 import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
@@ -97,6 +99,12 @@ class App extends StatelessWidget {
         ),
         BlocProvider<StoreScreenDetailsCubit>(
             create: (context) => StoreScreenDetailsCubit()
+        ),
+        BlocProvider<OfferScreenMainCubit>(
+            create: (context) => OfferScreenMainCubit()
+        ),
+        BlocProvider<OfferScreenDetailsCubit>(
+            create: (context) => OfferScreenDetailsCubit()
         ),
         BlocProvider<DictionaryCubit>(
             lazy: false,
