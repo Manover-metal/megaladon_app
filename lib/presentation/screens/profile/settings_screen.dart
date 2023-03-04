@@ -1,4 +1,3 @@
-
 // ignore_for_file: use_key_in_widget_constructors, avoid_unnecessary_containers, prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
@@ -61,7 +60,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 });
                               },
                             ),
-                        
+                            
                           ],
                         ),
                         OutlinedButtonApp(
@@ -104,8 +103,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  DropdownMenuItem buildMenuItem(String listLang) =>
-      DropdownMenuItem(value: listLang, child: Text(listLang));
 }
 
 class SwitchExample extends StatefulWidget {
