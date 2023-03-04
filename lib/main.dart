@@ -23,6 +23,7 @@ import 'package:megaladon/logic/screens/store/main/store_screen_main_cubit.dart'
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'core/get.dart';
+import 'generated/codegen_loader.g.dart';
 import 'logic/screens/advert/main/advert_screen_main_cubit.dart';
 // import 'generated/locale_keys.g.dart';
 
@@ -36,6 +37,7 @@ void main() async {
 
   runApp(
     EasyLocalization(
+      assetLoader: CodegenLoader(),
       supportedLocales: [
         Locale('en'),
         Locale('ru')
