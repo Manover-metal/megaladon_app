@@ -98,28 +98,26 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
                 constraints: BoxConstraints(
                     minHeight: MediaQuery.of(context).size.height
                 ),
+                padding: EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: BlocBuilder<OrderScreenMainCubit, OrderScreenMainState>(
-                        builder: (context, state) {
-                          if(state is OrderScreenMainSuccess) {
-                            return Column(
-                              children: state.orders.map((order) {
-                                return OrderCard(order: order);
-                              }).toList(),
-                            );
-                          }
-                          else if(state is OrderScreenMainLoader) {
-                            return const Loader(padding: 10,);
-                          } else if(state is OrderScreenMainError) {
-                            return Text('error');
-                          }
-                          return Container();
-                        },
-                      ),
-                    )
+                    BlocBuilder<OrderScreenMainCubit, OrderScreenMainState>(
+                      builder: (context, state) {
+                        if(state is OrderScreenMainSuccess) {
+                          return Column(
+                            children: state.orders.map((order) {
+                              return OrderCard(order: order);
+                            }).toList(),
+                          );
+                        }
+                        else if(state is OrderScreenMainLoader) {
+                          return const Loader(padding: 10,);
+                        } else if(state is OrderScreenMainError) {
+                          return Text('error');
+                        }
+                        return Container();
+                      },
+                    ),
                   ],
                 ),
               ),

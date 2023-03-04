@@ -81,26 +81,24 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
                 constraints: BoxConstraints(
                     minHeight: MediaQuery.of(context).size.height
                 ),
+                padding: EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: BlocBuilder<OrderScreenMyCubit, OrderScreenMyState>(
-                        builder: (context, state) {
-                          if(state is OrderScreenMySuccess) {
-                            return Column(
-                              children: state.orders.map((order) {
-                                return OrderCard(order: order);
-                              }).toList(),
-                            );
-                          }
-                          else if(state is OrderScreenMyLoader) {
-                            return const Loader(padding: 10,);
-                          }
-                          return Container();
-                        },
-                      ),
-                    )
+                    BlocBuilder<OrderScreenMyCubit, OrderScreenMyState>(
+                      builder: (context, state) {
+                        if(state is OrderScreenMySuccess) {
+                          return Column(
+                            children: state.orders.map((order) {
+                              return OrderCard(order: order);
+                            }).toList(),
+                          );
+                        }
+                        else if(state is OrderScreenMyLoader) {
+                          return const Loader(padding: 10,);
+                        }
+                        return Container();
+                      },
+                    ),
                   ],
                 ),
               ),

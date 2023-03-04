@@ -109,7 +109,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                 BlocBuilder<AuthBloc,AuthState>(
                   builder: (context, state) {
                     if(state is AuthLoginState) {
-                      return ElevatedButtonApp(child: Loader(), onPressed: _verify,);
+                      return ElevatedButtonApp(child: Loader(color: Theme.of(context).colorScheme.background,), onPressed: _verify,);
                     }
                     return ElevatedButtonApp(text: 'Подтвердить', onPressed: _verify,);
                   }

@@ -79,25 +79,23 @@ class _MyAdsScreenState extends State<MyAdsScreen> {
                 constraints: BoxConstraints(
                     minHeight: MediaQuery.of(context).size.height
                 ),
+                padding: EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: BlocBuilder<AdvertScreenMyCubit, AdvertScreenMyState>(
-                        builder: (context, state) {
-                          if(state is AdvertScreenMySuccess) {
-                            return Column(
-                              children: state.adverts.map((advert) {
-                                return AdCard(advert: advert,);
-                              }).toList(),
-                            );
-                          }
-                          else if(state is AdvertScreenMyLoader) {
-                            return const Loader(padding: 10,);
-                          }
-                          return Container();
-                        },
-                      ),
+                    BlocBuilder<AdvertScreenMyCubit, AdvertScreenMyState>(
+                      builder: (context, state) {
+                        if(state is AdvertScreenMySuccess) {
+                          return Column(
+                            children: state.adverts.map((advert) {
+                              return AdCard(advert: advert,);
+                            }).toList(),
+                          );
+                        }
+                        else if(state is AdvertScreenMyLoader) {
+                          return const Loader(padding: 10,);
+                        }
+                        return Container();
+                      },
                     )
                   ],
                 ),
