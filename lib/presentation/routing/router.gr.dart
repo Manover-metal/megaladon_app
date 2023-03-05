@@ -102,9 +102,13 @@ class _$AppRouter extends RootStackRouter {
       );
     },
     CreateOfferRoute.name: (routeData) {
+      final args = routeData.argsAs<CreateOfferRouteArgs>();
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: CreateOfferScreen(),
+        child: CreateOfferScreen(
+          key: args.key,
+          orderId: args.orderId,
+        ),
       );
     },
     OrderRouter.name: (routeData) {
@@ -593,14 +597,36 @@ class UpdateOrderRouteArgs {
 
 /// generated route for
 /// [CreateOfferScreen]
-class CreateOfferRoute extends PageRouteInfo<void> {
-  const CreateOfferRoute()
-      : super(
+class CreateOfferRoute extends PageRouteInfo<CreateOfferRouteArgs> {
+  CreateOfferRoute({
+    Key? key,
+    required int orderId,
+  }) : super(
           CreateOfferRoute.name,
           path: '/create-offer-screen',
+          args: CreateOfferRouteArgs(
+            key: key,
+            orderId: orderId,
+          ),
         );
 
   static const String name = 'CreateOfferRoute';
+}
+
+class CreateOfferRouteArgs {
+  const CreateOfferRouteArgs({
+    this.key,
+    required this.orderId,
+  });
+
+  final Key? key;
+
+  final int orderId;
+
+  @override
+  String toString() {
+    return 'CreateOfferRouteArgs{key: $key, orderId: $orderId}';
+  }
 }
 
 /// generated route for

@@ -9,6 +9,7 @@ class OrderUpdateFormState extends Equatable {
   final OrderCategoryFormModel category ;
   final CityFormModel city;
   final int countTry;
+  final EnumFormState formState;
 
 
   const OrderUpdateFormState({
@@ -19,7 +20,8 @@ class OrderUpdateFormState extends Equatable {
     this.city = const CityFormModel.pure(),
     this.priceMax = const PriceFormModel.pure(),
     this.priceRecommended = const PriceFormModel.pure(),
-    this.countTry = 0
+    this.countTry = 0,
+    this.formState = EnumFormState.filled
   });
 
 
@@ -34,7 +36,8 @@ class OrderUpdateFormState extends Equatable {
     PriceFormModel? priceRecommended,
     OrderCategoryFormModel? category,
     CityFormModel? city,
-    int? countTry
+    int? countTry,
+    EnumFormState? formState
   }) {
     return OrderUpdateFormState(
       status: status ?? this.status,
@@ -44,7 +47,8 @@ class OrderUpdateFormState extends Equatable {
       priceRecommended: priceRecommended ?? this.priceRecommended,
       category: category ?? this.category,
       city: city ?? this.city,
-      countTry: countTry ?? this.countTry
+      countTry: countTry ?? this.countTry,
+      formState: formState ?? this.formState
     );
   }
 }

@@ -5,7 +5,7 @@ import 'package:megaladon/data/models/request/params/offer_create_request_params
 class OfferRepository {
   Future create(int orderId, OfferCreateRequestParams params) => ApiService.I
       .post('/order/$orderId/offer', data: params.toData())
-      .then((value) => OfferModel.fromJsonFull(value.data['offer']));
+      .then((value) => value.data);
 
   Future getAll(int orderId) => ApiService.I
       .get('order/$orderId/offer')

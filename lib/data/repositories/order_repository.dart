@@ -17,13 +17,13 @@ class OrderRepository {
       .get('/order/$id',)
       .then((value) => OrderModel.fromJsonFull(value.data['order']));
 
-  Future<OrderModel> create(OrderCreateRequestParams params) => ApiService.I
-      .post('/order', queryParameters: params.toData())
-      .then((value) => OrderModel.fromJsonFull(value.data['order']));
+  Future create(OrderCreateRequestParams params) => ApiService.I
+      .post('/order/create', data: params.toData())
+      .then((value) => value.data);
 
-  Future<OrderModel> update(int id, OrderUpdateRequestParams params) => ApiService.I
+  Future update(int id, OrderUpdateRequestParams params) => ApiService.I
       .post('/order/$id/update', data: params.toData())
-      .then((value) => OrderModel.fromJsonFull(value.data['order']));
+      .then((value) => value.data['order']);
 
   Future delete(int id) => ApiService.I
       .delete('/order/$id/delete',)

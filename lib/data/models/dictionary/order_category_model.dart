@@ -6,10 +6,11 @@ class OrderCategoryModel {
   OrderCategoryModel({required this.id, required this.name});
 
   static OrderCategoryModel fromJson(data) {
+    print(data);
     try {
       return OrderCategoryModel(
         id: data['id'],
-        name: data['name'],
+        name: data['title'],
       );
     } catch(e) {
       return OrderCategoryModel.nothing;

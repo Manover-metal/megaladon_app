@@ -1,4 +1,7 @@
+import 'package:isar/isar.dart';
+
 class UserModel {
+
   final int id;
   final String name;
   final String? phone;

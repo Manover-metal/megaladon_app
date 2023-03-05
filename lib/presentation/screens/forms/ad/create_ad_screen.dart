@@ -1,7 +1,10 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:megaladon/core/get.dart';
+import 'package:megaladon/data/models/enum_form_state.dart';
 import 'package:megaladon/logic/form/create/ad/ad_create_form_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
@@ -12,6 +15,7 @@ import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picke
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/advert_category_picker.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_number_field.dart';
+import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
@@ -35,16 +39,21 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
   
   _create() {
     if(_checkForm()) {
+      print('aaa');
       context.read<AdCreateFormCubit>().createFetch().then((value) {
+        context.router.popUntil((route) => route.settings.name == InitialRouter.name);
         context.router.navigate(InitialRouter(
           children: [
             AdRouter(
-              children: [DetailsAdRoute(id: value.id)]
+              children: [MyAdsRoute()]
             )
           ]
         ));
-      }).catchError((error) {
 
+      }).catchError((error) {
+        if(error is DioError) {
+          showErrorSnackBar(context, error.response?.data['message']);
+        }
       });
     }
   }
@@ -54,7 +63,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
     return form.checkCreate(
       title: _titleController.value.text,
       description: _descriptionController.value.text,
-      price: int.tryParse(_priceController.value.text),
+      price: _priceController.value.text,
       category: _advertCategoryController.value,
       city: _cityController.value
     );
@@ -114,9 +123,14 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
                 DescriptionFieldApp(label: 'Описание', controller: _descriptionController),
                 TextNumberFieldApp(label: 'Цена', controller: _priceController,),
                 // BlocConsumer(builder: builder, listener: listener)
-                BlocListener<AdCreateFormCubit, AdCreateFormState>(
+                BlocConsumer<AdCreateFormCubit, AdCreateFormState>(
                   listener: _listenerForm,
-                  child: ElevatedButtonApp(text: 'Создать', onPressed: _create,),
+                  builder: (context, state) {
+                    if(state.formState == EnumFormState.fetch) {
+                      return ElevatedButtonApp(child: Loader(color: Theme.of(context).colorScheme.background), onPressed: () {},);
+                    }
+                    return ElevatedButtonApp(text: 'Создать', onPressed: _create,);
+                  }
                 ),
                 OutlinedButtonApp(text: 'Отменить', onPressed: _back,),
               ],

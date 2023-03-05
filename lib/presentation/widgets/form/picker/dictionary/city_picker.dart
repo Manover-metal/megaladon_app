@@ -41,8 +41,9 @@ class CityPickerController extends ValueNotifier<CityModel> {
 class CityPicker extends StatefulWidget {
   final String label;
   final CityPickerController controller;
+  final Widget? icon;
 
-  const CityPicker({super.key, required this.label, required this.controller});
+  const CityPicker({super.key, required this.label, required this.controller, this.icon});
 
   @override
   State<CityPicker> createState() => _CityPickerState();
@@ -85,9 +86,11 @@ class _CityPickerState extends State<CityPicker> {
       child: ValueListenableBuilder(
         builder: (BuildContext context, CityModel city, Widget? child) {
           return TextField(
+
             controller: _textController,
             onTap: _handleClick(context),
             decoration: InputDecoration(
+                icon: widget.icon,
                 labelText: widget.label,
                 labelStyle: TextStyle(
                     fontSize: 18

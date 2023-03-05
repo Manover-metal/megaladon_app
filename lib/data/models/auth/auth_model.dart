@@ -11,6 +11,6 @@ class AuthModel {
 
   late String? token;
 
-  late UserModel? user;
+  late int? userId;
 
 }

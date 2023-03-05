@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:megaladon/data/models/enum_form_state.dart';
 import 'package:megaladon/data/models/order_model.dart';
 import 'package:megaladon/logic/form/create/ad/ad_create_form_cubit.dart';
 import 'package:megaladon/logic/form/create/order/order_create_form_cubit.dart';
@@ -15,6 +16,7 @@ import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picke
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/order_category_picker.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_number_field.dart';
+import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
@@ -43,6 +45,7 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
 
   _create() {
     if(_checkForm()) {
+      context.router.popUntil((route) => route.settings.name == InitialRouter.name);
       context.read<OrderUpdateFormCubit>().updateFetch(widget.order.id).then((value) {
         context.router.navigate(InitialRouter(
             children: [
@@ -66,8 +69,8 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
         description: _descriptionController.value.text,
         category: _orderCategoryController.value,
         city: _cityController.value,
-        priceMax: int.tryParse(_priceMaxController.value.text),
-        priceRecommended: int.tryParse(_priceRecommendedController.value.text)
+        priceMax: _priceMaxController.value.text,
+        priceRecommended: _priceRecommendedController.value.text
     );
   }
 
@@ -127,9 +130,14 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
                 DescriptionFieldApp(label: 'Описание', controller: _descriptionController),
                 TextNumberFieldApp(label: 'Желаемый бюджет (не обязательно)', controller: _priceMaxController,),
                 TextNumberFieldApp(label: 'Допустимый бюджет (не обязательно)', controller: _priceRecommendedController,),
-                BlocListener<OrderUpdateFormCubit, OrderUpdateFormState>(
+                BlocConsumer<OrderUpdateFormCubit, OrderUpdateFormState>(
                   listener: _listenerForm,
-                  child: ElevatedButtonApp(text: 'Изменить', onPressed: _create,),
+                  builder: (context, state) {
+                    if(state.formState == EnumFormState.fetch) {
+                      return ElevatedButtonApp(child: Loader(color: Theme.of(context).colorScheme.background), onPressed: () {},);
+                    }
+                    return ElevatedButtonApp(text: 'Изменить', onPressed: _create,);
+                  }
                 ),
                 OutlinedButtonApp(text: 'Отменить', onPressed: _back,),
               ],

@@ -19,7 +19,7 @@ class OrderCreateRequestParams {
     required this.additionalPhone
   });
 
-  toData() {
+  FormData toData() {
     FormData data = FormData.fromMap({
       'title': title,
       'description': description,

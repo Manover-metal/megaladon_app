@@ -5,7 +5,7 @@ class OfferCreateRequestParams {
   final String date;
   final String comment;
   final int cityId;
-  final DateTime expiredAt;
+  final String expiredAt;
 
   OfferCreateRequestParams({
     required this.price,
@@ -16,8 +16,9 @@ class OfferCreateRequestParams {
   });
 
   toData() {
+    print(price);
     FormData data = FormData.fromMap({
-      'price': price,
+      'price': int.parse(price),
       'comment': comment,
       'date': date,
       'city_id': cityId,

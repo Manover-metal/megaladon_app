@@ -9,6 +9,7 @@ import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/dictionary/dictionary_cubit.dart';
 import 'package:megaladon/logic/form/auth/auth_form_cubit.dart';
 import 'package:megaladon/logic/form/create/ad/ad_create_form_cubit.dart';
+import 'package:megaladon/logic/form/create/offer/create_offer_form_cubit.dart';
 import 'package:megaladon/logic/form/create/order/order_create_form_cubit.dart';
 import 'package:megaladon/logic/form/register/register_user/register_user_form_cubit.dart';
 import 'package:megaladon/logic/form/update/ad/ad_update_form_cubit.dart';
@@ -115,6 +116,9 @@ class App extends StatelessWidget {
         ),
         BlocProvider<OrderCreateFormCubit>(
             create: (context) => OrderCreateFormCubit()
+        ),
+        BlocProvider<CreateOfferFormCubit>(
+            create: (context) => CreateOfferFormCubit()
         ),
         BlocProvider<AdUpdateFormCubit>(
             create: (context) => AdUpdateFormCubit()

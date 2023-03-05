@@ -10,7 +10,7 @@ class AdvertCategoryModel {
     try {
       return AdvertCategoryModel(
         id: data['id'],
-        name: data['name'],
+        name: data['title'],
       );
     } catch(e) {
       return AdvertCategoryModel.nothing;

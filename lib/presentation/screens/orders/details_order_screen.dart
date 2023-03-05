@@ -25,7 +25,7 @@ class DetailsOrderScreen extends StatefulWidget {
 
 class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
   _createOffer(BuildContext context) => () {
-    context.router.push(const CreateOfferRoute());
+    context.router.push(CreateOfferRoute(orderId: widget.orderId));
   };
 
   _checkExecutors(BuildContext context) => () {
