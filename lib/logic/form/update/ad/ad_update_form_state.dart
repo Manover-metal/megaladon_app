@@ -15,6 +15,7 @@ class AdUpdateFormState extends Equatable {
   final AdvertCategoryFormModel category ;
   final CityFormModel city;
   final int countTry;
+  final EnumFormState formState;
 
 
   const AdUpdateFormState({
@@ -25,6 +26,7 @@ class AdUpdateFormState extends Equatable {
     this.city = const CityFormModel.pure(),
     this.countTry = 0,
     this.price = const PriceFormModel.pure(),
+    this.formState = EnumFormState.filled
   });
 
 
@@ -39,7 +41,8 @@ class AdUpdateFormState extends Equatable {
     CityFormModel? city,
     int? countTry,
     AdUpdateForm? state,
-    PriceFormModel? price
+    PriceFormModel? price,
+    EnumFormState? formState
   }) {
     return AdUpdateFormState(
       status: status ?? this.status,
@@ -49,6 +52,7 @@ class AdUpdateFormState extends Equatable {
       city: city ?? this.city,
       price: price ?? this.price,
       countTry: countTry ?? this.countTry,
+      formState: formState ?? this.formState
     );
   }
 }

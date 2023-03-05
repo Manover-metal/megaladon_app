@@ -55,16 +55,16 @@ class DrawerApp extends StatelessWidget {
                     ],
                     if(state is AuthLoginState) ...[
                       DrawerRouteTile(text: 'Мои заказы', page: InitialRouter(
-                        children: [
-                          OrderRouter(children: [ListMyOrdersRoute()])
-                        ],
-                      ),
+                          children: [
+                            OrderRouter(children: [ListMyOrdersRoute()])
+                          ],
+                        ),
                       ),
                       DrawerRouteTile(text: 'Мои объявления', page: InitialRouter(
-                        children: [
-                          AdRouter(children: [MyAdsRoute()])
-                        ],
-                      ),
+                          children: [
+                            AdRouter(children: [MyAdsRoute()])
+                          ],
+                        ),
                       ),
                       Divider(thickness: 1,)
                     ],
@@ -72,7 +72,6 @@ class DrawerApp extends StatelessWidget {
                 );
               }
             ),
-
             ...[
               DrawerRouteTile(text: 'Заказы', page: InitialRouter(children: [OrderRouter()]),),
               DrawerRouteTile(text: 'Магазины', page: InitialRouter(children: [StoreRouter()]),),

@@ -19,13 +19,13 @@ class AdvertRepository {
       .get('/adverts/$id',)
       .then((value) => AdvertModel.fromJsonAll(value.data['advert']));
 
-  Future<AdvertModel> create(AdvertCreateRequestParams params) => ApiService.I
+  Future create(AdvertCreateRequestParams params) => ApiService.I
       .post('/adverts', data: params.toData())
-      .then((value) => AdvertModel.fromJsonAll(value.data['advert']));
+      .then((value) => value.data);
 
-  Future<AdvertModel> update(int id, AdvertUpdateRequestParams params) => ApiService.I
+  Future update(int id, AdvertUpdateRequestParams params) => ApiService.I
       .post('/adverts/$id/update', data: params.toData())
-      .then((value) => AdvertModel.fromJsonAll(value.data['advert']));
+      .then((value) => value.data);
 
   Future delete(int id) => ApiService.I
       .delete('/adverts/$id/delete',)

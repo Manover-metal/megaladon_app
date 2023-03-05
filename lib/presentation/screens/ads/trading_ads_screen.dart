@@ -80,26 +80,28 @@ class _TradingAdsScreenState extends State<TradingAdsScreen> {
                   constraints: BoxConstraints(
                       minHeight: MediaQuery.of(context).size.height
                   ),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: BlocBuilder<AdvertScreenMainCubit, AdvertScreenMainState>(
-                      builder: (context, state) {
-                        if(state is AdvertScreenMainSuccess) {
-                          return Column(
-                            children: state.adverts.map((advert) {
-                              return AdCard(advert: advert,);
-                            }).toList(),
-                          );
-                        }
-                        else if(state is AdvertScreenMainLoader) {
-                          return const Loader(padding: 10,);
-                        } else if(state is AdvertScreenMainError) {
-                          return Text('error');
-                        }
-                        return Container();
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    children: [
+                      BlocBuilder<AdvertScreenMainCubit, AdvertScreenMainState>(
+                        builder: (context, state) {
+                          if(state is AdvertScreenMainSuccess) {
+                            return Column(
+                              children: state.adverts.map((advert) {
+                                return AdCard(advert: advert,);
+                              }).toList(),
+                            );
+                          }
+                          else if(state is AdvertScreenMainLoader) {
+                            return const Loader(padding: 10,);
+                          } else if(state is AdvertScreenMainError) {
+                            return Text('error');
+                          }
+                          return Container();
 
-                      },
-                    ),
+                        },
+                      ),
+                    ],
                   ),
                 ),
               ),

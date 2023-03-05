@@ -102,9 +102,13 @@ class _$AppRouter extends RootStackRouter {
       );
     },
     CreateOfferRoute.name: (routeData) {
+      final args = routeData.argsAs<CreateOfferRouteArgs>();
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: CreateOfferScreen(),
+        child: CreateOfferScreen(
+          key: args.key,
+          orderId: args.orderId,
+        ),
       );
     },
     OrderRouter.name: (routeData) {
@@ -154,15 +158,24 @@ class _$AppRouter extends RootStackRouter {
       );
     },
     ListExecutorsRoute.name: (routeData) {
+      final args = routeData.argsAs<ListExecutorsRouteArgs>();
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: ListExecutorsScreen(),
+        child: ListExecutorsScreen(
+          key: args.key,
+          orderId: args.orderId,
+        ),
       );
     },
     DetailsOfferRoute.name: (routeData) {
+      final args = routeData.argsAs<DetailsOfferRouteArgs>();
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: DetailsOfferScreen(),
+        child: DetailsOfferScreen(
+          key: args.key,
+          orderId: args.orderId,
+          offerId: args.offerId,
+        ),
       );
     },
     ReviewRoute.name: (routeData) {
@@ -584,14 +597,36 @@ class UpdateOrderRouteArgs {
 
 /// generated route for
 /// [CreateOfferScreen]
-class CreateOfferRoute extends PageRouteInfo<void> {
-  const CreateOfferRoute()
-      : super(
+class CreateOfferRoute extends PageRouteInfo<CreateOfferRouteArgs> {
+  CreateOfferRoute({
+    Key? key,
+    required int orderId,
+  }) : super(
           CreateOfferRoute.name,
           path: '/create-offer-screen',
+          args: CreateOfferRouteArgs(
+            key: key,
+            orderId: orderId,
+          ),
         );
 
   static const String name = 'CreateOfferRoute';
+}
+
+class CreateOfferRouteArgs {
+  const CreateOfferRouteArgs({
+    this.key,
+    required this.orderId,
+  });
+
+  final Key? key;
+
+  final int orderId;
+
+  @override
+  String toString() {
+    return 'CreateOfferRouteArgs{key: $key, orderId: $orderId}';
+  }
 }
 
 /// generated route for
@@ -706,26 +741,75 @@ class DetailsOrderRouteArgs {
 
 /// generated route for
 /// [ListExecutorsScreen]
-class ListExecutorsRoute extends PageRouteInfo<void> {
-  const ListExecutorsRoute()
-      : super(
+class ListExecutorsRoute extends PageRouteInfo<ListExecutorsRouteArgs> {
+  ListExecutorsRoute({
+    Key? key,
+    required int orderId,
+  }) : super(
           ListExecutorsRoute.name,
           path: 'list-executors-screen',
+          args: ListExecutorsRouteArgs(
+            key: key,
+            orderId: orderId,
+          ),
         );
 
   static const String name = 'ListExecutorsRoute';
 }
 
+class ListExecutorsRouteArgs {
+  const ListExecutorsRouteArgs({
+    this.key,
+    required this.orderId,
+  });
+
+  final Key? key;
+
+  final int orderId;
+
+  @override
+  String toString() {
+    return 'ListExecutorsRouteArgs{key: $key, orderId: $orderId}';
+  }
+}
+
 /// generated route for
 /// [DetailsOfferScreen]
-class DetailsOfferRoute extends PageRouteInfo<void> {
-  const DetailsOfferRoute()
-      : super(
+class DetailsOfferRoute extends PageRouteInfo<DetailsOfferRouteArgs> {
+  DetailsOfferRoute({
+    Key? key,
+    required int orderId,
+    required int offerId,
+  }) : super(
           DetailsOfferRoute.name,
           path: 'details-offer-screen',
+          args: DetailsOfferRouteArgs(
+            key: key,
+            orderId: orderId,
+            offerId: offerId,
+          ),
         );
 
   static const String name = 'DetailsOfferRoute';
+}
+
+class DetailsOfferRouteArgs {
+  const DetailsOfferRouteArgs({
+    this.key,
+    required this.orderId,
+    required this.offerId,
+  });
+
+  final Key? key;
+
+  final int orderId;
+
+  final int offerId;
+
+  @override
+  String toString() {
+    return 'DetailsOfferRouteArgs{key: $key, orderId: $orderId, offerId: $offerId}';
+  }
 }
 
 /// generated route for

@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/screens/orders/details/order_screen_details_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/screens/forms/offer/create_offer_screen.dart';
@@ -24,11 +25,11 @@ class DetailsOrderScreen extends StatefulWidget {
 
 class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
   _createOffer(BuildContext context) => () {
-    context.router.push(const CreateOfferRoute());
+    context.router.push(CreateOfferRoute(orderId: widget.orderId));
   };
 
   _checkExecutors(BuildContext context) => () {
-    context.router.push(const ListExecutorsRoute());
+    context.router.push(ListExecutorsRoute(orderId: widget.orderId));
   };
 
   _accept(BuildContext context) => () {
@@ -65,85 +66,88 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
               constraints: BoxConstraints(
                   minHeight: MediaQuery.of(context).size.height
               ),
-              child: BlocBuilder<OrderScreenDetailsCubit, OrderScreenDetailsState>(
+              child: BlocBuilder<AuthBloc, AuthState>(
                 builder: (context, state) {
-                  if(state is OrderScreenDetailsSuccess) {
-                    return Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Column(
-                            children: [
-                              TitleApp('Заказ №${state.order.id}'),
-                              SizedBox(height: 20,),
+                  return BlocBuilder<OrderScreenDetailsCubit, OrderScreenDetailsState>(
+                    builder: (context, state) {
+                      if(state is OrderScreenDetailsSuccess) {
+                        return Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                              child: Column(
+                                children: [
+                                  TitleApp('Заказ №${state.order.id}'),
+                                  SizedBox(height: 20,),
 
-                              Text(state.order.title),
-                              Text(state.order.description),
-                              SizedBox(height: 20,),
-                              if(state.order.files!.isEmpty) ...[
-                                SubTitleApp('Нет прикреплённых файлов'),
-                                SizedBox(height: 10,),
-                              ]
-                              else ...[
-                                SubTitleApp('Прикреплённые файлы'),
-                                SizedBox(height: 10,),
-                                FileDownloadList(),
-                              ],
-                            ],
-                          ),
-                        ),
-                        Divider(thickness: 1),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Желаемый бюджет: до ${state.order.priceRecommended} ₸'),
-                              Text('Допустимый: до ${state.order.priceMax} ₸'),
-                              SizedBox(height: 20,),
+                                  Text(state.order.title),
+                                  Text(state.order.description),
+                                  SizedBox(height: 20,),
+                                  if(state.order.files!.isEmpty) ...[
+                                    SubTitleApp('Нет прикреплённых файлов'),
+                                    SizedBox(height: 10,),
+                                  ]
+                                  else ...[
+                                    SubTitleApp('Прикреплённые файлы'),
+                                    SizedBox(height: 10,),
+                                    FileDownloadList(),
+                                  ],
+                                ],
+                              ),
+                            ),
+                            Divider(thickness: 1),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Желаемый бюджет: до ${state.order.priceRecommended} ₸'),
+                                  Text('Допустимый: до ${state.order.priceMax} ₸'),
+                                  SizedBox(height: 20,),
 
-                              // UserTile(),
-                              SizedBox(height: 20,),
+                                  // UserTile(),
+                                  SizedBox(height: 20,),
 
-                              ...[
-                                ElevatedButtonApp(
-                                  text: 'Предложить услуги',
-                                  onPressed: _createOffer(context),
-                                ),
-                                OutlinedButtonApp(text: 'Обсудить в чате'),
-                              ],
-                              ...[
-                                ElevatedButtonApp(
-                                  text: 'Предложения (${state.order.countOffers} новых)',
-                                  onPressed: _checkExecutors(context),
-                                ),
-                                OutlinedButtonApp(text: 'Обсудить в чате (5 новых)'),
-                              ],
-                              ...[
-                                ElevatedButtonApp(
-                                  text: 'Принять работу',
-                                  onPressed: _accept(context),
-                                ),
-                                ElevatedButtonApp(
-                                  text: 'Отклонить работу',
-                                  onPressed: _decline(context),
+                                  ...[
+                                    ElevatedButtonApp(
+                                      text: 'Предложить услуги',
+                                      onPressed: _createOffer(context),
+                                    ),
+                                    OutlinedButtonApp(text: 'Обсудить в чате'),
+                                  ],
+                                  ...[
+                                    ElevatedButtonApp(
+                                      text: 'Предложения (${state.order.countOffers} новых)',
+                                      onPressed: _checkExecutors(context),
+                                    ),
+                                    OutlinedButtonApp(text: 'Обсудить в чате (5 новых)'),
+                                  ],
+                                  ...[
+                                    ElevatedButtonApp(
+                                      text: 'Принять работу',
+                                      onPressed: _accept(context),
+                                    ),
+                                    ElevatedButtonApp(
+                                      text: 'Отклонить работу',
+                                      onPressed: _decline(context),
 
-                                ),
-                              ]
-                            ],
-                          ),
-                        )
-                      ],
-                    );
-                  } else if(state is OrderScreenDetailsLoader) {
-                    return Loader(padding: 10,);
-                  } else if(state is OrderScreenDetailsError) {
-                    return Text('error');
-                  }
-                  return Container();
-
-                  },
-                ),
+                                    ),
+                                  ]
+                                ],
+                              ),
+                            )
+                          ],
+                        );
+                      } else if(state is OrderScreenDetailsLoader) {
+                        return Loader(padding: 10,);
+                      } else if(state is OrderScreenDetailsError) {
+                        return Text('error');
+                      }
+                      return Container();
+                    },
+                  );
+                },
+              ),
             ),
           ),
         ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:megaladon/data/models/advert_model.dart';
+import 'package:megaladon/data/models/enum_form_state.dart';
 import 'package:megaladon/logic/form/create/ad/ad_create_form_cubit.dart';
 import 'package:megaladon/logic/form/update/ad/ad_update_form_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
@@ -14,6 +15,7 @@ import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picke
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/advert_category_picker.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_number_field.dart';
+import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
@@ -41,6 +43,7 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
 
   _create() {
     if(_checkForm()) {
+      context.router.popUntil((route) => route.settings.name == InitialRouter.name);
       context.read<AdUpdateFormCubit>().updateFetch(widget.advert.id).then((value) {
         context.router.navigate(InitialRouter(
             children: [
@@ -60,7 +63,7 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
     return form.checkUpdate(
         title: _titleController.value.text,
         description: _descriptionController.value.text,
-        price: int.tryParse(_priceController.value.text),
+        price: _priceController.value.text,
         category: _advertCategoryController.value,
         city: _cityController.value
     );
@@ -120,9 +123,14 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
                 DescriptionFieldApp(label: 'Описание', controller: _descriptionController),
                 TextNumberFieldApp(label: 'Цена', controller: _priceController,),
                 // BlocConsumer(builder: builder, listener: listener)
-                BlocListener<AdUpdateFormCubit, AdUpdateFormState>(
-                  listener: _listenerForm,
-                  child: ElevatedButtonApp(text: 'Изменить', onPressed: _create,),
+                BlocConsumer<AdUpdateFormCubit, AdUpdateFormState>(
+                    listener: _listenerForm,
+                    builder: (context, state) {
+                      if(state.formState == EnumFormState.fetch) {
+                        return ElevatedButtonApp(child: Loader(color: Theme.of(context).colorScheme.background), onPressed: () {},);
+                      }
+                      return ElevatedButtonApp(text: 'Изменить', onPressed: _create,);
+                    }
                 ),
                 OutlinedButtonApp(text: 'Отменить', onPressed: _back,),
               ],

@@ -118,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 BlocBuilder<AuthBloc, AuthState>(
                   builder: (context, state) {
                     if(state is AuthLoadingState) {
-                      return ElevatedButtonApp(child: Loader(), onPressed: (){});
+                      return ElevatedButtonApp(child: Loader(color: Theme.of(context).colorScheme.background), onPressed: (){});
                     }
                     return ElevatedButtonApp(text: 'Войти', onPressed: _login);
                   }

@@ -5,6 +5,7 @@ import 'package:megaladon/data/models/category_model.dart';
 import 'package:megaladon/data/models/dictionary/advert_category_model.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/dictionary/order_category_model.dart';
+import 'package:megaladon/data/models/enum_form_state.dart';
 import 'package:megaladon/data/models/form/description.dart';
 import 'package:megaladon/data/models/form/dictionary/advert_category.dart';
 import 'package:megaladon/data/models/form/dictionary/city.dart';
@@ -26,8 +27,8 @@ class OrderUpdateFormCubit extends Cubit<OrderUpdateFormState> {
   checkUpdate({
     required String title,
     required String description,
-    required int? priceMax,
-    required int? priceRecommended,
+    required String priceMax,
+    required String priceRecommended,
     required CityModel city,
     required OrderCategoryModel category,
     
@@ -63,15 +64,20 @@ class OrderUpdateFormCubit extends Cubit<OrderUpdateFormState> {
     return stateNew.status.isValid;
   }
 
-  Future<OrderModel> updateFetch(int id) async {
+  Future updateFetch(int id) async {
+    emit(state.copyWith(formState: EnumFormState.fetch));
     return _repository.update(id, OrderUpdateRequestParams(
         title: state.title.value,
         description: state.title.value,
-        priceMax: state.priceMax.value!,
-        priceRecommended: state.priceRecommended.value!,
+        priceMax: int.parse(state.priceMax.value),
+        priceRecommended: int.parse(state.priceRecommended.value),
         categoryId: state.category.value,
         cityId: state.city.value,
         additionalPhone: '+77074054407',
-    ));
+    )).then((value) {
+      emit(state.copyWith(formState: EnumFormState.success));
+    }).catchError((error) {
+      emit(state.copyWith(formState: EnumFormState.error));
+    });
   }
 }
