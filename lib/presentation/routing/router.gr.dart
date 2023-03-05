@@ -228,6 +228,12 @@ class _$AppRouter extends RootStackRouter {
         child: ProfileScreen(),
       );
     },
+    SettingsRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: SettingsScreen(),
+      );
+    },
   };
 
   @override
@@ -328,7 +334,12 @@ class _$AppRouter extends RootStackRouter {
                   ProfileRoute.name,
                   path: '',
                   parent: ProfileRouter.name,
-                )
+                ),
+                RouteConfig(
+                  SettingsRoute.name,
+                  path: 'settings-screen',
+                  parent: ProfileRouter.name,
+                ),
               ],
             ),
           ],
@@ -938,4 +949,16 @@ class ProfileRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'ProfileRoute';
+}
+
+/// generated route for
+/// [SettingsScreen]
+class SettingsRoute extends PageRouteInfo<void> {
+  const SettingsRoute()
+      : super(
+          SettingsRoute.name,
+          path: 'settings-screen',
+        );
+
+  static const String name = 'SettingsRoute';
 }

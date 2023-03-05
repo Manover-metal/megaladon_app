@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/presentation/routing/router.dart';
+import 'package:megaladon/presentation/screens/profile/settings_screen.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/tiles/drawer_route_tile.dart';
@@ -68,6 +71,7 @@ class DrawerApp extends StatelessWidget {
                           ],
                         ),
                       ),
+                    
                       Divider(thickness: 1,)
                     ],
                   ],
@@ -78,6 +82,8 @@ class DrawerApp extends StatelessWidget {
               DrawerRouteTile(text: LocaleKeys.Orders.tr(), page: InitialRouter(children: [OrderRouter()]),),
               DrawerRouteTile(text: LocaleKeys.Theshops.tr(), page: InitialRouter(children: [StoreRouter()]),),
               DrawerRouteTile(text: 'Торговая площадка', page: InitialRouter(children: [AdRouter()]),),
+              //Create_ratkum
+              DrawerRouteTile(text: 'Настройки', page: InitialRouter(children: [ProfileRouter(children: [SettingsRoute()])]),),
               Divider(thickness: 1,)
             ],
             BlocBuilder<AuthBloc, AuthState>(
