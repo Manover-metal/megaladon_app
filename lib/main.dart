@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +30,7 @@ import 'package:megaladon/logic/screens/store/main/store_screen_main_cubit.dart'
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'core/get.dart';
+import 'generated/codegen_loader.g.dart';
 import 'logic/screens/advert/main/advert_screen_main_cubit.dart';
 // import 'generated/locale_keys.g.dart';
 
@@ -41,6 +44,8 @@ void main() async {
 
   runApp(
     EasyLocalization(
+      assetLoader: CodegenLoader(),
+      // ignore: prefer_const_literals_to_create_immutables
       supportedLocales: [
         Locale('en'),
         Locale('ru')

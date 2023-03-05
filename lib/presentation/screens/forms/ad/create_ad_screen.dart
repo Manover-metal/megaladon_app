@@ -3,8 +3,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:megaladon/core/get.dart';
 import 'package:megaladon/data/models/enum_form_state.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:megaladon/generated/locale_keys.g.dart';
 import 'package:megaladon/logic/form/create/ad/ad_create_form_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
@@ -12,7 +13,6 @@ import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/description_field.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/advert_category_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
-import 'package:megaladon/presentation/widgets/form/picker/dictionary/advert_category_picker.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_number_field.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
@@ -115,13 +115,13 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
             child: Column(
               children: [
                 HeaderAppBar(isBack: true, ),
-                TitleApp('Создать объявление'),
+                TitleApp(LocaleKeys.Creating_an_ad.tr()),
                 SizedBox(height: 30),
-                AdvertCategoryPicker(label: 'Категория', controller: _advertCategoryController),
                 TextFieldApp(controller: _titleController, label: 'Название',),
-                CityPicker(label: 'Город', controller: _cityController),
-                DescriptionFieldApp(label: 'Описание', controller: _descriptionController),
-                TextNumberFieldApp(label: 'Цена', controller: _priceController,),
+                AdvertCategoryPicker(label: LocaleKeys.Select_a_category.tr(), controller: _advertCategoryController),
+                CityPicker(label: LocaleKeys.Choose_city.tr(), controller: _cityController),
+                DescriptionFieldApp(label: LocaleKeys.Description_of_your_offer.tr(), controller: _descriptionController),
+                TextNumberFieldApp(label: LocaleKeys.Price.tr(), controller: _priceController,),
                 // BlocConsumer(builder: builder, listener: listener)
                 BlocConsumer<AdCreateFormCubit, AdCreateFormState>(
                   listener: _listenerForm,
@@ -129,10 +129,10 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
                     if(state.formState == EnumFormState.fetch) {
                       return ElevatedButtonApp(child: Loader(color: Theme.of(context).colorScheme.background), onPressed: () {},);
                     }
-                    return ElevatedButtonApp(text: 'Создать', onPressed: _create,);
+                    return ElevatedButtonApp(text: LocaleKeys.Create_ad.tr(), onPressed: _create,);
                   }
                 ),
-                OutlinedButtonApp(text: 'Отменить', onPressed: _back,),
+                OutlinedButtonApp(text: LocaleKeys.Cancel.tr(), onPressed: _back,),
               ],
             ),
           ),

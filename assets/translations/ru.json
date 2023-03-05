@@ -18,5 +18,70 @@
   "Edit": "Изменить",
   "Delete": "Удалить",
   "Copy": "Копировать",
-  "Cut": "Вставить"
+  "Cut": "Вставить",
+
+"Orders": "Заказы",
+
+
+
+
+"Theshops" : "Магазины",
+"All":"Все",
+"Active":"Активные",
+"In_rocessing":"В обработке",
+"In_work":"В работе",
+"Archive":"Архив ",
+"Field_of_activity":"Сфера деятельности",
+"Rating":"Рейтинг ",
+"Location":"Местоположение",
+
+"Create_an_order":"Создание заказа",
+"Select_a_category":"Выберите категорию",
+"Job_title":"Название работы",
+"Description_of_work":"Описание работы",
+"Choose_city":"Выберите город",
+"Desired_budget":"Желаемый бюджет (не обязательно)",
+"Allowed_budget":"Допустимый бюджет (не обязательно)",
+"Attach_files":"Прикрепить файлы:",
+"Add_file":"Добавить файл",
+"Create_order":"Создать заказ",
+"Cancel":"Отмена",
+
+
+"Creating_an_ad":"Создание объявления",
+"Headline":"Заголовок объявления",
+"Description_of_your_offer":"Описание вашего предложения",
+"Price":"Цена",
+"Create_ad":"Создать объявление",
+
+
+"Name":"Имя",
+"Telephone":"Телефон",
+
+"Artist_data":"Данные исполнителя",
+"Organization":"Организация",
+"Address":"Адрес",
+"Services":"Услуги",
+"Subscription":"Подписка",
+
+"Store_data":"Данные магазина",
+"Description":"Описание",
+"Email":"Email",
+"Website":"Сайт",
+"Price_lists":"Прайс-листы",
+
+"Authorization":"Авторизация",
+"Your_phone_number":"Ваш телефон",
+"Your_password":"Ваш пароль",
+"Forgot_your_password":"Забыли пароль?",
+"Sign_in":"Войти",
+
+"Registration":"Регистрация",
+
+
+"What_is_your_name":"Как вас зовут",
+"Choose_password":"Выберите пароль",
+"Confirm_the_password":"Подтвердите пароль",
+"Register":"Зарегистрироваться"
+
 }
