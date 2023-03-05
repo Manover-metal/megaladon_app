@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +40,7 @@ void main() async {
   runApp(
     EasyLocalization(
       assetLoader: CodegenLoader(),
+      // ignore: prefer_const_literals_to_create_immutables
       supportedLocales: [
         Locale('en'),
         Locale('ru')

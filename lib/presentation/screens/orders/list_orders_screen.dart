@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/logic/screens/orders/main/order_screen_main_cubit.dart';
@@ -7,6 +8,7 @@ import 'package:megaladon/presentation/widgets/card/order_card.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
+import 'package:megaladon/generated/locale_keys.g.dart';
 
 class ListOrdersScreen extends StatefulWidget {
   @override
@@ -64,8 +66,10 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
                         child: Column(
                           children: [
                             HeaderAppBar(isMenu: true, ),
-                            TitleApp('Заказы'),
+                            TitleApp(LocaleKeys.Orders.tr()),
                             SizedBox(height: 20,),
+                            
+                            
                           ],
                         ),
                       ),

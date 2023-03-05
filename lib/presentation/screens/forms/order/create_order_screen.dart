@@ -1,7 +1,11 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:megaladon/generated/locale_keys.g.dart';
 import 'package:megaladon/logic/form/create/ad/ad_create_form_cubit.dart';
 import 'package:megaladon/logic/form/create/order/order_create_form_cubit.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
@@ -98,20 +102,20 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
             child: Column(
               children: [
                 HeaderAppBar(isBack: true, ),
-                TitleApp('Создать заказ'),
+                TitleApp(LocaleKeys.Create_an_order.tr()),
                 SizedBox(height: 30),
-                OrderCategoryPicker(label: 'Категория', controller: _orderCategoryController),
+                OrderCategoryPicker(label: LocaleKeys.Select_a_category.tr(), controller: _orderCategoryController),
                 TextFieldApp(controller: _titleController, label: 'Заголовок',),
-                CityPicker(label: 'Город', controller: _cityController),
-                DescriptionFieldApp(label: 'Описание', controller: _descriptionController),
-                TextNumberFieldApp(label: 'Желаемый бюджет (не обязательно)', controller: _minPriceController,),
-                TextNumberFieldApp(label: 'Допустимый бюджет (не обязательно)', controller: _maxPriceController,),
+                CityPicker(label: LocaleKeys.Choose_city.tr(), controller: _cityController),
+                DescriptionFieldApp(label: LocaleKeys.Description_of_work.tr(), controller: _descriptionController),
+                TextNumberFieldApp(label: LocaleKeys.Desired_budget.tr(), controller: _minPriceController,),
+                TextNumberFieldApp(label: LocaleKeys.Allowed_budget.tr(), controller: _maxPriceController,),
                 // BlocConsumer(builder: builder, listener: listener)
                 BlocListener<OrderCreateFormCubit, OrderCreateFormState>(
                   listener: _listenerForm,
-                  child: ElevatedButtonApp(text: 'Создать', onPressed: _create,),
+                  child: ElevatedButtonApp(text: LocaleKeys.Create_order.tr(), onPressed: _create,),
                 ),
-                OutlinedButtonApp(text: 'Отменить', onPressed: _back,),
+                OutlinedButtonApp(text: LocaleKeys.Cancel.tr(), onPressed: _back,),
               ],
             ),
           ),

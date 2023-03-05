@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:megaladon/generated/locale_keys.g.dart';
 import 'package:megaladon/logic/form/create/ad/ad_create_form_cubit.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
@@ -94,19 +96,19 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
             child: Column(
               children: [
                 HeaderAppBar(isBack: true, ),
-                TitleApp('Создать объявление'),
+                TitleApp(LocaleKeys.Creating_an_ad.tr()),
                 SizedBox(height: 30),
-                AdvertCategoryPicker(label: 'Категория', controller: _advertCategoryController),
+                AdvertCategoryPicker(label: LocaleKeys.Select_a_category.tr(), controller: _advertCategoryController),
                 TextFieldApp(controller: _nameController, label: 'Название',),
-                CityPicker(label: 'Город', controller: _cityController),
-                DescriptionFieldApp(label: 'Описание', controller: _descriptionController),
-                TextNumberFieldApp(label: 'Цена', controller: _priceController,),
+                CityPicker(label: LocaleKeys.Choose_city.tr(), controller: _cityController),
+                DescriptionFieldApp(label: LocaleKeys.Description_of_your_offer.tr(), controller: _descriptionController),
+                TextNumberFieldApp(label: LocaleKeys.Price.tr(), controller: _priceController,),
                 // BlocConsumer(builder: builder, listener: listener)
                 BlocListener<AdCreateFormCubit, AdCreateFormState>(
                   listener: _listenerForm,
-                  child: ElevatedButtonApp(text: 'Создать', onPressed: _create,),
+                  child: ElevatedButtonApp(text: LocaleKeys.Create_ad.tr(), onPressed: _create,),
                 ),
-                OutlinedButtonApp(text: 'Отменить', onPressed: _back,),
+                OutlinedButtonApp(text: LocaleKeys.Cancel.tr(), onPressed: _back,),
               ],
             ),
           ),
