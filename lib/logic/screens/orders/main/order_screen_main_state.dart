@@ -21,10 +21,11 @@ class OrderScreenMainLoader extends OrderScreenMainState {
 }
 
 class OrderScreenMainError extends OrderScreenMainState {
-  OrderScreenMainError() : super(params: OrderIndexRequestParams());
+  final ErrorModel error;
+  OrderScreenMainError(this.error) : super(params: OrderIndexRequestParams());
 
   @override
-  List<Object> get props => [params];
+  List<Object> get props => [error, params];
 }
 
 class OrderScreenMainSuccess extends  OrderScreenMainState {

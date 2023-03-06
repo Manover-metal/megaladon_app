@@ -5,6 +5,7 @@ import 'package:megaladon/generated/locale_keys.g.dart';
 import 'package:megaladon/logic/screens/store/main/store_screen_main_cubit.dart';
 import 'package:megaladon/presentation/widgets/bottom_sheet/filters/filter_store_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/card/store_card.dart';
+import 'package:megaladon/presentation/widgets/error/error_message.dart';
 import 'package:megaladon/presentation/widgets/list/status_order_list.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
@@ -97,7 +98,7 @@ class _ListStoresScreenState extends State<ListStoresScreen> {
                         else if(state is StoreScreenMainLoader) {
                           return const Loader(padding: 10,);
                         } else if(state is StoreScreenMainError) {
-                          return Text('error');
+                          return ErrorMessage(error: state.error);
                         }
                         return Container();
                       },

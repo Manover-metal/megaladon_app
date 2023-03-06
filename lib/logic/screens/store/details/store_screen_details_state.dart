@@ -17,10 +17,11 @@ class StoreScreenDetailsLoader extends StoreScreenDetailsState {
 }
 
 class StoreScreenDetailsError extends StoreScreenDetailsState {
-  StoreScreenDetailsError();
+  final ErrorModel error;
+  StoreScreenDetailsError(this.error);
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [error];
 }
 
 class StoreScreenDetailsSuccess extends  StoreScreenDetailsState {

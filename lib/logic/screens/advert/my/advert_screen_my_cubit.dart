@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:megaladon/data/models/advert_model.dart';
+import 'package:megaladon/data/models/error_model.dart';
 import 'package:megaladon/data/models/request/params/advert_index_request_params.dart';
 import 'package:megaladon/data/repositories/advert_repository.dart';
 
@@ -23,7 +25,9 @@ class AdvertScreenMyCubit extends Cubit<AdvertScreenMyState> {
         ));
       }
     }).catchError((error) {
-      emit(AdvertScreenMyError());
+      if(error is DioError) {
+        emit(AdvertScreenMyError(ErrorModel.parseDio(error)));
+      }
     });
   }
 

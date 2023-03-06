@@ -17,10 +17,12 @@ class AdvertScreenDetailsLoader extends AdvertScreenDetailsState {
 }
 
 class AdvertScreenDetailsError extends AdvertScreenDetailsState {
-  AdvertScreenDetailsError();
+  final ErrorModel error;
+
+  AdvertScreenDetailsError(this.error);
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [error];
 }
 
 class AdvertScreenDetailsSuccess extends  AdvertScreenDetailsState {

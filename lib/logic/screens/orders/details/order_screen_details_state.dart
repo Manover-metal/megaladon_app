@@ -17,10 +17,11 @@ class OrderScreenDetailsLoader extends OrderScreenDetailsState {
 }
 
 class OrderScreenDetailsError extends OrderScreenDetailsState {
-  OrderScreenDetailsError();
+  final ErrorModel error;
+  OrderScreenDetailsError(this.error);
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [error];
 }
 
 class OrderScreenDetailsSuccess extends  OrderScreenDetailsState {

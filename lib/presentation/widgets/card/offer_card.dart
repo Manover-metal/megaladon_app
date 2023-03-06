@@ -29,7 +29,7 @@ class OfferCard extends StatelessWidget {
       child: Column(
         children: [
           ExecutorTile(),
-          DataTile(title: 'Описание: ', data: offer.comment),
+          DataTile(title: 'Описание: ', data: offer.comment ?? ''),
           DataTile(title: 'Сроки: ', data: offer.date),
           DataTile(title: 'Цена: ', data: offer.price),
           SizedBox(

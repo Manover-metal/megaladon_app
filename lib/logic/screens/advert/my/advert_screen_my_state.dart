@@ -21,10 +21,11 @@ class AdvertScreenMyLoader extends AdvertScreenMyState {
 }
 
 class AdvertScreenMyError extends AdvertScreenMyState {
-  AdvertScreenMyError() : super(params: AdvertIndexRequestParams());
+  final ErrorModel error;
+  AdvertScreenMyError(this.error) : super(params: AdvertIndexRequestParams());
 
   @override
-  List<Object> get props => [params];
+  List<Object> get props => [error, params];
 }
 
 class AdvertScreenMySuccess extends  AdvertScreenMyState {

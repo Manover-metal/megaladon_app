@@ -21,10 +21,11 @@ class OrderScreenMyLoader extends OrderScreenMyState {
 }
 
 class OrderScreenMyError extends OrderScreenMyState {
-  OrderScreenMyError() : super(params: OrderIndexRequestParams());
+  final ErrorModel error;
+  OrderScreenMyError(this.error) : super(params: OrderIndexRequestParams());
 
   @override
-  List<Object> get props => [params];
+  List<Object> get props => [error, params];
 }
 
 class OrderScreenMySuccess extends  OrderScreenMyState {

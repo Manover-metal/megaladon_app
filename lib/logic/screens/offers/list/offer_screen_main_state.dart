@@ -18,9 +18,12 @@ class OfferScreenMainLoader extends OfferScreenMainState {
 }
 
 class OfferScreenMainError extends OfferScreenMainState {
+  final ErrorModel error;
+
+  OfferScreenMainError(this.error);
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [error];
 }
 
 class OfferScreenMainSuccess extends  OfferScreenMainState {
