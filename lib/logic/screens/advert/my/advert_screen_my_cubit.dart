@@ -27,6 +27,8 @@ class AdvertScreenMyCubit extends Cubit<AdvertScreenMyState> {
     }).catchError((error) {
       if(error is DioError) {
         emit(AdvertScreenMyError(ErrorModel.parseDio(error)));
+      } else {
+        emit(AdvertScreenMyError(ErrorModel.nothing));
       }
     });
   }

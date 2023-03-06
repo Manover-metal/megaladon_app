@@ -24,6 +24,8 @@ class StoreScreenDetailsCubit extends Cubit<StoreScreenDetailsState> {
     }).catchError(( error) {
       if(error is DioError) {
         emit(StoreScreenDetailsError(ErrorModel.parseDio(error)));
+      } else {
+        emit(StoreScreenDetailsError(ErrorModel.nothing));
       }
     });
   }

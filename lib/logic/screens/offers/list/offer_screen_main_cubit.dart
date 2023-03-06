@@ -23,7 +23,7 @@ class OfferScreenMainCubit extends Cubit<OfferScreenMainState> {
       print(error);
       if(error is DioError) {
         emit(OfferScreenMainError(ErrorModel.parseDio(error)));
-      }else {
+      } else {
         emit(OfferScreenMainError(ErrorModel.nothing));
       }
     });

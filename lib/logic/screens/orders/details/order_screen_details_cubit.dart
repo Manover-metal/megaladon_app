@@ -23,6 +23,8 @@ class OrderScreenDetailsCubit extends Cubit<OrderScreenDetailsState> {
     }).catchError(( error) {
       if(error is DioError) {
         emit(OrderScreenDetailsError(ErrorModel.parseDio(error)));
+      } else {
+        emit(OrderScreenDetailsError(ErrorModel.nothing));
       }
     });
   }

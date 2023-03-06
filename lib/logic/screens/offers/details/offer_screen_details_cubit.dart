@@ -24,6 +24,8 @@ class OfferScreenDetailsCubit extends Cubit<OfferScreenDetailsState> {
     }).catchError(( error) {
       if(error is DioError) {
         emit(OfferScreenDetailsError(ErrorModel.parseDio(error)));
+      } else {
+        emit(OfferScreenDetailsError(ErrorModel.nothing));
       }
     });
   }
