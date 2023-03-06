@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/core/get.dart';
-import 'package:megaladon/icons/my_icon_icons.dart';
 import 'package:megaladon/presentation/widgets/drawer/drawer_app.dart';
 
 class HeaderAppBar extends StatelessWidget {
@@ -41,7 +40,7 @@ class HeaderAppBar extends StatelessWidget {
            if(isMenu) GestureDetector(
               onTap: _showDrawer(context),
               child: const Icon(
-                MyIcon.menu,
+                Icons.menu,
                 size: 30,
               ),
             )

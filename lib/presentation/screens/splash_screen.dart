@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/core/get.dart';
-import 'package:megaladon/icons/my_icon_icons.dart';
+import 'package:megaladon/core/icons/icons.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/bottom_sheet/add_anything_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/drawer/drawer_app.dart';
@@ -49,25 +49,25 @@ class SplashScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Tab(icon: MyIcon.basket ,
+                  Tab(icon: IconPack.basket ,
                     isActive: 0 == tabsRouter.activeIndex,
                     click: _handleClick(tabsRouter, 0),
                     doubleClick: _doubleTap(context, InitialRouter(children: [OrderRouter()])),
                   ),
-                  Tab(icon: MyIcon.market,
+                  Tab(icon: IconPack.market,
                     isActive: 1 == tabsRouter.activeIndex,
                     click: _handleClick(tabsRouter, 1),
                     doubleClick: _doubleTap(context, InitialRouter(children: [StoreRouter()])),
 
                   ),
                   SizedBox(width: 50,),
-                  Tab(icon: MyIcon.chat,
+                  Tab(icon: IconPack.chat,
                     isActive: 2 == tabsRouter.activeIndex,
                     click: _handleClick(tabsRouter, 2),
                     doubleClick: _doubleTap(context, InitialRouter(children: [AdRouter()])),
 
                   ),
-                  Tab(icon: MyIcon.profile,
+                  Tab(icon: IconPack.profile,
                     isActive: 3 == tabsRouter.activeIndex,
                     click: _handleClick(tabsRouter, 3),
                     doubleClick: _doubleTap(context, InitialRouter(children: [ProfileRouter()])),
