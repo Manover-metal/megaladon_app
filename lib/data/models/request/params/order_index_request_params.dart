@@ -14,7 +14,7 @@ class OrderIndexRequestParams {
 
   const OrderIndexRequestParams({
       this.startRow = 0,
-      this.rowsPerPage = 6,
+      this.rowsPerPage = 15,
       this.desc = false,
       this.city,
       this.category,
