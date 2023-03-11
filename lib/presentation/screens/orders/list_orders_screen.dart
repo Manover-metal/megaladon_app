@@ -1,10 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:megaladon/data/models/request/params/order_index_request_params.dart';
 import 'package:megaladon/logic/screens/orders/main/order_screen_main_cubit.dart';
 import 'package:megaladon/presentation/widgets/bottom_sheet/filters/filter_order_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/bottom_sheet/sort/sort_order_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/card/order_card.dart';
+import 'package:megaladon/presentation/widgets/error_message.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
@@ -16,12 +18,8 @@ class ListOrdersScreen extends StatefulWidget {
 }
 
 class _ListOrdersScreenState extends State<ListOrdersScreen> {
+  late ScrollController _scrollController;
 
-  @override
-  void initState() {
-    _onRefresh();
-    super.initState();
-  }
 
   Future _onRefresh() async {
     await context.read<OrderScreenMainCubit>().fetch();
@@ -49,6 +47,31 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
     if(result != null) {
       context.read<OrderScreenMainCubit>().fetch();
     }
+  }
+
+  _listenerScroll() {
+    if (_scrollController.position.maxScrollExtent < _scrollController.position.pixels + 500) {
+      final cubit = context.read<OrderScreenMainCubit>();
+      if(cubit.state.status != OrderScreenMainStatus.loading) {
+        OrderIndexRequestParams params = cubit.state.params;
+        cubit.fetch(params: params.copyWith(startRow: params.startRow + 1));
+      }
+    }
+  }
+
+
+  @override
+  void initState() {
+    _scrollController = ScrollController()..addListener(_listenerScroll);
+    _onRefresh();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_listenerScroll);
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -98,6 +121,7 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
           body: RefreshIndicator(
             onRefresh: _onRefresh,
             child: SingleChildScrollView(
+              controller: _scrollController,
               child: Container(
                 constraints: BoxConstraints(
                     minHeight: MediaQuery.of(context).size.height
@@ -107,19 +131,15 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
                   children: [
                     BlocBuilder<OrderScreenMainCubit, OrderScreenMainState>(
                       builder: (context, state) {
-                        if(state is OrderScreenMainSuccess) {
-                          return Column(
-                            children: state.orders.map((order) {
+                        return Column(
+                          children: [
+                            ...state.orders.map((order) {
                               return OrderCard(order: order);
                             }).toList(),
-                          );
-                        }
-                        else if(state is OrderScreenMainLoader) {
-                          return const Loader(padding: 10,);
-                        } else if(state is OrderScreenMainError) {
-                          return Text('error');
-                        }
-                        return Container();
+                            if(state.status == OrderScreenMainStatus.loading) const Loader(padding: 10,),
+                            if(state.status == OrderScreenMainStatus.error)  ErrorMessage(error: state.error!)
+                          ],
+                        );
                       },
                     ),
                   ],

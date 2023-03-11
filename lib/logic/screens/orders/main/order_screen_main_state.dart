@@ -1,47 +1,39 @@
 part of 'order_screen_main_cubit.dart';
 
-abstract class OrderScreenMainState extends Equatable {
+enum OrderScreenMainStatus {
+  loading,
+  error,
+  success
+}
+
+class OrderScreenMainState extends Equatable {
+  final OrderScreenMainStatus status;
+  final List<OrderModel> orders;
+  final ErrorModel? error;
   final OrderIndexRequestParams params;
 
-  OrderScreenMainState({required this.params});
-}
-
-class OrderScreenMainInitial extends OrderScreenMainState {
-  OrderScreenMainInitial() : super(params: OrderIndexRequestParams());
-
-  @override
-  List<Object> get props => [params];
-}
-
-class OrderScreenMainLoader extends OrderScreenMainState {
-  OrderScreenMainLoader() : super(params: OrderIndexRequestParams());
+  const OrderScreenMainState({
+    this.status = OrderScreenMainStatus.success,
+    this.orders = const [],
+    this.error,
+    this.params =  const OrderIndexRequestParams()
+  });
 
   @override
-  List<Object> get props => [params];
-}
+  List<Object?> get props => [status, orders, error, params];
 
-class OrderScreenMainError extends OrderScreenMainState {
-  OrderScreenMainError() : super(params: OrderIndexRequestParams());
-
-  @override
-  List<Object> get props => [params];
-}
-
-class OrderScreenMainSuccess extends  OrderScreenMainState {
-  final List<OrderModel> orders;
-
-  OrderScreenMainSuccess({required this.orders, required params}): super(params: params);
-
-  @override
-  List<Object?> get props => [params, orders];
-
-  OrderScreenMainSuccess copyWith({
-    OrderIndexRequestParams? params,
-    List<OrderModel>? orders
+  OrderScreenMainState copyWith({
+    OrderScreenMainStatus? status,
+    List<OrderModel>? orders,
+    ErrorModel? error,
+    OrderIndexRequestParams? params
   }) {
-    return OrderScreenMainSuccess(
-        params: params ?? this.params,
-        orders: orders ?? this.orders
+    return OrderScreenMainState(
+      status: status ?? this.status,
+      orders: orders ?? this.orders,
+      error: error,
+      params: params ?? this.params
     );
   }
+
 }

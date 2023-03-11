@@ -29,8 +29,10 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
 
   changeParams(OrderIndexRequestParams params) {
     if(state is OrderScreenMySuccess) {
-      params.startRow = 0;
-      emit((state as OrderScreenMySuccess).copyWith(params: params));
+      emit((state as OrderScreenMySuccess).copyWith(
+          params: params.copyWith(startRow: 0)
+        )
+      );
     }
   }
 }

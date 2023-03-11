@@ -4,13 +4,23 @@ import 'package:megaladon/data/models/request/index_period_enum.dart';
 import 'package:megaladon/data/models/request/order_index_sort_enum.dart';
 
 class OrderIndexRequestParams {
-  int startRow = 0;
-  int rowsPerPage = 15;
-  bool desc = false;
-  CityModel? city;
-  OrderCategoryModel? category;
-  IndexPeriod last = IndexPeriod.last3day;
-  OrderIndexSort sort = OrderIndexSort.id;
+  final int startRow;
+  final int rowsPerPage;
+  final bool desc;
+  final CityModel? city;
+  final OrderCategoryModel? category;
+  final IndexPeriod last;
+  final OrderIndexSort sort;
+
+  const OrderIndexRequestParams({
+      this.startRow = 0,
+      this.rowsPerPage = 6,
+      this.desc = false,
+      this.city,
+      this.category,
+      this.last = IndexPeriod.last3day,
+      this.sort = OrderIndexSort.id
+  });
 
   toData() {
     final data = {
@@ -22,7 +32,26 @@ class OrderIndexRequestParams {
       'city_id': city?.id,
       'category_id': category?.id
     };
-    print(data);
     return data;
+  }
+
+  OrderIndexRequestParams copyWith({
+    int? startRow,
+    int? rowsPerPage,
+    bool? desc,
+    CityModel? city,
+    OrderCategoryModel? category,
+    IndexPeriod? last,
+    OrderIndexSort? sort
+  }) {
+    return OrderIndexRequestParams(
+      startRow: startRow ?? this.startRow,
+      rowsPerPage: rowsPerPage ?? this.rowsPerPage,
+      desc: desc ?? this.desc,
+      city: city ?? this.city,
+      category: category ?? this.category,
+      last: last ?? this.last,
+      sort: sort ?? this.sort
+    );
   }
 }

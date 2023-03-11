@@ -6,8 +6,7 @@ class ExpiredAtFieldApp extends StatelessWidget {
   final TextEditingController? controller;
   final String? label;
   final Widget? icon;
-
-  MaskTextInputFormatter maskFormatter = MaskTextInputFormatter(mask: '####-##-##', filter: { "#": RegExp(r'[0-9]') });
+  final maskFormatter = MaskTextInputFormatter(mask: '####-##-##', filter: { "#": RegExp(r'[0-9]') });
 
   ExpiredAtFieldApp({super.key, this.controller, this.label, this.icon});
 
