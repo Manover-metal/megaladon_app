@@ -22,10 +22,11 @@ class StoreScreenMainLoader extends StoreScreenMainState {
 }
 
 class StoreScreenMainError extends StoreScreenMainState {
-  StoreScreenMainError() : super(params: StoreIndexRequestParams());
+  final ErrorModel error;
+  StoreScreenMainError(this.error) : super(params: StoreIndexRequestParams());
 
   @override
-  List<Object> get props => [params];
+  List<Object> get props => [error, params];
 }
 
 class StoreScreenMainSuccess extends  StoreScreenMainState {

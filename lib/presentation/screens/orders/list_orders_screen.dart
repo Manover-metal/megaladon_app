@@ -6,7 +6,7 @@ import 'package:megaladon/logic/screens/orders/main/order_screen_main_cubit.dart
 import 'package:megaladon/presentation/widgets/bottom_sheet/filters/filter_order_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/bottom_sheet/sort/sort_order_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/card/order_card.dart';
-import 'package:megaladon/presentation/widgets/error_message.dart';
+import 'package:megaladon/presentation/widgets/error/error_message.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';

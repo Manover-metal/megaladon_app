@@ -4,7 +4,7 @@ class OfferModel {
   final int id;
   final String price;
   final String date;
-  final String comment;
+  final String? comment;
   final CityModel? city;
 
   OfferModel({
@@ -21,7 +21,8 @@ class OfferModel {
       id: data['id'],
       price: data['price'],
       date: data['date'],
-      comment: data['comment'],
+      comment: data['description'],
+      city: data['city'] != null? CityModel.fromJson(data['city']): null
     );
   }
 

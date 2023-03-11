@@ -14,6 +14,8 @@ class ErrorModel {
     } else if(data?['errors'] is Map) {
       return ErrorModel(data['errors'].map((val)=> val));
     }
-    return ErrorModel(['Неизвестная ошибка']);
+    return ErrorModel.nothing;
   }
+
+  static ErrorModel get nothing => ErrorModel(['Неизвестная ошибка']);
 }

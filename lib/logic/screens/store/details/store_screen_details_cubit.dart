@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:megaladon/data/models/error_model.dart';
 import 'package:megaladon/data/models/store_model.dart';
 import 'package:megaladon/data/repositories/store_repository.dart';
 
@@ -20,8 +22,11 @@ class StoreScreenDetailsCubit extends Cubit<StoreScreenDetailsState> {
           store: value
       ));
     }).catchError(( error) {
-      print(error);
-      emit(StoreScreenDetailsError());
+      if(error is DioError) {
+        emit(StoreScreenDetailsError(ErrorModel.parseDio(error)));
+      } else {
+        emit(StoreScreenDetailsError(ErrorModel.nothing));
+      }
     });
   }
 }

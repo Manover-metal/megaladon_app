@@ -22,10 +22,12 @@ class AdvertScreenMainLoader extends AdvertScreenMainState {
 }
 
 class AdvertScreenMainError extends AdvertScreenMainState {
-  AdvertScreenMainError() : super(params: AdvertIndexRequestParams());
+  final ErrorModel error;
+
+  AdvertScreenMainError(this.error) : super(params: AdvertIndexRequestParams());
 
   @override
-  List<Object> get props => [params];
+  List<Object> get props => [error, params];
 }
 
 class AdvertScreenMainSuccess extends  AdvertScreenMainState {

@@ -17,10 +17,11 @@ class OfferScreenDetailsLoader extends OfferScreenDetailsState {
 }
 
 class OfferScreenDetailsError extends OfferScreenDetailsState {
-  OfferScreenDetailsError();
+  final ErrorModel error;
+  OfferScreenDetailsError(this.error);
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [error];
 }
 
 class OfferScreenDetailsSuccess extends  OfferScreenDetailsState {

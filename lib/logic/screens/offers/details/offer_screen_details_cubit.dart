@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:megaladon/data/models/error_model.dart';
 import 'package:megaladon/data/models/offer_model.dart';
 import 'package:megaladon/data/repositories/offer_repository.dart';
 
@@ -20,8 +22,11 @@ class OfferScreenDetailsCubit extends Cubit<OfferScreenDetailsState> {
           offer: value
       ));
     }).catchError(( error) {
-      print(error);
-      emit(OfferScreenDetailsError());
+      if(error is DioError) {
+        emit(OfferScreenDetailsError(ErrorModel.parseDio(error)));
+      } else {
+        emit(OfferScreenDetailsError(ErrorModel.nothing));
+      }
     });
   }
 }

@@ -5,6 +5,7 @@ import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
 import 'package:megaladon/presentation/widgets/bottom_sheet/filters/filter_order_my_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/card/order_card.dart';
 import 'package:megaladon/presentation/widgets/drawer/drawer_app.dart';
+import 'package:megaladon/presentation/widgets/error/error_message.dart';
 import 'package:megaladon/presentation/widgets/list/status_order_list.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
@@ -95,6 +96,8 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
                         }
                         else if(state is OrderScreenMyLoader) {
                           return const Loader(padding: 10,);
+                        } else if(state is OrderScreenMyError) {
+                          return ErrorMessage(error: state.error);
                         }
                         return Container();
                       },

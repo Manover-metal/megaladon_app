@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/logic/screens/offers/details/offer_screen_details_cubit.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
+import 'package:megaladon/presentation/widgets/error/error_message.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
@@ -74,6 +75,8 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
                         );
                       } else if(state is OfferScreenDetailsLoader) {
                         return Loader();
+                      } else if(state is OfferScreenDetailsError) {
+                        return ErrorMessage(error: state.error);
                       }
                       return Container();
                     },

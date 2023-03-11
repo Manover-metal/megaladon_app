@@ -6,6 +6,7 @@ import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/screens/forms/offer/create_offer_screen.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
+import 'package:megaladon/presentation/widgets/error/error_message.dart';
 import 'package:megaladon/presentation/widgets/list/file_download_list.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
@@ -122,7 +123,7 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                     } else if(state is AdvertScreenDetailsLoader) {
                       return Loader(padding: 10,);
                     } else if(state is AdvertScreenDetailsError) {
-                      return Text('error');
+                      return ErrorMessage(error: state.error);
                     }
                     return Container();
                   },

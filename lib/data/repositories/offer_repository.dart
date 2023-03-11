@@ -8,14 +8,14 @@ class OfferRepository {
       .then((value) => value.data);
 
   Future getAll(int orderId) => ApiService.I
-      .get('order/$orderId/offer')
+      .get('/order/$orderId/offer')
       .then((value) => OfferModel.listFromJsonMini(value.data['list']));
 
   Future accept(int orderId, int offerId) => ApiService.I
-      .post('order/$orderId/offer/$offerId')
+      .post('/order/$orderId/offer/$offerId')
       .then((value) => value.data);
 
   Future getById(int orderId, int offerId) => ApiService.I
-      .get('order/$orderId/offer/$offerId')
+      .get('/order/$orderId/offer/$offerId')
       .then((value) => OfferModel.fromJsonFull(value.data['offer']));
 }

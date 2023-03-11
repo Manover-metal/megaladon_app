@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/logic/screens/advert/my/advert_screen_my_cubit.dart';
 import 'package:megaladon/presentation/widgets/bottom_sheet/filters/filter_ad_my_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/card/ad_card.dart';
+import 'package:megaladon/presentation/widgets/error/error_message.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
@@ -93,6 +94,8 @@ class _MyAdsScreenState extends State<MyAdsScreen> {
                         }
                         else if(state is AdvertScreenMyLoader) {
                           return const Loader(padding: 10,);
+                        } else if(state is AdvertScreenMyError) {
+                          return ErrorMessage(error: state.error);
                         }
                         return Container();
                       },
