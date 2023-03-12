@@ -9,25 +9,39 @@ import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picke
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/store_type_picker.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
+import '../../../../data/models/dictionary/city_model.dart';
+import '../../../../data/models/dictionary/store_type_model.dart';
+import '../../form/picker/last_day_picker.dart';
+
 class FilterStoreBottomSheet extends StatefulWidget {
   @override
   State<FilterStoreBottomSheet> createState() => _FilterStoreBottomSheetState();
 }
 
 class _FilterStoreBottomSheetState extends State<FilterStoreBottomSheet> {
+ 
   late CityPickerController _cityPickerController;
   late StoreTypePickerController _storeTypePickerController;
 
+  
   _back() {
     StoreIndexRequestParams params = context.read<StoreScreenMainCubit>().state.params;
-    params.startRow = 0;
-    if(_cityPickerController.value.id != -1) {
-      params.city = _cityPickerController.value;
-    }
-    if(_storeTypePickerController.value.id != -1) {
-      params.type = _storeTypePickerController.value;
-    }
-    context.read<StoreScreenMainCubit>().changeParams(params);
+    final city = _cityPickerController.value;
+    final category = _storeTypePickerController.value;
+    context.read<StoreScreenMainCubit>().changeParams(params.copyWith(
+      startRow: 0,
+      city: city.id == CityModel.nothing.id ? null : city,
+      category: category.id == StoreTypeModel.nothing.id ? null : category
+    ));
+  
+    // params.startRow = 0;
+    // if(_cityPickerController.value.id != -1) {
+    //   params.city = _cityPickerController.value;
+    // }
+    // if(_storeTypePickerController.value.id != -1) {
+    //   params.type = _storeTypePickerController.value;
+    // }
+    // context.read<StoreScreenMainCubit>().changeParams(params);
     context.router.pop(true);
   }
 
@@ -35,7 +49,7 @@ class _FilterStoreBottomSheetState extends State<FilterStoreBottomSheet> {
   void initState() {
     StoreScreenMainState state = context.read<StoreScreenMainCubit>().state;
     _cityPickerController = CityPickerController(city: state.params.city);
-    _storeTypePickerController = StoreTypePickerController(type: state.params.type);
+    _storeTypePickerController = StoreTypePickerController(type: state.params.category);
     super.initState();
   }
 

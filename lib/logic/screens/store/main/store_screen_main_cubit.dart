@@ -6,39 +6,80 @@ import 'package:megaladon/data/models/request/params/store_index_request_params.
 import 'package:megaladon/data/models/store_model.dart';
 import 'package:megaladon/data/repositories/store_repository.dart';
 
+import '../../../../data/models/dictionary/store_type_model.dart';
+
 part 'store_screen_main_state.dart';
 
 class StoreScreenMainCubit extends Cubit<StoreScreenMainState> {
   final StoreRepository _repository = StoreRepository();
-  StoreScreenMainCubit() : super(StoreScreenMainInitial());
+  StoreScreenMainCubit() : super(const StoreScreenMainState());
 
   Future fetch({StoreIndexRequestParams? params}) async {
     StoreIndexRequestParams mainParams = params ?? state.params;
-
-    emit(StoreScreenMainLoader());
+    emit(state.copyWith(status: StoreScreenMainStatus.loading, error: null, stores: state.stores));
     return await _repository.index(mainParams).then((value) {
-      print(value);
       if(mainParams.startRow == 0) {
-        emit(StoreScreenMainSuccess(stores: value, params: mainParams));
+        emit(state.copyWith(
+            stores: value,
+            params: mainParams,
+            status: StoreScreenMainStatus.success
+          )
+        );
       } else {
-        emit(StoreScreenMainSuccess(
-          stores: [...(state as StoreScreenMainSuccess).stores, value],
+        emit(state.copyWith(
+          status: StoreScreenMainStatus.success,
+          stores: [...state.stores, ...value],
           params: mainParams
         ));
       }
-    }).catchError((error) {
+    }).catchError(( error) {
       if(error is DioError) {
-        emit(StoreScreenMainError(ErrorModel.parseDio(error)));
+        emit(state.copyWith(error: ErrorModel.parseDio(error)));
       } else {
-        emit(StoreScreenMainError(ErrorModel.nothing));
+        emit(state.copyWith(error: ErrorModel.nothing));
       }
     });
   }
 
+
   changeParams(StoreIndexRequestParams params) {
-    if(state is StoreScreenMainSuccess) {
-      params.startRow = 0;
-      emit((state as StoreScreenMainSuccess).copyWith(params: params));
-    }
+    emit(state.copyWith(
+        params: params.copyWith(startRow: 0)
+    ));
   }
 }
+
+// class StoreScreenMainCubit extends Cubit<StoreScreenMainState> {
+//   final StoreRepository _repository = StoreRepository();
+//   StoreScreenMainCubit() : super(StoreScreenMainInitial());
+
+//   Future fetch({StoreIndexRequestParams? params}) async {
+//     StoreIndexRequestParams mainParams = params ?? state.params;
+
+//     emit(StoreScreenMainLoader());
+//     return await _repository.index(mainParams).then((value) {
+//       print(value);
+//       if(mainParams.startRow == 0) {
+//         emit(StoreScreenMainSuccess(stores: value, params: mainParams));
+//       } else {
+//         emit(StoreScreenMainSuccess(
+//           stores: [...(state as StoreScreenMainSuccess).stores, value],
+//           params: mainParams
+//         ));
+//       }
+//     }).catchError((error) {
+//       if(error is DioError) {
+//         emit(StoreScreenMainError(ErrorModel.parseDio(error)));
+//       } else {
+//         emit(StoreScreenMainError(ErrorModel.nothing));
+//       }
+//     });
+//   }
+
+//   changeParams(StoreIndexRequestParams params) {
+//     if(state is StoreScreenMainSuccess) {
+//       params.startRow = 0;
+//       emit((state as StoreScreenMainSuccess).copyWith(params: params));
+//     }
+//   }
+// }
