@@ -9,18 +9,16 @@ import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
+import '../../../data/models/request/params/advert_index_request_params.dart';
+
 class TradingAdsScreen extends StatefulWidget {
   @override
   State<TradingAdsScreen> createState() => _TradingAdsScreenState();
 }
 
 class _TradingAdsScreenState extends State<TradingAdsScreen> {
+late ScrollController _scrollController;
 
-  @override
-  void initState() {
-    _onRefresh();
-    super.initState();
-  }
 
   Future _onRefresh() async {
     await context.read<AdvertScreenMainCubit>().fetch();
@@ -36,6 +34,42 @@ class _TradingAdsScreenState extends State<TradingAdsScreen> {
     if(result != null) {
       context.read<AdvertScreenMainCubit>().fetch();
     }
+  }
+  // _showSort() async {
+  //   bool? result = await showModalBottomSheet(
+  //       useRootNavigator: true,
+  //       context: context,
+  //       elevation: 100,
+  //       builder: (_) => SortOrderBottomSheet()
+  //   );
+  //   if(result != null) {
+  //     context.read<OrderScreenMainCubit>().fetch();
+  //   }
+  // }
+
+  _listenerScroll() {
+    if (_scrollController.position.maxScrollExtent < _scrollController.position.pixels + 500) {
+      final cubit = context.read<AdvertScreenMainCubit>();
+      if(cubit.state.status != AdverScreenMainStatus.loading) {
+        AdvertIndexRequestParams params = cubit.state.params;
+        cubit.fetch(params: params.copyWith(startRow: params.startRow + 1));
+      }
+    }
+  }
+
+
+  @override
+  void initState() {
+    _scrollController = ScrollController()..addListener(_listenerScroll);
+    _onRefresh();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_listenerScroll);
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -86,19 +120,15 @@ class _TradingAdsScreenState extends State<TradingAdsScreen> {
                     children: [
                       BlocBuilder<AdvertScreenMainCubit, AdvertScreenMainState>(
                         builder: (context, state) {
-                          if(state is AdvertScreenMainSuccess) {
-                            return Column(
-                              children: state.adverts.map((advert) {
-                                return AdCard(advert: advert,);
-                              }).toList(),
-                            );
-                          }
-                          else if(state is AdvertScreenMainLoader) {
-                            return const Loader(padding: 10,);
-                          } else if(state is AdvertScreenMainError) {
-                            return ErrorMessage(error: state.error);
-                          }
-                          return Container();
+                           return Column(
+                          children: [
+                            ...state.advers.map((adver) {
+                              return AdCard(advert: adver);
+                            }).toList(),
+                            if(state.status == AdverScreenMainStatus.loading) const Loader(padding: 10,),
+                            if(state.status == AdverScreenMainStatus.error)  ErrorMessage(error: state.error!)
+                          ],
+                        );
 
                         },
                       ),

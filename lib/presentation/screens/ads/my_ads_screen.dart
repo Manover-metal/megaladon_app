@@ -8,18 +8,17 @@ import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
+import '../../../data/models/request/params/advert_index_request_params.dart';
+import '../../../logic/screens/advert/main/advert_screen_main_cubit.dart';
+
 class MyAdsScreen extends StatefulWidget {
   @override
   State<MyAdsScreen> createState() => _MyAdsScreenState();
 }
 
 class _MyAdsScreenState extends State<MyAdsScreen> {
+late ScrollController _scrollController;
 
-  @override
-  void initState() {
-    _onRefresh();
-    super.initState();
-  }
 
   Future _onRefresh() async {
     context.read<AdvertScreenMyCubit>().fetch();
@@ -36,7 +35,30 @@ class _MyAdsScreenState extends State<MyAdsScreen> {
       context.read<AdvertScreenMyCubit>().fetch();
     }
   }
+_listenerScroll() {
+    if (_scrollController.position.maxScrollExtent < _scrollController.position.pixels + 500) {
+      final cubit = context.read<AdvertScreenMyCubit>();
+      if(cubit.state.status != AdverScreenMainStatus.loading) {
+        AdvertIndexRequestParams params = cubit.state.params;
+        cubit.fetch(params: params.copyWith(startRow: params.startRow + 1));
+      }
+    }
+  }
 
+
+  @override
+  void initState() {
+    _scrollController = ScrollController()..addListener(_listenerScroll);
+    _onRefresh();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_listenerScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,19 +107,15 @@ class _MyAdsScreenState extends State<MyAdsScreen> {
                   children: [
                     BlocBuilder<AdvertScreenMyCubit, AdvertScreenMyState>(
                       builder: (context, state) {
-                        if(state is AdvertScreenMySuccess) {
-                          return Column(
-                            children: state.adverts.map((advert) {
-                              return AdCard(advert: advert,);
+                           return Column(
+                          children: [
+                            ...state.advers.map((adver) {
+                              return AdCard(advert: adver);
                             }).toList(),
-                          );
-                        }
-                        else if(state is AdvertScreenMyLoader) {
-                          return const Loader(padding: 10,);
-                        } else if(state is AdvertScreenMyError) {
-                          return ErrorMessage(error: state.error);
-                        }
-                        return Container();
+                            if(state.status == AdverScreenMyMainStatus.loading) const Loader(padding: 10,),
+                            if(state.status == AdverScreenMyMainStatus.error)  ErrorMessage(error: state.error!)
+                          ],
+                        );
                       },
                     )
                   ],

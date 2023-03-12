@@ -23,13 +23,13 @@ class _FilterMyAdBottomSheetState extends State<FilterMyAdBottomSheet> {
 
   _back() {
     AdvertIndexRequestParams params = context.read<AdvertScreenMyCubit>().state.params;
-    int? from = int.tryParse(_fromController.value.text);
-    int? before = int.tryParse(_beforeController.value.text);
-    params.priceMin = from;
-    params.priceMax = before;
-    params.startRow = 0;
-    params.last = _indexPeriodPickerController.value;
-    context.read<AdvertScreenMyCubit>().changeParams(params);
+  final from = int.tryParse(_fromController.value.text);
+  final before = int.tryParse(_beforeController.value.text);
+    context.read<AdvertScreenMyCubit>().changeParams(params.copyWith(
+          startRow: 0,
+          priceMin : from,
+          priceMax: before,
+          last: _indexPeriodPickerController.value,));
     context.router.pop(true);
   }
 
