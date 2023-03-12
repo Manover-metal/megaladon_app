@@ -18,5 +18,62 @@
   "Edit": "Edit",
   "Delete": "Delete",
   "Copy": "Copy",
-  "Cut": "Cut"
+  "Cut": "Cut",
+  
+  "Orders": "Orders",
+
+"Theshops" : "Theshops",
+"All":"All",
+"Active":"Active",
+"In_rocessing":"In rocessing",
+"In_work":"In_work",
+"Archive":"Archive",
+"Field_of_activity":"Field_of_activity",
+"Rating":"Rating ",
+"Location":"Location",
+
+"Create_an_order":"Create_an_order",
+"Select_a_category":"Select_a_category",
+"Job_title":"Job_title",
+"Description_of_work":"Description_of_work",
+"Choose_city":"hoose_city",
+"Desired_budget":"Desired_budget_(optional)",
+"Allowed_budget":"Allowed_budget_(optional)",
+"Attach_files":"Attach_files",
+"Add_file":"Add_file",
+"Create_order":"Create_order",
+"Cancel":"Cancel",
+
+"Creating_an_ad":"Creating an ad",
+"Headline":"Headline",
+"Description_of_your_offer":"Description of your offer",
+"Price":"Price",
+"Create_ad":"Create ad",
+
+"Name":"Name",
+"Telephone":"Telephone",
+
+"Artist_data":"Artist_data",
+"Organization":"Organization",
+"Address":"Address",
+"Services":"Services",
+"Subscription":"Subscription",
+"Store_data":"Store_data",
+"Description":"Description",
+"Email":"Email",
+"Website":"Website",
+"Price_lists":"Price lists",
+
+"Authorization":"Authorization",
+"Your_phone_number":"Your phone number",
+"Your_password":"Your password",
+"Forgot_your_password":"Forgot your password ?",
+"Sign_in":"Sign in",
+"Registration":"Registration",
+
+"What_is_your_name":"What is your name",
+"Choose_password":"Choose password",
+"Confirm_the_password":"Confirm the password",
+"Register":"Register"
+
 }

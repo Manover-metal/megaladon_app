@@ -1,4 +1,8 @@
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors
+
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:megaladon/generated/locale_keys.g.dart';
 import 'package:megaladon/presentation/widgets/list/file_download_list.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
@@ -20,28 +24,28 @@ class ProfileScreen extends StatelessWidget {
                   backgroundColor: Colors.grey.shade300,
                 ),
                 SizedBox(height: 20,),
-                DataTile(title: 'Имя: ', data: 'Cергей'),
-                DataTile(title: 'Номер: ', data: '+7 747 940 0950'),
-                DataTile(title: 'Местоположение: ', data: 'г.Караганда'),
+                DataTile(title: LocaleKeys.Name.tr(), data: 'Cергей'),
+                DataTile(title: LocaleKeys.Telephone.tr() , data: '+7 747 940 0950'),
+                DataTile(title: LocaleKeys.Location.tr(), data: 'г.Караганда'),
                 Divider(thickness: 1),
-                TitleApp('Данные исполнителя'),
+                TitleApp(LocaleKeys.Artist_data.tr()),
                 SizedBox(height: 20,),
 
-                DataTile(title: 'Организация: ', data: 'ТОО “Максимум”'),
-                DataTile(title: 'Адрес: ', data: 'Казахстан, г. Караганда, ул. Алиханова 25|3, ст. 4'),
-                DataTile(title: 'Имя: ', data: 'г.Караганда'),
+                DataTile(title: LocaleKeys.Organization.tr(), data: 'ТОО “Максимум”'),
+                DataTile(title: LocaleKeys.Address, data: 'Казахстан, г. Караганда, ул. Алиханова 25|3, ст. 4'),
+                DataTile(title: LocaleKeys.Name, data: 'г.Караганда'),
                 Divider(thickness: 1),
-                TitleApp('Данные магазина'),
+                TitleApp(LocaleKeys.Store_data.tr()),
                 SizedBox(height: 20,),
 
-                DataTile(title: 'Организация: ', data: 'ТОО “Максимум”'),
-                DataTile(title: 'Адрес: ', data: 'Казахстан, г. Караганда, ул. Алиханова 25|3, ст. 4'),
-                DataTile(title: 'Описание: ', data: 'г.Листовой металл, трубы, квадрат, профиля, уголок, швеллер'),
-                DataTile(title: 'Email: ', data: 'mailto@mail.ru'),
-                DataTile(title: 'Телефон: ', data: '+7 (123) 456-78-91'),
-                DataTile(title: 'Сайт: ', data: 'steel-astana.kz'),
+                DataTile(title: LocaleKeys.Organization.tr(), data: 'ТОО “Максимум”'),
+                DataTile(title: LocaleKeys.Address.tr(), data: 'Казахстан, г. Караганда, ул. Алиханова 25|3, ст. 4'),
+                DataTile(title: LocaleKeys.Description.tr(), data: 'г.Листовой металл, трубы, квадрат, профиля, уголок, швеллер'),
+                DataTile(title: LocaleKeys.Email.tr(), data: 'mailto@mail.ru'),
+                DataTile(title: LocaleKeys.Telephone.tr(), data: '+7 (123) 456-78-91'),
+                DataTile(title: LocaleKeys.Website.tr(), data: 'steel-astana.kz'),
                 SizedBox(height: 20,),
-                SubTitleApp('Прайс листы', textAlign: TextAlign.start,),
+                SubTitleApp(LocaleKeys.Price_lists.tr(), textAlign: TextAlign.start,),
                 SizedBox(height: 10,),
                 FileDownloadList(),
                 SizedBox(height: 20,),

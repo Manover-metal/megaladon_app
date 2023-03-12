@@ -51,5 +51,4 @@ class AdCard extends StatelessWidget {
       ),
     );
   }
-
 }

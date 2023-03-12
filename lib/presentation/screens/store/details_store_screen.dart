@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/logic/screens/store/details/store_screen_details_cubit.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
+import 'package:megaladon/presentation/widgets/error/error_message.dart';
 import 'package:megaladon/presentation/widgets/list/file_download_list.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
@@ -85,7 +86,7 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
                   else if(state is StoreScreenDetailsLoader) {
                     return Loader(padding: 10,);
                   } else if(state is StoreScreenDetailsError) {
-                    return Text('error');
+                    return ErrorMessage(error: state.error);
                   }
                   return Container();
                 },

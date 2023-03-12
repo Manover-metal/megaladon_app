@@ -1,8 +1,13 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:auto_route/auto_route.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:megaladon/logic/form/create/ad/ad_create_form_cubit.dart';
+import 'package:megaladon/data/models/enum_form_state.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:megaladon/generated/locale_keys.g.dart';
 import 'package:megaladon/logic/form/create/order/order_create_form_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
@@ -10,9 +15,9 @@ import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/description_field.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/order_category_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
-import 'package:megaladon/presentation/widgets/form/picker/dictionary/order_category_picker.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_number_field.dart';
+import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
@@ -38,17 +43,18 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
   _create() {
     if(_checkForm()) {
       context.read<OrderCreateFormCubit>().createFetch().then((value) {
+        context.router.popUntil((route) => route.settings.name == InitialRouter.name);
         context.router.navigate(InitialRouter(
-          children: [
-            OrderRouter(
-              children: [
-                DetailsOrderRoute(orderId: value.id)
-              ]
-            )
-          ]
+            children: [
+              OrderRouter(
+                  children: [ListMyOrdersRoute()]
+              )
+            ]
         ));
       }).catchError((error) {
-
+        if(error is DioError) {
+          showErrorSnackBar(context, error.response?.data['message']);
+        }
       });
     }
   }
@@ -60,8 +66,8 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
         description: _descriptionController.value.text,
         category: _orderCategoryController.value,
         city: _cityController.value,
-        priceMax: int.tryParse(_priceMaxController.value.text),
-        priceRecommended: int.tryParse(_priceRecommendedController.value.text)
+        priceMax: _priceMaxController.value.text,
+        priceRecommended: _priceRecommendedController.value.text
     );
   }
 
@@ -113,19 +119,26 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
             child: Column(
               children: [
                 HeaderAppBar(isBack: true, ),
-                TitleApp('Создать заказ'),
+                TitleApp(LocaleKeys.Create_an_order.tr()),
                 SizedBox(height: 30),
-                OrderCategoryPicker(label: 'Категория', controller: _orderCategoryController),
+
+                OrderCategoryPicker(label: LocaleKeys.Select_a_category.tr(), controller: _orderCategoryController),
+                CityPicker(label: LocaleKeys.Choose_city.tr(), controller: _cityController),
                 TextFieldApp(controller: _titleController, label: 'Заголовок',),
-                CityPicker(label: 'Город', controller: _cityController),
-                DescriptionFieldApp(label: 'Описание', controller: _descriptionController),
-                TextNumberFieldApp(label: 'Желаемый бюджет (не обязательно)', controller: _priceMaxController,),
-                TextNumberFieldApp(label: 'Допустимый бюджет (не обязательно)', controller: _priceRecommendedController,),
-                BlocListener<OrderCreateFormCubit, OrderCreateFormState>(
-                  listener: _listenerForm,
-                  child: ElevatedButtonApp(text: 'Создать', onPressed: _create,),
+                DescriptionFieldApp(label: LocaleKeys.Description_of_work.tr(), controller: _descriptionController),
+                TextNumberFieldApp(label: LocaleKeys.Desired_budget.tr(), controller: _priceMaxController,),
+                TextNumberFieldApp(label: LocaleKeys.Allowed_budget.tr(), controller: _priceRecommendedController,),
+                // BlocConsumer(builder: builder, listener: listener)
+                BlocConsumer<OrderCreateFormCubit, OrderCreateFormState>(
+                    listener: _listenerForm,
+                    builder: (context, state) {
+                      if(state.formState == EnumFormState.fetch) {
+                        return ElevatedButtonApp(child: Loader(color: Theme.of(context).colorScheme.background), onPressed: () {},);
+                      }
+                      return ElevatedButtonApp(text: 'Создать', onPressed: _create,);
+                    }
                 ),
-                OutlinedButtonApp(text: 'Отменить', onPressed: _back,),
+                OutlinedButtonApp(text: LocaleKeys.Cancel.tr(), onPressed: _back,),
               ],
             ),
           ),

@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -10,6 +13,8 @@ import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
+
+import '../../../../generated/locale_keys.g.dart';
 
 class RegisterUserScreen extends StatefulWidget {
   @override
@@ -105,26 +110,26 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
             child: Column(
               children: [
                 Spacer(),
-                TitleApp('Регистрация'),
+                TitleApp(LocaleKeys.Registration.tr()),
                 SizedBox(height: 20,),
                 TextFieldApp(
                   icon: Icon(Icons.person_add_alt_1),
-                  label: 'Ваше имя',
+                  label: LocaleKeys.What_is_your_name.tr(),
                   controller: _nameController,
                 ),
                 TextFieldApp(
                   icon: Icon(Icons.phone),
-                  label: 'Телефон',
+                  label: LocaleKeys.Your_phone_number.tr(),
                   controller: _phoneController,
                 ),
                 TextFieldApp(
                   icon: Icon(Icons.lock),
-                  label: 'Пароль',
+                  label: LocaleKeys.Choose_password.tr(),
                   controller: _passwordController,
                 ),
                 TextFieldApp(
                   icon: Icon(Icons.lock),
-                  label: 'Подтвердите пароль',
+                  label: LocaleKeys.Confirm_the_password.tr(),
                   controller: _passwordVerifyController,
                 ),
                 BlocBuilder<RegisterUserBloc, RegisterUserState>(
@@ -136,7 +141,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                       );
                     }
                     return ElevatedButtonApp(
-                      text: 'Продолжить',
+                      text: LocaleKeys.Register.tr(),
                       onPressed: _register,
                     );
 

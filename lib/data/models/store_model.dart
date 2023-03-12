@@ -30,7 +30,6 @@ class StoreModel {
   });
 
   static StoreModel fromJsonMini(data) {
-    print(data);
     return StoreModel(
         id: data['id'],
         name: data['name'],
@@ -42,7 +41,6 @@ class StoreModel {
   }
 
   static StoreModel fromJsonFull(data) {
-    print(data);
     return StoreModel(
         id: data['id'],
         rating: data['rating'],

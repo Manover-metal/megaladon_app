@@ -5,6 +5,7 @@ import 'package:megaladon/data/models/advert_model.dart';
 import 'package:megaladon/data/models/category_model.dart';
 import 'package:megaladon/data/models/dictionary/advert_category_model.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
+import 'package:megaladon/data/models/enum_form_state.dart';
 import 'package:megaladon/data/models/form/description.dart';
 import 'package:megaladon/data/models/form/dictionary/advert_category.dart';
 import 'package:megaladon/data/models/form/dictionary/city.dart';
@@ -24,7 +25,7 @@ class AdUpdateFormCubit extends Cubit<AdUpdateFormState> {
   checkUpdate({
     required String title,
     required String description,
-    required int? price,
+    required String price,
     required CityModel city,
     required AdvertCategoryModel category,
   }) {
@@ -55,14 +56,19 @@ class AdUpdateFormCubit extends Cubit<AdUpdateFormState> {
     return stateNew.status.isValid;
   }
 
-  Future<AdvertModel> updateFetch(int id) async {
+  Future updateFetch(int id) async {
+    emit(state.copyWith(formState: EnumFormState.fetch));
     return _repository.update(id, AdvertUpdateRequestParams(
       title: state.title.value,
       description: state.title.value,
-      price: state.price.value!,
+      price: int.parse(state.price.value),
       categoryId: state.category.value,
       cityId: state.city.value,
       additionalPhone: '+77074054407'
-    ));
+    )).then((value) {
+      emit(state.copyWith(formState: EnumFormState.success));
+    }).catchError((error) {
+      emit(state.copyWith(formState: EnumFormState.error));
+    });
   }
 }

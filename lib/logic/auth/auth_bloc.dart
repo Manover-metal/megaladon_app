@@ -37,7 +37,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       _authRepository.write(auth);
       emit(AuthLoginState(auth));
     }).catchError((error) {
-      print(error);
       if(error is DioError) {
         if(error.response?.statusCode == 406) {
           emit(AuthTransitionVerify(event.phone));
@@ -53,7 +52,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   _verify(AuthVerifyEvent event, Emitter emit) async {
     emit(AuthLoadingState());
-    print('${event.code} ${event.phone}');
     await _verifyRepository.verifyRegister(code: event.code, phone: event.phone).then((value) {
       AuthModel auth = AuthModel()..token = value.data['token'];
       _authRepository.write(auth);

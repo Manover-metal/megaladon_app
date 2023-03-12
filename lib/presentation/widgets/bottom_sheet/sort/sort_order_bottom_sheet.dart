@@ -27,10 +27,11 @@ class _SortOrderBottomSheetState extends State<SortOrderBottomSheet> {
 
   _back() {
     OrderIndexRequestParams params = context.read<OrderScreenMainCubit>().state.params;
-    params.startRow = 0;
-    params.sort = sortCurrent;
-    params.desc = desc;
-    context.read<OrderScreenMainCubit>().changeParams(params);
+    context.read<OrderScreenMainCubit>().changeParams(params.copyWith(
+        startRow: 0,
+        sort: sortCurrent,
+        desc: desc
+    ));
     context.router.pop(true);
   }
 

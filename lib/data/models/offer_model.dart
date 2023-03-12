@@ -1,0 +1,42 @@
+import 'package:megaladon/data/models/dictionary/city_model.dart';
+
+class OfferModel {
+  final int id;
+  final String price;
+  final String date;
+  final String? comment;
+  final CityModel? city;
+
+  OfferModel({
+    required this.id,
+    required this.price,
+    required this.date,
+    required this.comment,
+    this.city
+  });
+
+  static OfferModel fromJsonMini(data) {
+    return OfferModel(
+      id: data['id'],
+      price: data['price'],
+      date: data['date'],
+      comment: data['description'],
+      city: data['city'] != null? CityModel.fromJson(data['city']): null
+    );
+  }
+
+  static OfferModel fromJsonFull(data) {
+    return OfferModel(
+      id: data['id'],
+      price: data['price'],
+      date: data['date'],
+      comment: data['comment'],
+    );
+  }
+
+  static List<OfferModel> listFromJsonMini(List data) {
+    return data.map<OfferModel>((advert) {
+      return OfferModel.fromJsonMini(advert);
+    }).toList();
+  }
+}
