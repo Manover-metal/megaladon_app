@@ -1,18 +1,16 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:megaladon/data/models/request/params/store_index_request_params.dart';
 import 'package:megaladon/generated/locale_keys.g.dart';
 import 'package:megaladon/logic/screens/store/main/store_screen_main_cubit.dart';
-import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/bottom_sheet/filters/filter_store_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/card/store_card.dart';
 import 'package:megaladon/presentation/widgets/error/error_message.dart';
-import 'package:megaladon/presentation/widgets/list/status_order_list.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
-import '../../../data/models/request/params/store_index_request_params.dart';
 
 class ListStoresScreen extends StatefulWidget {
 

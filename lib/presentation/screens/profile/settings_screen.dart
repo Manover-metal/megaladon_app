@@ -1,9 +1,7 @@
-// ignore_for_file: use_key_in_widget_constructors, avoid_unnecessary_containers, prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
-
 import 'package:flutter/material.dart';
+import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
+import 'package:megaladon/presentation/widgets/navigate/header.dart';
 
-import '../../widgets/buttons/outlined_button.dart';
-import '../../widgets/navigate/header.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override

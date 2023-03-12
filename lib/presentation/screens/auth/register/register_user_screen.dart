@@ -5,6 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:megaladon/generated/locale_keys.g.dart';
 import 'package:megaladon/logic/form/register/register_user/register_user_form_cubit.dart';
 import 'package:megaladon/logic/register/register_user/register_user_bloc.dart';
 import 'package:megaladon/presentation/routing/router.dart';
@@ -14,7 +15,6 @@ import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
-import '../../../../generated/locale_keys.g.dart';
 
 class RegisterUserScreen extends StatefulWidget {
   @override
