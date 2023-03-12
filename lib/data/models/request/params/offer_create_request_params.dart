@@ -16,7 +16,6 @@ class OfferCreateRequestParams {
   });
 
   toData() {
-    print(price);
     FormData data = FormData.fromMap({
       'price': int.parse(price),
       'comment': comment,

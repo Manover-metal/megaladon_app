@@ -38,7 +38,6 @@ class OrderModel extends Equatable {
   });
 
   static OrderModel fromJsonMini(data) {
-    print(data);
     return OrderModel(
         id: data['id'],
         title: data['title'],
@@ -53,7 +52,6 @@ class OrderModel extends Equatable {
   }
 
   static OrderModel fromJsonFull(data) {
-    print(data);
     return OrderModel(
       id: data['id'],
       title: data['title'],//

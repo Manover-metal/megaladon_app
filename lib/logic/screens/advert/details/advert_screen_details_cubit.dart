@@ -17,7 +17,6 @@ class AdvertScreenDetailsCubit extends Cubit<AdvertScreenDetailsState> {
     }
     emit(AdvertScreenDetailsLoader());
     return await _repository.info(id).then((value) {
-      print(value);
       emit(AdvertScreenDetailsSuccess(
           advert: value
       ));

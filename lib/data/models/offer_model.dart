@@ -16,7 +16,6 @@ class OfferModel {
   });
 
   static OfferModel fromJsonMini(data) {
-    print(data);
     return OfferModel(
       id: data['id'],
       price: data['price'],
@@ -27,7 +26,6 @@ class OfferModel {
   }
 
   static OfferModel fromJsonFull(data) {
-    print(data);
     return OfferModel(
       id: data['id'],
       price: data['price'],

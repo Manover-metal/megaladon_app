@@ -24,7 +24,6 @@ class RegisterUserBloc extends Bloc<RegisterUserEvent, RegisterUserState> {
     ).then((value) {
       emit(RegisterUserSuccess());
     }).catchError((error) {
-      print(error);
       emit(RegisterUserError(error.response.data['message']));
     });
   }

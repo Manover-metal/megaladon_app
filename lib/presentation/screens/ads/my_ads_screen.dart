@@ -112,8 +112,8 @@ _listenerScroll() {
                             ...state.advers.map((adver) {
                               return AdCard(advert: adver);
                             }).toList(),
-                            if(state.status == AdverScreenMyMainStatus.loading) const Loader(padding: 10,),
-                            if(state.status == AdverScreenMyMainStatus.error)  ErrorMessage(error: state.error!)
+                            if(state.status == AdverScreenMyMainStatus.loading) const Loader(padding: 10)
+                            else if(state.status == AdverScreenMyMainStatus.error)  ErrorMessage(error: state.error!)
                           ],
                         );
                       },

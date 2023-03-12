@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:megaladon/data/models/request/params/advert_index_request_params.dart';
 import 'package:megaladon/logic/screens/advert/main/advert_screen_main_cubit.dart';
 import 'package:megaladon/presentation/widgets/bottom_sheet/filters/filter_ad_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/card/ad_card.dart';
 import 'package:megaladon/presentation/widgets/error/error_message.dart';
-import 'package:megaladon/presentation/widgets/list/status_order_list.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
-
-import '../../../data/models/request/params/advert_index_request_params.dart';
 
 class TradingAdsScreen extends StatefulWidget {
   @override
@@ -17,8 +15,7 @@ class TradingAdsScreen extends StatefulWidget {
 }
 
 class _TradingAdsScreenState extends State<TradingAdsScreen> {
-late ScrollController _scrollController;
-
+  late ScrollController _scrollController;
 
   Future _onRefresh() async {
     await context.read<AdvertScreenMainCubit>().fetch();
@@ -111,6 +108,7 @@ late ScrollController _scrollController;
               color: Colors.white,
               onRefresh: _onRefresh,
               child: SingleChildScrollView(
+                controller: _scrollController,
                 child: Container(
                   constraints: BoxConstraints(
                       minHeight: MediaQuery.of(context).size.height
@@ -125,8 +123,8 @@ late ScrollController _scrollController;
                             ...state.advers.map((adver) {
                               return AdCard(advert: adver);
                             }).toList(),
-                            if(state.status == AdverScreenMainStatus.loading) const Loader(padding: 10,),
-                            if(state.status == AdverScreenMainStatus.error)  ErrorMessage(error: state.error!)
+                            if(state.status == AdverScreenMainStatus.loading) const Loader(padding: 10)
+                            else if(state.status == AdverScreenMainStatus.error)  ErrorMessage(error: state.error!)
                           ],
                         );
 

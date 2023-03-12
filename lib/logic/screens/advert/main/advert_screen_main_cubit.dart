@@ -14,8 +14,20 @@ class AdvertScreenMainCubit extends Cubit<AdvertScreenMainState> {
   AdvertScreenMainCubit() : super(const AdvertScreenMainState());
 
   Future fetch({AdvertIndexRequestParams? params}) async {
+    if(state.status == AdverScreenMainStatus.loading
+        && state.error == null
+    ) return;
+
+
     AdvertIndexRequestParams mainParams = params ?? state.params;
-    emit(state.copyWith(status: AdverScreenMainStatus.loading, error: null, advers: state.advers));
+    emit(state.copyWith(
+        status: AdverScreenMainStatus.loading,
+        error: null,
+        advers: state.advers,
+        params: mainParams
+      )
+    );
+
     return await _repository.index(mainParams).then((value) {
       if(mainParams.startRow == 0) {
         emit(state.copyWith(
@@ -24,6 +36,7 @@ class AdvertScreenMainCubit extends Cubit<AdvertScreenMainState> {
             status: AdverScreenMainStatus.success
           )
         );
+
       } else {
         emit(state.copyWith(
           status: AdverScreenMainStatus.success,
@@ -31,7 +44,9 @@ class AdvertScreenMainCubit extends Cubit<AdvertScreenMainState> {
           params: mainParams
         ));
       }
+
     }).catchError(( error) {
+      print(error);
       if(error is DioError) {
         emit(state.copyWith(error: ErrorModel.parseDio(error)));
       } else {
@@ -58,7 +73,7 @@ class AdvertScreenMainCubit extends Cubit<AdvertScreenMainState> {
 
 //     emit(AdvertScreenMainLoader());
 //     return await _repository.index(mainParams).then((value) {
-//       print(value);
+//
 //       if(mainParams.startRow == 0) {
 //         emit(AdvertScreenMainSuccess(adverts: value, params: mainParams));
 //       } else {

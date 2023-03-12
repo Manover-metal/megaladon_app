@@ -14,8 +14,13 @@ class AdvertScreenMyCubit extends Cubit<AdvertScreenMyState> {
   AdvertScreenMyCubit() : super(const AdvertScreenMyState());
 
   Future fetch({AdvertIndexRequestParams? params}) async {
+    if(state.status == AdverScreenMyMainStatus.loading
+        && state.error == null
+    ) return;
+
     AdvertIndexRequestParams mainParams = params ?? state.params;
     emit(state.copyWith(status: AdverScreenMyMainStatus.loading, error: null, advers: state.advers));
+
     return await _repository.index(mainParams).then((value) {
       if(mainParams.startRow == 0) {
         emit(state.copyWith(

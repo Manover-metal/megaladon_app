@@ -29,8 +29,7 @@ class AdvertIndexRequestParams {
     return data;
   }
 
-  AdvertIndexRequestParams copyWith(
- { int? startRow,
+  AdvertIndexRequestParams copyWith({ int? startRow,
   int? rowsPerPage,
   bool? desc,
   int? priceMin,

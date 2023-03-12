@@ -56,7 +56,7 @@ class _OrderCategoryPickerState extends State<OrderCategoryPicker> {
     List<OrderCategoryModel> orderCategories = context.read<DictionaryCubit>().state.orderCategories;
 
     List<int>? result = await showOrderCategoryPicker(context, orderCategories);
-    print(result);
+
     try{
       if (result != null) {
         OrderCategoryModel orderCategory = orderCategories[result[0]];
