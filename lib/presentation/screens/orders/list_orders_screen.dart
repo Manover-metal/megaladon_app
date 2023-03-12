@@ -138,8 +138,8 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
                             ...state.orders.map((order) {
                               return OrderCard(order: order);
                             }).toList(),
-                            if(state.status == OrderScreenMainStatus.loading) const Loader(padding: 10,),
-                            if(state.status == OrderScreenMainStatus.error)  ErrorMessage(error: state.error!)
+                            if(state.status == OrderScreenMainStatus.loading) const Loader(padding: 10)
+                            else if(state.status == OrderScreenMainStatus.error)  ErrorMessage(error: state.error!)
                           ],
                         );
                       },

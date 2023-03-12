@@ -17,7 +17,6 @@ class OfferScreenDetailsCubit extends Cubit<OfferScreenDetailsState> {
     }
     emit(OfferScreenDetailsLoader());
     return await _repository.getById(orderId, offerId).then((value) {
-      print(value);
       emit(OfferScreenDetailsSuccess(
           offer: value
       ));

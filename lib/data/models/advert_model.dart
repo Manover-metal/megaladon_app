@@ -29,7 +29,6 @@ class AdvertModel extends Equatable {
   });
 
   static AdvertModel fromJsonMini(data) {
-    print(data);
     return AdvertModel(
         id: data['id'],
         title: data['title'],
@@ -40,14 +39,12 @@ class AdvertModel extends Equatable {
   }
 
   static List<AdvertModel> listFromJsonMini(List data) {
-    print(data);
     return data.map<AdvertModel>((advert) {
       return AdvertModel.fromJsonMini(advert);
     }).toList();
   }
 
   static AdvertModel fromJsonAll(data) {
-    print(data);
     return AdvertModel(
       id: data['id'],
       title: data['title'],

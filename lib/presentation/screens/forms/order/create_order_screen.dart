@@ -43,7 +43,6 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
   _create() {
     if(_checkForm()) {
       context.read<OrderCreateFormCubit>().createFetch().then((value) {
-        print(value);
         context.router.popUntil((route) => route.settings.name == InitialRouter.name);
         context.router.navigate(InitialRouter(
             children: [

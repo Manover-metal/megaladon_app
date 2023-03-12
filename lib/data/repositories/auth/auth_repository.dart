@@ -54,7 +54,6 @@ class AuthRepository {
 
   Future<AuthModel?> read() async {
     AuthModel? auth = await IsarService.I.authModels.get(1);
-    print(auth);
     if(auth != null) {
       _addInterceptor(auth);
     }

@@ -39,7 +39,6 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
   
   _create() {
     if(_checkForm()) {
-      print('aaa');
       context.read<AdCreateFormCubit>().createFetch().then((value) {
         context.router.popUntil((route) => route.settings.name == InitialRouter.name);
         context.router.navigate(InitialRouter(

@@ -6,7 +6,6 @@ class AdvertCategoryModel {
   AdvertCategoryModel({required this.id, required this.name});
 
   static AdvertCategoryModel fromJson(data) {
-    print(data);
     try {
       return AdvertCategoryModel(
         id: data['id'],

@@ -13,8 +13,18 @@ class OrderScreenMainCubit extends Cubit<OrderScreenMainState> {
   OrderScreenMainCubit() : super(const OrderScreenMainState());
 
   Future fetch({OrderIndexRequestParams? params}) async {
+    if(state.status == OrderScreenMainStatus.loading
+        && state.error == null
+    ) return;
+
     OrderIndexRequestParams mainParams = params ?? state.params;
-    emit(state.copyWith(status: OrderScreenMainStatus.loading, error: null, orders: state.orders));
+    emit(state.copyWith(
+        status: OrderScreenMainStatus.loading,
+        error: null,
+        orders: state.orders
+      )
+    );
+
     return await _repository.index(mainParams).then((value) {
       if(mainParams.startRow == 0) {
         emit(state.copyWith(

@@ -15,12 +15,10 @@ class OfferScreenMainCubit extends Cubit<OfferScreenMainState> {
 
     emit(OfferScreenMainLoader());
     return await _repository.getAll(orderId).then((value) {
-      print(value);
       emit(OfferScreenMainSuccess(
           offers: value,
       ));
     }).catchError((error) {
-      print(error);
       if(error is DioError) {
         emit(OfferScreenMainError(ErrorModel.parseDio(error)));
       } else {
