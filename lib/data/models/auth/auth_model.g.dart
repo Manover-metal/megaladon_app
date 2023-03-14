@@ -21,11 +21,6 @@ const AuthModelSchema = CollectionSchema(
       id: 0,
       name: r'token',
       type: IsarType.string,
-    ),
-    r'userId': PropertySchema(
-      id: 1,
-      name: r'userId',
-      type: IsarType.long,
     )
   },
   estimateSize: _authModelEstimateSize,
@@ -34,7 +29,20 @@ const AuthModelSchema = CollectionSchema(
   deserializeProp: _authModelDeserializeProp,
   idName: r'id',
   indexes: {},
-  links: {},
+  links: {
+    r'user': LinkSchema(
+      id: -3715564120415013660,
+      name: r'user',
+      target: r'UserModel',
+      single: true,
+    ),
+    r'executor': LinkSchema(
+      id: -6959310802726252039,
+      name: r'executor',
+      target: r'ExecutorModel',
+      single: true,
+    )
+  },
   embeddedSchemas: {},
   getId: _authModelGetId,
   getLinks: _authModelGetLinks,
@@ -64,7 +72,6 @@ void _authModelSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.token);
-  writer.writeLong(offsets[1], object.userId);
 }
 
 AuthModel _authModelDeserialize(
@@ -76,7 +83,6 @@ AuthModel _authModelDeserialize(
   final object = AuthModel();
   object.id = id;
   object.token = reader.readStringOrNull(offsets[0]);
-  object.userId = reader.readLongOrNull(offsets[1]);
   return object;
 }
 
@@ -89,8 +95,6 @@ P _authModelDeserializeProp<P>(
   switch (propertyId) {
     case 0:
       return (reader.readStringOrNull(offset)) as P;
-    case 1:
-      return (reader.readLongOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -101,11 +105,14 @@ Id _authModelGetId(AuthModel object) {
 }
 
 List<IsarLinkBase<dynamic>> _authModelGetLinks(AuthModel object) {
-  return [];
+  return [object.user, object.executor];
 }
 
 void _authModelAttach(IsarCollection<dynamic> col, Id id, AuthModel object) {
   object.id = id;
+  object.user.attach(col, col.isar.collection<UserModel>(), r'user', id);
+  object.executor
+      .attach(col, col.isar.collection<ExecutorModel>(), r'executor', id);
 }
 
 extension AuthModelQueryWhereSort
@@ -385,82 +392,39 @@ extension AuthModelQueryFilter
       ));
     });
   }
-
-  QueryBuilder<AuthModel, AuthModel, QAfterFilterCondition> userIdIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'userId',
-      ));
-    });
-  }
-
-  QueryBuilder<AuthModel, AuthModel, QAfterFilterCondition> userIdIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'userId',
-      ));
-    });
-  }
-
-  QueryBuilder<AuthModel, AuthModel, QAfterFilterCondition> userIdEqualTo(
-      int? value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'userId',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<AuthModel, AuthModel, QAfterFilterCondition> userIdGreaterThan(
-    int? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'userId',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<AuthModel, AuthModel, QAfterFilterCondition> userIdLessThan(
-    int? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'userId',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<AuthModel, AuthModel, QAfterFilterCondition> userIdBetween(
-    int? lower,
-    int? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'userId',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
 }
 
 extension AuthModelQueryObject
     on QueryBuilder<AuthModel, AuthModel, QFilterCondition> {}
 
 extension AuthModelQueryLinks
-    on QueryBuilder<AuthModel, AuthModel, QFilterCondition> {}
+    on QueryBuilder<AuthModel, AuthModel, QFilterCondition> {
+  QueryBuilder<AuthModel, AuthModel, QAfterFilterCondition> user(
+      FilterQuery<UserModel> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'user');
+    });
+  }
+
+  QueryBuilder<AuthModel, AuthModel, QAfterFilterCondition> userIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'user', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<AuthModel, AuthModel, QAfterFilterCondition> executor(
+      FilterQuery<ExecutorModel> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'executor');
+    });
+  }
+
+  QueryBuilder<AuthModel, AuthModel, QAfterFilterCondition> executorIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'executor', 0, true, 0, true);
+    });
+  }
+}
 
 extension AuthModelQuerySortBy on QueryBuilder<AuthModel, AuthModel, QSortBy> {
   QueryBuilder<AuthModel, AuthModel, QAfterSortBy> sortByToken() {
@@ -472,18 +436,6 @@ extension AuthModelQuerySortBy on QueryBuilder<AuthModel, AuthModel, QSortBy> {
   QueryBuilder<AuthModel, AuthModel, QAfterSortBy> sortByTokenDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'token', Sort.desc);
-    });
-  }
-
-  QueryBuilder<AuthModel, AuthModel, QAfterSortBy> sortByUserId() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'userId', Sort.asc);
-    });
-  }
-
-  QueryBuilder<AuthModel, AuthModel, QAfterSortBy> sortByUserIdDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'userId', Sort.desc);
     });
   }
 }
@@ -513,18 +465,6 @@ extension AuthModelQuerySortThenBy
       return query.addSortBy(r'token', Sort.desc);
     });
   }
-
-  QueryBuilder<AuthModel, AuthModel, QAfterSortBy> thenByUserId() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'userId', Sort.asc);
-    });
-  }
-
-  QueryBuilder<AuthModel, AuthModel, QAfterSortBy> thenByUserIdDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'userId', Sort.desc);
-    });
-  }
 }
 
 extension AuthModelQueryWhereDistinct
@@ -533,12 +473,6 @@ extension AuthModelQueryWhereDistinct
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'token', caseSensitive: caseSensitive);
-    });
-  }
-
-  QueryBuilder<AuthModel, AuthModel, QDistinct> distinctByUserId() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'userId');
     });
   }
 }
@@ -554,12 +488,6 @@ extension AuthModelQueryProperty
   QueryBuilder<AuthModel, String?, QQueryOperations> tokenProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'token');
-    });
-  }
-
-  QueryBuilder<AuthModel, int?, QQueryOperations> userIdProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'userId');
     });
   }
 }

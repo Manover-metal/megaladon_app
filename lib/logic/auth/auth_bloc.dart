@@ -6,6 +6,8 @@ import 'package:equatable/equatable.dart';
 import 'package:megaladon/core/dio/index.dart';
 import 'package:megaladon/core/dio/interceptors/auth_interceptors.dart';
 import 'package:megaladon/data/models/auth/auth_model.dart';
+import 'package:megaladon/data/models/executor_model.dart';
+import 'package:megaladon/data/models/user_model.dart';
 import 'package:megaladon/data/repositories/auth/auth_repository.dart';
 import 'package:megaladon/data/repositories/auth/verify_repository.dart';
 
@@ -33,10 +35,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   _login(AuthLoginEvent event, Emitter emit) async {
     emit(AuthLoadingState());
     await _authRepository.login(phone: event.phone, password: event.password).then((value) {
-      AuthModel auth = AuthModel()..token = value.data['token'];
-      _authRepository.write(auth);
+
+      final user = UserModel.fromJson(value.data['user']);
+      final executor = value.data['user']['executor'] != null? ExecutorModel.fromJson(value.data['user']['executor']): null;
+
+      AuthModel auth = AuthModel()
+        ..token = value.data['token']
+        ..user.value = user
+        ..executor.value = executor;
+
+      _authRepository.write(auth, user, executor);
+
       emit(AuthLoginState(auth));
     }).catchError((error) {
+      print(error);
+
       if(error is DioError) {
         if(error.response?.statusCode == 406) {
           emit(AuthTransitionVerify(event.phone));
@@ -52,11 +65,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   _verify(AuthVerifyEvent event, Emitter emit) async {
     emit(AuthLoadingState());
+
     await _verifyRepository.verifyRegister(code: event.code, phone: event.phone).then((value) {
-      AuthModel auth = AuthModel()..token = value.data['token'];
-      _authRepository.write(auth);
+
+      final user = UserModel.fromJson(value.data['user']);
+      final executor = value.data['user']['executor'] != null? ExecutorModel.fromJson(value.data['user']['executor']): null;
+
+      AuthModel auth = AuthModel()
+        ..token = value.data['token']
+        ..user.value = user
+        ..executor.value = executor;
+      _authRepository.write(auth, user, executor);
+
       emit(AuthLoginState(auth));
     }).catchError((error) {
+      print(error);
       if(error is DioError) {
         emit(AuthErrorState(error.response?.data['message']));
       } else {

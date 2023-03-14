@@ -3,6 +3,8 @@ import 'package:megaladon/core/dio/index.dart';
 import 'package:megaladon/core/dio/interceptors/auth_interceptors.dart';
 import 'package:megaladon/core/isar/index.dart';
 import 'package:megaladon/data/models/auth/auth_model.dart';
+import 'package:megaladon/data/models/executor_model.dart';
+import 'package:megaladon/data/models/user_model.dart';
 
 class AuthRepository {
   AuthInterceptor? interceptor;
@@ -60,10 +62,17 @@ class AuthRepository {
     return auth;
   }
 
-  write(AuthModel auth) async {
+  write(AuthModel auth, UserModel user, ExecutorModel? executor) async {
     _addInterceptor(auth);
     await IsarService.I.writeTxn(() async {
-      IsarService.I.authModels.put(auth);
+      await IsarService.I.authModels.put(auth);
+      await IsarService.I.userModels.put(user);
+      await auth.user.save();
+
+      if(executor != null) {
+        await IsarService.I.executorModels.put(executor);
+        await auth.executor.save();
+      }
     });
   }
 

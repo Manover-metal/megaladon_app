@@ -5,16 +5,18 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:megaladon/data/models/request/params/register/register_user_request_params.dart';
+import 'package:megaladon/generated/locale_keys.g.dart';
 import 'package:megaladon/logic/form/register/register_user/register_user_form_cubit.dart';
 import 'package:megaladon/logic/register/register_user/register_user_bloc.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
+import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
-import '../../../../generated/locale_keys.g.dart';
 
 class RegisterUserScreen extends StatefulWidget {
   @override
@@ -26,6 +28,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
   late TextEditingController _phoneController;
   late TextEditingController _passwordController;
   late TextEditingController _passwordVerifyController;
+  late CityPickerController _cityController;
 
 
   _checkForm() {
@@ -57,17 +60,20 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
       String phone = context.read<RegisterUserFormCubit>().state.phone.value;
       context.router.replace(VerifyRoute(phone: phone));
     } else if(state is RegisterUserError && isListener) {
-      showErrorSnackBar(context, state.error);
+      showErrorSnackBar(context, state.error.messages[0]);
     }
   };
 
   _register() {
     if(_checkForm()) {
       context.read<RegisterUserBloc>().add(RegisterUserFetchEvent(
-          _nameController.value.text,
-          _phoneController.value.text,
-          _passwordController.value.text,
-          _passwordController.value.text
+          RegisterUserRequestParams(
+            name: _nameController.value.text,
+            phone: _phoneController.value.text,
+            password: _passwordController.value.text,
+            passwordConfirmation: _passwordVerifyController.value.text,
+            city: _cityController.value
+          )
         )
       );
     }
@@ -80,6 +86,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
     _phoneController = TextEditingController();
     _passwordController = TextEditingController();
     _passwordVerifyController = TextEditingController();
+    _cityController = CityPickerController();
     super.initState();
   }
 
@@ -89,6 +96,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
     _phoneController.dispose();
     _passwordController.dispose();
     _passwordVerifyController.dispose();
+    _cityController.dispose();
     super.dispose();
   }
 
@@ -132,6 +140,11 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                   label: LocaleKeys.Confirm_the_password.tr(),
                   controller: _passwordVerifyController,
                 ),
+                CityPicker(
+                  icon: Icon(Icons.location_city),
+                  label: LocaleKeys.Choose_city.tr(),
+                  controller: _cityController,
+                ),
                 BlocBuilder<RegisterUserBloc, RegisterUserState>(
                   builder: (context, state) {
                     if(state is RegisterUserLoading) {
@@ -144,12 +157,11 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                       text: LocaleKeys.Register.tr(),
                       onPressed: _register,
                     );
-
                   },
                 ),
                 Text.rich(
                   TextSpan(
-                    children: [
+                    children: const [
                       TextSpan(text: 'Нажимая на кнопку “Продолжить”, вы принимаете '),
                       TextSpan(text: 'Условия пользовательского соглашения',
                           style: TextStyle(

@@ -1,7 +1,9 @@
+// ignore_for_file: use_key_in_widget_constructors, use_build_context_synchronously, prefer_const_constructors, sort_child_properties_last
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:megaladon/data/models/request/params/order_index_request_params.dart';
+import 'package:megaladon/data/models/request/params/index/order_index_request_params.dart';
 import 'package:megaladon/logic/screens/orders/main/order_screen_main_cubit.dart';
 import 'package:megaladon/presentation/widgets/bottom_sheet/filters/filter_order_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/bottom_sheet/sort/sort_order_bottom_sheet.dart';

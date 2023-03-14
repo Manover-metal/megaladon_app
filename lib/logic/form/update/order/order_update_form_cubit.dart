@@ -14,8 +14,8 @@ import 'package:megaladon/data/models/form/price.dart';
 import 'package:megaladon/data/models/form/title.dart';
 import 'package:megaladon/data/models/form/title.dart';
 import 'package:megaladon/data/models/order_model.dart';
-import 'package:megaladon/data/models/request/params/order_create_request_params.dart';
-import 'package:megaladon/data/models/request/params/order_update_request_params.dart';
+import 'package:megaladon/data/models/request/params/create/order_create_request_params.dart';
+import 'package:megaladon/data/models/request/params/update/order_update_request_params.dart';
 import 'package:megaladon/data/repositories/order_repository.dart';
 
 part 'order_update_form_state.dart';
