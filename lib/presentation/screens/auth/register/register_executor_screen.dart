@@ -113,22 +113,27 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
                   SizedBox(height: 20,),
                   TextFieldApp(
                     label: 'Имя',
+                    icon: Icon(Icons.person_add_alt_1),
                     controller: _nameController,
                   ),
                   NumberFieldApp(
                     label: 'БИН',
+                    icon: Icon(Icons.wallet),
                     controller: _binController,
                   ),
                   TextFieldApp(
                     label: 'Полный адрес',
+                    icon: Icon(Icons.maps_home_work_outlined),
                     controller: _fullAddressController,
                   ),
                   DoubleFieldApp(
                     label: 'Широта',
+                    icon: Icon(Icons.place),
                     controller: _latController,
                   ),
                   DoubleFieldApp(
                     label: 'Высота',
+                    icon: Icon(Icons.place_outlined),
                     controller: _lonController,
                   ),
                   BlocBuilder<RegisterExecutorBloc, RegisterExecutorState>(

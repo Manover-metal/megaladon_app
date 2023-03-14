@@ -7,6 +7,7 @@ import 'package:megaladon/core/dio/index.dart';
 import 'package:megaladon/core/dio/interceptors/auth_interceptors.dart';
 import 'package:megaladon/data/models/auth/auth_model.dart';
 import 'package:megaladon/data/models/executor_model.dart';
+import 'package:megaladon/data/models/store_model.dart';
 import 'package:megaladon/data/models/user_model.dart';
 import 'package:megaladon/data/repositories/auth/auth_repository.dart';
 import 'package:megaladon/data/repositories/auth/verify_repository.dart';
@@ -27,6 +28,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   _initial(AuthInitialEvent event, Emitter emit) async {
     AuthModel? auth = await _authRepository.read();
+    print(auth?.token);
     if(auth != null) {
       emit(AuthLoginState(auth));
     }
@@ -38,13 +40,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       final user = UserModel.fromJson(value.data['user']);
       final executor = value.data['user']['executor'] != null? ExecutorModel.fromJson(value.data['user']['executor']): null;
+      final store = value.data['user']['store'] != null? StoreModel.fromJsonFull(value.data['user']['store']): null;
+
 
       AuthModel auth = AuthModel()
         ..token = value.data['token']
         ..user.value = user
-        ..executor.value = executor;
+        ..executor.value = executor
+        ..store.value = store;
 
-      _authRepository.write(auth, user, executor);
+      _authRepository.write(auth, user, executor, store);
 
       emit(AuthLoginState(auth));
     }).catchError((error) {
@@ -70,12 +75,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       final user = UserModel.fromJson(value.data['user']);
       final executor = value.data['user']['executor'] != null? ExecutorModel.fromJson(value.data['user']['executor']): null;
+      final store = value.data['user']['store'] != null? StoreModel.fromJsonFull(value.data['user']['store']): null;
+
+
 
       AuthModel auth = AuthModel()
         ..token = value.data['token']
         ..user.value = user
-        ..executor.value = executor;
-      _authRepository.write(auth, user, executor);
+        ..executor.value = executor
+        ..store.value = store;
+
+      _authRepository.write(auth, user, executor, store);
 
       emit(AuthLoginState(auth));
     }).catchError((error) {

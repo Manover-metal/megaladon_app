@@ -41,6 +41,12 @@ const AuthModelSchema = CollectionSchema(
       name: r'executor',
       target: r'ExecutorModel',
       single: true,
+    ),
+    r'store': LinkSchema(
+      id: 5298585628070155870,
+      name: r'store',
+      target: r'StoreModel',
+      single: true,
     )
   },
   embeddedSchemas: {},
@@ -105,7 +111,7 @@ Id _authModelGetId(AuthModel object) {
 }
 
 List<IsarLinkBase<dynamic>> _authModelGetLinks(AuthModel object) {
-  return [object.user, object.executor];
+  return [object.user, object.executor, object.store];
 }
 
 void _authModelAttach(IsarCollection<dynamic> col, Id id, AuthModel object) {
@@ -113,6 +119,7 @@ void _authModelAttach(IsarCollection<dynamic> col, Id id, AuthModel object) {
   object.user.attach(col, col.isar.collection<UserModel>(), r'user', id);
   object.executor
       .attach(col, col.isar.collection<ExecutorModel>(), r'executor', id);
+  object.store.attach(col, col.isar.collection<StoreModel>(), r'store', id);
 }
 
 extension AuthModelQueryWhereSort
@@ -422,6 +429,19 @@ extension AuthModelQueryLinks
   QueryBuilder<AuthModel, AuthModel, QAfterFilterCondition> executorIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(r'executor', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<AuthModel, AuthModel, QAfterFilterCondition> store(
+      FilterQuery<StoreModel> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'store');
+    });
+  }
+
+  QueryBuilder<AuthModel, AuthModel, QAfterFilterCondition> storeIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'store', 0, true, 0, true);
     });
   }
 }

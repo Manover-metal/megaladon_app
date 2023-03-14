@@ -31,7 +31,7 @@ class UserModel {
       id: data['id'],
       name: data['name'],
       phone: data['phone'],
-      photo: data['photo'],
+      photo: data['photo_url'],
       countOrders: data['count_orders'],
       city: data['city'] != null? CityModel.fromJson(data['city']): null,
     );

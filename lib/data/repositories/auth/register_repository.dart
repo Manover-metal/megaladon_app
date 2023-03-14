@@ -1,5 +1,6 @@
 import 'package:megaladon/core/dio/index.dart';
 import 'package:megaladon/data/models/request/params/register/register_executor_request_params.dart';
+import 'package:megaladon/data/models/request/params/register/register_store_request_params.dart';
 import 'package:megaladon/data/models/request/params/register/register_user_request_params.dart';
 
 class RegisterRepository {
@@ -9,5 +10,9 @@ class RegisterRepository {
 
   Future registerExecutor(RegisterExecutorRequestParams params) {
     return ApiService.I.post('/auth/register-executor', data: params.toData());
+  }
+
+  Future registerStore(RegisterStoreRequestParams params) {
+    return ApiService.I.post('/auth/register-store', data: params.toData());
   }
 }

@@ -1,17 +1,34 @@
+import 'package:isar/isar.dart';
+import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/dictionary/store_type_model.dart';
 
+part 'store_model.g.dart';
+
+
+@collection
 class StoreModel {
-  final int id;
+  final Id id;
   final String fullAddress;
 
   final String? name;
   final int? bin;
   final String? rating;
   final String? photo;
-  final List? prices;
-  final List? contacts;
+
+
   final double? lat;
   final double? lon;
+
+  @ignore
+  final List? contacts;
+
+  @ignore
+  final List? prices;
+
+  @ignore
+  final CityModel? city;
+
+  @ignore
   final StoreTypeModel? type;
 
 
@@ -26,7 +43,8 @@ class StoreModel {
     this.lat,
     this.lon,
     this.name,
-    this.type
+    this.type,
+    this.city
   });
 
   static StoreModel fromJsonMini(data) {
@@ -36,7 +54,9 @@ class StoreModel {
         rating: data['rating'],
         fullAddress: data['full_address'],
         photo: data['photo_url'],
-        type: data['type'] != null? StoreTypeModel.fromJson(data['type']): null
+        type: data['type'] != null? StoreTypeModel.fromJson(data['type']): null,
+        city: data['city'] != null? CityModel.fromJson(data['city']): null
+
     );
   }
 
@@ -51,7 +71,9 @@ class StoreModel {
         contacts: data['contacts'],
         lat: data['lat'],
         lon: data['lon'],
-        type: data['type'] != null? StoreTypeModel.fromJson(data['type']): null
+        type: data['type'] != null? StoreTypeModel.fromJson(data['type']): null,
+        city: data['city'] != null? CityModel.fromJson(data['city']): null
+
     );
   }
 
