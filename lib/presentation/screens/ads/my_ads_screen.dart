@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:megaladon/data/models/request/params/advert_index_request_params.dart';
+import 'package:megaladon/data/models/request/params/index/advert_index_request_params.dart';
 import 'package:megaladon/logic/screens/advert/main/advert_screen_main_cubit.dart';
 import 'package:megaladon/logic/screens/advert/my/advert_screen_my_cubit.dart';
 import 'package:megaladon/presentation/widgets/bottom_sheet/filters/filter_ad_my_bottom_sheet.dart';

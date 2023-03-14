@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class TextNumberFieldApp extends StatelessWidget {
+class NumberFieldApp extends StatelessWidget {
   final TextEditingController? controller;
   final String? label;
   final Widget? icon;
 
-  const TextNumberFieldApp({super.key, this.controller, this.label, this.icon});
+  const NumberFieldApp({super.key, this.controller, this.label, this.icon});
 
   @override
   Widget build(BuildContext context) {

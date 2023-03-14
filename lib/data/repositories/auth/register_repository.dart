@@ -1,19 +1,13 @@
 import 'package:megaladon/core/dio/index.dart';
+import 'package:megaladon/data/models/request/params/register/register_executor_request_params.dart';
+import 'package:megaladon/data/models/request/params/register/register_user_request_params.dart';
 
 class RegisterRepository {
-  Future registerUser({
-    required String name,
-    required String phone,
-    required String password,
-    required String passwordConfirmation,
-    required int cityId
-  }) {
-    return ApiService.I.post('/auth/register', data: {
-      "name": name,
-      "phone": phone,
-      "password": password,
-      "password_confirmation": passwordConfirmation,
-      "city_id": cityId
-    });
+  Future registerUser(RegisterUserRequestParams params) {
+    return ApiService.I.post('/auth/register', data: params.toData());
+  }
+
+  Future registerExecutor(RegisterExecutorRequestParams params) {
+    return ApiService.I.post('/auth/register-executor', data: params.toData());
   }
 }

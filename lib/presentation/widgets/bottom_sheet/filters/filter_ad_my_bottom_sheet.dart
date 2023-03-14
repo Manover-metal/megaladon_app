@@ -2,12 +2,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:megaladon/data/models/request/params/advert_index_request_params.dart';
+import 'package:megaladon/data/models/request/params/index/advert_index_request_params.dart';
 import 'package:megaladon/data/repositories/advert_repository.dart';
 import 'package:megaladon/logic/screens/advert/my/advert_screen_my_cubit.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/form/picker/last_day_picker.dart';
-import 'package:megaladon/presentation/widgets/form/field/text_number_field.dart';
+import 'package:megaladon/presentation/widgets/form/field/number_field.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class FilterMyAdBottomSheet extends StatefulWidget {
@@ -72,7 +72,7 @@ class _FilterMyAdBottomSheetState extends State<FilterMyAdBottomSheet> {
                     )),
                   ),
                   Expanded(
-                      child: TextNumberFieldApp(controller: _fromController,)
+                      child: NumberFieldApp(controller: _fromController,)
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -81,7 +81,7 @@ class _FilterMyAdBottomSheetState extends State<FilterMyAdBottomSheet> {
                         fontWeight: FontWeight.w700
                     )),
                   ),
-                  Expanded(child: TextNumberFieldApp(controller: _beforeController)),
+                  Expanded(child: NumberFieldApp(controller: _beforeController)),
                 ],
               ),
             ),

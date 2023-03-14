@@ -1,6 +1,6 @@
 import 'package:megaladon/core/dio/index.dart';
 import 'package:megaladon/data/models/offer_model.dart';
-import 'package:megaladon/data/models/request/params/offer_create_request_params.dart';
+import 'package:megaladon/data/models/request/params/create/offer_create_request_params.dart';
 
 class OfferRepository {
   Future create(int orderId, OfferCreateRequestParams params) => ApiService.I

@@ -1,8 +1,8 @@
 import 'package:megaladon/core/dio/index.dart';
 import 'package:megaladon/data/models/order_model.dart';
-import 'package:megaladon/data/models/request/params/order_create_request_params.dart';
-import 'package:megaladon/data/models/request/params/order_index_request_params.dart';
-import 'package:megaladon/data/models/request/params/order_update_request_params.dart';
+import 'package:megaladon/data/models/request/params/create/order_create_request_params.dart';
+import 'package:megaladon/data/models/request/params/index/order_index_request_params.dart';
+import 'package:megaladon/data/models/request/params/update/order_update_request_params.dart';
 
 class OrderRepository {
   Future index(OrderIndexRequestParams params) => ApiService.I

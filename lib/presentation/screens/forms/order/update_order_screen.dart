@@ -15,7 +15,7 @@ import 'package:megaladon/presentation/widgets/form/picker/dictionary/order_cate
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/order_category_picker.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
-import 'package:megaladon/presentation/widgets/form/field/text_number_field.dart';
+import 'package:megaladon/presentation/widgets/form/field/number_field.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
@@ -128,8 +128,8 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
                 TextFieldApp(controller: _titleController, label: 'Заголовок',),
                 CityPicker(label: 'Город', controller: _cityController),
                 DescriptionFieldApp(label: 'Описание', controller: _descriptionController),
-                TextNumberFieldApp(label: 'Желаемый бюджет (не обязательно)', controller: _priceMaxController,),
-                TextNumberFieldApp(label: 'Допустимый бюджет (не обязательно)', controller: _priceRecommendedController,),
+                NumberFieldApp(label: 'Желаемый бюджет (не обязательно)', controller: _priceMaxController,),
+                NumberFieldApp(label: 'Допустимый бюджет (не обязательно)', controller: _priceRecommendedController,),
                 BlocConsumer<OrderUpdateFormCubit, OrderUpdateFormState>(
                   listener: _listenerForm,
                   builder: (context, state) {

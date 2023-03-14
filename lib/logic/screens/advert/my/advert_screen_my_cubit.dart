@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:megaladon/data/models/advert_model.dart';
 import 'package:megaladon/data/models/error_model.dart';
-import 'package:megaladon/data/models/request/params/advert_index_request_params.dart';
+import 'package:megaladon/data/models/request/params/index/advert_index_request_params.dart';
 import 'package:megaladon/data/repositories/advert_repository.dart';
 
 part 'advert_screen_my_state.dart';
@@ -21,7 +21,7 @@ class AdvertScreenMyCubit extends Cubit<AdvertScreenMyState> {
     AdvertIndexRequestParams mainParams = params ?? state.params;
     emit(state.copyWith(status: AdverScreenMyMainStatus.loading, error: null, advers: state.advers));
 
-    return await _repository.index(mainParams).then((value) {
+    return await _repository.indexMy(mainParams).then((value) {
       if(mainParams.startRow == 0) {
         emit(state.copyWith(
             advers: value,

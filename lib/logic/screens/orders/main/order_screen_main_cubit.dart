@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:megaladon/data/models/error_model.dart';
 import 'package:megaladon/data/models/order_model.dart';
-import 'package:megaladon/data/models/request/params/order_index_request_params.dart';
+import 'package:megaladon/data/models/request/params/index/order_index_request_params.dart';
 import 'package:megaladon/data/repositories/order_repository.dart';
 
 part 'order_screen_main_state.dart';

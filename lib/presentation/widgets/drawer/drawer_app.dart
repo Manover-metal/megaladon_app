@@ -96,16 +96,26 @@ class DrawerApp extends StatelessWidget {
               },
             ),
             Spacer(),
-            ...[
-              ElevatedButtonApp(
-                text: 'Регистрация исполнителя',
-                onPressed: _registerExecutor(context),
-              ),
-              OutlinedButtonApp(
-                text: 'Регистрация магазина',
-                onPressed: _registerStore(context),
-              ),
-            ],
+            BlocBuilder<AuthBloc, AuthState>(
+              builder: (context, state) {
+                return Column(
+                  children: [
+                    if(state is AuthLoginState) ...[
+
+                      if(state.auth.executor.value == null) ElevatedButtonApp(
+                        text: 'Регистрация исполнителя',
+                        onPressed: _registerExecutor(context),
+                      ),
+                      OutlinedButtonApp(
+                        text: 'Регистрация магазина',
+                        onPressed: _registerStore(context),
+                      ),
+                    ],
+                  ],
+                );
+              },
+            ),
+
           ],
         ),
       ),

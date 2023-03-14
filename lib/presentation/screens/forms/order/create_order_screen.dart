@@ -16,7 +16,7 @@ import 'package:megaladon/presentation/widgets/form/field/description_field.dart
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/order_category_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
-import 'package:megaladon/presentation/widgets/form/field/text_number_field.dart';
+import 'package:megaladon/presentation/widgets/form/field/number_field.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
@@ -126,8 +126,8 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                 CityPicker(label: LocaleKeys.Choose_city.tr(), controller: _cityController),
                 TextFieldApp(controller: _titleController, label: 'Заголовок',),
                 DescriptionFieldApp(label: LocaleKeys.Description_of_work.tr(), controller: _descriptionController),
-                TextNumberFieldApp(label: LocaleKeys.Desired_budget.tr(), controller: _priceMaxController,),
-                TextNumberFieldApp(label: LocaleKeys.Allowed_budget.tr(), controller: _priceRecommendedController,),
+                NumberFieldApp(label: LocaleKeys.Desired_budget.tr(), controller: _priceMaxController,),
+                NumberFieldApp(label: LocaleKeys.Allowed_budget.tr(), controller: _priceRecommendedController,),
                 // BlocConsumer(builder: builder, listener: listener)
                 BlocConsumer<OrderCreateFormCubit, OrderCreateFormState>(
                     listener: _listenerForm,

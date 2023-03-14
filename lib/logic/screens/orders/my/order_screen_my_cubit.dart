@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:megaladon/data/models/error_model.dart';
 import 'package:megaladon/data/models/order_model.dart';
-import 'package:megaladon/data/models/request/params/order_index_request_params.dart';
+import 'package:megaladon/data/models/request/params/index/order_index_request_params.dart';
 import 'package:megaladon/data/repositories/order_repository.dart';
 
 part 'order_screen_my_state.dart';
@@ -25,7 +25,7 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
       )
     );
 
-    return await _repository.index(mainParams).then((value) {
+    return await _repository.indexMy(mainParams).then((value) {
       if(mainParams.startRow == 0) {
         emit(state.copyWith(
             orders: value,

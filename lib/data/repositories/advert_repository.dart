@@ -2,9 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:megaladon/core/dio/index.dart';
 import 'package:megaladon/data/models/advert_model.dart';
 import 'package:megaladon/data/models/request/index_period_enum.dart';
-import 'package:megaladon/data/models/request/params/advert_create_request_params.dart';
-import 'package:megaladon/data/models/request/params/advert_index_request_params.dart';
-import 'package:megaladon/data/models/request/params/advert_update_request_params.dart';
+import 'package:megaladon/data/models/request/params/create/advert_create_request_params.dart';
+import 'package:megaladon/data/models/request/params/index/advert_index_request_params.dart';
+import 'package:megaladon/data/models/request/params/update/advert_update_request_params.dart';
 
 class AdvertRepository {
   Future index(AdvertIndexRequestParams params) => ApiService.I
