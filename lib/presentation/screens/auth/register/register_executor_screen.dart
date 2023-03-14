@@ -132,7 +132,7 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
                     controller: _latController,
                   ),
                   DoubleFieldApp(
-                    label: 'Высота',
+                    label: 'Долгота',
                     icon: Icon(Icons.place_outlined),
                     controller: _lonController,
                   ),
@@ -152,14 +152,14 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
                   ),
                   Text.rich(
                     TextSpan(
-                      // ignore: prefer_const_literals_to_create_immutables
-                        children: [
+                        children: const [
                           TextSpan(
-                              text: 'Нажимая на кнопку “Продолжить”, вы принимаете '),
+                            text: 'Нажимая на кнопку “Продолжить”, вы принимаете '
+                          ),
                           TextSpan(text: 'Условия пользовательского соглашения',
-                              style: TextStyle(
-
-                              )
+                            style: TextStyle(
+                                decoration: TextDecoration.underline
+                            )
                           )
                         ]
                     ),

@@ -1,0 +1,49 @@
+part of 'register_store_form_cubit.dart';
+
+class RegisterStoreFormState extends Equatable {
+
+  final FormzStatus status;
+  final NameFormModel name;
+  final CityFormModel city;
+  final StoreTypeFormModel type;
+  final BinFormModel bin;
+  final LatFormModel lat;
+  final LonFormModel lon;
+  final int countTry;
+
+  const RegisterStoreFormState({
+    this.status = FormzStatus.pure,
+    this.name = const NameFormModel.pure(),
+    this.city = const CityFormModel.pure(),
+    this.type = const StoreTypeFormModel.pure(),
+    this.bin = const BinFormModel.pure(),
+    this.lat = const LatFormModel.pure(),
+    this.lon = const LonFormModel.pure(),
+    this.countTry = 0
+  });
+
+  @override
+  List<Object?> get props => [status, name, city, type, bin, lat, lon, countTry];
+
+  RegisterStoreFormState copyWith ({
+    FormzStatus? status,
+    NameFormModel? name,
+    CityFormModel? city,
+    StoreTypeFormModel? type,
+    BinFormModel? bin,
+    LatFormModel? lat,
+    LonFormModel? lon,
+    int? countTry
+  }) {
+    return RegisterStoreFormState(
+      status: status ?? this.status,
+      name: name ?? this.name,
+      city: city ?? this.city,
+      type: type ?? this.type,
+      bin: bin ?? this.bin,
+      lat: lat ?? this.lat,
+      lon: lon ?? this.lon,
+      countTry: countTry ?? this.countTry,
+    );
+  }
+}

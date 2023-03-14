@@ -34,7 +34,7 @@ class SplashScreen extends StatelessWidget {
       scaffoldKey: getItApp.get<GlobalKey<ScaffoldState>>(),
       drawer: DrawerApp(),
       lazyLoad: true,
-      routes: [
+      routes: const [
         OrderRouter(),
         StoreRouter(),
         AdRouter(),
