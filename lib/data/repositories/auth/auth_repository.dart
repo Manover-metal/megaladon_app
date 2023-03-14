@@ -67,18 +67,33 @@ class AuthRepository {
     _addInterceptor(auth);
     await IsarService.I.writeTxn(() async {
       await IsarService.I.authModels.put(auth);
+    });
+    addUser(auth, user);
+    if(executor != null) addExecutor(auth, executor);
+    if(store != null) addStore(auth, store);
+
+  }
+
+  addUser(AuthModel auth, UserModel user) async {
+    await IsarService.I.writeTxn(() async {
       await IsarService.I.userModels.put(user);
-      await auth.user.save();
+      await auth.executor.save();
+    });
+  }
 
-      if(executor != null) {
-        await IsarService.I.executorModels.put(executor);
-        await auth.executor.save();
-      }
+  addExecutor(AuthModel auth, ExecutorModel executor) async {
+    await IsarService.I.writeTxn(() async {
+      await IsarService.I.authModels.put(auth);
+      await IsarService.I.executorModels.put(executor);
+      await auth.executor.save();
+    });
+  }
 
-      if(store != null) {
-        await IsarService.I.storeModels.put(store);
-        await auth.store.save();
-      }
+  addStore(AuthModel auth, StoreModel store) async {
+    await IsarService.I.writeTxn(() async {
+      await IsarService.I.authModels.put(auth);
+      await IsarService.I.storeModels.put(store);
+      await auth.store.save();
     });
   }
 

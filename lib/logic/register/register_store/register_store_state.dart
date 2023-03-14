@@ -11,8 +11,12 @@ class RegisterStoreInitial extends RegisterStoreState {
 }
 
 class RegisterStoreSuccess extends RegisterStoreState {
+  final StoreModel store;
+
+  const RegisterStoreSuccess(this.store);
+
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [store];
 }
 
 class RegisterStoreLoading extends RegisterStoreState {

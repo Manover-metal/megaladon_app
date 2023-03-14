@@ -19,6 +19,7 @@ import 'package:megaladon/logic/form/update/ad/ad_update_form_cubit.dart';
 import 'package:megaladon/logic/form/update/order/order_update_form_cubit.dart';
 import 'package:megaladon/logic/form/verify/verify_form_cubit.dart';
 import 'package:megaladon/logic/register/register_executor/register_executor_bloc.dart';
+import 'package:megaladon/logic/register/register_store/register_store_bloc.dart';
 import 'package:megaladon/logic/register/register_user/register_user_bloc.dart';
 import 'package:megaladon/logic/screens/advert/details/advert_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/advert/my/advert_screen_my_cubit.dart';
@@ -60,97 +61,107 @@ void main() async {
 }
 
 class App extends StatelessWidget {
-  final AuthBloc auth = AuthBloc()..add(AuthInitialEvent());
+  final RegisterExecutorBloc registerExecutorBloc = RegisterExecutorBloc();
+  final RegisterStoreBloc registerStoreBloc = RegisterStoreBloc();
+
   App({super.key});
 
   final _appRouter = AppRouter();
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<AuthBloc>(
-      create: (context) => auth,
-      child: MultiBlocProvider(
-          providers: [
-            BlocProvider<AuthFormCubit>(
-                create: (context) => AuthFormCubit()
-            ),
-            BlocProvider<RegisterUserFormCubit>(
-                create: (context) => RegisterUserFormCubit()
-            ),
-            BlocProvider<RegisterExecutorFormCubit>(
-                create: (context) => RegisterExecutorFormCubit()
-            ),
-            //RegisterExecutorFormCubit
-            BlocProvider<VerifyFormCubit>(
-                create: (context) => VerifyFormCubit()
-            ),
-            BlocProvider<RegisterUserBloc>(
-                create: (context) => RegisterUserBloc()
-            ),
-            BlocProvider<RegisterExecutorBloc>(
-              create: (context) => RegisterExecutorBloc(),
-            ),
-            BlocProvider<AdvertScreenMainCubit>(
-                create: (context) => AdvertScreenMainCubit()
-            ),
-            BlocProvider<AdvertScreenMyCubit>(
-                create: (context) => AdvertScreenMyCubit()
-            ),
-            BlocProvider<OrderScreenMainCubit>(
-                create: (context) => OrderScreenMainCubit()
-            ),
-            BlocProvider<OrderScreenMyCubit>(
-                create: (context) => OrderScreenMyCubit()
-            ),
-            BlocProvider<OrderScreenDetailsCubit>(
-                create: (context) => OrderScreenDetailsCubit()
-            ),
-            BlocProvider<AdvertScreenDetailsCubit>(
-                create: (context) => AdvertScreenDetailsCubit()
-            ),
-            BlocProvider<StoreScreenMainCubit>(
-                create: (context) => StoreScreenMainCubit()
-            ),
-            BlocProvider<StoreScreenDetailsCubit>(
-                create: (context) => StoreScreenDetailsCubit()
-            ),
-            BlocProvider<OfferScreenMainCubit>(
-                create: (context) => OfferScreenMainCubit()
-            ),
-            BlocProvider<OfferScreenDetailsCubit>(
-                create: (context) => OfferScreenDetailsCubit()
-            ),
-            BlocProvider<DictionaryCubit>(
-                lazy: false,
-                create: (context) => DictionaryCubit()..initial()
-            ),
-            BlocProvider<AdCreateFormCubit>(
-                create: (context) => AdCreateFormCubit()
-            ),
-            BlocProvider<OrderCreateFormCubit>(
-                create: (context) => OrderCreateFormCubit()
-            ),
-            BlocProvider<CreateOfferFormCubit>(
-                create: (context) => CreateOfferFormCubit()
-            ),
-            BlocProvider<AdUpdateFormCubit>(
-                create: (context) => AdUpdateFormCubit()
-            ),
-            BlocProvider<OrderUpdateFormCubit>(
-                create: (context) => OrderUpdateFormCubit()
-            )
-          ],
-          child: MaterialApp.router(
-            debugShowCheckedModeBanner: false,
-            routerDelegate: _appRouter.delegate(),
-            routeInformationParser: _appRouter.defaultRouteParser(),
-            localizationsDelegates: context.localizationDelegates,
-            supportedLocales: context.supportedLocales,
-            locale: context.locale,
-            darkTheme: themeDark,
-            themeMode: ThemeMode.dark,
-          ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<RegisterExecutorBloc>(
+          create: (context) => registerExecutorBloc,
         ),
+        BlocProvider<RegisterStoreBloc>(
+          create: (context) => registerStoreBloc,
+        )
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            lazy: false,
+            create: (context) => AuthBloc(registerStoreBloc, registerExecutorBloc)..add(AuthInitialEvent()),
+          ),
+          BlocProvider<RegisterUserBloc>(
+            create: (context) => RegisterUserBloc(),
+          ),
+          BlocProvider<AuthFormCubit>(
+              create: (context) => AuthFormCubit()
+          ),
+          BlocProvider<RegisterUserFormCubit>(
+              create: (context) => RegisterUserFormCubit()
+          ),
+          BlocProvider<RegisterExecutorFormCubit>(
+              create: (context) => RegisterExecutorFormCubit()
+          ),
+          BlocProvider<VerifyFormCubit>(
+              create: (context) => VerifyFormCubit()
+          ),
+
+          BlocProvider<AdvertScreenMainCubit>(
+              create: (context) => AdvertScreenMainCubit()
+          ),
+          BlocProvider<AdvertScreenMyCubit>(
+              create: (context) => AdvertScreenMyCubit()
+          ),
+          BlocProvider<OrderScreenMainCubit>(
+              create: (context) => OrderScreenMainCubit()
+          ),
+          BlocProvider<OrderScreenMyCubit>(
+              create: (context) => OrderScreenMyCubit()
+          ),
+          BlocProvider<OrderScreenDetailsCubit>(
+              create: (context) => OrderScreenDetailsCubit()
+          ),
+          BlocProvider<AdvertScreenDetailsCubit>(
+              create: (context) => AdvertScreenDetailsCubit()
+          ),
+          BlocProvider<StoreScreenMainCubit>(
+              create: (context) => StoreScreenMainCubit()
+          ),
+          BlocProvider<StoreScreenDetailsCubit>(
+              create: (context) => StoreScreenDetailsCubit()
+          ),
+          BlocProvider<OfferScreenMainCubit>(
+              create: (context) => OfferScreenMainCubit()
+          ),
+          BlocProvider<OfferScreenDetailsCubit>(
+              create: (context) => OfferScreenDetailsCubit()
+          ),
+          BlocProvider<DictionaryCubit>(
+              lazy: false,
+              create: (context) => DictionaryCubit()..initial()
+          ),
+          BlocProvider<AdCreateFormCubit>(
+              create: (context) => AdCreateFormCubit()
+          ),
+          BlocProvider<OrderCreateFormCubit>(
+              create: (context) => OrderCreateFormCubit()
+          ),
+          BlocProvider<CreateOfferFormCubit>(
+              create: (context) => CreateOfferFormCubit()
+          ),
+          BlocProvider<AdUpdateFormCubit>(
+              create: (context) => AdUpdateFormCubit()
+          ),
+          BlocProvider<OrderUpdateFormCubit>(
+              create: (context) => OrderUpdateFormCubit()
+          )
+        ],
+        child: MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          routerDelegate: _appRouter.delegate(),
+          routeInformationParser: _appRouter.defaultRouteParser(),
+          localizationsDelegates: context.localizationDelegates,
+          supportedLocales: context.supportedLocales,
+          locale: context.locale,
+          darkTheme: themeDark,
+          themeMode: ThemeMode.dark,
+        ),
+      ),
     );
   }
 }
