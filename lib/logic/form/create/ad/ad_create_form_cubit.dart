@@ -12,7 +12,7 @@ import 'package:megaladon/data/models/form/dictionary/city.dart';
 import 'package:megaladon/data/models/form/price.dart';
 import 'package:megaladon/data/models/form/title.dart';
 import 'package:megaladon/data/models/form/title.dart';
-import 'package:megaladon/data/models/request/params/advert_create_request_params.dart';
+import 'package:megaladon/data/models/request/params/create/advert_create_request_params.dart';
 import 'package:megaladon/data/repositories/advert_repository.dart';
 
 part 'ad_create_form_state.dart';

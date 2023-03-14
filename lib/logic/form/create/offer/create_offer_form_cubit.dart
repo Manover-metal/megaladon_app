@@ -9,7 +9,7 @@ import 'package:megaladon/data/models/form/dictionary/city.dart';
 import 'package:megaladon/data/models/form/expired_at.dart';
 import 'package:megaladon/data/models/form/price.dart';
 import 'package:megaladon/data/models/offer_model.dart';
-import 'package:megaladon/data/models/request/params/offer_create_request_params.dart';
+import 'package:megaladon/data/models/request/params/create/offer_create_request_params.dart';
 import 'package:megaladon/data/repositories/offer_repository.dart';
 
 part 'create_offer_form_state.dart';

@@ -10,7 +10,7 @@ import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/expired_at_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
-import 'package:megaladon/presentation/widgets/form/field/text_number_field.dart';
+import 'package:megaladon/presentation/widgets/form/field/number_field.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
@@ -114,7 +114,7 @@ class _CreateOfferScreenState extends State<CreateOfferScreen> {
                 SizedBox(height: 20,),
                 ExpiredAtFieldApp(label: 'Актуален до', icon: Icon(Icons.calendar_month), controller: _expiredAtController,),
                 TextFieldApp(label: 'Время на работу', icon: Icon(Icons.watch_later_outlined), controller: _dateController,),
-                TextNumberFieldApp(label: 'Цена', icon: Icon(Icons.credit_card), controller: _priceController,),
+                NumberFieldApp(label: 'Цена', icon: Icon(Icons.credit_card), controller: _priceController,),
                 TextFieldApp(label: 'Описание', icon: Icon(Icons.message), controller: _descriptionController,),
                 CityPicker(label: 'Город', icon: Icon(Icons.place) , controller: _cityController),
                 BlocConsumer<CreateOfferFormCubit, CreateOfferFormState>(

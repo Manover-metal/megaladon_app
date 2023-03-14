@@ -13,10 +13,12 @@ import 'package:megaladon/logic/form/auth/auth_form_cubit.dart';
 import 'package:megaladon/logic/form/create/ad/ad_create_form_cubit.dart';
 import 'package:megaladon/logic/form/create/offer/create_offer_form_cubit.dart';
 import 'package:megaladon/logic/form/create/order/order_create_form_cubit.dart';
+import 'package:megaladon/logic/form/register/register_executor/register_executor_form_cubit.dart';
 import 'package:megaladon/logic/form/register/register_user/register_user_form_cubit.dart';
 import 'package:megaladon/logic/form/update/ad/ad_update_form_cubit.dart';
 import 'package:megaladon/logic/form/update/order/order_update_form_cubit.dart';
 import 'package:megaladon/logic/form/verify/verify_form_cubit.dart';
+import 'package:megaladon/logic/register/register_executor/register_executor_bloc.dart';
 import 'package:megaladon/logic/register/register_user/register_user_bloc.dart';
 import 'package:megaladon/logic/screens/advert/details/advert_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/advert/my/advert_screen_my_cubit.dart';
@@ -72,6 +74,10 @@ class App extends StatelessWidget {
         BlocProvider<RegisterUserFormCubit>(
             create: (context) => RegisterUserFormCubit()
         ),
+        BlocProvider<RegisterExecutorFormCubit>(
+            create: (context) => RegisterExecutorFormCubit()
+        ),
+        //RegisterExecutorFormCubit
         BlocProvider<VerifyFormCubit>(
             create: (context) => VerifyFormCubit()
         ),
@@ -81,6 +87,9 @@ class App extends StatelessWidget {
         ),
         BlocProvider<RegisterUserBloc>(
             create: (context) => RegisterUserBloc()
+        ),
+        BlocProvider<RegisterExecutorBloc>(
+          create: (context) => RegisterExecutorBloc(),
         ),
         BlocProvider<AdvertScreenMainCubit>(
             create: (context) => AdvertScreenMainCubit()

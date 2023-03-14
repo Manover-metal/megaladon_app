@@ -20,7 +20,7 @@ class RegisterUserLoading extends RegisterUserState {
 }
 
 class RegisterUserError extends RegisterUserState {
-  final String error;
+  final ErrorModel error;
 
   RegisterUserError(this.error);
 
