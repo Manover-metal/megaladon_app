@@ -5,8 +5,8 @@ class RegisterExecutorFormState extends Equatable {
   final NameFormModel name;
   final CityFormModel city;
   final BinFormModel bin;
-  final LatLonFormModel lat;
-  final LatLonFormModel lon;
+  final LatFormModel lat;
+  final LonFormModel lon;
   final int countTry;
 
   const RegisterExecutorFormState({
@@ -14,8 +14,8 @@ class RegisterExecutorFormState extends Equatable {
     this.name = const NameFormModel.pure(),
     this.city = const CityFormModel.pure(),
     this.bin = const BinFormModel.pure(),
-    this.lat = const LatLonFormModel.pure(),
-    this.lon = const LatLonFormModel.pure(),
+    this.lat = const LatFormModel.pure(),
+    this.lon = const LonFormModel.pure(),
     this.countTry = 0
   });
 
@@ -27,8 +27,8 @@ class RegisterExecutorFormState extends Equatable {
     NameFormModel? name,
     CityFormModel? city,
     BinFormModel? bin,
-    LatLonFormModel? lat,
-    LatLonFormModel? lon,
+    LatFormModel? lat,
+    LonFormModel? lon,
     int? countTry
   }) {
     return RegisterExecutorFormState(

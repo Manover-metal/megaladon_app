@@ -4,7 +4,8 @@ import 'package:formz/formz.dart';
 import 'package:megaladon/data/models/dictionary/service_type_model.dart';
 import 'package:megaladon/data/models/form/bin.dart';
 import 'package:megaladon/data/models/form/dictionary/city.dart';
-import 'package:megaladon/data/models/form/lat_lon.dart';
+import 'package:megaladon/data/models/form/lat.dart';
+import 'package:megaladon/data/models/form/lon.dart';
 import 'package:megaladon/data/models/form/name.dart';
 
 part 'register_executor_form_state.dart';
@@ -22,8 +23,8 @@ class RegisterExecutorFormCubit extends Cubit<RegisterExecutorFormState> {
   }) {
     NameFormModel nameForm = NameFormModel.dirty(name);
     BinFormModel binForm = BinFormModel.dirty(bin);
-    LatLonFormModel latForm = LatLonFormModel.dirty(lat);
-    LatLonFormModel lonForm = LatLonFormModel.dirty(lon);
+    LatFormModel latForm = LatFormModel.dirty(lat);
+    LonFormModel lonForm = LonFormModel.dirty(lon);
 
 
     FormzStatus status = Formz.validate([
