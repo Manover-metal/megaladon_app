@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ]
       ));
     } else if(state is AuthErrorState) {
-      showErrorSnackBar(context, state.error);
+      showErrorSnackBar(context, state.error.messages[0]);
     } else if(state is AuthTransitionVerify) {
       context.router.replace(VerifyRoute(phone: _phone.value.text));
     }

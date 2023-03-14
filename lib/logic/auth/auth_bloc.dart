@@ -6,6 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:megaladon/core/dio/index.dart';
 import 'package:megaladon/core/dio/interceptors/auth_interceptors.dart';
 import 'package:megaladon/data/models/auth/auth_model.dart';
+import 'package:megaladon/data/models/error_model.dart';
 import 'package:megaladon/data/models/executor_model.dart';
 import 'package:megaladon/data/models/store_model.dart';
 import 'package:megaladon/data/models/user_model.dart';
@@ -68,10 +69,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         if(error.response?.statusCode == 406) {
           emit(AuthTransitionVerify(event.phone));
         } else {
-          emit(AuthErrorState(error.response?.data['message']));
+          emit(ErrorModel.parseDio(error));
         }
       } else {
-        emit(AuthErrorState('Произошла ошибка'));
+        emit(AuthErrorState(ErrorModel.nothing));
       }
 
     });
@@ -98,9 +99,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }).catchError((error) {
       print(error);
       if(error is DioError) {
-        emit(AuthErrorState(error.response?.data['message']));
+        emit(AuthErrorState(ErrorModel.parseDio(error)));
       } else {
-        emit(AuthErrorState('Произошла ошибка'));
+        emit(AuthErrorState(ErrorModel.nothing));
       }
 
     });
