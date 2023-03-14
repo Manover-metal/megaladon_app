@@ -31,6 +31,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthLogoutEvent>(_logout);
     registerExecutorBloc.stream.listen(_listenRegisterExecutor);
     registerStoreBloc.stream.listen(_listenRegisterStore);
+    on<AuthAddExecutorEvent>(_addExecutor);
+    on<AuthAddStoreEvent>(_addStore);
   }
 
   _initial(AuthInitialEvent event, Emitter emit) async {
@@ -111,21 +113,30 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   _listenRegisterExecutor(RegisterExecutorState stateRegister) async {
     if(stateRegister is RegisterExecutorSuccess && state is AuthLoginState) {
-      final AuthLoginState currentState = state as AuthLoginState;
-      final AuthModel auth = currentState.auth;
-      auth.executor.value = stateRegister.executor;
-      await _authRepository.addExecutor(auth, stateRegister.executor);
-      emit(AuthLoginState(auth));
+      add(AuthAddExecutorEvent(stateRegister.executor));
     }
   }
 
-  _listenRegisterStore(RegisterStoreState stateStore) async {
-    if(stateStore is RegisterStoreSuccess && state is AuthLoginState) {
-      final AuthLoginState currentState = state as AuthLoginState;
-      final AuthModel auth = currentState.auth;
-      auth.store.value = stateStore.store;
-      await _authRepository.addStore(auth, stateStore.store);
-      emit(AuthLoginState(auth));
+  _listenRegisterStore(RegisterStoreState stateRegister) async {
+    if(stateRegister is RegisterStoreSuccess && state is AuthLoginState) {
+      add(AuthAddStoreEvent(stateRegister.store));
     }
+  }
+
+
+  _addExecutor(AuthAddExecutorEvent event,  Emitter emit) async {
+    final AuthLoginState currentState = state as AuthLoginState;
+    final AuthModel auth = currentState.auth;
+    auth.executor.value = event.executor;
+    await _authRepository.addExecutor(auth, event.executor);
+    emit(AuthLoginState(auth));
+  }
+
+  _addStore(AuthAddStoreEvent event,  Emitter emit) async {
+    final AuthLoginState currentState = state as AuthLoginState;
+    final AuthModel auth = currentState.auth;
+    auth.store.value = event.store;
+    await _authRepository.addStore(auth, event.store);
+    emit(AuthLoginState(auth));
   }
 }
