@@ -54,18 +54,10 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
 
   _listenerForm(BuildContext context, RegisterStoreFormState state) {
     if(state.status.isInvalid) {
-      if(state.name.invalid) {
-        showErrorSnackBar(context, state.name.error.toString());
-      } else if(state.bin.invalid) {
-        showErrorSnackBar(context, state.bin.error.toString());
-      } else if(state.lat.invalid) {
-        showErrorSnackBar(context, state.lat.error.toString());
-      } else if(state.lon.invalid) {
-        showErrorSnackBar(context, state.lon.error.toString());
-      } else if(state.city.invalid) {
-        showErrorSnackBar(context, state.city.error.toString());
-      } else if(state.type.invalid) {
-        showErrorSnackBar(context, state.type.error.toString());
+      for (var element in state.props) {
+        if(element is FormzInput && element.invalid) {
+          return showErrorSnackBar(context, element.error.toString());
+        }
       }
     }
   }

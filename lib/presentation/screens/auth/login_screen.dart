@@ -75,10 +75,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   _listenerForm(BuildContext context, AuthFormState state) {
     if(state.status.isInvalid) {
-      if(state.phone.invalid) {
-        showErrorSnackBar(context, state.phone.error.toString());
-      } else if(state.password.invalid) {
-        showErrorSnackBar(context, state.password.error.toString());
+      for (var element in state.props) {
+        if(element is FormzInput && element.invalid) {
+          return showErrorSnackBar(context, element.error.toString());
+        }
       }
     }
   }

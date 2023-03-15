@@ -29,7 +29,7 @@ class RegisterExecutorRequestParams {
       'full_address': fullAddress,
       'lon': lon,
       'lat': lat,
-      'services': services.map((e) => e.id)
+      'services': services.map((e) => e.id).toList()
     };
     return data;
   }
