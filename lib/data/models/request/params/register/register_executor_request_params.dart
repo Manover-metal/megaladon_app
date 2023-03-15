@@ -1,4 +1,5 @@
 import 'package:megaladon/data/models/dictionary/city_model.dart';
+import 'package:megaladon/data/models/dictionary/service_type_model.dart';
 import 'package:megaladon/data/models/dictionary/store_type_model.dart';
 import 'package:megaladon/data/models/request/index_period_enum.dart';
 
@@ -10,7 +11,7 @@ class RegisterExecutorRequestParams {
   final String fullAddress;
   final double lon;
   final double lat;
-  final List<int> services;
+  final List<ServiceTypeModel> services;
 
   const RegisterExecutorRequestParams({
     required this.name,
@@ -28,7 +29,7 @@ class RegisterExecutorRequestParams {
       'full_address': fullAddress,
       'lon': lon,
       'lat': lat,
-      'services': services
+      'services': services.map((e) => e.id).toList()
     };
     return data;
   }

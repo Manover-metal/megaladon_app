@@ -12,7 +12,6 @@ class StoreIndexRequestParams {
   final CityModel? city;
   final StoreTypeModel? category;
   final IndexPeriod last;
-  // final StoreIndexSort sort;
 
   const StoreIndexRequestParams({
       this.startRow = 0,
@@ -21,7 +20,6 @@ class StoreIndexRequestParams {
       this.city,
       this.category,
       this.last = IndexPeriod.last3day,
-      // this.sort = StoreIndexSort.id
   });
 
   toData() {

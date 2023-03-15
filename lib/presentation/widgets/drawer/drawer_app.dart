@@ -106,7 +106,7 @@ class DrawerApp extends StatelessWidget {
                         text: 'Регистрация исполнителя',
                         onPressed: _registerExecutor(context),
                       ),
-                      OutlinedButtonApp(
+                      if(state.auth.store.value == null)  OutlinedButtonApp(
                         text: 'Регистрация магазина',
                         onPressed: _registerStore(context),
                       ),

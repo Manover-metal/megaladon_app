@@ -38,11 +38,11 @@ class _ListStoresScreenState extends State<ListStoresScreen> {
     }
   }
   _listenerScroll() {
-    if (_scrollController.position.maxScrollExtent < _scrollController.position.pixels + 500) {
+    if (_scrollController.position.maxScrollExtent == _scrollController.position.pixels ) {
       final cubit = context.read<StoreScreenMainCubit>();
       if(cubit.state.status != StoreScreenMainStatus.loading) {
         StoreIndexRequestParams params = cubit.state.params;
-        cubit.fetch(params: params.copyWith(startRow: params.startRow + 1));
+        cubit.fetch(params: params.copyWith(startRow: params.startRow + params.rowsPerPage));
       }
     }
   }
@@ -62,6 +62,7 @@ class _ListStoresScreenState extends State<ListStoresScreen> {
     _scrollController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,10 +98,6 @@ class _ListStoresScreenState extends State<ListStoresScreen> {
               ),
             ];
           },
-
-      
-
-
           body: RefreshIndicator(
             onRefresh: _onRefresh,
             child: SingleChildScrollView(
@@ -117,6 +114,7 @@ class _ListStoresScreenState extends State<ListStoresScreen> {
                        return Column(
                           children: [
                             ...state.stores.map((store) {
+                              print(store);
                              return StoreCard(store: store);
                             }).toList(),
                             if(state.status == StoreScreenMainStatus.loading) const Loader(padding: 10,),

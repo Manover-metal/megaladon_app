@@ -26,15 +26,25 @@ Future<List<int>?> showServiceTypePicker(BuildContext context, List<ServiceTypeM
 
 
 class ServiceTypePickerController extends ValueNotifier<ServiceTypeModel> {
+  static int lastId = 0;
+  late int id;
 
+  ServiceTypePickerController({ServiceTypeModel? period}) : super(period ?? ServiceTypeModel.nothing) {
+    id = ++lastId;
+  }
 
-  ServiceTypePickerController({ServiceTypeModel? period}) : super(period ?? ServiceTypeModel.nothing);
 
 
 
   void _changeServiceType(ServiceTypeModel period) {
     value = period;
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    value = ServiceTypeModel.nothing;
+    super.dispose();
   }
 }
 
@@ -79,6 +89,15 @@ class _ServiceTypePickerState extends State<ServiceTypePicker> {
   }
 
   @override
+  void didUpdateWidget(covariant ServiceTypePicker oldWidget) {
+    if(oldWidget.controller.value.id != widget.controller.value.id) {
+      _textController.dispose();
+      _textController = TextEditingController(text: widget.controller.value.name);
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       height: 60,
@@ -89,7 +108,7 @@ class _ServiceTypePickerState extends State<ServiceTypePicker> {
             onTap: _handleClick(context),
             decoration: InputDecoration(
                 labelText: widget.label,
-                labelStyle: TextStyle(
+                labelStyle: const TextStyle(
                     fontSize: 18
                 ),
                 contentPadding: EdgeInsets.symmetric(horizontal: 10)

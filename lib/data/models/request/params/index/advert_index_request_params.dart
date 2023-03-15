@@ -29,12 +29,15 @@ class AdvertIndexRequestParams {
     return data;
   }
 
-  AdvertIndexRequestParams copyWith({ int? startRow,
-  int? rowsPerPage,
-  bool? desc,
-  int? priceMin,
-  int? priceMax,
-  IndexPeriod? last,}
+  AdvertIndexRequestParams copyWith({
+    int? startRow,
+    int? rowsPerPage,
+    bool? desc,
+    int? priceMin,
+    int? priceMax,
+    IndexPeriod? last,
+  }
+
   ) {
     return AdvertIndexRequestParams(
       startRow: startRow ?? this.startRow,
@@ -46,20 +49,3 @@ class AdvertIndexRequestParams {
     );
   }
 }
-// class AdvertIndexRequestParams {
-//   int startRow = 0;
-//   int rowsPerPage = 30;
-//   int? priceMin;
-//   int? priceMax;
-//   IndexPeriod last = IndexPeriod.last3day;
-
-//   toData() {
-//     return {
-//       'startRow': startRow,
-//       'rowsPerPage': rowsPerPage,
-//       'last': last.name,
-//       'price_min': priceMin,
-//       'price_max': priceMax
-//     };
-//   }
-// }

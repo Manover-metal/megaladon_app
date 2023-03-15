@@ -1,18 +1,22 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
-import 'package:megaladon/data/models/dictionary/service_type_model.dart';
+import 'package:megaladon/data/models/contact_model.dart';
+import 'package:megaladon/data/models/dictionary/city_model.dart';
+import 'package:megaladon/data/models/dictionary/store_type_model.dart';
 import 'package:megaladon/data/models/form/bin.dart';
 import 'package:megaladon/data/models/form/dictionary/city.dart';
+import 'package:megaladon/data/models/form/dictionary/multy_contact_model.dart';
+import 'package:megaladon/data/models/form/dictionary/store_type.dart';
 import 'package:megaladon/data/models/form/lat.dart';
 import 'package:megaladon/data/models/form/lon.dart';
-import 'package:megaladon/data/models/form/dictionary/multy_service_type.dart';
 import 'package:megaladon/data/models/form/name.dart';
 
-part 'register_executor_form_state.dart';
 
-class RegisterExecutorFormCubit extends Cubit<RegisterExecutorFormState> {
-  RegisterExecutorFormCubit() : super(const RegisterExecutorFormState());
+part 'register_store_form_state.dart';
+
+class RegisterStoreFormCubit extends Cubit<RegisterStoreFormState> {
+  RegisterStoreFormCubit() : super(const RegisterStoreFormState());
 
   bool checkRegisterForm({
     required String name,
@@ -20,13 +24,17 @@ class RegisterExecutorFormCubit extends Cubit<RegisterExecutorFormState> {
     required String bin,
     required String lat,
     required String lon,
-    required List<ServiceTypeModel> services
+    required StoreTypeModel type,
+    required CityModel city,
+    required List<ContactModel> contacts,
   }) {
     NameFormModel nameForm = NameFormModel.dirty(name);
     BinFormModel binForm = BinFormModel.dirty(bin);
     LatFormModel latForm = LatFormModel.dirty(lat);
     LonFormModel lonForm = LonFormModel.dirty(lon);
-    MultiServiceTypeFormModel servicesForm = MultiServiceTypeFormModel.dirty(services);
+    CityFormModel cityForm = CityFormModel.dirty(city.id);
+    StoreTypeFormModel typeForm = StoreTypeFormModel.dirty(type.id);
+    MultiContactFormModel contactsForm = MultiContactFormModel.dirty(contacts);
 
 
     FormzStatus status = Formz.validate([
@@ -34,16 +42,19 @@ class RegisterExecutorFormCubit extends Cubit<RegisterExecutorFormState> {
       binForm,
       latForm,
       lonForm,
-      servicesForm
+      cityForm,
+      typeForm,
+      contactsForm
     ]);
 
-    RegisterExecutorFormState stateNew = state.copyWith(
-
+    RegisterStoreFormState stateNew = state.copyWith(
         name: nameForm,
         bin: binForm,
+        city: cityForm,
+        type: typeForm,
         lat: latForm,
         lon: lonForm,
-        services: servicesForm,
+        contacts: contactsForm,
         status: status,
         countTry: state.countTry + 1
     );

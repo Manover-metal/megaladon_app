@@ -39,7 +39,7 @@ _listenerScroll() {
       final cubit = context.read<AdvertScreenMyCubit>();
       if(cubit.state.status != AdverScreenMainStatus.loading) {
         AdvertIndexRequestParams params = cubit.state.params;
-        cubit.fetch(params: params.copyWith(startRow: params.startRow + 1));
+        cubit.fetch(params: params.copyWith(startRow: params.startRow + params.rowsPerPage));
       }
     }
   }

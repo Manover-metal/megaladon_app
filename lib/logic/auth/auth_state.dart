@@ -33,7 +33,7 @@ class AuthTransitionVerify extends AuthState {
 
 
 class AuthErrorState extends AuthState {
-  final String error;
+  final ErrorModel error;
 
   const AuthErrorState(this.error);
 

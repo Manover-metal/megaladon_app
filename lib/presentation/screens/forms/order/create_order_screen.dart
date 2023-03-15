@@ -73,14 +73,10 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
 
   _listenerForm(BuildContext context, OrderCreateFormState state) {
     if(state.status.isInvalid) {
-      if(state.title.invalid) {
-        showErrorSnackBar(context, state.title.error.toString());
-      } else if(state.description.invalid) {
-        showErrorSnackBar(context, state.description.error.toString());
-      } else if(state.category.invalid) {
-        showErrorSnackBar(context, state.category.error.toString());
-      } else if(state.city.invalid) {
-        showErrorSnackBar(context, state.city.error.toString());
+      for (var element in state.props) {
+        if(element is FormzInput && element.invalid) {
+          return showErrorSnackBar(context, element.error.toString());
+        }
       }
     }
   }

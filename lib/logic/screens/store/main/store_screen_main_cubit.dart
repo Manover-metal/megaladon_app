@@ -21,7 +21,8 @@ class StoreScreenMainCubit extends Cubit<StoreScreenMainState> {
     emit(state.copyWith(
         status: StoreScreenMainStatus.loading,
         error: null,
-        stores: state.stores)
+        stores: state.stores
+      )
     );
 
     return await _repository.index(mainParams).then((value) {
