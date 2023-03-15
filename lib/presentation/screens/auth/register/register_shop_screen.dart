@@ -72,7 +72,11 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
 
   _listenRegister(bool isListener) => (BuildContext context, RegisterStoreState state) {
     if(state is RegisterStoreSuccess) {
-      context.router.replace(const ProfileRouter());
+      context.router.navigate(InitialRouter(
+          children: [
+            ProfileRouter()
+          ]
+      ));
     } else if(state is RegisterStoreError && isListener) {
       showErrorSnackBar(context, state.error.messages[0]);
     }

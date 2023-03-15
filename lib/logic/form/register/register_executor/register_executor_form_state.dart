@@ -22,7 +22,7 @@ class RegisterExecutorFormState extends Equatable {
   });
 
   @override
-  List<Object?> get props => [status, name, city, bin, lat, lon, countTry];
+  List<Object?> get props => [status, name, city, bin, lat, lon, services, countTry];
 
   RegisterExecutorFormState copyWith ({
     FormzStatus? status,

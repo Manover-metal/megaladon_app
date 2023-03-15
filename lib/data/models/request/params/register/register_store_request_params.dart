@@ -44,24 +44,4 @@ class RegisterStoreRequestParams {
     };
     return data;
   }
-//
-// RegisterStoreRequestParams copyWith({
-//   int? startRow,
-//   int? rowsPerPage,
-//   bool? desc,
-//   CityModel? city,
-//   StoreTypeModel? category,
-//   IndexPeriod? last,
-//   // StoreIndexSort? sort
-// }) {
-//   return RegisterStoreRequestParams(
-//     startRow: startRow ?? this.startRow,
-//     rowsPerPage: rowsPerPage ?? this.rowsPerPage,
-//     desc: desc ?? this.desc,
-//     city: city ?? this.city,
-//     category: category ?? this.category,
-//     last: last ?? this.last,
-//     // sort: sort ?? this.sort
-//   );
-// }
 }

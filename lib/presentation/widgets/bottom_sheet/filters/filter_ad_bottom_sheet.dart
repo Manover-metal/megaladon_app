@@ -24,34 +24,17 @@ class _FilterAdBottomSheetState extends State<FilterAdBottomSheet> {
   late IndexPeriodPickerController _indexPeriodPickerController;
 
   _back() {
-    AdvertIndexRequestParams params =
-        context.read<AdvertScreenMainCubit>().state.params;
+    AdvertIndexRequestParams params = context.read<AdvertScreenMainCubit>().state.params;
 
-  final from = int.tryParse(_fromController.value.text);
-  final before = int.tryParse(_beforeController.value.text);
+    final from = int.tryParse(_fromController.value.text);
+    final before = int.tryParse(_beforeController.value.text);
     context.read<AdvertScreenMainCubit>().changeParams(params.copyWith(
-          startRow: 0,
-          priceMin : from,
-          priceMax: before,
-          last: _indexPeriodPickerController.value,
-        ));
+      startRow: 0,
+      priceMin : from,
+      priceMax: before,
+      last: _indexPeriodPickerController.value,
+    ));
 
-    // int? from = int.tryParse(_fromController.value.text);
-    // int? before = int.tryParse(_beforeController.value.text);
-    // params.priceMin = from;
-    // params.priceMax = before;
-    // params.last = _indexPeriodPickerController.value;
-    // params.startRow = 0;
-    // context.read<AdvertScreenMainCubit>().changeParams(params);
-
-    // final city = _cityPickerController.value;
-    // final category = _orderCategoryPickerController.value;
-    // context.read<OrderScreenMainCubit>().changeParams(params.copyWith(
-    //   startRow: 0,
-    //   last: _indexPeriodPickerController.value,
-    //   city: city.id == CityModel.nothing.id ? null : city,
-    //   category: category.id == OrderCategoryModel.nothing.id ? null : category
-    // ));
     context.router.pop(true);
   }
 

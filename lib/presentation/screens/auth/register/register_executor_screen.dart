@@ -63,7 +63,11 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
 
   _listenRegister(bool isListener) => (BuildContext context, RegisterExecutorState state) {
     if(state is RegisterExecutorSuccess) {
-      context.router.replace(ProfileRouter());
+      context.router.navigate(InitialRouter(
+          children: [
+            ProfileRouter()
+          ]
+      ));
     } else if(state is RegisterExecutorError && isListener) {
       showErrorSnackBar(context, state.error.messages[0]);
     }

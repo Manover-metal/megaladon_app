@@ -56,7 +56,7 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
       final cubit = context.read<OrderScreenMainCubit>();
       if(cubit.state.status != OrderScreenMainStatus.loading) {
         OrderIndexRequestParams params = cubit.state.params;
-        cubit.fetch(params: params.copyWith(startRow: params.startRow + 1));
+        cubit.fetch(params: params.copyWith(startRow: params.startRow + params.rowsPerPage));
       }
     }
   }

@@ -24,7 +24,7 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
       final cubit = context.read<OrderScreenMyCubit>();
       if(cubit.state.status != OrderScreenMyStatus.loading) {
         OrderIndexRequestParams params = cubit.state.params;
-        cubit.fetch(params: params.copyWith(startRow: params.startRow + 1));
+        cubit.fetch(params: params.copyWith(startRow: params.startRow + params.rowsPerPage));
       }
     }
   }

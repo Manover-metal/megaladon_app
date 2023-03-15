@@ -22,7 +22,7 @@ class RegisterUserRequestParams {
       'phone': phone,
       'password': password,
       'password_confirmation': passwordConfirmation,
-      'city': city.id,
+      'city_id': city.id,
     };
     return data;
   }
