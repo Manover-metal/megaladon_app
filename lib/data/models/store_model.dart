@@ -2,6 +2,8 @@ import 'package:isar/isar.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/dictionary/store_type_model.dart';
 
+import '../../core/utils/parser.dart';
+
 part 'store_model.g.dart';
 
 
@@ -69,8 +71,8 @@ class StoreModel {
         name: data['name'],
         prices: data['prices'],
         contacts: data['contacts'],
-        lat: data['lat'],
-        lon: data['lon'],
+        lat: Parser.toDouble(data['lat']),
+        lon: Parser.toDouble(data['lon']),
         type: data['type'] != null? StoreTypeModel.fromJson(data['type']): null,
         city: data['city'] != null? CityModel.fromJson(data['city']): null
 

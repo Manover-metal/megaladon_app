@@ -98,7 +98,21 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
     _binController = TextEditingController();
     _latController = TextEditingController();
     _lonController = TextEditingController();
+    _cityPickerController = CityPickerController();
+    _storeTypeController = StoreTypePickerController();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _fullAddressController.dispose();
+    _binController.dispose();
+    _latController.dispose();
+    _lonController.dispose();
+    _cityPickerController.dispose();
+    _storeTypeController.dispose();
+    super.dispose();
   }
 
   @override
@@ -132,17 +146,17 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
                     controller: _binController,
                   ),
                   StoreTypePicker(
-                    label: 'Тип магазина',
+                    label: 'Тип бизнеса',
                     controller: _storeTypeController,
-                  ),
-                  CityPicker(
-                    label: 'Город',
-                    controller: _cityPickerController
                   ),
                   TextFieldApp(
                     label: 'Полный адрес',
                     icon: Icon(Icons.maps_home_work_outlined),
                     controller: _fullAddressController,
+                  ),
+                  CityPicker(
+                      label: 'Город',
+                      controller: _cityPickerController
                   ),
                   DoubleFieldApp(
                     label: 'Широта',

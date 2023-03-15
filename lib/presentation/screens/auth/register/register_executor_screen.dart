@@ -91,6 +91,17 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
     super.initState();
   }
 
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _fullAddressController.dispose();
+    _binController.dispose();
+    _latController.dispose();
+    _lonController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

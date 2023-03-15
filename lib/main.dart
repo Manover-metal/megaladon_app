@@ -14,6 +14,7 @@ import 'package:megaladon/logic/form/create/ad/ad_create_form_cubit.dart';
 import 'package:megaladon/logic/form/create/offer/create_offer_form_cubit.dart';
 import 'package:megaladon/logic/form/create/order/order_create_form_cubit.dart';
 import 'package:megaladon/logic/form/register/register_executor/register_executor_form_cubit.dart';
+import 'package:megaladon/logic/form/register/register_store/register_store_form_cubit.dart';
 import 'package:megaladon/logic/form/register/register_user/register_user_form_cubit.dart';
 import 'package:megaladon/logic/form/update/ad/ad_update_form_cubit.dart';
 import 'package:megaladon/logic/form/update/order/order_update_form_cubit.dart';
@@ -93,6 +94,9 @@ class App extends StatelessWidget {
           ),
           BlocProvider<RegisterUserFormCubit>(
               create: (context) => RegisterUserFormCubit()
+          ),
+          BlocProvider<RegisterStoreFormCubit>(
+              create: (context) => RegisterStoreFormCubit()
           ),
           BlocProvider<RegisterExecutorFormCubit>(
               create: (context) => RegisterExecutorFormCubit()
