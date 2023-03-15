@@ -13,7 +13,9 @@ import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/double_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/number_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
+import 'package:megaladon/presentation/widgets/form/multi_picker/contact_multi_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
+import 'package:megaladon/presentation/widgets/form/picker/dictionary/contact_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/store_type_picker.dart';
 import 'package:megaladon/presentation/widgets/list/file_delete_list.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
@@ -33,6 +35,7 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
   late TextEditingController _latController;
   late TextEditingController _lonController;
   late TextEditingController _fullAddressController;
+  late ContactTypeMultiPickerController _contactController;
 
   _register() {
     if(_checkForm()) {
@@ -45,7 +48,10 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
             lon: double.parse(_lonController.value.text),
             fullAddress: _fullAddressController.value.text,
             city: _cityPickerController.value,
-            type: _storeTypeController.value
+            type: _storeTypeController.value,
+            contacts: _contactController.value.map((e) {
+              return e.getData();
+            }).toList()
           ),
         )
       );
@@ -54,8 +60,10 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
 
   _listenerForm(BuildContext context, RegisterStoreFormState state) {
     if(state.status.isInvalid) {
+      print('a');
       for (var element in state.props) {
         if(element is FormzInput && element.invalid) {
+          print(element.error);
           return showErrorSnackBar(context, element.error.toString());
         }
       }
@@ -79,7 +87,10 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
         lat: _latController.value.text,
         lon: _lonController.value.text,
         type: _storeTypeController.value,
-        city: _cityPickerController.value
+        city: _cityPickerController.value,
+        contacts: _contactController.value.map((e) {
+          return e.getData();
+        }).toList()
     );
   }
 
@@ -92,6 +103,7 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
     _lonController = TextEditingController();
     _cityPickerController = CityPickerController();
     _storeTypeController = StoreTypePickerController();
+    _contactController = ContactTypeMultiPickerController();
     super.initState();
   }
 
@@ -104,6 +116,7 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
     _lonController.dispose();
     _cityPickerController.dispose();
     _storeTypeController.dispose();
+    _contactController.dispose();
     super.dispose();
   }
 
@@ -160,14 +173,10 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
                     icon: Icon(Icons.place_outlined),
                     controller: _lonController,
                   ),
-                  // TitleApp('Контактная информация'),
-                  // SizedBox(height: 20,),
-                  // TextFieldApp(),
-                  // TextFieldApp(),
-                  // TextFieldApp(),
-                  // TextFieldApp(),
-                  // TextFieldApp(),
-                  // TextFieldApp(),
+                  ContactTypeMultiPicker(
+                    controller: _contactController,
+                  ),
+                  SizedBox(height: 20),
 
                   BlocBuilder<RegisterStoreBloc, RegisterStoreState>(
                     builder: (context, state) {

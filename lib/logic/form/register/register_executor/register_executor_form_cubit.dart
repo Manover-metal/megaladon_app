@@ -6,7 +6,7 @@ import 'package:megaladon/data/models/form/bin.dart';
 import 'package:megaladon/data/models/form/dictionary/city.dart';
 import 'package:megaladon/data/models/form/lat.dart';
 import 'package:megaladon/data/models/form/lon.dart';
-import 'package:megaladon/data/models/form/multy_service_type.dart';
+import 'package:megaladon/data/models/form/dictionary/multy_service_type.dart';
 import 'package:megaladon/data/models/form/name.dart';
 
 part 'register_executor_form_state.dart';

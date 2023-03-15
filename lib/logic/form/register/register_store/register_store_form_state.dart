@@ -9,6 +9,7 @@ class RegisterStoreFormState extends Equatable {
   final BinFormModel bin;
   final LatFormModel lat;
   final LonFormModel lon;
+  final MultiContactFormModel contacts;
   final int countTry;
 
   const RegisterStoreFormState({
@@ -19,11 +20,12 @@ class RegisterStoreFormState extends Equatable {
     this.bin = const BinFormModel.pure(),
     this.lat = const LatFormModel.pure(),
     this.lon = const LonFormModel.pure(),
+    this.contacts = const MultiContactFormModel.pure(),
     this.countTry = 0
   });
 
   @override
-  List<Object?> get props => [status, name, city, type, bin, lat, lon, countTry];
+  List<Object?> get props => [status, name, city, type, bin, lat, lon, contacts, countTry];
 
   RegisterStoreFormState copyWith ({
     FormzStatus? status,
@@ -33,6 +35,7 @@ class RegisterStoreFormState extends Equatable {
     BinFormModel? bin,
     LatFormModel? lat,
     LonFormModel? lon,
+    MultiContactFormModel? contacts,
     int? countTry
   }) {
     return RegisterStoreFormState(
@@ -43,6 +46,7 @@ class RegisterStoreFormState extends Equatable {
       bin: bin ?? this.bin,
       lat: lat ?? this.lat,
       lon: lon ?? this.lon,
+      contacts: contacts ?? this.contacts,
       countTry: countTry ?? this.countTry,
     );
   }

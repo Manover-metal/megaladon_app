@@ -1,8 +1,9 @@
 import 'package:isar/isar.dart';
+import 'package:megaladon/core/utils/parser.dart';
+import 'package:megaladon/data/models/contact_model.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/dictionary/store_type_model.dart';
 
-import '../../core/utils/parser.dart';
 
 part 'store_model.g.dart';
 
@@ -22,9 +23,6 @@ class StoreModel {
   final double? lon;
 
   @ignore
-  final List? contacts;
-
-  @ignore
   final List? prices;
 
   @ignore
@@ -32,6 +30,9 @@ class StoreModel {
 
   @ignore
   final StoreTypeModel? type;
+
+  @ignore
+  final List<ContactModel>? contacts;
 
 
   StoreModel({
@@ -70,9 +71,9 @@ class StoreModel {
         photo: data['photo_url'],
         name: data['name'],
         prices: data['prices'],
-        contacts: data['contacts'],
         lat: Parser.toDouble(data['lat']),
         lon: Parser.toDouble(data['lon']),
+        contacts: data['contacts'] != null? ContactModel.fromJsonList(data['contacts']): null,
         type: data['type'] != null? StoreTypeModel.fromJson(data['type']): null,
         city: data['city'] != null? CityModel.fromJson(data['city']): null
 

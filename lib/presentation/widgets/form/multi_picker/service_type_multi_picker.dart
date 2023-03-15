@@ -1,12 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:megaladon/data/models/dictionary/service_type_model.dart';
-import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
+import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/service_type_picker.dart';
 
 class ServiceTypeMultiPickerController extends ValueNotifier<List<ServiceTypePickerController>> {
-
-
   ServiceTypeMultiPickerController({List<ServiceTypePickerController>? services }) : super(services ?? []);
 
   _listener() {
@@ -84,7 +81,7 @@ class _ServiceTypeMultiPickerState extends State<ServiceTypeMultiPicker> {
             );
           },
         ),
-        ElevatedButtonApp(text: 'Добавить сервис', onPressed: _addService,)
+        OutlinedButtonApp(text: 'Добавить сервис', onPressed: _addService,)
       ],
     );
   }

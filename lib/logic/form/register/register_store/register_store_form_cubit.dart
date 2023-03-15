@@ -1,10 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
+import 'package:megaladon/data/models/contact_model.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/dictionary/store_type_model.dart';
 import 'package:megaladon/data/models/form/bin.dart';
 import 'package:megaladon/data/models/form/dictionary/city.dart';
+import 'package:megaladon/data/models/form/dictionary/multy_contact_model.dart';
 import 'package:megaladon/data/models/form/dictionary/store_type.dart';
 import 'package:megaladon/data/models/form/lat.dart';
 import 'package:megaladon/data/models/form/lon.dart';
@@ -23,7 +25,8 @@ class RegisterStoreFormCubit extends Cubit<RegisterStoreFormState> {
     required String lat,
     required String lon,
     required StoreTypeModel type,
-    required CityModel city
+    required CityModel city,
+    required List<ContactModel> contacts,
   }) {
     NameFormModel nameForm = NameFormModel.dirty(name);
     BinFormModel binForm = BinFormModel.dirty(bin);
@@ -31,6 +34,7 @@ class RegisterStoreFormCubit extends Cubit<RegisterStoreFormState> {
     LonFormModel lonForm = LonFormModel.dirty(lon);
     CityFormModel cityForm = CityFormModel.dirty(city.id);
     StoreTypeFormModel typeForm = StoreTypeFormModel.dirty(type.id);
+    MultiContactFormModel contactsForm = MultiContactFormModel.dirty(contacts);
 
 
     FormzStatus status = Formz.validate([
@@ -39,7 +43,8 @@ class RegisterStoreFormCubit extends Cubit<RegisterStoreFormState> {
       latForm,
       lonForm,
       cityForm,
-      typeForm
+      typeForm,
+      contactsForm
     ]);
 
     RegisterStoreFormState stateNew = state.copyWith(
@@ -49,6 +54,7 @@ class RegisterStoreFormCubit extends Cubit<RegisterStoreFormState> {
         type: typeForm,
         lat: latForm,
         lon: lonForm,
+        contacts: contactsForm,
         status: status,
         countTry: state.countTry + 1
     );
