@@ -12,6 +12,7 @@ import 'package:megaladon/presentation/screens/auth/register/register_shop_scree
 import 'package:megaladon/presentation/screens/auth/register/register_user_screen.dart';
 import 'package:megaladon/presentation/screens/auth/reset_password_screen.dart';
 import 'package:megaladon/presentation/screens/auth/verify_screen.dart';
+import 'package:megaladon/presentation/screens/chat/list_chats_screen.dart';
 import 'package:megaladon/presentation/screens/forms/ad/create_ad_screen.dart';
 import 'package:megaladon/presentation/screens/forms/ad/update_ad_screen.dart';
 import 'package:megaladon/presentation/screens/forms/offer/create_offer_screen.dart';
@@ -35,6 +36,7 @@ part 'router.gr.dart';
 const List<AutoRoute> profile = [
   AutoRoute(page: ProfileScreen, path: ''),
   AutoRoute(page: SettingsScreen),
+  AutoRoute(page: ListChatsScreen),
 ];
 
 const List<AutoRoute> ad = [

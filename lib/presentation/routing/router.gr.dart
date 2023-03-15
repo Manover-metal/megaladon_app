@@ -234,6 +234,12 @@ class _$AppRouter extends RootStackRouter {
         child: SettingsScreen(),
       );
     },
+    ListChatsRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: ListChatsScreen(),
+      );
+    },
   };
 
   @override
@@ -338,6 +344,11 @@ class _$AppRouter extends RootStackRouter {
                 RouteConfig(
                   SettingsRoute.name,
                   path: 'settings-screen',
+                  parent: ProfileRouter.name,
+                ),
+                RouteConfig(
+                  ListChatsRoute.name,
+                  path: 'list-chats-screen',
                   parent: ProfileRouter.name,
                 ),
               ],
@@ -961,4 +972,16 @@ class SettingsRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'SettingsRoute';
+}
+
+/// generated route for
+/// [ListChatsScreen]
+class ListChatsRoute extends PageRouteInfo<void> {
+  const ListChatsRoute()
+      : super(
+          ListChatsRoute.name,
+          path: 'list-chats-screen',
+        );
+
+  static const String name = 'ListChatsRoute';
 }
