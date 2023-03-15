@@ -28,12 +28,12 @@ class ListChatsScreen extends StatelessWidget {
                       SizedBox(
                         height: 20,
                       ),
-                      ChatCard()
+                      Column(
+                        children: List.generate(5, (index) => ChatCard()),
+                      )
                     ],
                   ),
                 ),
-                
-                // ChatCard(),
               ],
             ),
           ),

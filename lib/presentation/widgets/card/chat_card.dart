@@ -3,16 +3,8 @@
 import 'package:flutter/material.dart';
 
 class ChatCard extends StatelessWidget {
-  // final Image img;
-  // final String name;
-  // final String time;
-  // final String sms;
   const ChatCard({
     super.key,
-    // required this.img,
-    // required this.name,
-    // required this.time,
-    // required this.sms
   });
 
   @override
@@ -26,52 +18,45 @@ class ChatCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         color: Theme.of(context).colorScheme.tertiary,
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Row(
         children: [
-          Row(
-            children: [
-              Container(
-                height: 50,
-                width: 50,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('assets/logo/logo.png'),
-                      fit: BoxFit.fill),
-                  borderRadius: BorderRadius.circular(30),
-                ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              height: 50,
+              width: 50,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('assets/logo/logo.png'),
+                    fit: BoxFit.fill),
+                borderRadius: BorderRadius.circular(30),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  // width: MediaQuery.of(context).size.width - 10,
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              'Дональд Трамп',
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          Spacer(flex: 1,),
-                          Text('24:50'),
-                          Icon(Icons.check)
-                        ],
+            ),
+          ),
+          Expanded(
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Дональд Трамп',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
                       ),
-                      Text(
-                          'Видеохотинг, предоставляющий пользователям услуги хранения, доставки и показа видео. ',
-                          softWrap: true,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis)
-                    ],
-                  ),
+                    ),
+                    Text('24:50'),
+                    Icon(Icons.check),
+                  ],
                 ),
-              ),
-            ],
+                Text(
+                    'Видеохотинг, предоставляющий пользователям услуги хранения, доставки и показа видео. ',
+                    softWrap: true,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis
+                ),
+              ],
+            ),
           ),
         ],
       ),
