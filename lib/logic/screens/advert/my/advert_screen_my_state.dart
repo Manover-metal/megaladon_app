@@ -11,77 +11,32 @@ class AdvertScreenMyState extends Equatable {
   final List<AdvertModel> advers;
   final ErrorModel? error;
   final AdvertIndexRequestParams params;
+  final bool stock;
 
   const AdvertScreenMyState({
     this.status = AdverScreenMyMainStatus.success,
     this.advers = const [],
     this.error,
-    this.params =  const AdvertIndexRequestParams()
+    this.params = const AdvertIndexRequestParams(),
+    this.stock = false
   });
 
   @override
-  List<Object?> get props => [status, advers, error, params];
+  List<Object?> get props => [status, advers, error, params, stock];
 
   AdvertScreenMyState copyWith({
     AdverScreenMyMainStatus? status,
     List<AdvertModel>? advers,
     ErrorModel? error,
-    AdvertIndexRequestParams? params
+    AdvertIndexRequestParams? params,
+    bool? stock,
   }) {
     return AdvertScreenMyState(
       status: status ?? this.status,
       advers: advers ?? this.advers,
       error: error,
-      params: params ?? this.params
+      params: params ?? this.params,
+      stock: stock ?? this.stock
     );
   }
-
 }
-
-
-// abstract class AdvertScreenMyState extends Equatable {
-//   final AdvertIndexRequestParams params;
-
-//   AdvertScreenMyState({required this.params});
-// }
-
-// class AdvertScreenMyInitial extends AdvertScreenMyState {
-//   AdvertScreenMyInitial() : super(params: AdvertIndexRequestParams());
-
-//   @override
-//   List<Object> get props => [params];
-// }
-
-// class AdvertScreenMyLoader extends AdvertScreenMyState {
-//   AdvertScreenMyLoader() : super(params: AdvertIndexRequestParams());
-
-//   @override
-//   List<Object> get props => [params];
-// }
-
-// class AdvertScreenMyError extends AdvertScreenMyState {
-//   final ErrorModel error;
-//   AdvertScreenMyError(this.error) : super(params: AdvertIndexRequestParams());
-
-//   @override
-//   List<Object> get props => [error, params];
-// }
-
-// class AdvertScreenMySuccess extends  AdvertScreenMyState {
-//   final List<AdvertModel> adverts;
-
-//   AdvertScreenMySuccess({required this.adverts, required params}): super(params: params);
-
-//   @override
-//   List<Object?> get props => [params, adverts];
-
-//   AdvertScreenMySuccess copyWith({
-//     AdvertIndexRequestParams? params,
-//     List<AdvertModel>? adverts
-//   }) {
-//     return AdvertScreenMySuccess(
-//         params: params ?? this.params,
-//         adverts: adverts ?? this.adverts
-//     );
-//   }
-// }

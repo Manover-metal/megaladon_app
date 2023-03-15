@@ -6,9 +6,10 @@ import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
 import 'package:megaladon/presentation/widgets/bottom_sheet/filters/filter_order_my_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/card/order_card.dart';
 import 'package:megaladon/presentation/widgets/drawer/drawer_app.dart';
-import 'package:megaladon/presentation/widgets/error/error_message.dart';
+import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/list/status_order_list.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
+import 'package:megaladon/presentation/widgets/message/stock_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
@@ -20,7 +21,7 @@ class ListMyOrdersScreen extends StatefulWidget {
 class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
    late ScrollController _scrollController;
    _listenerScroll() {
-    if (_scrollController.position.maxScrollExtent < _scrollController.position.pixels + 500) {
+    if (_scrollController.position.maxScrollExtent < _scrollController.position.pixels) {
       final cubit = context.read<OrderScreenMyCubit>();
       if(cubit.state.status != OrderScreenMyStatus.loading) {
         OrderIndexRequestParams params = cubit.state.params;
@@ -115,21 +116,9 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
                             }).toList(),
                             if(state.status == OrderScreenMyStatus.loading) const Loader(padding: 10)
                             else if(state.status == OrderScreenMyStatus.error)  ErrorMessage(error: state.error!)
+                            else if(state.stock) StockMessage(name: 'Заказы')
                           ],
                         );
-                        // if(state is OrderScreenMySuccess) {
-                        //   return Column(
-                        //     children: state.orders.map((order) {
-                        //       return OrderCard(order: order);
-                        //     }).toList(),
-                        //   );
-                        // }
-                        // else if(state is OrderScreenMyLoader) {
-                        //   return const Loader(padding: 10,);
-                        // } else if(state is OrderScreenMyError) {
-                        //   return ErrorMessage(error: state.error);
-                        // }
-                        // return Container();
                       },
                     ),
                   ],

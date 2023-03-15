@@ -8,8 +8,9 @@ import 'package:megaladon/logic/screens/orders/main/order_screen_main_cubit.dart
 import 'package:megaladon/presentation/widgets/bottom_sheet/filters/filter_order_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/bottom_sheet/sort/sort_order_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/card/order_card.dart';
-import 'package:megaladon/presentation/widgets/error/error_message.dart';
+import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
+import 'package:megaladon/presentation/widgets/message/stock_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 import 'package:megaladon/generated/locale_keys.g.dart';
@@ -52,7 +53,7 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
   }
 
   _listenerScroll() {
-    if (_scrollController.position.maxScrollExtent < _scrollController.position.pixels + 500) {
+    if (_scrollController.position.maxScrollExtent < _scrollController.position.pixels) {
       final cubit = context.read<OrderScreenMainCubit>();
       if(cubit.state.status != OrderScreenMainStatus.loading) {
         OrderIndexRequestParams params = cubit.state.params;
@@ -93,8 +94,6 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
                             HeaderAppBar(isMenu: true, ),
                             TitleApp(LocaleKeys.Orders.tr()),
                             SizedBox(height: 20,),
-                            
-                            
                           ],
                         ),
                       ),
@@ -139,7 +138,9 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
                               return OrderCard(order: order);
                             }).toList(),
                             if(state.status == OrderScreenMainStatus.loading) const Loader(padding: 10)
-                            else if(state.status == OrderScreenMainStatus.error)  ErrorMessage(error: state.error!)
+                            else if(state.status == OrderScreenMainStatus.error) ErrorMessage(error: state.error!)
+                            else if(state.stock) StockMessage(name: 'Заказы')
+
                           ],
                         );
                       },

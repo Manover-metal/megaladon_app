@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/logic/screens/store/details/store_screen_details_cubit.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
-import 'package:megaladon/presentation/widgets/error/error_message.dart';
+import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/list/file_download_list.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
@@ -35,11 +35,11 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
         child: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool isBool) {
             return [
-              SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: HeaderAppBar(isBack: true),
-                  )
+              const SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: HeaderAppBar(isBack: true),
+                )
               ),
             ];
           },

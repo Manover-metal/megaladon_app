@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/logic/screens/offers/list/offer_screen_main_cubit.dart';
 import 'package:megaladon/presentation/widgets/card/offer_card.dart';
-import 'package:megaladon/presentation/widgets/error/error_message.dart';
+import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';

@@ -5,8 +5,9 @@ import 'package:megaladon/logic/screens/advert/main/advert_screen_main_cubit.dar
 import 'package:megaladon/logic/screens/advert/my/advert_screen_my_cubit.dart';
 import 'package:megaladon/presentation/widgets/bottom_sheet/filters/filter_ad_my_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/card/ad_card.dart';
-import 'package:megaladon/presentation/widgets/error/error_message.dart';
+import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
+import 'package:megaladon/presentation/widgets/message/stock_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
@@ -35,7 +36,7 @@ late ScrollController _scrollController;
     }
   }
 _listenerScroll() {
-    if (_scrollController.position.maxScrollExtent < _scrollController.position.pixels + 500) {
+    if (_scrollController.position.maxScrollExtent < _scrollController.position.pixels) {
       final cubit = context.read<AdvertScreenMyCubit>();
       if(cubit.state.status != AdverScreenMainStatus.loading) {
         AdvertIndexRequestParams params = cubit.state.params;
@@ -112,7 +113,9 @@ _listenerScroll() {
                               return AdCard(advert: adver);
                             }).toList(),
                             if(state.status == AdverScreenMyMainStatus.loading) const Loader(padding: 10)
-                            else if(state.status == AdverScreenMyMainStatus.error)  ErrorMessage(error: state.error!)
+                            else if(state.status == AdverScreenMyMainStatus.error) ErrorMessage(error: state.error!)
+                            else if(state.stock) StockMessage(name: 'Объявления')
+
                           ],
                         );
                       },

@@ -11,28 +11,32 @@ class StoreScreenMainState extends Equatable {
   final List<StoreModel> stores;
   final ErrorModel? error;
   final StoreIndexRequestParams params;
+  final bool stock;
 
   const StoreScreenMainState({
     this.status = StoreScreenMainStatus.success,
     this.stores = const [],
     this.error,
-    this.params =  const StoreIndexRequestParams()
+    this.params =  const StoreIndexRequestParams(),
+    this.stock = false
   });
 
   @override
-  List<Object?> get props => [status, stores, error, params];
+  List<Object?> get props => [status, stores, error, params, stock];
 
   StoreScreenMainState copyWith({
     StoreScreenMainStatus? status,
     List<StoreModel>? stores,
     ErrorModel? error,
-    StoreIndexRequestParams? params
+    StoreIndexRequestParams? params,
+    bool? stock,
   }) {
     return StoreScreenMainState(
       status: status ?? this.status,
       stores: stores ?? this.stores,
       error: error,
-      params: params ?? this.params
+      params: params ?? this.params,
+      stock: stock ?? this.stock
     );
   }
 
