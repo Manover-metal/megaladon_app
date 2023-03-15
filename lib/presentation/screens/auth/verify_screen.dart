@@ -63,7 +63,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
         ]
       ));
     } else if(state is AuthErrorState && isListener) {
-      showErrorSnackBar(context, state.error);
+      showErrorSnackBar(context, state.error.messages[0]);
     }
   };
 

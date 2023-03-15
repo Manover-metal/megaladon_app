@@ -70,12 +70,10 @@ class _CreateOfferScreenState extends State<CreateOfferScreen> {
 
   _listenerForm(BuildContext context, CreateOfferFormState state) {
     if(state.status.isInvalid) {
-      if(state.description.invalid) {
-        showErrorSnackBar(context, state.description.error.toString());
-      } else if(state.price.invalid) {
-        showErrorSnackBar(context, state.price.error.toString());
-      } else if(state.city.invalid) {
-        showErrorSnackBar(context, state.city.error.toString());
+      for (var element in state.props) {
+        if(element is FormzInput && element.invalid) {
+          return showErrorSnackBar(context, element.error.toString());
+        }
       }
     }
   }

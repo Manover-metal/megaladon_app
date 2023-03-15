@@ -14,6 +14,7 @@ import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/double_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/number_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
+import 'package:megaladon/presentation/widgets/form/multi_picker/service_type_multi_picker.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
@@ -30,6 +31,8 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
   late TextEditingController _latController;
   late TextEditingController _lonController;
   late TextEditingController _fullAddressController;
+  late ServiceTypeMultiPickerController _serviceController;
+
 
 
   _register() {
@@ -40,7 +43,8 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
             bin: _binController.value.text,
             lat: double.parse(_latController.value.text),
             lon: double.parse(_lonController.value.text),
-            fullAddress: _fullAddressController.value.text
+            fullAddress: _fullAddressController.value.text,
+            services: _serviceController.value.map((e) => e.value).toList()
           ),
         )
       );
@@ -49,14 +53,10 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
 
   _listenerForm(BuildContext context, RegisterExecutorFormState state) {
     if(state.status.isInvalid) {
-      if(state.name.invalid) {
-        showErrorSnackBar(context, state.name.error.toString());
-      } else if(state.bin.invalid) {
-        showErrorSnackBar(context, state.bin.error.toString());
-      } else if(state.lat.invalid) {
-        showErrorSnackBar(context, state.lat.error.toString());
-      } else if(state.lon.invalid) {
-        showErrorSnackBar(context, state.lon.error.toString());
+      for (var element in state.props) {
+        if(element is FormzInput && element.invalid) {
+          return showErrorSnackBar(context, element.error.toString());
+        }
       }
     }
   }
@@ -77,7 +77,7 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
         bin: _binController.value.text,
         lat: _latController.value.text,
         lon: _lonController.value.text,
-        services: []
+        services: _serviceController.value.map((e) => e.value).toList()
     );
   }
 
@@ -88,7 +88,20 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
     _binController = TextEditingController();
     _latController = TextEditingController();
     _lonController = TextEditingController();
+    _serviceController = ServiceTypeMultiPickerController();
     super.initState();
+  }
+
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _fullAddressController.dispose();
+    _binController.dispose();
+    _latController.dispose();
+    _lonController.dispose();
+    _serviceController.dispose();
+    super.dispose();
   }
 
   @override
@@ -113,24 +126,32 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
                   SizedBox(height: 20,),
                   TextFieldApp(
                     label: 'Имя',
+                    icon: Icon(Icons.person_add_alt_1),
                     controller: _nameController,
                   ),
                   NumberFieldApp(
                     label: 'БИН',
+                    icon: Icon(Icons.wallet),
                     controller: _binController,
                   ),
                   TextFieldApp(
                     label: 'Полный адрес',
+                    icon: Icon(Icons.maps_home_work_outlined),
                     controller: _fullAddressController,
                   ),
                   DoubleFieldApp(
                     label: 'Широта',
+                    icon: Icon(Icons.place),
                     controller: _latController,
                   ),
                   DoubleFieldApp(
-                    label: 'Высота',
+                    label: 'Долгота',
+                    icon: Icon(Icons.place_outlined),
                     controller: _lonController,
                   ),
+                  ServiceTypeMultiPicker(serviceTypeControllers: _serviceController),
+
+                  SizedBox(height: 20),
                   BlocBuilder<RegisterExecutorBloc, RegisterExecutorState>(
                     builder: (context, state) {
                       if (state is RegisterExecutorLoading) {
@@ -147,14 +168,14 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
                   ),
                   Text.rich(
                     TextSpan(
-                      // ignore: prefer_const_literals_to_create_immutables
-                        children: [
+                        children: const [
                           TextSpan(
-                              text: 'Нажимая на кнопку “Продолжить”, вы принимаете '),
+                            text: 'Нажимая на кнопку “Продолжить”, вы принимаете '
+                          ),
                           TextSpan(text: 'Условия пользовательского соглашения',
-                              style: TextStyle(
-
-                              )
+                            style: TextStyle(
+                                decoration: TextDecoration.underline
+                            )
                           )
                         ]
                     ),

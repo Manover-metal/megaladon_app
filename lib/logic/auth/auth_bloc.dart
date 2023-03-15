@@ -6,10 +6,14 @@ import 'package:equatable/equatable.dart';
 import 'package:megaladon/core/dio/index.dart';
 import 'package:megaladon/core/dio/interceptors/auth_interceptors.dart';
 import 'package:megaladon/data/models/auth/auth_model.dart';
+import 'package:megaladon/data/models/error_model.dart';
 import 'package:megaladon/data/models/executor_model.dart';
+import 'package:megaladon/data/models/store_model.dart';
 import 'package:megaladon/data/models/user_model.dart';
 import 'package:megaladon/data/repositories/auth/auth_repository.dart';
 import 'package:megaladon/data/repositories/auth/verify_repository.dart';
+import 'package:megaladon/logic/register/register_executor/register_executor_bloc.dart';
+import 'package:megaladon/logic/register/register_store/register_store_bloc.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -17,16 +21,24 @@ part 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository _authRepository = AuthRepository();
   final VerifyRepository _verifyRepository = VerifyRepository();
+  final RegisterStoreBloc registerStoreBloc;
+  final RegisterExecutorBloc registerExecutorBloc;
 
-  AuthBloc() : super(AuthInitial()) {
+
+  AuthBloc(this.registerStoreBloc, this.registerExecutorBloc) : super(AuthInitial()) {
     on<AuthInitialEvent>(_initial);
     on<AuthLoginEvent>(_login);
     on<AuthVerifyEvent>(_verify);
     on<AuthLogoutEvent>(_logout);
+    registerExecutorBloc.stream.listen(_listenRegisterExecutor);
+    registerStoreBloc.stream.listen(_listenRegisterStore);
+    on<AuthAddExecutorEvent>(_addExecutor);
+    on<AuthAddStoreEvent>(_addStore);
   }
 
   _initial(AuthInitialEvent event, Emitter emit) async {
     AuthModel? auth = await _authRepository.read();
+    print(auth?.token);
     if(auth != null) {
       emit(AuthLoginState(auth));
     }
@@ -38,13 +50,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       final user = UserModel.fromJson(value.data['user']);
       final executor = value.data['user']['executor'] != null? ExecutorModel.fromJson(value.data['user']['executor']): null;
+      final store = value.data['user']['store'] != null? StoreModel.fromJsonFull(value.data['user']['store']): null;
+
 
       AuthModel auth = AuthModel()
         ..token = value.data['token']
         ..user.value = user
-        ..executor.value = executor;
+        ..executor.value = executor
+        ..store.value = store;
 
-      _authRepository.write(auth, user, executor);
+      _authRepository.write(auth, user, executor, store);
 
       emit(AuthLoginState(auth));
     }).catchError((error) {
@@ -54,10 +69,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         if(error.response?.statusCode == 406) {
           emit(AuthTransitionVerify(event.phone));
         } else {
-          emit(AuthErrorState(error.response?.data['message']));
+          emit(ErrorModel.parseDio(error));
         }
       } else {
-        emit(AuthErrorState('Произошла ошибка'));
+        emit(AuthErrorState(ErrorModel.nothing));
       }
 
     });
@@ -70,20 +85,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       final user = UserModel.fromJson(value.data['user']);
       final executor = value.data['user']['executor'] != null? ExecutorModel.fromJson(value.data['user']['executor']): null;
+      final store = value.data['user']['store'] != null? StoreModel.fromJsonFull(value.data['user']['store']): null;
 
       AuthModel auth = AuthModel()
         ..token = value.data['token']
         ..user.value = user
-        ..executor.value = executor;
-      _authRepository.write(auth, user, executor);
+        ..executor.value = executor
+        ..store.value = store;
+
+      _authRepository.write(auth, user, executor, store);
 
       emit(AuthLoginState(auth));
     }).catchError((error) {
       print(error);
       if(error is DioError) {
-        emit(AuthErrorState(error.response?.data['message']));
+        emit(AuthErrorState(ErrorModel.parseDio(error)));
       } else {
-        emit(AuthErrorState('Произошла ошибка'));
+        emit(AuthErrorState(ErrorModel.nothing));
       }
 
     });
@@ -92,5 +110,34 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   _logout(AuthLogoutEvent event, Emitter emit) async {
     await _authRepository.logout();
     emit(AuthInitial());
+  }
+
+  _listenRegisterExecutor(RegisterExecutorState stateRegister) async {
+    if(stateRegister is RegisterExecutorSuccess && state is AuthLoginState) {
+      add(AuthAddExecutorEvent(stateRegister.executor));
+    }
+  }
+
+  _listenRegisterStore(RegisterStoreState stateRegister) async {
+    if(stateRegister is RegisterStoreSuccess && state is AuthLoginState) {
+      add(AuthAddStoreEvent(stateRegister.store));
+    }
+  }
+
+
+  _addExecutor(AuthAddExecutorEvent event,  Emitter emit) async {
+    final AuthLoginState currentState = state as AuthLoginState;
+    final AuthModel auth = currentState.auth;
+    auth.executor.value = event.executor;
+    await _authRepository.addExecutor(auth, event.executor);
+    emit(AuthLoginState(auth));
+  }
+
+  _addStore(AuthAddStoreEvent event,  Emitter emit) async {
+    final AuthLoginState currentState = state as AuthLoginState;
+    final AuthModel auth = currentState.auth;
+    auth.store.value = event.store;
+    await _authRepository.addStore(auth, event.store);
+    emit(AuthLoginState(auth));
   }
 }

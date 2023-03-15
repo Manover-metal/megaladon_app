@@ -1,6 +1,7 @@
 import 'package:isar/isar.dart';
 import 'package:megaladon/data/models/auth/auth_model.dart';
 import 'package:megaladon/data/models/executor_model.dart';
+import 'package:megaladon/data/models/store_model.dart';
 import 'package:megaladon/data/models/user_model.dart';
 
 class IsarService {
@@ -10,6 +11,7 @@ class IsarService {
     _isar = await Isar.open([
       UserModelSchema,
       ExecutorModelSchema,
+      StoreModelSchema,
       AuthModelSchema
     ]);
   }

@@ -34,3 +34,26 @@ class AuthLogoutEvent extends AuthEvent {
   @override
   List<Object?> get props => [];
 }
+
+class AuthAddExecutorEvent extends AuthEvent {
+  final ExecutorModel executor;
+
+  const AuthAddExecutorEvent(this.executor);
+
+  @override
+  List<Object?> get props => [executor];
+}
+
+
+class AuthAddStoreEvent extends AuthEvent {
+  final StoreModel store;
+
+  const AuthAddStoreEvent(this.store);
+
+  @override
+  List<Object?> get props => [store];
+}
+
+
+
+

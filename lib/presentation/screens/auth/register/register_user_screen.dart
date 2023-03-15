@@ -43,14 +43,10 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
 
   _listenerForm(BuildContext context, RegisterUserFormState state) {
     if(state.status.isInvalid) {
-      if(state.name.invalid) {
-        showErrorSnackBar(context, state.name.error.toString());
-      } else if(state.phone.invalid) {
-        showErrorSnackBar(context, state.phone.error.toString());
-      } else if(state.password.invalid) {
-        showErrorSnackBar(context, state.password.error.toString());
-      } else if(state.passwordConfirmation.invalid) {
-        showErrorSnackBar(context, state.passwordConfirmation.error.toString());
+      for (var element in state.props) {
+        if(element is FormzInput && element.invalid) {
+          return showErrorSnackBar(context, element.error.toString());
+        }
       }
     }
   }

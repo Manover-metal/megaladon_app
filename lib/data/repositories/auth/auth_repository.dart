@@ -4,6 +4,7 @@ import 'package:megaladon/core/dio/interceptors/auth_interceptors.dart';
 import 'package:megaladon/core/isar/index.dart';
 import 'package:megaladon/data/models/auth/auth_model.dart';
 import 'package:megaladon/data/models/executor_model.dart';
+import 'package:megaladon/data/models/store_model.dart';
 import 'package:megaladon/data/models/user_model.dart';
 
 class AuthRepository {
@@ -62,7 +63,7 @@ class AuthRepository {
     return auth;
   }
 
-  write(AuthModel auth, UserModel user, ExecutorModel? executor) async {
+  write(AuthModel auth, UserModel user, ExecutorModel? executor, StoreModel? store) async {
     _addInterceptor(auth);
     await IsarService.I.writeTxn(() async {
       await IsarService.I.authModels.put(auth);
@@ -73,6 +74,36 @@ class AuthRepository {
         await IsarService.I.executorModels.put(executor);
         await auth.executor.save();
       }
+      if(store != null) {
+        await IsarService.I.storeModels.put(store);
+        await auth.store.save();
+      }
+    });
+
+
+  }
+
+  addUser(AuthModel auth, UserModel user) async {
+    await IsarService.I.writeTxn(() async {
+      await IsarService.I.authModels.put(auth);
+      await IsarService.I.userModels.put(user);
+      await auth.user.save();
+    });
+  }
+
+  addExecutor(AuthModel auth, ExecutorModel executor) async {
+    await IsarService.I.writeTxn(() async {
+      await IsarService.I.authModels.put(auth);
+      await IsarService.I.executorModels.put(executor);
+      await auth.executor.save();
+    });
+  }
+
+  addStore(AuthModel auth, StoreModel store) async {
+    await IsarService.I.writeTxn(() async {
+      await IsarService.I.authModels.put(auth);
+      await IsarService.I.storeModels.put(store);
+      await auth.store.save();
     });
   }
 

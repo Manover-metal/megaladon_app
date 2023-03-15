@@ -98,9 +98,6 @@ const List<AutoRoute> form = [
           name: 'ProfileRouter',
           path: 'profile',
           children: profile),
-
-      // create_ratkum
-     
     ]),
     ...auth,
     ...form
