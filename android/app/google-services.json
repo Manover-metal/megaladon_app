@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "262839631693",
+    "project_id": "manover-metal",
+    "storage_bucket": "manover-metal.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:262839631693:android:b73636f955273c9cda0104",
+        "android_client_info": {
+          "package_name": "com.sanja.megaladon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "262839631693-10vamt4innmme96ffht7sanic4n5a414.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJpBfT3MZAjnuzpxvFTdWJBZUEIEjbSoQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "262839631693-10vamt4innmme96ffht7sanic4n5a414.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
