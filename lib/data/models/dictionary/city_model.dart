@@ -8,7 +8,7 @@ class CityModel {
     try {
       return CityModel(
         id: data['id'],
-        name: data['title'],
+        name: data['name'],
       );
     } catch(e) {
       return CityModel.nothing;

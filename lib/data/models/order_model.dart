@@ -1,17 +1,26 @@
 import 'package:equatable/equatable.dart';
+import 'package:megaladon/core/utils/parser.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/dictionary/order_category_model.dart';
 import 'package:megaladon/data/models/executor_model.dart';
 import 'package:megaladon/data/models/user_model.dart';
 
+enum OrderStatus {
+  nothing,
+  moderate,
+  active,
+  hasExecutor,
+  completed,
+  archive
+}
+
 class OrderModel extends Equatable {
   final int id;
   final String title;
   final String description;
-  final String status;
+  final String statusName;
   final String createdAt;
   final int countOffers;
-
 
   final String? priceRecommended;
   final String? priceMax;
@@ -20,12 +29,13 @@ class OrderModel extends Equatable {
   final ExecutorModel? executor;
   final CityModel? city;
   final List? files;
+  final OrderStatus? status;
 
   const OrderModel({
     required this.id,
     required this.title,
     required this.description,
-    required this.status,
+    required this.statusName,
     required this.createdAt,
     required this.countOffers,
     this.priceRecommended,
@@ -34,7 +44,8 @@ class OrderModel extends Equatable {
     this.executor,
     this.files,
     this.category,
-    this.city
+    this.city,
+    this.status
   });
 
   static OrderModel fromJsonMini(data) {
@@ -44,7 +55,7 @@ class OrderModel extends Equatable {
         description: data['description'],
         priceRecommended: data['price_recommended'],
         priceMax: data['price_max'],
-        status: data['status'],
+        statusName: data['status'],
         createdAt: data['created_at'],
         countOffers: data['count_offers'],
         user: data['user'] != null? UserModel.fromJson(data['user']): null,
@@ -52,20 +63,22 @@ class OrderModel extends Equatable {
   }
 
   static OrderModel fromJsonFull(data) {
+    print(data);
     return OrderModel(
       id: data['id'],
-      title: data['title'],//
-      description: data['description'],//
-      priceRecommended: data['price_recommended'],//
-      priceMax: data['price_max'],//
-      status: data['status'],//
-      createdAt: data['created_at'],//
+      title: data['title'],
+      description: data['description'],
+      priceRecommended: data['price_recommended'],
+      priceMax: data['price_max'],
+      statusName: data['status'],
+      createdAt: data['created_at'],
       countOffers: data['count_offers'],
+      files: data['files'],
       user: data['user'] != null? UserModel.fromJson(data['user']): null,
       executor: data['executor'] != null? ExecutorModel.fromJson(data['executor']): null,
-      files: data['files'],
       category: data['category'] != null? OrderCategoryModel.fromJson(data['category']): null,
-      city: data['city'] != null ? CityModel.fromJson(data['city']): null
+      city: data['city'] != null ? CityModel.fromJson(data['city']): null,
+      status: data['status_code'] != null? OrderStatus.values[Parser.toInt(data['status_code'])]: null,
     );
   }
 

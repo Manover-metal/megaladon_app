@@ -29,6 +29,7 @@ import 'package:megaladon/logic/screens/orders/main/order_screen_main_cubit.dart
 import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
 import 'package:megaladon/logic/screens/store/details/store_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/store/main/store_screen_main_cubit.dart';
+import 'package:megaladon/presentation/routing/guards/auth_guard.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'core/get.dart';
@@ -64,10 +65,10 @@ class App extends StatelessWidget {
 
   App({super.key});
 
-  final _appRouter = AppRouter();
-
   @override
   Widget build(BuildContext context) {
+
+
     return MultiBlocProvider(
       providers: [
         BlocProvider<RegisterExecutorBloc>(
@@ -101,7 +102,6 @@ class App extends StatelessWidget {
           BlocProvider<VerifyFormCubit>(
               create: (context) => VerifyFormCubit()
           ),
-
           BlocProvider<AdvertScreenMainCubit>(
               create: (context) => AdvertScreenMainCubit()
           ),
@@ -152,17 +152,42 @@ class App extends StatelessWidget {
               create: (context) => OrderUpdateFormCubit()
           )
         ],
-        child: MaterialApp.router(
-          debugShowCheckedModeBanner: false,
-          routerDelegate: _appRouter.delegate(),
-          routeInformationParser: _appRouter.defaultRouteParser(),
-          localizationsDelegates: context.localizationDelegates,
-          supportedLocales: context.supportedLocales,
-          locale: context.locale,
-          darkTheme: themeDark,
-          themeMode: ThemeMode.dark,
-        ),
+        child: const AppState()
       ),
+    );
+  }
+}
+
+class AppState extends StatefulWidget {
+  const AppState({super.key});
+
+  @override
+  State<AppState> createState() => _AppStateState();
+}
+
+class _AppStateState extends State<AppState> {
+  late AppRouter _appRouter;
+
+  @override
+  void initState() {
+    _appRouter = AppRouter(
+        notAuthGuard: NotAuthGuard(context),
+        authGuard: AuthGuard(context)
+    );
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
+      routerDelegate: _appRouter.delegate(),
+      routeInformationParser: _appRouter.defaultRouteParser(),
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
+      darkTheme: themeDark,
+      themeMode: ThemeMode.dark,
     );
   }
 }

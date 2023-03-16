@@ -69,7 +69,7 @@ class OrderCard extends StatelessWidget {
                     Expanded(
                         child: Container(
                             padding: EdgeInsets.symmetric(vertical: 20),
-                            child: Text(order.status, textAlign: TextAlign.center,)
+                            child: Text(order.statusName, textAlign: TextAlign.center,)
                         )
                     )
                   ],

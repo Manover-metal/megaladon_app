@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:megaladon/data/models/advert_model.dart';
 import 'package:megaladon/data/models/order_model.dart';
+import 'package:megaladon/presentation/routing/guards/auth_guard.dart';
 import 'package:megaladon/presentation/screens/ads/details_ad_screen.dart';
 import 'package:megaladon/presentation/screens/ads/my_ads_screen.dart';
 import 'package:megaladon/presentation/screens/ads/trading_ads_screen.dart';
@@ -37,14 +38,14 @@ part 'router.gr.dart';
 const List<AutoRoute> profile = [
   AutoRoute(page: ProfileScreen, path: ''),
   AutoRoute(page: SettingsScreen),
-  AutoRoute(page: ListChatsScreen),
-  AutoRoute(page: ListExecutorScreen),
+  AutoRoute(page: ListChatsScreen, guards: [AuthGuard]),
+  AutoRoute(page: ListExecutorScreen, guards: [AuthGuard]),
 ];
 
 const List<AutoRoute> ad = [
   AutoRoute(page: TradingAdsScreen, path: ''),
   AutoRoute(page: DetailsAdScreen),
-  AutoRoute(page: MyAdsScreen),
+  AutoRoute(page: MyAdsScreen, guards: [AuthGuard]),
 ];
 
 const List<AutoRoute> store = [
@@ -54,7 +55,7 @@ const List<AutoRoute> store = [
 
 const List<AutoRoute> order = [
   AutoRoute(page: ListOrdersScreen, path: ''),
-  AutoRoute(page: ListMyOrdersScreen),
+  AutoRoute(page: ListMyOrdersScreen, guards: [AuthGuard]),
   AutoRoute(page: DetailsOrderScreen),
   AutoRoute(page: ListExecutorsScreen),
   AutoRoute(page: DetailsOfferScreen),
@@ -62,21 +63,21 @@ const List<AutoRoute> order = [
 ];
 
 const List<AutoRoute> auth = [
-  AutoRoute(page: LoginScreen),
-  AutoRoute(page: ForgotPasswordScreen),
-  AutoRoute(page: ResetPasswordScreen),
-  AutoRoute(page: RegisterUserScreen),
-  AutoRoute(page: RegisterExecutorScreen),
-  AutoRoute(page: RegisterStoreScreen),
-  AutoRoute(page: VerifyScreen),
+  AutoRoute(page: LoginScreen, guards: [NotAuthGuard]),
+  AutoRoute(page: ForgotPasswordScreen, guards: [NotAuthGuard]),
+  AutoRoute(page: ResetPasswordScreen, guards: [NotAuthGuard]),
+  AutoRoute(page: RegisterUserScreen, guards: [NotAuthGuard]),
+  AutoRoute(page: RegisterExecutorScreen, guards: [NotAuthGuard]),
+  AutoRoute(page: RegisterStoreScreen, guards: [NotAuthGuard]),
+  AutoRoute(page: VerifyScreen, guards: [NotAuthGuard]),
 ];
 
 const List<AutoRoute> form = [
-  AutoRoute(page: CreateAdScreen),
-  AutoRoute(page: CreateOrderScreen),
-  AutoRoute(page: UpdateAdScreen),
-  AutoRoute(page: UpdateOrderScreen),
-  AutoRoute(page: CreateOfferScreen)
+  AutoRoute(page: CreateAdScreen, guards: [AuthGuard]),
+  AutoRoute(page: CreateOrderScreen, guards: [AuthGuard]),
+  AutoRoute(page: UpdateAdScreen, guards: [AuthGuard]),
+  AutoRoute(page: UpdateOrderScreen, guards: [AuthGuard]),
+  AutoRoute(page: CreateOfferScreen, guards: [AuthGuard])
 ];
 
 @MaterialAutoRouter(
@@ -88,31 +89,39 @@ const List<AutoRoute> form = [
           name: 'OrderRouter',
           path: 'order',
           children: order,
-          initial: true),
+          initial: true
+      ),
       AutoRoute(
           page: _EmptyRouteWidget,
           name: 'StoreRouter',
           path: 'store',
-          children: store),
+          children: store
+      ),
       AutoRoute(
-          page: _EmptyRouteWidget, name: 'AdRouter', path: 'ad', children: ad),
+          page:_EmptyRouteWidget,
+          name: 'AdRouter',
+          path: 'ad',
+          children: ad
+      ),
       AutoRoute(
           page: _EmptyRouteWidget,
           name: 'ProfileRouter',
           path: 'profile',
-          children: profile),
+          children: profile
+      ),
     ]),
     AutoRoute(
       page: DetailsChatScreen,
       name: 'DetailsChatRouter',
       path: 'detailchat',
-      // children: detailchat
     ),
     ...auth,
     ...form
   ],
 )
-class AppRouter extends _$AppRouter {}
+class AppRouter extends _$AppRouter {
+  AppRouter({required super.notAuthGuard, required super.authGuard});
+}
 
 class _EmptyRouteWidget extends StatelessWidget {
   @override
