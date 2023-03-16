@@ -12,6 +12,7 @@ import 'package:megaladon/presentation/screens/auth/register/register_shop_scree
 import 'package:megaladon/presentation/screens/auth/register/register_user_screen.dart';
 import 'package:megaladon/presentation/screens/auth/reset_password_screen.dart';
 import 'package:megaladon/presentation/screens/auth/verify_screen.dart';
+import 'package:megaladon/presentation/screens/chat/details_chat_screen.dart';
 import 'package:megaladon/presentation/screens/chat/list_chats_screen.dart';
 import 'package:megaladon/presentation/screens/forms/ad/create_ad_screen.dart';
 import 'package:megaladon/presentation/screens/forms/ad/update_ad_screen.dart';
@@ -29,7 +30,6 @@ import 'package:megaladon/presentation/screens/profile/settings_screen.dart';
 import 'package:megaladon/presentation/screens/store/details_store_screen.dart';
 import 'package:megaladon/presentation/screens/store/list_stores_screen.dart';
 import 'package:megaladon/presentation/screens/splash_screen.dart';
-
 
 part 'router.gr.dart';
 
@@ -77,7 +77,6 @@ const List<AutoRoute> form = [
   AutoRoute(page: CreateOfferScreen)
 ];
 
-
 @MaterialAutoRouter(
   replaceInRouteName: 'Screen,Route',
   routes: <AutoRoute>[
@@ -102,8 +101,13 @@ const List<AutoRoute> form = [
           children: profile),
 
       // create_ratkum
-     
     ]),
+    AutoRoute(
+      page: DetailsChatScreen,
+      name: 'DetailsChatRouter',
+      path: 'detailchat',
+      // children: detailchat
+    ),
     ...auth,
     ...form
   ],

@@ -14,28 +14,27 @@ class ListChatsScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Container(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    children: [
-                      HeaderAppBar(
-                        isMenu: true,
-                      ),
-                      TitleApp('SMS'),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Column(
-                        children: List.generate(5, (index) => ChatCard()),
-                      )
-                    ],
-                  ),
+          scrollDirection: Axis.vertical,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: [
+                    HeaderAppBar(
+                      isMenu: true,
+                    ),
+                    TitleApp('SMS'),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Column(
+                      children: List.generate(6, (index) => ChatCard()),
+                    )
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

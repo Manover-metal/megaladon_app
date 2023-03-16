@@ -23,6 +23,12 @@ class _$AppRouter extends RootStackRouter {
         child: SplashScreen(),
       );
     },
+    DetailsChatRouter.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: DetailsChatScreen(),
+      );
+    },
     LoginRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
@@ -356,6 +362,10 @@ class _$AppRouter extends RootStackRouter {
           ],
         ),
         RouteConfig(
+          DetailsChatRouter.name,
+          path: 'detailchat',
+        ),
+        RouteConfig(
           LoginRoute.name,
           path: '/login-screen',
         ),
@@ -417,6 +427,18 @@ class InitialRouter extends PageRouteInfo<void> {
         );
 
   static const String name = 'InitialRouter';
+}
+
+/// generated route for
+/// [DetailsChatScreen]
+class DetailsChatRouter extends PageRouteInfo<void> {
+  const DetailsChatRouter()
+      : super(
+          DetailsChatRouter.name,
+          path: 'detailchat',
+        );
+
+  static const String name = 'DetailsChatRouter';
 }
 
 /// generated route for
