@@ -12,6 +12,7 @@ import 'package:megaladon/presentation/screens/auth/register/register_shop_scree
 import 'package:megaladon/presentation/screens/auth/register/register_user_screen.dart';
 import 'package:megaladon/presentation/screens/auth/reset_password_screen.dart';
 import 'package:megaladon/presentation/screens/auth/verify_screen.dart';
+import 'package:megaladon/presentation/screens/executor/list_my_executors_screen.dart';
 import 'package:megaladon/presentation/screens/forms/ad/create_ad_screen.dart';
 import 'package:megaladon/presentation/screens/forms/ad/update_ad_screen.dart';
 import 'package:megaladon/presentation/screens/forms/offer/create_offer_screen.dart';
@@ -23,7 +24,6 @@ import 'package:megaladon/presentation/screens/orders/list_executors_screen.dart
 import 'package:megaladon/presentation/screens/orders/list_my_orders_screen.dart';
 import 'package:megaladon/presentation/screens/orders/list_orders_screen.dart';
 import 'package:megaladon/presentation/screens/orders/review_screen.dart';
-import 'package:megaladon/presentation/screens/performers/list_performers_screen.dart';
 import 'package:megaladon/presentation/screens/profile/profile_screen.dart';
 import 'package:megaladon/presentation/screens/profile/settings_screen.dart';
 import 'package:megaladon/presentation/screens/store/details_store_screen.dart';
@@ -36,7 +36,7 @@ part 'router.gr.dart';
 const List<AutoRoute> profile = [
   AutoRoute(page: ProfileScreen, path: ''),
   AutoRoute(page: SettingsScreen),
-  AutoRoute(page: ListPerformersScreen),
+  AutoRoute(page: ListExecutorScreen),
 ];
 
 const List<AutoRoute> ad = [

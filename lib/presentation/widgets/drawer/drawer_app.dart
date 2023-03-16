@@ -71,7 +71,7 @@ class DrawerApp extends StatelessWidget {
                           ],
                         ),
                       ),
-                      DrawerRouteTile(text: 'Мои исполнители', page: InitialRouter(children: [ProfileRouter(children: [ListPerformersRoute()])]),),
+                      DrawerRouteTile(text: 'Мои исполнители', page: InitialRouter(children: [ProfileRouter(children: [ListExecutorRoute()])]),),
                   
                       Divider(thickness: 1,)
                     ],

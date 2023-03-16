@@ -234,10 +234,10 @@ class _$AppRouter extends RootStackRouter {
         child: SettingsScreen(),
       );
     },
-    ListPerformersRoute.name: (routeData) {
+    ListExecutorRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const ListPerformersScreen(),
+        child: const ListExecutorScreen(),
       );
     },
   };
@@ -347,7 +347,7 @@ class _$AppRouter extends RootStackRouter {
                   parent: ProfileRouter.name,
                 ),
                 RouteConfig(
-                  ListPerformersRoute.name,
+                  ListExecutorRoute.name,
                   path: 'list-performers-screen',
                   parent: ProfileRouter.name,
                 ),
@@ -975,13 +975,13 @@ class SettingsRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [ListPerformersScreen]
-class ListPerformersRoute extends PageRouteInfo<void> {
-  const ListPerformersRoute()
+/// [ListExecutorScreen]
+class ListExecutorRoute extends PageRouteInfo<void> {
+  const ListExecutorRoute()
       : super(
-          ListPerformersRoute.name,
+          ListExecutorRoute.name,
           path: 'list-performers-screen',
         );
 
-  static const String name = 'ListPerformersRoute';
+  static const String name = 'ListExecutorRoute';
 }
