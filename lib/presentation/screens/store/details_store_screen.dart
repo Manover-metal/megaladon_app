@@ -8,6 +8,7 @@ import 'package:megaladon/presentation/widgets/list/file_download_list.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
+import 'package:megaladon/presentation/widgets/tiles/contact_tile.dart';
 import 'package:megaladon/presentation/widgets/tiles/data_tile.dart';
 
 class DetailsStoreScreen extends StatefulWidget {
@@ -54,20 +55,19 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
                   if(state is StoreScreenDetailsSuccess) {
                     return Column(
                       children: [
-                        TitleApp(state.store.name!),
+                        TitleApp('${state.store.type?.name} "${state.store.name}"'),
                         SizedBox(height: 20,),
                         CircleAvatar(
                           radius: MediaQuery.of(context).size.width / 6,
                           backgroundColor:  Colors.grey.shade300,
                         ),
+                        SizedBox(height: 20,),
                         DataTile(title: 'Адрес:', data: state.store.fullAddress),
-                        // Column(
-                        //   children: state.store.contacts.m,
-                        // )
-                        // DataTile(title: 'Email:', data: 'mailto@mail.ru'),
-                        // DataTile(title: 'Телефон:', data: '+7 (123) 456-78-91'),
-                        // DataTile(title: 'Сайт:', data: 'steel-astana.kz'),
-                        // DataTile(title: 'Описание:', data: 'Как принято считать, непосредственные участники технического прогресса объединены в целые кластеры'),
+                        if(state.store.city != null) DataTile(title: 'Город:', data: state.store.city!.name),
+                        if(state.store.bin != null) DataTile(title: 'БИН:', data: state.store.bin.toString()),
+                        ...state.store.contacts!.map((contact) {
+                          return ContactTile(contact: contact);
+                        }).toList(),
                         SizedBox(height: 20,),
 
                         if(state.store.prices!.isEmpty) SubTitleApp('Нет прайс листа')
@@ -78,7 +78,8 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
                           SizedBox(height: 10,),
 
                         ],
-                        ElevatedButtonApp(text: 'Позвонить'),
+                        SizedBox(height: 20,),
+                        if(state.store.hasPhone) ElevatedButtonApp(text: 'Позвонить'),
                         OutlinedButtonApp(text: 'Написать'),
                       ],
                     );

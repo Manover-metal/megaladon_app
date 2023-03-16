@@ -426,7 +426,7 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig(
           CreateAdRoute.name,
           path: '/create-ad-screen',
-          guards: [notAuthGuard],
+          guards: [authGuard],
         ),
         RouteConfig(
           CreateOrderRoute.name,

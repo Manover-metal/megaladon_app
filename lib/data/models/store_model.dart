@@ -17,10 +17,9 @@ class StoreModel {
   final int? bin;
   final String? rating;
   final String? photo;
-
-
   final double? lat;
   final double? lon;
+  final bool hasPhone;
 
   @ignore
   final List? prices;
@@ -38,6 +37,7 @@ class StoreModel {
   StoreModel({
     required this.id,
     required this.fullAddress,
+    required this.hasPhone,
     this.photo,
     this.rating,
     this.prices,
@@ -47,23 +47,25 @@ class StoreModel {
     this.lon,
     this.name,
     this.type,
-    this.city
+    this.city,
   });
 
   static StoreModel fromJsonMini(data) {
+    
     return StoreModel(
         id: data['id'],
         name: data['name'],
+        hasPhone: false,
         rating: data['rating'],
         fullAddress: data['full_address'],
         photo: data['photo_url'],
-        type: data['type'] != null? StoreTypeModel.fromJson(data['type']): null,
+        type: Parser.toStoreType(data['type']),
         city: data['city'] != null? CityModel.fromJson(data['city']): null
-
     );
   }
 
   static StoreModel fromJsonFull(data) {
+    List<ContactModel>? contacts = data['contacts'] != null? ContactModel.fromJsonList(data['contacts']): null;
     return StoreModel(
         id: data['id'],
         rating: data['rating'],
@@ -73,8 +75,11 @@ class StoreModel {
         prices: data['prices'],
         lat: Parser.toDouble(data['lat']),
         lon: Parser.toDouble(data['lon']),
-        contacts: data['contacts'] != null? ContactModel.fromJsonList(data['contacts']): null,
-        type: data['type'] != null? StoreTypeModel.fromJson(data['type']): null,
+        contacts: contacts,
+        hasPhone: (contacts != null)? contacts.any((element) {
+          return element.type == ContactType.home_phone || element.type == ContactType.phone;
+        }): false,
+        type: Parser.toStoreType(data['type']),
         city: data['city'] != null? CityModel.fromJson(data['city']): null
 
     );

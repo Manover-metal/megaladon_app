@@ -27,28 +27,33 @@ const StoreModelSchema = CollectionSchema(
       name: r'fullAddress',
       type: IsarType.string,
     ),
-    r'lat': PropertySchema(
+    r'hasPhone': PropertySchema(
       id: 2,
+      name: r'hasPhone',
+      type: IsarType.bool,
+    ),
+    r'lat': PropertySchema(
+      id: 3,
       name: r'lat',
       type: IsarType.double,
     ),
     r'lon': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'lon',
       type: IsarType.double,
     ),
     r'name': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'name',
       type: IsarType.string,
     ),
     r'photo': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'photo',
       type: IsarType.string,
     ),
     r'rating': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'rating',
       type: IsarType.string,
     )
@@ -103,11 +108,12 @@ void _storeModelSerialize(
 ) {
   writer.writeLong(offsets[0], object.bin);
   writer.writeString(offsets[1], object.fullAddress);
-  writer.writeDouble(offsets[2], object.lat);
-  writer.writeDouble(offsets[3], object.lon);
-  writer.writeString(offsets[4], object.name);
-  writer.writeString(offsets[5], object.photo);
-  writer.writeString(offsets[6], object.rating);
+  writer.writeBool(offsets[2], object.hasPhone);
+  writer.writeDouble(offsets[3], object.lat);
+  writer.writeDouble(offsets[4], object.lon);
+  writer.writeString(offsets[5], object.name);
+  writer.writeString(offsets[6], object.photo);
+  writer.writeString(offsets[7], object.rating);
 }
 
 StoreModel _storeModelDeserialize(
@@ -119,12 +125,13 @@ StoreModel _storeModelDeserialize(
   final object = StoreModel(
     bin: reader.readLongOrNull(offsets[0]),
     fullAddress: reader.readString(offsets[1]),
+    hasPhone: reader.readBool(offsets[2]),
     id: id,
-    lat: reader.readDoubleOrNull(offsets[2]),
-    lon: reader.readDoubleOrNull(offsets[3]),
-    name: reader.readStringOrNull(offsets[4]),
-    photo: reader.readStringOrNull(offsets[5]),
-    rating: reader.readStringOrNull(offsets[6]),
+    lat: reader.readDoubleOrNull(offsets[3]),
+    lon: reader.readDoubleOrNull(offsets[4]),
+    name: reader.readStringOrNull(offsets[5]),
+    photo: reader.readStringOrNull(offsets[6]),
+    rating: reader.readStringOrNull(offsets[7]),
   );
   return object;
 }
@@ -141,14 +148,16 @@ P _storeModelDeserializeProp<P>(
     case 1:
       return (reader.readString(offset)) as P;
     case 2:
-      return (reader.readDoubleOrNull(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 3:
       return (reader.readDoubleOrNull(offset)) as P;
     case 4:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readDoubleOrNull(offset)) as P;
     case 5:
       return (reader.readStringOrNull(offset)) as P;
     case 6:
+      return (reader.readStringOrNull(offset)) as P;
+    case 7:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -445,6 +454,16 @@ extension StoreModelQueryFilter
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'fullAddress',
         value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<StoreModel, StoreModel, QAfterFilterCondition> hasPhoneEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'hasPhone',
+        value: value,
       ));
     });
   }
@@ -1132,6 +1151,18 @@ extension StoreModelQuerySortBy
     });
   }
 
+  QueryBuilder<StoreModel, StoreModel, QAfterSortBy> sortByHasPhone() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hasPhone', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StoreModel, StoreModel, QAfterSortBy> sortByHasPhoneDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hasPhone', Sort.desc);
+    });
+  }
+
   QueryBuilder<StoreModel, StoreModel, QAfterSortBy> sortByLat() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lat', Sort.asc);
@@ -1216,6 +1247,18 @@ extension StoreModelQuerySortThenBy
   QueryBuilder<StoreModel, StoreModel, QAfterSortBy> thenByFullAddressDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'fullAddress', Sort.desc);
+    });
+  }
+
+  QueryBuilder<StoreModel, StoreModel, QAfterSortBy> thenByHasPhone() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hasPhone', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StoreModel, StoreModel, QAfterSortBy> thenByHasPhoneDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hasPhone', Sort.desc);
     });
   }
 
@@ -1307,6 +1350,12 @@ extension StoreModelQueryWhereDistinct
     });
   }
 
+  QueryBuilder<StoreModel, StoreModel, QDistinct> distinctByHasPhone() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'hasPhone');
+    });
+  }
+
   QueryBuilder<StoreModel, StoreModel, QDistinct> distinctByLat() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'lat');
@@ -1358,6 +1407,12 @@ extension StoreModelQueryProperty
   QueryBuilder<StoreModel, String, QQueryOperations> fullAddressProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'fullAddress');
+    });
+  }
+
+  QueryBuilder<StoreModel, bool, QQueryOperations> hasPhoneProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'hasPhone');
     });
   }
 

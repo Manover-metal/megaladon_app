@@ -1,10 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:megaladon/data/models/order_model.dart';
+import 'package:megaladon/data/models/user_model.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/screens/orders/details/order_screen_details_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
-import 'package:megaladon/presentation/screens/forms/offer/create_offer_screen.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/message/error_message.dart';
@@ -106,34 +107,49 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                   Text('Допустимый: до ${state.order.priceMax} ₸'),
                                   SizedBox(height: 20,),
 
-                                  // UserTile(),
+                                  UserTile(user: state.order.user!),
                                   SizedBox(height: 20,),
+                                  BlocBuilder<AuthBloc, AuthState>(
+                                    builder: (context, stateUser) {
+                                      if(stateUser is AuthLoginState) {
+                                        UserModel user = stateUser.auth.user.value!;
+                                        return Column(
+                                          children: [
+                                            if(state.order.user?.id != user.id && state.order.status == OrderStatus.active)...[
+                                              ElevatedButtonApp(
+                                                text: 'Предложить услуги',
+                                                onPressed: _createOffer(context),
+                                              ),
+                                              OutlinedButtonApp(text: 'Обсудить в чате'),
+                                            ]
+                                            else ...[
+                                              if(state.order.status == OrderStatus.active) ...[
+                                                ElevatedButtonApp(
+                                                  text: 'Предложения (${state.order.countOffers} новых)',
+                                                  onPressed: _checkExecutors(context),
+                                                ),
+                                                OutlinedButtonApp(text: 'Обсудить в чате (5 новых)'),
+                                              ],
+                                              if(state.order.status == OrderStatus.hasExecutor) ...[
+                                                ElevatedButtonApp(
+                                                  text: 'Принять работу',
+                                                  onPressed: _accept(context),
+                                                ),
+                                                ElevatedButtonApp(
+                                                  text: 'Отклонить работу',
+                                                  onPressed: _decline(context),
+                                                ),
+                                              ]
+                                            ],
+                                          ],
+                                        );
+                                      }
+                                      else {
+                                        return Container();
+                                      }
 
-                                  ...[
-                                    ElevatedButtonApp(
-                                      text: 'Предложить услуги',
-                                      onPressed: _createOffer(context),
-                                    ),
-                                    OutlinedButtonApp(text: 'Обсудить в чате'),
-                                  ],
-                                  ...[
-                                    ElevatedButtonApp(
-                                      text: 'Предложения (${state.order.countOffers} новых)',
-                                      onPressed: _checkExecutors(context),
-                                    ),
-                                    OutlinedButtonApp(text: 'Обсудить в чате (5 новых)'),
-                                  ],
-                                  ...[
-                                    ElevatedButtonApp(
-                                      text: 'Принять работу',
-                                      onPressed: _accept(context),
-                                    ),
-                                    ElevatedButtonApp(
-                                      text: 'Отклонить работу',
-                                      onPressed: _decline(context),
-
-                                    ),
-                                  ]
+                                    },
+                                  ),
                                 ],
                               ),
                             )
