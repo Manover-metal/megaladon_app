@@ -22,12 +22,10 @@ class StoreScreenMainCubit extends Cubit<StoreScreenMainState> {
         status: StoreScreenMainStatus.loading,
         error: null,
         stores: state.stores,
-
       )
     );
-
     return await _repository.index(mainParams).then((value) {
-
+      print(value);
       if(mainParams.startRow == 0) {
         emit(state.copyWith(
             stores: value,
@@ -45,10 +43,17 @@ class StoreScreenMainCubit extends Cubit<StoreScreenMainState> {
         ));
       }
     }).catchError(( error) {
+      print(error);
       if(error is DioError) {
-        emit(state.copyWith(error: ErrorModel.parseDio(error)));
+        emit(state.copyWith(
+            status: StoreScreenMainStatus.error,
+            error: ErrorModel.parseDio(error))
+        );
       } else {
-        emit(state.copyWith(error: ErrorModel.nothing));
+        emit(state.copyWith(
+            status: StoreScreenMainStatus.error,
+            error: ErrorModel.nothing)
+        );
       }
     });
   }

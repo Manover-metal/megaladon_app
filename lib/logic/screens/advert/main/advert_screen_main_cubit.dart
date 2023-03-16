@@ -49,9 +49,15 @@ class AdvertScreenMainCubit extends Cubit<AdvertScreenMainState> {
     }).catchError(( error) {
       print(error);
       if(error is DioError) {
-        emit(state.copyWith(error: ErrorModel.parseDio(error)));
+        emit(state.copyWith(
+            status: AdverScreenMainStatus.error,
+            error: ErrorModel.parseDio(error))
+        );
       } else {
-        emit(state.copyWith(error: ErrorModel.nothing));
+        emit(state.copyWith(
+            status: AdverScreenMainStatus.error,
+            error: ErrorModel.nothing)
+        );
       }
     });
   }

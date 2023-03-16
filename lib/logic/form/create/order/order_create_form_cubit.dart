@@ -66,7 +66,7 @@ class OrderCreateFormCubit extends Cubit<OrderCreateFormState> {
     emit(state.copyWith(formState: EnumFormState.fetch));
     return _repository.create(OrderCreateRequestParams(
         title: state.title.value,
-        description: state.title.value,
+        description: state.description.value,
         priceMax: int.parse(state.priceMax.value),
         priceRecommended: int.parse(state.priceRecommended.value),
         categoryId: state.category.value,

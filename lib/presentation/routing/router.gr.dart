@@ -13,7 +13,15 @@
 part of 'router.dart';
 
 class _$AppRouter extends RootStackRouter {
-  _$AppRouter([GlobalKey<NavigatorState>? navigatorKey]) : super(navigatorKey);
+  _$AppRouter({
+    GlobalKey<NavigatorState>? navigatorKey,
+    required this.notAuthGuard,
+    required this.authGuard,
+  }) : super(navigatorKey);
+
+  final NotAuthGuard notAuthGuard;
+
+  final AuthGuard authGuard;
 
   @override
   final Map<String, PageFactory> pagesMap = {
@@ -281,6 +289,7 @@ class _$AppRouter extends RootStackRouter {
                   ListMyOrdersRoute.name,
                   path: 'list-my-orders-screen',
                   parent: OrderRouter.name,
+                  guards: [authGuard],
                 ),
                 RouteConfig(
                   DetailsOrderRoute.name,
@@ -340,6 +349,7 @@ class _$AppRouter extends RootStackRouter {
                   MyAdsRoute.name,
                   path: 'my-ads-screen',
                   parent: AdRouter.name,
+                  guards: [authGuard],
                 ),
               ],
             ),
@@ -362,11 +372,13 @@ class _$AppRouter extends RootStackRouter {
                   ListChatsRoute.name,
                   path: 'list-chats-screen',
                   parent: ProfileRouter.name,
+                  guards: [authGuard],
                 ),
                 RouteConfig(
                   ListExecutorRoute.name,
                   path: 'list-executor-screen',
                   parent: ProfileRouter.name,
+                  guards: [authGuard],
                 ),
               ],
             ),
@@ -379,50 +391,62 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig(
           LoginRoute.name,
           path: '/login-screen',
+          guards: [notAuthGuard],
         ),
         RouteConfig(
           ForgotPasswordRoute.name,
           path: '/forgot-password-screen',
+          guards: [notAuthGuard],
         ),
         RouteConfig(
           ResetPasswordRoute.name,
           path: '/reset-password-screen',
+          guards: [notAuthGuard],
         ),
         RouteConfig(
           RegisterUserRoute.name,
           path: '/register-user-screen',
+          guards: [notAuthGuard],
         ),
         RouteConfig(
           RegisterExecutorRoute.name,
           path: '/register-executor-screen',
+          guards: [notAuthGuard],
         ),
         RouteConfig(
           RegisterStoreRoute.name,
           path: '/register-store-screen',
+          guards: [notAuthGuard],
         ),
         RouteConfig(
           VerifyRoute.name,
           path: '/verify-screen',
+          guards: [notAuthGuard],
         ),
         RouteConfig(
           CreateAdRoute.name,
           path: '/create-ad-screen',
+          guards: [authGuard],
         ),
         RouteConfig(
           CreateOrderRoute.name,
           path: '/create-order-screen',
+          guards: [authGuard],
         ),
         RouteConfig(
           UpdateAdRoute.name,
           path: '/update-ad-screen',
+          guards: [authGuard],
         ),
         RouteConfig(
           UpdateOrderRoute.name,
           path: '/update-order-screen',
+          guards: [authGuard],
         ),
         RouteConfig(
           CreateOfferRoute.name,
           path: '/create-offer-screen',
+          guards: [authGuard],
         ),
       ];
 }

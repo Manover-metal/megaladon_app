@@ -24,7 +24,6 @@ class OrderScreenMainCubit extends Cubit<OrderScreenMainState> {
         orders: state.orders,
       )
     );
-
     return await _repository.index(mainParams).then((value) {
       if(mainParams.startRow == 0) {
         emit(state.copyWith(
@@ -34,6 +33,7 @@ class OrderScreenMainCubit extends Cubit<OrderScreenMainState> {
             stock: value.length < mainParams.rowsPerPage
           )
         );
+
       } else {
         emit(state.copyWith(
           status: OrderScreenMainStatus.success,

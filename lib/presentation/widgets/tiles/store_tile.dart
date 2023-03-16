@@ -31,7 +31,7 @@ class StoreTile extends StatelessWidget {
             SizedBox(width: 10,),
             Expanded(
               flex: 8,
-              child: Text(store.name!)
+              child: Text('${store.type?.name ?? ''} "${store.name}"')
             )
           ],
         ),
