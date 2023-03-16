@@ -23,6 +23,7 @@ import 'package:megaladon/presentation/screens/orders/list_executors_screen.dart
 import 'package:megaladon/presentation/screens/orders/list_my_orders_screen.dart';
 import 'package:megaladon/presentation/screens/orders/list_orders_screen.dart';
 import 'package:megaladon/presentation/screens/orders/review_screen.dart';
+import 'package:megaladon/presentation/screens/performers/list_performers_screen.dart';
 import 'package:megaladon/presentation/screens/profile/profile_screen.dart';
 import 'package:megaladon/presentation/screens/profile/settings_screen.dart';
 import 'package:megaladon/presentation/screens/store/details_store_screen.dart';
@@ -35,6 +36,7 @@ part 'router.gr.dart';
 const List<AutoRoute> profile = [
   AutoRoute(page: ProfileScreen, path: ''),
   AutoRoute(page: SettingsScreen),
+  AutoRoute(page: ListPerformersScreen),
 ];
 
 const List<AutoRoute> ad = [

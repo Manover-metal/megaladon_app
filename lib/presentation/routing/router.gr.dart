@@ -234,6 +234,12 @@ class _$AppRouter extends RootStackRouter {
         child: SettingsScreen(),
       );
     },
+    ListPerformersRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const ListPerformersScreen(),
+      );
+    },
   };
 
   @override
@@ -338,6 +344,11 @@ class _$AppRouter extends RootStackRouter {
                 RouteConfig(
                   SettingsRoute.name,
                   path: 'settings-screen',
+                  parent: ProfileRouter.name,
+                ),
+                RouteConfig(
+                  ListPerformersRoute.name,
+                  path: 'list-performers-screen',
                   parent: ProfileRouter.name,
                 ),
               ],
@@ -961,4 +972,16 @@ class SettingsRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'SettingsRoute';
+}
+
+/// generated route for
+/// [ListPerformersScreen]
+class ListPerformersRoute extends PageRouteInfo<void> {
+  const ListPerformersRoute()
+      : super(
+          ListPerformersRoute.name,
+          path: 'list-performers-screen',
+        );
+
+  static const String name = 'ListPerformersRoute';
 }
