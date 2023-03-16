@@ -6,8 +6,9 @@ import 'package:megaladon/generated/locale_keys.g.dart';
 import 'package:megaladon/logic/screens/store/main/store_screen_main_cubit.dart';
 import 'package:megaladon/presentation/widgets/bottom_sheet/filters/filter_store_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/card/store_card.dart';
-import 'package:megaladon/presentation/widgets/error/error_message.dart';
+import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
+import 'package:megaladon/presentation/widgets/message/stock_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
@@ -114,12 +115,13 @@ class _ListStoresScreenState extends State<ListStoresScreen> {
                        return Column(
                           children: [
                             ...state.stores.map((store) {
-                              print(store);
                              return StoreCard(store: store);
                             }).toList(),
-                            if(state.status == StoreScreenMainStatus.loading) const Loader(padding: 10,),
-                            if(state.status == StoreScreenMainStatus.error)  ErrorMessage(error: state.error!)
-                          ],
+                            if(state.status == StoreScreenMainStatus.loading) const Loader(padding: 10,)
+                            else if(state.status == StoreScreenMainStatus.error)  ErrorMessage(error: state.error!)
+                            else if(state.stock) StockMessage(name: 'Магазины')
+
+                        ],
                         );
                       },
                     ),

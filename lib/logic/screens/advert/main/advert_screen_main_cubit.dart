@@ -24,7 +24,7 @@ class AdvertScreenMainCubit extends Cubit<AdvertScreenMainState> {
         status: AdverScreenMainStatus.loading,
         error: null,
         advers: state.advers,
-        params: mainParams
+        params: mainParams,
       )
     );
 
@@ -33,15 +33,16 @@ class AdvertScreenMainCubit extends Cubit<AdvertScreenMainState> {
         emit(state.copyWith(
             advers: value,
             params: mainParams,
-            status: AdverScreenMainStatus.success
-          )
-        );
+            status: AdverScreenMainStatus.success,
+            stock: value.length < mainParams.rowsPerPage
+        ));
 
       } else {
         emit(state.copyWith(
           status: AdverScreenMainStatus.success,
           advers: [...state.advers, ...value],
-          params: mainParams
+          params: mainParams,
+          stock: value.length < mainParams.rowsPerPage
         ));
       }
 

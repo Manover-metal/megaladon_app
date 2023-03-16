@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+
 
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -15,30 +15,28 @@ import 'package:megaladon/presentation/widgets/tiles/drawer_tile.dart';
 import 'package:megaladon/generated/locale_keys.g.dart';
 
 class DrawerApp extends StatelessWidget {
-
   _login(BuildContext context) => () {
-    context.router.push(const LoginRoute());
-  };
+        context.router.push(const LoginRoute());
+      };
 
   _registerUser(BuildContext context) => () {
-    context.router.push(const RegisterUserRoute());
-  };
+        context.router.push(const RegisterUserRoute());
+      };
 
   _registerExecutor(BuildContext context) => () {
-    context.router.push(const RegisterExecutorRoute());
-  };
+        context.router.push(const RegisterExecutorRoute());
+      };
 
   _registerStore(BuildContext context) => () {
-    context.router.push(const RegisterStoreRoute());
-  };
+        context.router.push(const RegisterStoreRoute());
+      };
 
-  _logout (BuildContext context) => () {
-    context.read<AuthBloc>().add(AuthLogoutEvent());
-  };
+  _logout(BuildContext context) => () {
+        context.read<AuthBloc>().add(AuthLogoutEvent());
+      };
 
   @override
   Widget build(BuildContext context) {
-
     return Drawer(
       child: Container(
         padding: EdgeInsets.all(20),
@@ -57,38 +55,72 @@ class DrawerApp extends StatelessWidget {
                         text: 'Регистрация',
                         onPressed: _registerUser(context),
                       ),
-                    ],
-                    if(state is AuthLoginState) ...[
-                      DrawerRouteTile(text: 'Мои заказы', page: InitialRouter(
+                    ]
+                    else ...[
+                      DrawerRouteTile(
+                        text: 'Мои заказы',
+                        page: InitialRouter(
                           children: [
                             OrderRouter(children: [ListMyOrdersRoute()])
                           ],
                         ),
                       ),
-                      DrawerRouteTile(text: 'Мои объявления', page: InitialRouter(
+                      DrawerRouteTile(
+                        text: 'Мои объявления',
+                        page: InitialRouter(
                           children: [
                             AdRouter(children: [MyAdsRoute()])
                           ],
                         ),
                       ),
-                    
-                      Divider(thickness: 1,)
+                      DrawerRouteTile(
+                        text: 'Мои исполнители',
+                        page: InitialRouter(children: [
+                          ProfileRouter(children: [ListExecutorRoute()])]
+                        ),
+                      ),
+                      DrawerRouteTile(
+                        text: 'Чат',
+                        page: InitialRouter(children: [
+                          ProfileRouter(children: [ListChatsRoute()])
+                        ]),
+                      ),
+                      Divider(
+                        thickness: 1,
+                      )
                     ],
-                  ],
+                  ]
                 );
               }
             ),
             ...[
-              DrawerRouteTile(text: LocaleKeys.Orders.tr(), page: InitialRouter(children: [OrderRouter()]),),
-              DrawerRouteTile(text: LocaleKeys.Theshops.tr(), page: InitialRouter(children: [StoreRouter()]),),
-              DrawerRouteTile(text: 'Торговая площадка', page: InitialRouter(children: [AdRouter()]),),
+              DrawerRouteTile(
+                text: LocaleKeys.Orders.tr(),
+                page: InitialRouter(children: [OrderRouter()]),
+              ),
+              DrawerRouteTile(
+                text: LocaleKeys.Theshops.tr(),
+                page: InitialRouter(children: [StoreRouter()]),
+              ),
+              DrawerRouteTile(
+                text: 'Торговая площадка',
+                page: InitialRouter(children: [AdRouter()]),
+              ),
               //Create_ratkum
-              DrawerRouteTile(text: 'Настройки', page: InitialRouter(children: [ProfileRouter(children: [SettingsRoute()])]),),
-              Divider(thickness: 1,)
+              DrawerRouteTile(
+                text: 'Настройки',
+                page: InitialRouter(children: [
+                  ProfileRouter(children: [SettingsRoute()])
+                ]),
+              ),
+
+              Divider(
+                thickness: 1,
+              )
             ],
             BlocBuilder<AuthBloc, AuthState>(
               builder: (context, state) {
-                if(state is AuthLoginState) {
+                if (state is AuthLoginState) {
                   return DrawerTile(text: 'Выход', callback: _logout(context));
                 } else {
                   return Container();
@@ -121,5 +153,4 @@ class DrawerApp extends StatelessWidget {
       ),
     );
   }
-
 }

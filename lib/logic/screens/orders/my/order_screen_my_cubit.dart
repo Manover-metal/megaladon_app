@@ -21,7 +21,8 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
     emit(state.copyWith(
         status: OrderScreenMyStatus.loading,
         error: null,
-        orders: state.orders
+        orders: state.orders,
+
       )
     );
 
@@ -30,14 +31,15 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
         emit(state.copyWith(
             orders: value,
             params: mainParams,
-            status: OrderScreenMyStatus.success
-          )
-        );
+            status: OrderScreenMyStatus.success,
+            stock: value.length < mainParams.rowsPerPage
+        ));
       } else {
         emit(state.copyWith(
           status: OrderScreenMyStatus.success,
           orders: [...state.orders, ...value],
-          params: mainParams
+          params: mainParams,
+          stock: value.length < mainParams.rowsPerPage
         ));
       }
     }).catchError(( error) {

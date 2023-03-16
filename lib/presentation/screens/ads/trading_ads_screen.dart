@@ -4,8 +4,9 @@ import 'package:megaladon/data/models/request/params/index/advert_index_request_
 import 'package:megaladon/logic/screens/advert/main/advert_screen_main_cubit.dart';
 import 'package:megaladon/presentation/widgets/bottom_sheet/filters/filter_ad_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/card/ad_card.dart';
-import 'package:megaladon/presentation/widgets/error/error_message.dart';
+import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
+import 'package:megaladon/presentation/widgets/message/stock_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
@@ -32,20 +33,9 @@ class _TradingAdsScreenState extends State<TradingAdsScreen> {
       context.read<AdvertScreenMainCubit>().fetch();
     }
   }
-  // _showSort() async {
-  //   bool? result = await showModalBottomSheet(
-  //       useRootNavigator: true,
-  //       context: context,
-  //       elevation: 100,
-  //       builder: (_) => SortOrderBottomSheet()
-  //   );
-  //   if(result != null) {
-  //     context.read<OrderScreenMainCubit>().fetch();
-  //   }
-  // }
 
   _listenerScroll() {
-    if (_scrollController.position.maxScrollExtent < _scrollController.position.pixels + 500) {
+    if (_scrollController.position.maxScrollExtent < _scrollController.position.pixels) {
       final cubit = context.read<AdvertScreenMainCubit>();
       if(cubit.state.status != AdverScreenMainStatus.loading) {
         AdvertIndexRequestParams params = cubit.state.params;
@@ -119,15 +109,16 @@ class _TradingAdsScreenState extends State<TradingAdsScreen> {
                       BlocBuilder<AdvertScreenMainCubit, AdvertScreenMainState>(
                         builder: (context, state) {
                            return Column(
-                          children: [
-                            ...state.advers.map((adver) {
-                              return AdCard(advert: adver);
-                            }).toList(),
-                            if(state.status == AdverScreenMainStatus.loading) const Loader(padding: 10)
-                            else if(state.status == AdverScreenMainStatus.error)  ErrorMessage(error: state.error!)
-                          ],
-                        );
+                            children: [
+                              ...state.advers.map((adver) {
+                                return AdCard(advert: adver);
+                              }).toList(),
+                              if(state.status == AdverScreenMainStatus.loading) const Loader(padding: 10)
+                              else if(state.status == AdverScreenMainStatus.error)  ErrorMessage(error: state.error!)
+                              else if(state.stock) StockMessage(name: 'Объявления')
 
+                            ],
+                          );
                         },
                       ),
                     ],

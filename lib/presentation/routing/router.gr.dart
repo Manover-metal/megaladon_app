@@ -23,6 +23,12 @@ class _$AppRouter extends RootStackRouter {
         child: SplashScreen(),
       );
     },
+    DetailsChatRouter.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: DetailsChatScreen(),
+      );
+    },
     LoginRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
@@ -234,6 +240,18 @@ class _$AppRouter extends RootStackRouter {
         child: SettingsScreen(),
       );
     },
+    ListChatsRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: ListChatsScreen(),
+      );
+    },
+    ListExecutorRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const ListExecutorScreen(),
+      );
+    },
   };
 
   @override
@@ -340,9 +358,23 @@ class _$AppRouter extends RootStackRouter {
                   path: 'settings-screen',
                   parent: ProfileRouter.name,
                 ),
+                RouteConfig(
+                  ListChatsRoute.name,
+                  path: 'list-chats-screen',
+                  parent: ProfileRouter.name,
+                ),
+                RouteConfig(
+                  ListExecutorRoute.name,
+                  path: 'list-executor-screen',
+                  parent: ProfileRouter.name,
+                ),
               ],
             ),
           ],
+        ),
+        RouteConfig(
+          DetailsChatRouter.name,
+          path: 'detailchat',
         ),
         RouteConfig(
           LoginRoute.name,
@@ -406,6 +438,18 @@ class InitialRouter extends PageRouteInfo<void> {
         );
 
   static const String name = 'InitialRouter';
+}
+
+/// generated route for
+/// [DetailsChatScreen]
+class DetailsChatRouter extends PageRouteInfo<void> {
+  const DetailsChatRouter()
+      : super(
+          DetailsChatRouter.name,
+          path: 'detailchat',
+        );
+
+  static const String name = 'DetailsChatRouter';
 }
 
 /// generated route for
@@ -961,4 +1005,28 @@ class SettingsRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'SettingsRoute';
+}
+
+/// generated route for
+/// [ListChatsScreen]
+class ListChatsRoute extends PageRouteInfo<void> {
+  const ListChatsRoute()
+      : super(
+          ListChatsRoute.name,
+          path: 'list-chats-screen',
+        );
+
+  static const String name = 'ListChatsRoute';
+}
+
+/// generated route for
+/// [ListExecutorScreen]
+class ListExecutorRoute extends PageRouteInfo<void> {
+  const ListExecutorRoute()
+      : super(
+          ListExecutorRoute.name,
+          path: 'list-executor-screen',
+        );
+
+  static const String name = 'ListExecutorRoute';
 }
