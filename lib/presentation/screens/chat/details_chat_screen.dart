@@ -36,21 +36,22 @@ class DetailsChatScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Container(height: 50, width: 300, child: TextField()),
+                      Expanded(child: TextField()),
                       Container(
                         margin: EdgeInsets.symmetric(horizontal: 5),
                         decoration: BoxDecoration(
                           border: Border.all(
-                              color: Theme.of(context).colorScheme.primary),
+                              color: Theme.of(context).colorScheme.primary
+                          ),
                           borderRadius: BorderRadius.circular(20),
                           color: Theme.of(context).colorScheme.tertiary,
                         ),
                         child: IconButton(
-                            onPressed: () {},
-                            icon: Icon(
-                              Icons.near_me_outlined,
-                              color: Theme.of(context).colorScheme.primary,
-                            )),
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.near_me_outlined,
+                          color: Theme.of(context).colorScheme.primary,
+                        )),
                       ),
                     ],
                   )

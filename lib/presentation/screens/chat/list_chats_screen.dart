@@ -24,10 +24,7 @@ class ListChatsScreen extends StatelessWidget {
                     HeaderAppBar(
                       isMenu: true,
                     ),
-                    TitleApp('SMS'),
-                    SizedBox(
-                      height: 20,
-                    ),
+                    TitleApp('Чаты'),
                     Column(
                       children: List.generate(6, (index) => ChatCard()),
                     )
