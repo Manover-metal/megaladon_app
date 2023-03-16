@@ -246,6 +246,12 @@ class _$AppRouter extends RootStackRouter {
         child: ListChatsScreen(),
       );
     },
+    ListExecutorRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const ListExecutorScreen(),
+      );
+    },
   };
 
   @override
@@ -355,6 +361,11 @@ class _$AppRouter extends RootStackRouter {
                 RouteConfig(
                   ListChatsRoute.name,
                   path: 'list-chats-screen',
+                  parent: ProfileRouter.name,
+                ),
+                RouteConfig(
+                  ListExecutorRoute.name,
+                  path: 'list-executor-screen',
                   parent: ProfileRouter.name,
                 ),
               ],
@@ -1006,4 +1017,16 @@ class ListChatsRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'ListChatsRoute';
+}
+
+/// generated route for
+/// [ListExecutorScreen]
+class ListExecutorRoute extends PageRouteInfo<void> {
+  const ListExecutorRoute()
+      : super(
+          ListExecutorRoute.name,
+          path: 'list-executor-screen',
+        );
+
+  static const String name = 'ListExecutorRoute';
 }

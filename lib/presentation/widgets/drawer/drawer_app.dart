@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+
 
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -43,49 +43,56 @@ class DrawerApp extends StatelessWidget {
         child: Column(
           children: [
             BlocBuilder<AuthBloc, AuthState>(
-                builder: (BuildContext context, state) {
-              return Column(
-                children: [
-                  if (state is! AuthLoginState) ...[
-                    ElevatedButtonApp(
-                      text: 'Войти',
-                      onPressed: _login(context),
-                    ),
-                    OutlinedButtonApp(
-                      text: 'Регистрация',
-                      onPressed: _registerUser(context),
-                    ),
-                  ],
-                  if (state is AuthLoginState) ...[
-                    DrawerRouteTile(
-                      text: 'Мои заказы',
-                      page: InitialRouter(
-                        children: [
-                          OrderRouter(children: [ListMyOrdersRoute()])
-                        ],
+              builder: (BuildContext context, state) {
+                return Column(
+                  children: [
+                    if(state is! AuthLoginState)...[
+                      ElevatedButtonApp(
+                        text: 'Войти',
+                        onPressed: _login(context),
                       ),
-                    ),
-                    DrawerRouteTile(
-                      text: 'Мои объявления',
-                      page: InitialRouter(
-                        children: [
-                          AdRouter(children: [MyAdsRoute()])
-                        ],
+                      OutlinedButtonApp(
+                        text: 'Регистрация',
+                        onPressed: _registerUser(context),
                       ),
-                    ),
-                    DrawerRouteTile(
-                      text: 'Чат',
-                      page: InitialRouter(children: [
-                        ProfileRouter(children: [ListChatsRoute()])
-                      ]),
-                    ),
-                    Divider(
-                      thickness: 1,
-                    )
-                  ],
-                ],
-              );
-            }),
+                    ]
+                    else ...[
+                      DrawerRouteTile(
+                        text: 'Мои заказы',
+                        page: InitialRouter(
+                          children: [
+                            OrderRouter(children: [ListMyOrdersRoute()])
+                          ],
+                        ),
+                      ),
+                      DrawerRouteTile(
+                        text: 'Мои объявления',
+                        page: InitialRouter(
+                          children: [
+                            AdRouter(children: [MyAdsRoute()])
+                          ],
+                        ),
+                      ),
+                      DrawerRouteTile(
+                        text: 'Мои исполнители',
+                        page: InitialRouter(children: [
+                          ProfileRouter(children: [ListExecutorRoute()])]
+                        ),
+                      ),
+                      DrawerRouteTile(
+                        text: 'Чат',
+                        page: InitialRouter(children: [
+                          ProfileRouter(children: [ListChatsRoute()])
+                        ]),
+                      ),
+                      Divider(
+                        thickness: 1,
+                      )
+                    ],
+                  ]
+                );
+              }
+            ),
             ...[
               DrawerRouteTile(
                 text: LocaleKeys.Orders.tr(),
