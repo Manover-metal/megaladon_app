@@ -193,9 +193,13 @@ class _$AppRouter extends RootStackRouter {
       );
     },
     ReviewRoute.name: (routeData) {
+      final args = routeData.argsAs<ReviewRouteArgs>();
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: ReviewScreen(),
+        child: ReviewScreen(
+          key: args.key,
+          order: args.order,
+        ),
       );
     },
     ListStoresRoute.name: (routeData) {
@@ -893,14 +897,36 @@ class DetailsOfferRouteArgs {
 
 /// generated route for
 /// [ReviewScreen]
-class ReviewRoute extends PageRouteInfo<void> {
-  const ReviewRoute()
-      : super(
+class ReviewRoute extends PageRouteInfo<ReviewRouteArgs> {
+  ReviewRoute({
+    Key? key,
+    required OrderModel order,
+  }) : super(
           ReviewRoute.name,
           path: 'review-screen',
+          args: ReviewRouteArgs(
+            key: key,
+            order: order,
+          ),
         );
 
   static const String name = 'ReviewRoute';
+}
+
+class ReviewRouteArgs {
+  const ReviewRouteArgs({
+    this.key,
+    required this.order,
+  });
+
+  final Key? key;
+
+  final OrderModel order;
+
+  @override
+  String toString() {
+    return 'ReviewRouteArgs{key: $key, order: $order}';
+  }
 }
 
 /// generated route for

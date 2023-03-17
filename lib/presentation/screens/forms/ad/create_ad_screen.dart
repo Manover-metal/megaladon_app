@@ -109,8 +109,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                HeaderAppBar(isBack: true, ),
-                TitleApp(LocaleKeys.Creating_an_ad.tr()),
+                HeaderAppBar(isBack: true, title: LocaleKeys.Creating_an_ad.tr(),),
                 SizedBox(height: 30),
                 TextFieldApp(controller: _titleController, label: 'Название',),
                 AdvertCategoryPicker(label: LocaleKeys.Select_a_category.tr(), controller: _advertCategoryController),

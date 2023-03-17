@@ -71,13 +71,7 @@ class _TradingAdsScreenState extends State<TradingAdsScreen> {
                     children: [
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Column(
-                          children: [
-                            HeaderAppBar(isMenu: true,),
-                            TitleApp('Торговая площадка'),
-                            SizedBox(height: 20,),
-                          ],
-                        ),
+                        child: HeaderAppBar(isMenu: true, title: 'Торговая площадка'),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),

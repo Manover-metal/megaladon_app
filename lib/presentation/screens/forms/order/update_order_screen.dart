@@ -117,8 +117,7 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                HeaderAppBar(isBack: true, ),
-                TitleApp('Изменить заказ'),
+                HeaderAppBar(isBack: true, title: 'Изменить заказ',),
                 SizedBox(height: 30),
                 OrderCategoryPicker(label: 'Категория', controller: _orderCategoryController),
                 TextFieldApp(controller: _titleController, label: 'Заголовок',),

@@ -16,6 +16,13 @@ class OfferScreenDetailsCubit extends Cubit<OfferScreenDetailsState> {
       if((state as OfferScreenDetailsSuccess).offer.id == offerId) return;
     }
     emit(OfferScreenDetailsLoader());
+    return await _fetch(orderId: orderId, offerId: offerId);
+  }
+
+
+
+
+  Future _fetch({required int orderId, required int offerId}) async {
     return await _repository.getById(orderId, offerId).then((value) {
       emit(OfferScreenDetailsSuccess(
           offer: value

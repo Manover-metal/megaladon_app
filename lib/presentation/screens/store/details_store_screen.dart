@@ -1,6 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/logic/screens/store/details/store_screen_details_cubit.dart';
+import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/message/error_message.dart';
@@ -23,6 +25,10 @@ class DetailsStoreScreen extends StatefulWidget {
 
 class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
 
+  _toChat() {
+    context.router.navigate(DetailsChatRouter());
+  }
+
   @override
   void initState() {
     context.read<StoreScreenDetailsCubit>().fetch(id: widget.storeId);
@@ -36,11 +42,23 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
         child: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool isBool) {
             return [
-              const SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: HeaderAppBar(isBack: true),
-                )
+              BlocBuilder<StoreScreenDetailsCubit, StoreScreenDetailsState>(
+                builder:  (context, state) {
+                  if(state is StoreScreenDetailsSuccess) {
+                    return SliverToBoxAdapter(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: HeaderAppBar(isBack: true, title: '${state.store.type?.name} "${state.store.name}"'),
+                        )
+                    );
+                  } else return SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: HeaderAppBar(isBack: true),
+                      )
+                  );
+
+                }
               ),
             ];
           },
@@ -55,7 +73,6 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
                   if(state is StoreScreenDetailsSuccess) {
                     return Column(
                       children: [
-                        TitleApp('${state.store.type?.name} "${state.store.name}"'),
                         SizedBox(height: 20,),
                         CircleAvatar(
                           radius: MediaQuery.of(context).size.width / 6,
@@ -80,7 +97,10 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
                         ],
                         SizedBox(height: 20,),
                         if(state.store.hasPhone) ElevatedButtonApp(text: 'Позвонить'),
-                        OutlinedButtonApp(text: 'Написать'),
+                        OutlinedButtonApp(
+                            text: 'Написать',
+                          onPressed: _toChat,
+                        ),
                       ],
                     );
                   }

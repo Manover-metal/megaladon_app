@@ -14,6 +14,7 @@ class ExecutorModel {
   final double? lat;
   final double? lon;
   final String? fullAddress;
+  final int? countOrders;
 
   ExecutorModel({
     required this.id,
@@ -22,7 +23,8 @@ class ExecutorModel {
     this.bin,
     this.lat,
     this.lon,
-    this.fullAddress
+    this.fullAddress,
+    this.countOrders
   });
 
   static ExecutorModel fromJson(data) {
@@ -33,7 +35,8 @@ class ExecutorModel {
         bin: data['bin'],
         lat: Parser.toDouble(data['lat']),
         lon: Parser.toDouble(data['lon']),
-        fullAddress: data['full_address']
+        fullAddress: data['full_address'],
+        countOrders: data['count_orders']
     );
   }
 }

@@ -65,10 +65,6 @@ class ProfileScreen extends StatelessWidget {
                     }
                   },
                 ),
-
-                // DataTile(title: LocaleKeys.Email.tr(), data: 'mailto@mail.ru'),
-                // DataTile(title: LocaleKeys.Telephone.tr(), data: '+7 (123) 456-78-91'),
-                // DataTile(title: LocaleKeys.Website.tr(), data: 'steel-astana.kz'),
                 SizedBox(height: 20,),
                 SubTitleApp(LocaleKeys.Price_lists.tr(), textAlign: TextAlign.start,),
                 SizedBox(height: 10,),

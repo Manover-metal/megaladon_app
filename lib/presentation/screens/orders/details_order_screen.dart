@@ -12,6 +12,7 @@ import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/list/file_download_list.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
+import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 import 'package:megaladon/presentation/widgets/tiles/user_tile.dart';
 
@@ -20,34 +21,52 @@ class DetailsOrderScreen extends StatefulWidget {
   final int orderId;
 
   const DetailsOrderScreen({super.key, required this.orderId});
-  
+
   @override
   State<DetailsOrderScreen> createState() => _DetailsOrderScreenState();
 }
 
 class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
-  _createOffer(BuildContext context) => () {
+  _createOffer() {
     context.router.push(CreateOfferRoute(orderId: widget.orderId));
-  };
+  }
 
-  _checkExecutors(BuildContext context) => () {
+  _checkExecutors() {
     context.router.push(ListExecutorsRoute(orderId: widget.orderId));
+  }
+
+  _complete(OrderModel order) => () {
+    context.read<OrderScreenDetailsCubit>().complete().then((value) {
+      context.router.push(ReviewRoute(order: order));
+    });
   };
 
-  _accept(BuildContext context) => () {
-    context.router.push(const ReviewRoute());
-  };
+  _toChat() {
+   context.router.navigate(DetailsChatRouter());
+  }
 
-  _decline(BuildContext context) => () {
-    context.router.push(const ReviewRoute());
-  };
+  _toChats() {
+    context.router.navigate(InitialRouter(
+      children: [ProfileRouter(
+        children: [ListChatsRoute()]
+      )]
+    ));
+  }
+
 
   @override
   void initState() {
     context.read<OrderScreenDetailsCubit>().fetch(id: widget.orderId);
     super.initState();
   }
-  
+
+
+  _listener(BuildContext context, OrderScreenDetailsState state) {
+    if(state.status == OrderScreenDetailsStateStatus.errorMessage) {
+      showErrorSnackBar(context, state.errorMessage!.messages[0]);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,11 +74,27 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
         child: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool isBool) {
             return [
-              SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: HeaderAppBar(isBack: true),
-                  )
+              BlocBuilder<OrderScreenDetailsCubit, OrderScreenDetailsState>(
+                builder: (context, state) {
+                  if(state.status == OrderScreenDetailsStateStatus.success ||
+                      state.status == OrderScreenDetailsStateStatus.errorMessage
+                  ) {
+                    return SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: HeaderAppBar(isBack: true, title: 'Заказ №${state.order!.id}'),
+                        )
+                    );
+                  } else {
+                    return const SliverToBoxAdapter(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20.0),
+                          child: HeaderAppBar(isBack: true),
+                        )
+                    );
+                  }
+
+                }
               ),
             ];
           },
@@ -68,101 +103,102 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
               constraints: BoxConstraints(
                   minHeight: MediaQuery.of(context).size.height
               ),
-              child: BlocBuilder<AuthBloc, AuthState>(
+              child: BlocConsumer<OrderScreenDetailsCubit, OrderScreenDetailsState>(
+                listener: _listener,
                 builder: (context, state) {
-                  return BlocBuilder<OrderScreenDetailsCubit, OrderScreenDetailsState>(
-                    builder: (context, state) {
-                      if(state is OrderScreenDetailsSuccess) {
-                        return Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                              child: Column(
-                                children: [
-                                  TitleApp('Заказ №${state.order.id}'),
-                                  SizedBox(height: 20,),
+                  if(state.status == OrderScreenDetailsStateStatus.success ||
+                      state.status == OrderScreenDetailsStateStatus.errorMessage
+                  ) {
+                    OrderModel order = state.order!;
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Column(
+                            children: [
 
-                                  Text(state.order.title),
-                                  Text(state.order.description),
-                                  SizedBox(height: 20,),
-                                  if(state.order.files!.isEmpty) ...[
-                                    SubTitleApp('Нет прикреплённых файлов'),
-                                    SizedBox(height: 10,),
-                                  ]
-                                  else ...[
-                                    SubTitleApp('Прикреплённые файлы'),
-                                    SizedBox(height: 10,),
-                                    FileDownloadList(),
-                                  ],
-                                ],
-                              ),
-                            ),
-                            Divider(thickness: 1),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 20),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Желаемый бюджет: до ${state.order.priceRecommended} ₸'),
-                                  Text('Допустимый: до ${state.order.priceMax} ₸'),
-                                  SizedBox(height: 20,),
+                              Text(order.title),
+                              Text(order.description),
+                              SizedBox(height: 20,),
+                              if(order.files!.isEmpty) ...[
+                                SubTitleApp('Нет прикреплённых файлов'),
+                                SizedBox(height: 10,),
+                              ]
+                              else ...[
+                                SubTitleApp('Прикреплённые файлы'),
+                                SizedBox(height: 10,),
+                                FileDownloadList(),
+                              ],
+                            ],
+                          ),
+                        ),
+                        Divider(thickness: 1),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Желаемый бюджет: до ${order.priceRecommended} ₸'),
+                              Text('Допустимый: до ${order.priceMax} ₸'),
+                              SizedBox(height: 20,),
 
-                                  UserTile(user: state.order.user!),
-                                  SizedBox(height: 20,),
-                                  BlocBuilder<AuthBloc, AuthState>(
-                                    builder: (context, stateUser) {
-                                      if(stateUser is AuthLoginState) {
-                                        UserModel user = stateUser.auth.user.value!;
-                                        return Column(
-                                          children: [
-                                            if(state.order.user?.id != user.id && state.order.status == OrderStatus.active)...[
-                                              ElevatedButtonApp(
-                                                text: 'Предложить услуги',
-                                                onPressed: _createOffer(context),
-                                              ),
-                                              OutlinedButtonApp(text: 'Обсудить в чате'),
-                                            ]
-                                            else ...[
-                                              if(state.order.status == OrderStatus.active) ...[
-                                                ElevatedButtonApp(
-                                                  text: 'Предложения (${state.order.countOffers} новых)',
-                                                  onPressed: _checkExecutors(context),
-                                                ),
-                                                OutlinedButtonApp(text: 'Обсудить в чате (5 новых)'),
-                                              ],
-                                              if(state.order.status == OrderStatus.hasExecutor) ...[
-                                                ElevatedButtonApp(
-                                                  text: 'Принять работу',
-                                                  onPressed: _accept(context),
-                                                ),
-                                                ElevatedButtonApp(
-                                                  text: 'Отклонить работу',
-                                                  onPressed: _decline(context),
-                                                ),
-                                              ]
-                                            ],
+                              UserTile(user: order.user!),
+                              SizedBox(height: 20,),
+                              BlocBuilder<AuthBloc, AuthState>(
+                                builder: (context, stateUser) {
+                                  if(stateUser is AuthLoginState) {
+                                    UserModel user = stateUser.auth.user.value!;
+                                    return Column(
+                                      children: [
+                                        if(order.user?.id != user.id && order.status == OrderStatus.active)...[
+                                          ElevatedButtonApp(
+                                            text: 'Предложить услуги',
+                                            onPressed: _createOffer,
+                                          ),
+                                          OutlinedButtonApp(
+                                            text: 'Обсудить в чате',
+                                            onPressed: _toChat,
+                                          ),
+                                        ]
+
+                                        else ...[
+                                          if(order.status == OrderStatus.active) ...[
+                                            ElevatedButtonApp(
+                                              text: 'Предложения (${order.countOffers} новых)',
+                                              onPressed: _checkExecutors,
+                                            ),
+                                            OutlinedButtonApp(
+                                              text: 'Обсудить в чате (5 новых)',
+                                              onPressed: _toChats,
+                                            ),
                                           ],
-                                        );
-                                      }
-                                      else {
-                                        return Container();
-                                      }
+                                          if(order.status == OrderStatus.hasExecutor) ...[
+                                            ElevatedButtonApp(
+                                              text: 'Завершить работу',
+                                              onPressed: _complete(order),
+                                            ),
+                                          ],
+                                        ],
+                                      ],
+                                    );
+                                  }
+                                  else {
+                                    return Container();
+                                  }
 
-                                    },
-                                  ),
-                                ],
+                                },
                               ),
-                            )
-                          ],
-                        );
-                      } else if(state is OrderScreenDetailsLoader) {
-                        return Loader(padding: 10,);
-                      } else if(state is OrderScreenDetailsError) {
-                        return ErrorMessage(error: state.error);
-                      }
-                      return Container();
-                    },
-                  );
+                            ],
+                          ),
+                        )
+                      ],
+                    );
+                  } else if(state.status == OrderScreenDetailsStateStatus.loading) {
+                    return Loader(padding: 10,);
+                  } else if(state.status == OrderScreenDetailsStateStatus.error) {
+                    return ErrorMessage(error: state.error!);
+                  }
+                  return Container();
                 },
               ),
             ),

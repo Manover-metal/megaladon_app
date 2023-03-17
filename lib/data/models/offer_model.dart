@@ -1,18 +1,23 @@
 import 'package:megaladon/data/models/dictionary/city_model.dart';
+import 'package:megaladon/data/models/executor_model.dart';
 
 class OfferModel {
   final int id;
   final String price;
   final String date;
+  final String expiredAt;
   final String? comment;
   final CityModel? city;
+  final ExecutorModel? executor;
 
   OfferModel({
     required this.id,
     required this.price,
     required this.date,
+    required this.expiredAt,
     required this.comment,
-    this.city
+    this.city,
+    this.executor
   });
 
   static OfferModel fromJsonMini(data) {
@@ -21,7 +26,9 @@ class OfferModel {
       price: data['price'],
       date: data['date'],
       comment: data['description'],
-      city: data['city'] != null? CityModel.fromJson(data['city']): null
+      expiredAt: data['expired_at'],
+      city: data['city'] != null? CityModel.fromJson(data['city']): null,
+      executor: data['user'] != null? ExecutorModel.fromJson(data['user']): null,
     );
   }
 
@@ -30,7 +37,10 @@ class OfferModel {
       id: data['id'],
       price: data['price'],
       date: data['date'],
+      expiredAt: data['expired_at'],
       comment: data['comment'],
+      city: data['city'] != null? CityModel.fromJson(data['city']): null,
+      executor: data['user'] != null? ExecutorModel.fromJson(data['user']): null,
     );
   }
 
