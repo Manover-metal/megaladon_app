@@ -24,9 +24,9 @@ class ListExecutorScreen extends StatelessWidget {
                 height: 20,
               ),
 
-              Column(
-                children: List.generate(6, (index) => ExecutorCard()),
-              )
+              // Column(
+              //   children: List.generate(6, (index) => ExecutorCard(executor: ,)),
+              // )
             ],
           ),
         ),

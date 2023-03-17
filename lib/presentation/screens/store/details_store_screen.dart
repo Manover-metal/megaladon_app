@@ -1,6 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/logic/screens/store/details/store_screen_details_cubit.dart';
+import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/message/error_message.dart';
@@ -22,6 +24,10 @@ class DetailsStoreScreen extends StatefulWidget {
 }
 
 class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
+
+  _toChat() {
+    context.router.navigate(DetailsChatRouter());
+  }
 
   @override
   void initState() {
@@ -80,7 +86,10 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
                         ],
                         SizedBox(height: 20,),
                         if(state.store.hasPhone) ElevatedButtonApp(text: 'Позвонить'),
-                        OutlinedButtonApp(text: 'Написать'),
+                        OutlinedButtonApp(
+                            text: 'Написать',
+                          onPressed: _toChat,
+                        ),
                       ],
                     );
                   }

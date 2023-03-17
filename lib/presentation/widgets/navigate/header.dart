@@ -60,7 +60,7 @@ class HeaderAppBar extends StatelessWidget {
               size: 30,
               color: Colors.black,
             ),
-          ) else Container()
+          ) else Container(width: 30)
         ],
       ),
     );

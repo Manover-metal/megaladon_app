@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:megaladon/data/models/order_model.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/picker/star_picker.dart';
@@ -10,6 +11,10 @@ import 'package:megaladon/presentation/widgets/text/title.dart';
 import 'package:megaladon/presentation/widgets/tiles/executor_tile.dart';
 
 class ReviewScreen extends StatelessWidget {
+
+  final OrderModel order;
+
+  const ReviewScreen({super.key, required this.order});
 
   _back(BuildContext context) => () {
     context.router.pop();
@@ -29,8 +34,10 @@ class ReviewScreen extends StatelessWidget {
                 ),
                 TitleApp('Отзыв по заказу №1321412313'),
                 SizedBox(height: 20,),
-                ExecutorTile(),
-                SizedBox(height: 20,),
+                if(order.executor != null) ...[
+                  ExecutorTile(executor: order.executor!,),
+                  SizedBox(height: 20,),
+                ],
                 StarPicker(),
                 TextFieldApp(label: 'Комментарий по работе',),
                 SizedBox(height: 20,),

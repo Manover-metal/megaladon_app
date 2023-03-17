@@ -66,7 +66,7 @@ class _ListExecutorsScreenState extends State<ListExecutorsScreen> {
                         if(state is OfferScreenMainSuccess) {
                           return Column(
                             children: state.offers.map((offer) {
-                              return OfferCard(offer: offer);
+                              return OfferCard(offer: offer, orderId: widget.orderId);
                             }).toList(),
                           );
                         }else if(state is OfferScreenMainLoader) {

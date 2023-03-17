@@ -1,7 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/screens/advert/details/advert_screen_details_cubit.dart';
+import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/message/error_message.dart';
@@ -37,6 +39,10 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
     );
     launchUrl(uri);
   };
+
+  _toChat() {
+    context.router.navigate(DetailsChatRouter());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,6 +120,7 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                                               onPressed: _call(state.advert.additionalPhone!),
                                             ),
                                             OutlinedButtonApp(
+                                                onPressed: _toChat,
                                                 text: 'Задать вопрос в чате'
                                             ),
                                           ]

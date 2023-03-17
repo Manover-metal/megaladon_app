@@ -25,6 +25,10 @@ class OrderRepository {
       .post('/order/$id/update', data: params.toData())
       .then((value) => value.data['order']);
 
+  Future complete(int id) => ApiService.I
+      .post('/order/$id/complete')
+      .then((value) => value.data);
+
   Future delete(int id) => ApiService.I
       .delete('/order/$id/delete',)
       .then((value) => value.data);

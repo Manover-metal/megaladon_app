@@ -73,8 +73,6 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
     return MultiBlocProvider(
       providers: [
         BlocProvider<RegisterExecutorBloc>(

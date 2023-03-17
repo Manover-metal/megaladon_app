@@ -1,7 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:megaladon/data/models/executor_model.dart';
 
 class ExecutorTile extends StatelessWidget {
+
+  final ExecutorModel executor;
+
+  const ExecutorTile({super.key, required this.executor});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,16 +33,16 @@ class ExecutorTile extends StatelessWidget {
                       TextSpan(
                           children: [
                             TextSpan(text: 'Иполнитель: '),
-                            TextSpan(text: 'Steelmaster1978')
+                            TextSpan(text: executor.name)
                           ]
                       )
                   ),
                   SizedBox(height: 5,),
-                  Text.rich(
+                  if(executor.countOrders != null) Text.rich(
                       TextSpan(
                           children: [
                             TextSpan(text: 'Размещено проектов: '),
-                            TextSpan(text: '125')
+                            TextSpan(text: executor.countOrders.toString())
                           ]
                       )
                   ),
@@ -45,7 +51,7 @@ class ExecutorTile extends StatelessWidget {
                       TextSpan(
                           children: [
                             TextSpan(text: 'Рейтинг: '),
-                            TextSpan(text: '4.90')
+                            TextSpan(text: executor.rating ?? '0')
                           ]
                       )
                   )
