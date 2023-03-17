@@ -18,8 +18,8 @@ class ListChatsScreen extends StatelessWidget {
                   children: [
                     HeaderAppBar(
                       isMenu: true,
+                      title: 'Чаты',
                     ),
-                    TitleApp('Чаты'),
                     Column(
                       children: List.generate(6, (index) => ChatCard()),
                     )

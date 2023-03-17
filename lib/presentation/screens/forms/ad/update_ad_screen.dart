@@ -110,8 +110,7 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                HeaderAppBar(isBack: true, ),
-                TitleApp('Изменить объявление'),
+                HeaderAppBar(isBack: true, title: 'Изменить объявление'),
                 SizedBox(height: 30),
                 AdvertCategoryPicker(label: 'Категория', controller: _advertCategoryController),
                 TextFieldApp(controller: _titleController, label: 'Название',),

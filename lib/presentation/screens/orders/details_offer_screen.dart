@@ -64,13 +64,7 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
                     SliverToBoxAdapter(
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Column(
-                          children: [
-                            HeaderAppBar(isBack: true, ),
-                            TitleApp('Предложение исполнителя'),
-                            SizedBox(height: 20,),
-                          ],
-                        ),
+                        child: HeaderAppBar(isBack: true, title: 'Предложение исполнителя'),
                       ),
                     )
                   ];

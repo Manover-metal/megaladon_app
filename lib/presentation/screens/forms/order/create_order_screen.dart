@@ -112,8 +112,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                HeaderAppBar(isBack: true, ),
-                TitleApp(LocaleKeys.Create_an_order.tr()),
+                HeaderAppBar(isBack: true, title: LocaleKeys.Create_an_order.tr()),
                 SizedBox(height: 30),
 
                 OrderCategoryPicker(label: LocaleKeys.Select_a_category.tr(), controller: _orderCategoryController),

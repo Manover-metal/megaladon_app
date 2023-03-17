@@ -42,11 +42,23 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
         child: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool isBool) {
             return [
-              const SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: HeaderAppBar(isBack: true),
-                )
+              BlocBuilder<StoreScreenDetailsCubit, StoreScreenDetailsState>(
+                builder:  (context, state) {
+                  if(state is StoreScreenDetailsSuccess) {
+                    return SliverToBoxAdapter(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: HeaderAppBar(isBack: true, title: '${state.store.type?.name} "${state.store.name}"'),
+                        )
+                    );
+                  } else return SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: HeaderAppBar(isBack: true),
+                      )
+                  );
+
+                }
               ),
             ];
           },
@@ -61,7 +73,6 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
                   if(state is StoreScreenDetailsSuccess) {
                     return Column(
                       children: [
-                        TitleApp('${state.store.type?.name} "${state.store.name}"'),
                         SizedBox(height: 20,),
                         CircleAvatar(
                           radius: MediaQuery.of(context).size.width / 6,

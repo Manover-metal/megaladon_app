@@ -21,7 +21,7 @@ class DetailsOrderScreen extends StatefulWidget {
   final int orderId;
 
   const DetailsOrderScreen({super.key, required this.orderId});
-  
+
   @override
   State<DetailsOrderScreen> createState() => _DetailsOrderScreenState();
 }
@@ -66,7 +66,7 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
       showErrorSnackBar(context, state.errorMessage!.messages[0]);
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,11 +74,27 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
         child: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool isBool) {
             return [
-              SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: HeaderAppBar(isBack: true),
-                  )
+              BlocBuilder<OrderScreenDetailsCubit, OrderScreenDetailsState>(
+                builder: (context, state) {
+                  if(state.status == OrderScreenDetailsStateStatus.success ||
+                      state.status == OrderScreenDetailsStateStatus.errorMessage
+                  ) {
+                    return SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: HeaderAppBar(isBack: true, title: 'Заказ №${state.order!.id}'),
+                        )
+                    );
+                  } else {
+                    return const SliverToBoxAdapter(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20.0),
+                          child: HeaderAppBar(isBack: true),
+                        )
+                    );
+                  }
+
+                }
               ),
             ];
           },
@@ -100,8 +116,6 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                           padding: const EdgeInsets.symmetric(horizontal: 20.0),
                           child: Column(
                             children: [
-                              TitleApp('Заказ №${order.id}'),
-                              SizedBox(height: 20,),
 
                               Text(order.title),
                               Text(order.description),

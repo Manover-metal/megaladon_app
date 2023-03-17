@@ -56,13 +56,7 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Column(
-                          children: [
-                            HeaderAppBar(isBack: true,),
-                            TitleApp('Объявление'),
-                            SizedBox(height: 20,),
-                          ],
-                        ),
+                        child: HeaderAppBar(isBack: true, title: 'Объявление'),
                       ),
                     ],
                   )

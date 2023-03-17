@@ -28,7 +28,7 @@ enum ColorSchemeApp {
 
 TextTheme _textTheme = TextTheme(
     bodyLarge: TextStyle(
-      fontSize: 27,
+      fontSize: 25,
       color: ColorSchemeApp.primary.color,
       fontWeight: FontWeight.w600
     ),

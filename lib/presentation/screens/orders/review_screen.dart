@@ -66,8 +66,8 @@ class _ReviewScreenState extends State<ReviewScreen> {
               children: [
                 const HeaderAppBar(
                   isBack: true,
+                  title: 'Отзыв по заказу №1321412313',
                 ),
-                TitleApp('Отзыв по заказу №1321412313'),
                 SizedBox(height: 20,),
                 if(widget.order.executor != null) ...[
                   ExecutorTile(executor: widget.order.executor!,),

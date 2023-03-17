@@ -18,8 +18,8 @@ class ListExecutorScreen extends StatelessWidget {
             children: [
               HeaderAppBar(
                 isMenu: true,
+                title: 'Исполнители',
               ),
-              TitleApp('Исполнители'),
               SizedBox(
                 height: 20,
               ),

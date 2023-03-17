@@ -13,8 +13,7 @@ class DetailsChatScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 children: [
-                  HeaderAppBar(isBack: true),
-                  TitleApp('Чат с Трамп'),
+                  HeaderAppBar(isBack: true, title: 'Чат с Трамп'),
                   Padding(
                     padding: const EdgeInsets.only(top: 5, bottom: 10),
                     child: Container(
