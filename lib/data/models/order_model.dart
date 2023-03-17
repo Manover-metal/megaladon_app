@@ -89,5 +89,20 @@ class OrderModel extends Equatable {
   }
 
   @override
-  List<Object?> get props => [title, description, priceRecommended, priceMax];
+  List<Object?> get props => [
+    id,
+    title,
+    description,
+    statusName,
+    createdAt,
+    countOffers,
+    priceRecommended,
+    priceMax,
+    user,
+    executor,
+    files,
+    category,
+    city,
+    status
+  ];
 }

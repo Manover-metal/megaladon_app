@@ -45,7 +45,7 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
         elevation: 100,
         builder: (_) => SortOrderBottomSheet()
     );
-    if(result != null) {
+    if(result != null && result) {
       context.read<OrderScreenMainCubit>().fetch();
     }
   }
@@ -87,13 +87,7 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
                     children: [
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Column(
-                          children: [
-                            HeaderAppBar(isMenu: true, ),
-                            TitleApp(LocaleKeys.Orders.tr()),
-                            SizedBox(height: 20,),
-                          ],
-                        ),
+                        child: HeaderAppBar(isMenu: true, title: LocaleKeys.Orders.tr()),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),

@@ -28,7 +28,7 @@ class OrderIndexRequestParams {
       'rowsPerPage': rowsPerPage,
       'last': last.name,
       'desc': desc? 1: 0,
-      'sort': sort.name,
+      'sortBy': sort.name,
       'city_id': city?.id,
       'category_id': category?.id
     };

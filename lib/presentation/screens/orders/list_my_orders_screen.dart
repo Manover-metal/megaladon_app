@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/request/params/index/order_index_request_params.dart';
-import 'package:megaladon/data/repositories/order_repository.dart';
 import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
 import 'package:megaladon/presentation/widgets/bottom_sheet/filters/filter_order_my_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/card/order_card.dart';
-import 'package:megaladon/presentation/widgets/drawer/drawer_app.dart';
 import 'package:megaladon/presentation/widgets/message/error_message.dart';
-import 'package:megaladon/presentation/widgets/list/status_order_list.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/message/stock_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
@@ -73,13 +70,7 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
                     children: [
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Column(
-                          children: [
-                            HeaderAppBar(isMenu: true, ),
-                            TitleApp('Мои заказы'),
-                            SizedBox(height: 20,),
-                          ],
-                        ),
+                        child: HeaderAppBar(isMenu: true, title: 'Мои заказы'),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),

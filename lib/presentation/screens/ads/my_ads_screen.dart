@@ -72,13 +72,7 @@ _listenerScroll() {
                   children: [
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: Column(
-                        children: [
-                          HeaderAppBar(isMenu: true, ),
-                          TitleApp('Мои объявления'),
-                          SizedBox(height: 20,),
-                        ],
-                      ),
+                      child: HeaderAppBar(isMenu: true, title: 'Мои объявления'),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),

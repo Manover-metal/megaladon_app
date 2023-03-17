@@ -1,10 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/core/dio/index.dart';
 import 'package:megaladon/core/isar/index.dart';
 import 'package:megaladon/core/themes/dark.dart';
+import 'package:megaladon/firebase_options.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/dictionary/dictionary_cubit.dart';
 import 'package:megaladon/logic/form/auth/auth_form_cubit.dart';
@@ -45,6 +47,10 @@ void main() async {
   await IsarService.initialize();
   ApiService.initialize();
 
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(
     EasyLocalization(
       assetLoader: CodegenLoader(),
@@ -67,8 +73,6 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
     return MultiBlocProvider(
       providers: [
         BlocProvider<RegisterExecutorBloc>(

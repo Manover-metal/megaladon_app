@@ -107,8 +107,7 @@ class _CreateOfferScreenState extends State<CreateOfferScreen> {
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                HeaderAppBar(isBack: true,),
-                TitleApp('Отклик на заказ №${widget.orderId}'),
+                HeaderAppBar(isBack: true, title: 'Отклик на заказ №${widget.orderId}'),
                 SizedBox(height: 20,),
                 ExpiredAtFieldApp(label: 'Актуален до', icon: Icon(Icons.calendar_month), controller: _expiredAtController,),
                 TextFieldApp(label: 'Время на работу', icon: Icon(Icons.watch_later_outlined), controller: _dateController,),

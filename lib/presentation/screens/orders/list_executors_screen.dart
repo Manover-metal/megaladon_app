@@ -39,14 +39,7 @@ class _ListExecutorsScreenState extends State<ListExecutorsScreen> {
               SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    children: [
-                      HeaderAppBar(isBack: true, ),
-                      TitleApp('Исполнители'),
-
-                      SizedBox(height: 20,),
-                    ],
-                  ),
+                  child: HeaderAppBar(isBack: true, title: 'Исполнители'),
                 ),
               )
             ];
@@ -66,7 +59,7 @@ class _ListExecutorsScreenState extends State<ListExecutorsScreen> {
                         if(state is OfferScreenMainSuccess) {
                           return Column(
                             children: state.offers.map((offer) {
-                              return OfferCard(offer: offer);
+                              return OfferCard(offer: offer, orderId: widget.orderId);
                             }).toList(),
                           );
                         }else if(state is OfferScreenMainLoader) {
