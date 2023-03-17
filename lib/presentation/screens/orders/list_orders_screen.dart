@@ -45,7 +45,8 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
         elevation: 100,
         builder: (_) => SortOrderBottomSheet()
     );
-    if(result != null) {
+    if(result != null && result) {
+      print('aaa');
       context.read<OrderScreenMainCubit>().fetch();
     }
   }
