@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:megaladon/core/icons/icons.dart';
 import 'package:megaladon/data/models/store_model.dart';
 
 class StoreTile extends StatelessWidget {
@@ -15,18 +17,19 @@ class StoreTile extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
-            Container(
-              width: MediaQuery.of(context).size.height /10,
-              height: MediaQuery.of(context).size.height /10,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.grey,
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Container(
+                width: MediaQuery.of(context).size.height /10,
+                height: MediaQuery.of(context).size.height /10,
+                color: Theme.of(context).colorScheme.secondary,
+                child: CachedNetworkImage(
+                  imageUrl: store.photo ?? '',
+                  progressIndicatorBuilder: (context, url, downloadProgress) => Icon(IconPack.market, size: MediaQuery.of(context).size.width / 10),
+                  errorWidget:  (context, url, error) => Icon(IconPack.market, size: MediaQuery.of(context).size.width / 10),
+                  fit: BoxFit.cover,
+                ),
               ),
-              child: (store.photo != null) ? Image.network(
-                store.photo!,
-                fit: BoxFit.cover,
-              ): null,
             ),
             SizedBox(width: 10,),
             Expanded(

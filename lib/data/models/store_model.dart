@@ -65,6 +65,7 @@ class StoreModel {
   }
 
   static StoreModel fromJsonFull(data) {
+
     List<ContactModel>? contacts = data['contacts'] != null? ContactModel.fromJsonList(data['contacts']): null;
     return StoreModel(
         id: data['id'],
