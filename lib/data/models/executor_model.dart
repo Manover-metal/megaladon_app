@@ -39,4 +39,10 @@ class ExecutorModel {
         countOrders: data['count_orders']
     );
   }
+
+  static List<ExecutorModel> fromJsonList(data) {
+    return data.map<ExecutorModel>((executor) {
+      return ExecutorModel.fromJson(executor);
+    }).toList();
+  }
 }

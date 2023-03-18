@@ -24,11 +24,13 @@ import 'package:megaladon/logic/register/register_store/register_store_bloc.dart
 import 'package:megaladon/logic/register/register_user/register_user_bloc.dart';
 import 'package:megaladon/logic/screens/advert/details/advert_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/advert/my/advert_screen_my_cubit.dart';
+import 'package:megaladon/logic/screens/executors/my/executor_screen_my_cubit.dart';
 import 'package:megaladon/logic/screens/offers/details/offer_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/offers/list/offer_screen_main_cubit.dart';
 import 'package:megaladon/logic/screens/orders/details/order_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/orders/main/order_screen_main_cubit.dart';
 import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
+import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/logic/screens/store/details/store_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/store/main/store_screen_main_cubit.dart';
 import 'package:megaladon/presentation/routing/guards/auth_guard.dart';
@@ -114,6 +116,12 @@ class App extends StatelessWidget {
           ),
           BlocProvider<OrderScreenMainCubit>(
               create: (context) => OrderScreenMainCubit()
+          ),
+          BlocProvider<ExecutorScreenMyCubit>(
+              create: (context) => ExecutorScreenMyCubit()
+          ),
+          BlocProvider<ProfileScreenCubit>(
+              create: (context) => ProfileScreenCubit()
           ),
           BlocProvider<OrderScreenMyCubit>(
               create: (context) => OrderScreenMyCubit()
