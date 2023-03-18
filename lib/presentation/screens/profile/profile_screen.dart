@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:megaladon/data/models/executor_model.dart';
 import 'package:megaladon/data/models/store_model.dart';
 import 'package:megaladon/data/models/user_model.dart';
@@ -66,10 +67,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           StoreModel? store = state.store;
                           return Column(
                             children: [
-                              CircleAvatar(
-                                radius: MediaQuery.of(context).size.width / 6,
-                                backgroundColor: Colors.grey.shade300,
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(100),
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width/3,
+                                  height: MediaQuery.of(context).size.width/3,
+                                  color: Theme.of(context).colorScheme.secondary,
+                                  child: CachedNetworkImage(
+                                    imageUrl: user.photo ?? '',
+                                    progressIndicatorBuilder: (context, url, downloadProgress) => Icon(Icons.person, size: MediaQuery.of(context).size.width / 4),
+                                    errorWidget:  (context, url, error) => Icon(Icons.person, size: MediaQuery.of(context).size.width / 4),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                               ),
+
                               SizedBox(height: 20,),
                               DataTile(title: LocaleKeys.Name.tr(), data: user.name),
                               if(user.phone != null) DataTile(title: LocaleKeys.Telephone.tr() , data: user.phone!),

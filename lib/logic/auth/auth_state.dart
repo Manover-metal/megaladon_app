@@ -23,11 +23,10 @@ class AuthLoginState extends AuthState {
 class AuthTransitionVerify extends AuthState {
   final String phone;
 
-  AuthTransitionVerify(this.phone);
+  const AuthTransitionVerify(this.phone);
 
   @override
-  // TODO: implement props
-  List<Object?> get props => [this.phone];
+  List<Object?> get props => [phone];
 
 }
 
@@ -47,7 +46,7 @@ class AuthLoadingState extends AuthState {
 }
 
 
-class AuthLogoutEventState extends AuthState {
+class AuthLogoutState extends AuthState {
   @override
   List<Object?> get props => [];
 }

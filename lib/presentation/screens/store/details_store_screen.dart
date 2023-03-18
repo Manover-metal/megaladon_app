@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:megaladon/core/icons/icons.dart';
 import 'package:megaladon/data/models/contact_model.dart';
 import 'package:megaladon/data/models/store_model.dart';
 import 'package:megaladon/logic/screens/store/details/store_screen_details_cubit.dart';
@@ -91,9 +93,19 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
                     return Column(
                       children: [
                         SizedBox(height: 20,),
-                        CircleAvatar(
-                          radius: MediaQuery.of(context).size.width / 6,
-                          backgroundColor:  Colors.grey.shade300,
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width/3,
+                            height: MediaQuery.of(context).size.width/3,
+                            color: Theme.of(context).colorScheme.secondary,
+                            child: CachedNetworkImage(
+                              imageUrl:  state.store.photo ?? '',
+                              progressIndicatorBuilder: (context, url, downloadProgress) => Icon(IconPack.market, size: MediaQuery.of(context).size.width / 5),
+                              errorWidget:  (context, url, error) => Icon(IconPack.market, size: MediaQuery.of(context).size.width / 5),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
                         SizedBox(height: 20,),
                         DataTile(title: 'Адрес:', data: state.store.fullAddress),

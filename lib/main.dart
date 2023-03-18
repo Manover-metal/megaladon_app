@@ -70,7 +70,7 @@ void main() async {
 class App extends StatelessWidget {
   final RegisterExecutorBloc registerExecutorBloc = RegisterExecutorBloc();
   final RegisterStoreBloc registerStoreBloc = RegisterStoreBloc();
-
+  late AuthBloc authBloc = AuthBloc(registerStoreBloc, registerExecutorBloc)..add(AuthInitialEvent());
   App({super.key});
 
   @override
@@ -84,87 +84,87 @@ class App extends StatelessWidget {
           create: (context) => registerStoreBloc,
         )
       ],
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            lazy: false,
-            create: (context) => AuthBloc(registerStoreBloc, registerExecutorBloc)..add(AuthInitialEvent()),
-          ),
-          BlocProvider<RegisterUserBloc>(
-            create: (context) => RegisterUserBloc(),
-          ),
-          BlocProvider<AuthFormCubit>(
-              create: (context) => AuthFormCubit()
-          ),
-          BlocProvider<RegisterUserFormCubit>(
-              create: (context) => RegisterUserFormCubit()
-          ),
-          BlocProvider<RegisterStoreFormCubit>(
-              create: (context) => RegisterStoreFormCubit()
-          ),
-          BlocProvider<RegisterExecutorFormCubit>(
-              create: (context) => RegisterExecutorFormCubit()
-          ),
-          BlocProvider<VerifyFormCubit>(
-              create: (context) => VerifyFormCubit()
-          ),
-          BlocProvider<AdvertScreenMainCubit>(
-              create: (context) => AdvertScreenMainCubit()
-          ),
-          BlocProvider<AdvertScreenMyCubit>(
-              create: (context) => AdvertScreenMyCubit()
-          ),
-          BlocProvider<OrderScreenMainCubit>(
-              create: (context) => OrderScreenMainCubit()
-          ),
-          BlocProvider<ExecutorScreenMyCubit>(
-              create: (context) => ExecutorScreenMyCubit()
-          ),
-          BlocProvider<ProfileScreenCubit>(
-              create: (context) => ProfileScreenCubit()
-          ),
-          BlocProvider<OrderScreenMyCubit>(
-              create: (context) => OrderScreenMyCubit()
-          ),
-          BlocProvider<OrderScreenDetailsCubit>(
-              create: (context) => OrderScreenDetailsCubit()
-          ),
-          BlocProvider<AdvertScreenDetailsCubit>(
-              create: (context) => AdvertScreenDetailsCubit()
-          ),
-          BlocProvider<StoreScreenMainCubit>(
-              create: (context) => StoreScreenMainCubit()
-          ),
-          BlocProvider<StoreScreenDetailsCubit>(
-              create: (context) => StoreScreenDetailsCubit()
-          ),
-          BlocProvider<OfferScreenMainCubit>(
-              create: (context) => OfferScreenMainCubit()
-          ),
-          BlocProvider<OfferScreenDetailsCubit>(
-              create: (context) => OfferScreenDetailsCubit()
-          ),
-          BlocProvider<DictionaryCubit>(
-              lazy: false,
-              create: (context) => DictionaryCubit()..initial()
-          ),
-          BlocProvider<AdCreateFormCubit>(
-              create: (context) => AdCreateFormCubit()
-          ),
-          BlocProvider<OrderCreateFormCubit>(
-              create: (context) => OrderCreateFormCubit()
-          ),
-          BlocProvider<CreateOfferFormCubit>(
-              create: (context) => CreateOfferFormCubit()
-          ),
-          BlocProvider<AdUpdateFormCubit>(
-              create: (context) => AdUpdateFormCubit()
-          ),
-          BlocProvider<OrderUpdateFormCubit>(
-              create: (context) => OrderUpdateFormCubit()
-          )
-        ],
-        child: const AppState()
+      child: BlocProvider<AuthBloc>(
+        lazy: false,
+        create: (context) => authBloc,
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider<RegisterUserBloc>(
+              create: (context) => RegisterUserBloc(),
+            ),
+            BlocProvider<AuthFormCubit>(
+                create: (context) => AuthFormCubit()
+            ),
+            BlocProvider<RegisterUserFormCubit>(
+                create: (context) => RegisterUserFormCubit()
+            ),
+            BlocProvider<RegisterStoreFormCubit>(
+                create: (context) => RegisterStoreFormCubit()
+            ),
+            BlocProvider<RegisterExecutorFormCubit>(
+                create: (context) => RegisterExecutorFormCubit()
+            ),
+            BlocProvider<VerifyFormCubit>(
+                create: (context) => VerifyFormCubit()
+            ),
+            BlocProvider<AdvertScreenMainCubit>(
+                create: (context) => AdvertScreenMainCubit()
+            ),
+            BlocProvider<AdvertScreenMyCubit>(
+                create: (context) => AdvertScreenMyCubit()
+            ),
+            BlocProvider<OrderScreenMainCubit>(
+                create: (context) => OrderScreenMainCubit()
+            ),
+            BlocProvider<ExecutorScreenMyCubit>(
+                create: (context) => ExecutorScreenMyCubit()
+            ),
+            BlocProvider<ProfileScreenCubit>(
+                create: (context) => ProfileScreenCubit(authBloc)
+            ),
+            BlocProvider<OrderScreenMyCubit>(
+                create: (context) => OrderScreenMyCubit()
+            ),
+            BlocProvider<OrderScreenDetailsCubit>(
+                create: (context) => OrderScreenDetailsCubit()
+            ),
+            BlocProvider<AdvertScreenDetailsCubit>(
+                create: (context) => AdvertScreenDetailsCubit()
+            ),
+            BlocProvider<StoreScreenMainCubit>(
+                create: (context) => StoreScreenMainCubit()
+            ),
+            BlocProvider<StoreScreenDetailsCubit>(
+                create: (context) => StoreScreenDetailsCubit()
+            ),
+            BlocProvider<OfferScreenMainCubit>(
+                create: (context) => OfferScreenMainCubit()
+            ),
+            BlocProvider<OfferScreenDetailsCubit>(
+                create: (context) => OfferScreenDetailsCubit()
+            ),
+            BlocProvider<DictionaryCubit>(
+                lazy: false,
+                create: (context) => DictionaryCubit()..initial()
+            ),
+            BlocProvider<AdCreateFormCubit>(
+                create: (context) => AdCreateFormCubit()
+            ),
+            BlocProvider<OrderCreateFormCubit>(
+                create: (context) => OrderCreateFormCubit()
+            ),
+            BlocProvider<CreateOfferFormCubit>(
+                create: (context) => CreateOfferFormCubit()
+            ),
+            BlocProvider<AdUpdateFormCubit>(
+                create: (context) => AdUpdateFormCubit()
+            ),
+            BlocProvider<OrderUpdateFormCubit>(
+                create: (context) => OrderUpdateFormCubit()
+            )
+          ],
+          child: const AppState()
+        ),
       ),
     );
   }

@@ -6,12 +6,23 @@ import 'package:megaladon/data/models/error_model.dart';
 import 'package:megaladon/data/models/executor_model.dart';
 import 'package:megaladon/data/models/store_model.dart';
 import 'package:megaladon/data/repositories/user_repository.dart';
+import 'package:megaladon/logic/auth/auth_bloc.dart';
 
 part 'profile_screen_state.dart';
 
 class ProfileScreenCubit extends Cubit<ProfileScreenState> {
   final UserRepository _repository = UserRepository();
-  ProfileScreenCubit() : super(ProfileScreenInitial());
+  final AuthBloc authBloc;
+  
+  ProfileScreenCubit(this.authBloc) : super(ProfileScreenInitial()) {
+    authBloc.stream.listen((state) {
+      if(state is AuthLoginState) {
+        fetch(id: state.auth.user.value!.id);
+      } else if(state is AuthInitial || state is AuthLogoutState) {
+        emit(ProfileScreenUnauthorization());
+      }
+    });
+  }
 
   Future fetch({required int id}) async {
     emit(ProfileScreenLoader());
