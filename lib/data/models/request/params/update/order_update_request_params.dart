@@ -7,7 +7,6 @@ class OrderUpdateRequestParams {
   final int priceMax;
   final int categoryId;
   final int cityId;
-  final String additionalPhone;
 
   OrderUpdateRequestParams({
     required this.title,
@@ -16,7 +15,6 @@ class OrderUpdateRequestParams {
     required this.priceMax,
     required this.categoryId,
     required this.cityId,
-    required this.additionalPhone
   });
 
   toData() {
@@ -27,7 +25,6 @@ class OrderUpdateRequestParams {
       'price_max': priceMax,
       'category_id': categoryId,
       'city_id': cityId,
-      'additional_phone': additionalPhone
     });
     return data;
   }

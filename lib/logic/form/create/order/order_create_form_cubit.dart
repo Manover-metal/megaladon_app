@@ -1,19 +1,14 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
-import 'package:megaladon/data/models/category_model.dart';
-import 'package:megaladon/data/models/dictionary/advert_category_model.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/dictionary/order_category_model.dart';
 import 'package:megaladon/data/models/enum_form_state.dart';
 import 'package:megaladon/data/models/form/description.dart';
-import 'package:megaladon/data/models/form/dictionary/advert_category.dart';
 import 'package:megaladon/data/models/form/dictionary/city.dart';
 import 'package:megaladon/data/models/form/dictionary/order_category.dart';
 import 'package:megaladon/data/models/form/price.dart';
 import 'package:megaladon/data/models/form/title.dart';
-import 'package:megaladon/data/models/form/title.dart';
-import 'package:megaladon/data/models/order_model.dart';
 import 'package:megaladon/data/models/request/params/create/order_create_request_params.dart';
 import 'package:megaladon/data/repositories/order_repository.dart';
 
@@ -71,7 +66,7 @@ class OrderCreateFormCubit extends Cubit<OrderCreateFormState> {
         priceRecommended: int.parse(state.priceRecommended.value),
         categoryId: state.category.value,
         cityId: state.city.value,
-        additionalPhone: '+77074054407',
+
     )).then((value) {
       emit(state.copyWith(formState: EnumFormState.success));
     }).catchError((error) {

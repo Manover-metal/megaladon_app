@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:megaladon/data/models/advert_model.dart';
 import 'package:megaladon/data/models/enum_form_state.dart';
-import 'package:megaladon/logic/form/create/ad/ad_create_form_cubit.dart';
 import 'package:megaladon/logic/form/update/ad/ad_update_form_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
@@ -12,13 +11,11 @@ import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/description_field.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/advert_category_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
-import 'package:megaladon/presentation/widgets/form/picker/dictionary/advert_category_picker.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/number_field.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
-import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class UpdateAdScreen extends StatefulWidget {
   final AdvertModel advert;
@@ -33,7 +30,7 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
   late AdvertCategoryPickerController _advertCategoryController;
   late TextEditingController _titleController;
   late TextEditingController _descriptionController;
-
+  late TextEditingController _phoneController;
   late CityPickerController _cityController;
   late TextEditingController _priceController;
 
@@ -65,7 +62,8 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
         description: _descriptionController.value.text,
         price: _priceController.value.text,
         category: _advertCategoryController.value,
-        city: _cityController.value
+        city: _cityController.value,
+        phone: _phoneController.value.text
     );
   }
 
@@ -86,6 +84,7 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
     _cityController = CityPickerController(city: widget.advert.city);
     _priceController = TextEditingController(text: widget.advert.price.toString());
     _descriptionController = TextEditingController(text: widget.advert.description);
+    _phoneController = TextEditingController(text: widget.advert.additionalPhone);
     super.initState();
   }
 
@@ -98,6 +97,7 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
     _cityController.dispose();
     _priceController.dispose();
     _descriptionController.dispose();
+    _phoneController.dispose();
     super.dispose();
   }
 
@@ -117,6 +117,8 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
                 CityPicker(label: 'Город', controller: _cityController),
                 DescriptionFieldApp(label: 'Описание', controller: _descriptionController),
                 NumberFieldApp(label: 'Цена', controller: _priceController,),
+                TextFieldApp(controller: _phoneController, label: 'Дополнительный телефон'),
+
                 // BlocConsumer(builder: builder, listener: listener)
                 BlocConsumer<AdUpdateFormCubit, AdUpdateFormState>(
                     listener: _listenerForm,
