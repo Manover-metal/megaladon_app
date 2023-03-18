@@ -18,7 +18,6 @@ import 'package:megaladon/presentation/widgets/form/field/number_field.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
-import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class CreateAdScreen extends StatefulWidget {
   @override
@@ -29,9 +28,9 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
   late AdvertCategoryPickerController _advertCategoryController;
   late TextEditingController _titleController;
   late TextEditingController _descriptionController;
-
   late CityPickerController _cityController;
   late TextEditingController _priceController;
+  late TextEditingController _phoneController;
 
   _back() {
     context.router.pop();
@@ -64,7 +63,8 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
       description: _descriptionController.value.text,
       price: _priceController.value.text,
       category: _advertCategoryController.value,
-      city: _cityController.value
+      city: _cityController.value,
+      phone: _phoneController.value.text
     );
   }
 
@@ -85,6 +85,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
     _cityController = CityPickerController();
     _priceController = TextEditingController();
     _descriptionController = TextEditingController();
+    _phoneController = TextEditingController();
     super.initState();
   }
   
@@ -97,6 +98,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
     _cityController.dispose();
     _priceController.dispose();
     _descriptionController.dispose();
+    _phoneController.dispose();
     super.dispose();
   }
 
@@ -111,12 +113,12 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
               children: [
                 HeaderAppBar(isBack: true, title: LocaleKeys.Creating_an_ad.tr(),),
                 SizedBox(height: 30),
-                TextFieldApp(controller: _titleController, label: 'Название',),
+                TextFieldApp(controller: _titleController, label: 'Название'),
                 AdvertCategoryPicker(label: LocaleKeys.Select_a_category.tr(), controller: _advertCategoryController),
                 CityPicker(label: LocaleKeys.Choose_city.tr(), controller: _cityController),
                 DescriptionFieldApp(label: LocaleKeys.Description_of_your_offer.tr(), controller: _descriptionController),
-                NumberFieldApp(label: LocaleKeys.Price.tr(), controller: _priceController,),
-                // BlocConsumer(builder: builder, listener: listener)
+                NumberFieldApp(label: LocaleKeys.Price.tr(), controller: _priceController),
+                TextFieldApp(controller: _phoneController, label: 'Дополнительный телефон'),
                 BlocConsumer<AdCreateFormCubit, AdCreateFormState>(
                   listener: _listenerForm,
                   builder: (context, state) {

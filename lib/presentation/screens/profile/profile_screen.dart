@@ -6,77 +6,119 @@ import 'package:megaladon/data/models/store_model.dart';
 import 'package:megaladon/data/models/user_model.dart';
 import 'package:megaladon/generated/locale_keys.g.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
+import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/presentation/widgets/list/file_download_list.dart';
+import 'package:megaladon/presentation/widgets/message/auth_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
+import 'package:megaladon/presentation/widgets/tiles/contact_tile.dart';
 import 'package:megaladon/presentation/widgets/tiles/data_tile.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  Future _fetch() async {
+    final state = context.read<AuthBloc>().state;
+    if(state is AuthLoginState) {
+      return await context.read<ProfileScreenCubit>().fetch(id: state.auth.user.value!.id);
+    } else  {
+      return await context.read<ProfileScreenCubit>().fetch(id: 0);
+    }
+  }
+
+  @override
+  void initState() {
+    _fetch();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                HeaderAppBar(isMenu: true),
-                BlocBuilder<AuthBloc, AuthState>(
-                  builder: (context, state) {
-                    if(state is AuthLoginState) {
-                      UserModel user = state.auth.user.value!;
-                      ExecutorModel? executor = state.auth.executor.value;
-                      StoreModel? store = state.auth.store.value;
-
-                      return Column(
-                        children: [
-                          CircleAvatar(
-                            radius: MediaQuery.of(context).size.width / 6,
-                            backgroundColor: Colors.grey.shade300,
-                          ),
-                          SizedBox(height: 20,),
-                          DataTile(title: LocaleKeys.Name.tr(), data: user.name),
-                          if(user.phone != null) DataTile(title: LocaleKeys.Telephone.tr() , data: user.phone!),
-                          if(user.city != null) DataTile(title: LocaleKeys.Location.tr(), data: 'г.${user.city?.name ?? ''}'),
-                          Divider(thickness: 1),
-
-
-                          if(executor != null) ...[
-                            TitleApp(LocaleKeys.Artist_data.tr()),
-                            SizedBox(height: 20,),
-                            DataTile(title: LocaleKeys.Organization.tr(), data: executor.name),
-                            if(executor.fullAddress != null) DataTile(title: LocaleKeys.Address, data: executor.fullAddress!),
-                            Divider(thickness: 1),
-                          ],
-                          if(store != null) ...[
-                            TitleApp(LocaleKeys.Store_data.tr()),
-                            SizedBox(height: 20,),
-                            if(store.name != null) DataTile(title: LocaleKeys.Organization.tr(), data: store.name!),
-                            DataTile(title: LocaleKeys.Address, data: store.fullAddress),
-                            if(store.city != null) DataTile(title: 'Город', data: store.city!.name),
-
-                            Divider(thickness: 1),
-                          ]
-                        ],
-                      );
-                    }else {
-                      return Container();
-                    }
-                  },
+        child: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return [
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: HeaderAppBar(isMenu: true, title: 'Профиль'),
                 ),
-                SizedBox(height: 20,),
-                SubTitleApp(LocaleKeys.Price_lists.tr(), textAlign: TextAlign.start,),
-                SizedBox(height: 10,),
-                FileDownloadList(),
-                SizedBox(height: 20,),
-
-              ],
+              )
+            ];
+          },
+          body: RefreshIndicator(
+            onRefresh: _fetch,
+            child: SingleChildScrollView(
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: [
+                    BlocBuilder<ProfileScreenCubit, ProfileScreenState>(
+                      builder: (context, state) {
+                        if(state is ProfileScreenSuccess) {
+                          UserModel user = state.user;
+                          ExecutorModel? executor = state.executor;
+                          StoreModel? store = state.store;
+                          return Column(
+                            children: [
+                              CircleAvatar(
+                                radius: MediaQuery.of(context).size.width / 6,
+                                backgroundColor: Colors.grey.shade300,
+                              ),
+                              SizedBox(height: 20,),
+                              DataTile(title: LocaleKeys.Name.tr(), data: user.name),
+                              if(user.phone != null) DataTile(title: LocaleKeys.Telephone.tr() , data: user.phone!),
+                              if(user.city != null) DataTile(title: LocaleKeys.Location.tr(), data: 'г.${user.city?.name ?? ''}'),
+                              Divider(thickness: 1),
+                              if(executor != null) ...[
+                                TitleApp(LocaleKeys.Artist_data.tr()),
+                                SizedBox(height: 20,),
+                                DataTile(title: LocaleKeys.Organization.tr(), data: executor.name),
+                                DataTile(title: 'БИН', data: executor.bin!),
+                                DataTile(title: 'Рейтинг', data: executor.rating ?? '0'),
+                                if(executor.fullAddress != null) DataTile(title: LocaleKeys.Address, data: executor.fullAddress!),
+                                if(executor.countOrders != null) DataTile(title: 'Количество заказов', data: executor.countOrders.toString()),
+                                Divider(thickness: 1),
+                              ],
+                              if(store != null) ...[
+                                TitleApp(LocaleKeys.Store_data.tr()),
+                                SizedBox(height: 20,),
+                                if(store.name != null) DataTile(title: LocaleKeys.Organization.tr(), data: '${store.type?.name ?? ''} "${store.name!}"'),
+                                DataTile(title: LocaleKeys.Address, data: store.fullAddress),
+                                DataTile(title: 'Рейтинг', data: store.rating ?? '0'),
+                                if(store.bin != null) DataTile(title: 'БИН', data: store.bin.toString()),
+                                if(store.city != null) DataTile(title: 'Город', data: store.city!.name),
+                                if(store.contacts != null) ...store.contacts!.map((e) {
+                                  return ContactTile(contact: e);
+                                }).toList(),
+                                SizedBox(height: 20,),
+                                SubTitleApp(LocaleKeys.Price_lists.tr(), textAlign: TextAlign.start,),
+                                SizedBox(height: 10,),
+                                FileDownloadList(),
+                                SizedBox(height: 20,),
+                                Divider(thickness: 1),
+                              ]
+                            ],
+                          );
+                        } else if(state is ProfileScreenUnauthorization) {
+                          return const AuthMessage();
+                        } else {
+                          return Container();
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
       ),
     );
   }
-
 }

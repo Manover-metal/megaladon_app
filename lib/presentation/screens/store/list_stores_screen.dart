@@ -125,37 +125,6 @@ class _ListStoresScreenState extends State<ListStoresScreen> {
             ),
           ),
 
-            // body: RefreshIndicator(
-  //           onRefresh: _onRefresh,
-  //           child: SingleChildScrollView(
-  //             child: Container(
-  //               constraints: BoxConstraints(
-  //                   minHeight: MediaQuery.of(context).size.height
-  //               ),
-  //               child: BlocBuilder<StoreScreenMainCubit, StoreScreenMainState>(
-  //                 builder: (context, state) {
-  //                   if(state is StoreScreenMainSuccess) {
-  //                     return Padding(
-  //                       padding: EdgeInsets.symmetric(horizontal: 20),
-  //                       child: Column(
-  //                         children: state.stores.map((store) {
-  //                             return StoreCard(store: store);
-  //                           }
-  //                         ).toList(),
-  //                       ),
-  //                     );
-  //                   }
-  //                   else if(state is StoreScreenMainLoader) {
-  //                     return const Loader(padding: 10,);
-  //                   } else if(state is StoreScreenMainError) {
-  //                     return Text('error');
-  //                   }
-  //                   return Container();
-  //                 },
-  //               ),
-  //             ),
-  //           ),
-  //         ),
         ),
       ),
     );

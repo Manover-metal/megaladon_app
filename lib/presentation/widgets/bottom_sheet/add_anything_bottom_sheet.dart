@@ -7,6 +7,7 @@ import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
+import 'package:megaladon/presentation/widgets/message/auth_message.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class AddAnythingBottomSheet extends StatelessWidget {
@@ -17,10 +18,6 @@ class AddAnythingBottomSheet extends StatelessWidget {
 
   _createOrder(BuildContext context) => () {
     context.router.navigate(const CreateOrderRoute());
-  };
-
-  _login(BuildContext context) => () {
-    context.router.navigate(const LoginRoute());
   };
 
   @override
@@ -48,26 +45,7 @@ class AddAnythingBottomSheet extends StatelessWidget {
                 ],
               );
             } else {
-              return Column(
-                children: [
-                  Text('Авторизация',
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Colors.white
-                      )
-                  ),
-                  Text('Вам нужно авторизоваться в приложение, чтобы создать объявление или заказ',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.secondary
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 10,),
-                  ElevatedButtonApp(
-                    onPressed: _login(context),
-                    text: 'Продолжить',
-                  )
-                ],
-              );
+              return const AuthMessage(continueText: ', чтобы создать объявление или заказ',);
             }
           },
         ),
