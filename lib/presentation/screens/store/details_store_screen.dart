@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:megaladon/data/models/contact_model.dart';
+import 'package:megaladon/data/models/store_model.dart';
 import 'package:megaladon/logic/screens/store/details/store_screen_details_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
@@ -12,6 +14,7 @@ import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 import 'package:megaladon/presentation/widgets/tiles/contact_tile.dart';
 import 'package:megaladon/presentation/widgets/tiles/data_tile.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailsStoreScreen extends StatefulWidget {
 
@@ -28,6 +31,20 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
   _toChat() {
     context.router.navigate(DetailsChatRouter());
   }
+
+  _call(StoreModel store) => () {
+    String? phone;
+
+    store.contacts?.forEach((element) {
+      if(element.type == ContactType.home_phone || element.type == ContactType.phone) {
+       phone = element.value;
+      }
+    });
+    if(phone != null) {
+      launchUrl(Uri(scheme: 'tel', path: phone));
+
+    }
+  };
 
   @override
   void initState() {
@@ -96,9 +113,12 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
 
                         ],
                         SizedBox(height: 20,),
-                        if(state.store.hasPhone) ElevatedButtonApp(text: 'Позвонить'),
+                        if(state.store.hasPhone) ElevatedButtonApp(
+                          text: 'Позвонить',
+                          onPressed: _call(state.store),
+                        ),
                         OutlinedButtonApp(
-                            text: 'Написать',
+                          text: 'Написать',
                           onPressed: _toChat,
                         ),
                       ],

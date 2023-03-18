@@ -150,7 +150,10 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                     UserModel user = stateUser.auth.user.value!;
                                     return Column(
                                       children: [
-                                        if(order.user?.id != user.id && order.status == OrderStatus.active)...[
+                                        if(order.user?.id != user.id
+                                            && order.executor != null
+                                            && order.status == OrderStatus.active
+                                        )...[
                                           ElevatedButtonApp(
                                             text: 'Предложить услуги',
                                             onPressed: _createOffer,
@@ -160,7 +163,6 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                             onPressed: _toChat,
                                           ),
                                         ]
-
                                         else ...[
                                           if(order.status == OrderStatus.active) ...[
                                             ElevatedButtonApp(

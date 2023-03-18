@@ -9,6 +9,7 @@ import 'package:megaladon/data/models/enum_form_state.dart';
 import 'package:megaladon/data/models/form/description.dart';
 import 'package:megaladon/data/models/form/dictionary/advert_category.dart';
 import 'package:megaladon/data/models/form/dictionary/city.dart';
+import 'package:megaladon/data/models/form/phone.dart';
 import 'package:megaladon/data/models/form/price.dart';
 import 'package:megaladon/data/models/form/title.dart';
 import 'package:megaladon/data/models/form/title.dart';
@@ -27,19 +28,22 @@ class AdCreateFormCubit extends Cubit<AdCreateFormState> {
     required String price,
     required CityModel city,
     required AdvertCategoryModel category,
+    required String phone,
   }) {
     TitleFormModel titleForm = TitleFormModel.dirty(title);
     PriceFormModel priceForm = PriceFormModel.dirty(price);
     DescriptionFormModel descriptionForm = DescriptionFormModel.dirty(description);
     CityFormModel cityForm = CityFormModel.dirty(city.id);
     AdvertCategoryFormModel categoryForm = AdvertCategoryFormModel.dirty(category.id);
+    PhoneFormModel phoneForm = PhoneFormModel.dirty(phone);
 
     FormzStatus status = Formz.validate([
       titleForm,
       descriptionForm,
       cityForm,
       categoryForm,
-      priceForm
+      priceForm,
+      phoneForm
     ]);
 
     AdCreateFormState stateNew = state.copyWith(
@@ -49,7 +53,8 @@ class AdCreateFormCubit extends Cubit<AdCreateFormState> {
         countTry: state.countTry + 1,
         city: cityForm,
         category: categoryForm,
-        price: priceForm
+        price: priceForm,
+        phone: phoneForm
     );
     emit(stateNew);
     return stateNew.status.isValid;
@@ -63,7 +68,7 @@ class AdCreateFormCubit extends Cubit<AdCreateFormState> {
       price: int.parse(state.price.value),
       categoryId: state.category.value,
       cityId: state.city.value,
-      additionalPhone: '+77074054407'
+      additionalPhone: state.phone.value
     )).then((value) {
       emit(state.copyWith(formState: EnumFormState.success));
     }).catchError((error) {

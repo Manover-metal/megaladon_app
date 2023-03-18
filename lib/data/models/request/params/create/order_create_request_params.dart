@@ -7,7 +7,6 @@ class OrderCreateRequestParams {
   final int priceMax;
   final int categoryId;
   final int cityId;
-  final String additionalPhone;
 
   OrderCreateRequestParams({
     required this.title,
@@ -16,7 +15,6 @@ class OrderCreateRequestParams {
     required this.priceMax,
     required this.categoryId,
     required this.cityId,
-    required this.additionalPhone
   });
 
   FormData toData() {
@@ -27,7 +25,6 @@ class OrderCreateRequestParams {
       'price_max': priceMax,
       'category_id': categoryId,
       'city_id': cityId,
-      'additional_phone': additionalPhone
     });
     return data;
   }
