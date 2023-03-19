@@ -7,6 +7,8 @@ class AdvertCreateRequestParams {
   final int categoryId;
   final int cityId;
   final String additionalPhone;
+  final List<MultipartFile> media;
+
 
   AdvertCreateRequestParams({
     required this.title,
@@ -14,7 +16,8 @@ class AdvertCreateRequestParams {
     required this.price,
     required this.categoryId,
     required this.cityId,
-    required this.additionalPhone
+    required this.additionalPhone,
+    required this.media,
   });
 
   toData() {
@@ -26,6 +29,9 @@ class AdvertCreateRequestParams {
       'city_id': cityId,
       'additional_phone': additionalPhone
     });
+    for (var element in media) {
+      data.files.add(MapEntry('files[]', element));
+    }
     return data;
   }
 }

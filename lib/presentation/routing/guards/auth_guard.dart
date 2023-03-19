@@ -11,7 +11,6 @@ class AuthGuard extends AutoRouteGuard {
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) {
     if(context.read<AuthBloc>().state is AuthLoginState) {
-      print('Auth');
       resolver.next(true);
     } else {
       router.pop();
@@ -27,7 +26,6 @@ class NotAuthGuard extends AutoRouteGuard {
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) {
     if(context.read<AuthBloc>().state is! AuthLoginState) {
-      print('Not Auth');
       resolver.next(true);
     } else {
       router.pop();

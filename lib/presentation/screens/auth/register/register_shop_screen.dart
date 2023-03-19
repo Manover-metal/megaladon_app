@@ -60,10 +60,8 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
 
   _listenerForm(BuildContext context, RegisterStoreFormState state) {
     if(state.status.isInvalid) {
-      print('a');
       for (var element in state.props) {
         if(element is FormzInput && element.invalid) {
-          print(element.error);
           return showErrorSnackBar(context, element.error.toString());
         }
       }

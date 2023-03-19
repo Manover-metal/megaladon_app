@@ -17,7 +17,6 @@ class StoreScreenDetailsCubit extends Cubit<StoreScreenDetailsState> {
     }
     emit(StoreScreenDetailsLoader());
     return await _repository.info(id).then((value) {
-      print(value);
       emit(StoreScreenDetailsSuccess(
           store: value
       ));

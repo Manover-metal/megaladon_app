@@ -10,7 +10,6 @@ import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/message/stock_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
-import 'package:megaladon/presentation/widgets/text/title.dart';
 import 'package:megaladon/generated/locale_keys.g.dart';
 
 class ListOrdersScreen extends StatefulWidget {

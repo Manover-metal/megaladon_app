@@ -13,6 +13,7 @@ import 'package:megaladon/logic/form/auth/auth_form_cubit.dart';
 import 'package:megaladon/logic/form/create/ad/ad_create_form_cubit.dart';
 import 'package:megaladon/logic/form/create/offer/create_offer_form_cubit.dart';
 import 'package:megaladon/logic/form/create/order/order_create_form_cubit.dart';
+import 'package:megaladon/logic/form/price/price_form_cubit.dart';
 import 'package:megaladon/logic/form/register/register_executor/register_executor_form_cubit.dart';
 import 'package:megaladon/logic/form/register/register_store/register_store_form_cubit.dart';
 import 'package:megaladon/logic/form/register/register_user/register_user_form_cubit.dart';
@@ -39,6 +40,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'core/get.dart';
 import 'generated/codegen_loader.g.dart';
 import 'logic/screens/advert/main/advert_screen_main_cubit.dart';
+
 // import 'generated/locale_keys.g.dart';
 
 void main() async {
@@ -71,6 +73,7 @@ class App extends StatelessWidget {
   final RegisterExecutorBloc registerExecutorBloc = RegisterExecutorBloc();
   final RegisterStoreBloc registerStoreBloc = RegisterStoreBloc();
   late AuthBloc authBloc = AuthBloc(registerStoreBloc, registerExecutorBloc)..add(AuthInitialEvent());
+  late ProfileScreenCubit profileCubit = ProfileScreenCubit(authBloc);
   App({super.key});
 
   @override
@@ -120,7 +123,7 @@ class App extends StatelessWidget {
                 create: (context) => ExecutorScreenMyCubit()
             ),
             BlocProvider<ProfileScreenCubit>(
-                create: (context) => ProfileScreenCubit(authBloc)
+                create: (context) => profileCubit,
             ),
             BlocProvider<OrderScreenMyCubit>(
                 create: (context) => OrderScreenMyCubit()
@@ -163,7 +166,12 @@ class App extends StatelessWidget {
                 create: (context) => OrderUpdateFormCubit()
             )
           ],
-          child: const AppState()
+          child: BlocProvider<PriceFormCubit>(
+            create: (context) => PriceFormCubit(profileCubit),
+            child: const AppState()
+          ),
+
+          //
         ),
       ),
     );

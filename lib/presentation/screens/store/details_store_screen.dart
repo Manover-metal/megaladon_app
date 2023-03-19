@@ -116,12 +116,11 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
                         }).toList(),
                         SizedBox(height: 20,),
 
-                        if(state.store.prices!.isEmpty) SubTitleApp('Нет прайс листа')
+                        if(state.store.prices.isEmpty) SubTitleApp('Нет прайс листа')
                         else ...[
                           SubTitleApp('Прайс лист'),
                           SizedBox(height: 10,),
-                          FileDownloadList(),
-                          SizedBox(height: 10,),
+                          FileDownloadList(files: state.store.prices),
 
                         ],
                         SizedBox(height: 20,),

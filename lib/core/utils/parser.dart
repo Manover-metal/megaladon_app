@@ -32,7 +32,6 @@ class Parser {
   }
 
   static StoreTypeModel toStoreType(value) {
-    print(value.runtimeType);
     switch(value.runtimeType) {
       case String: {
         return StoreTypeModel(id: 1, name: value);

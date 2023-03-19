@@ -11,6 +11,7 @@ import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/description_field.dart';
+import 'package:megaladon/presentation/widgets/form/multi_picker/file_multi_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/order_category_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
@@ -33,6 +34,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
   late CityPickerController _cityController;
   late TextEditingController _priceMaxController;
   late TextEditingController _priceRecommendedController;
+  late FileMultiPickerController _fileController;
 
   _back() {
     context.router.pop();
@@ -65,7 +67,8 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
         category: _orderCategoryController.value,
         city: _cityController.value,
         priceMax: _priceMaxController.value.text,
-        priceRecommended: _priceRecommendedController.value.text
+        priceRecommended: _priceRecommendedController.value.text,
+        files: _fileController.value
     );
   }
 
@@ -87,6 +90,8 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
     _priceMaxController = TextEditingController();
     _priceRecommendedController = TextEditingController();
     _descriptionController = TextEditingController();
+    _fileController = FileMultiPickerController();
+
     super.initState();
   }
 
@@ -100,6 +105,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
     _descriptionController.dispose();
     _priceMaxController.dispose();
     _priceRecommendedController.dispose();
+    _fileController.dispose();
     super.dispose();
   }
 
@@ -121,6 +127,8 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                 DescriptionFieldApp(label: LocaleKeys.Description_of_work.tr(), controller: _descriptionController),
                 NumberFieldApp(label: LocaleKeys.Desired_budget.tr(), controller: _priceMaxController,),
                 NumberFieldApp(label: LocaleKeys.Allowed_budget.tr(), controller: _priceRecommendedController,),
+                FileMultiPicker(controller: _fileController),
+                SizedBox(height: 30),
                 // BlocConsumer(builder: builder, listener: listener)
                 BlocConsumer<OrderCreateFormCubit, OrderCreateFormState>(
                     listener: _listenerForm,
