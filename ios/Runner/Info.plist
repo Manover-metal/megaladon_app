@@ -130,5 +130,11 @@
     <!-- Permission options for the `appTrackingTransparency` -->
     <key>NSUserTrackingUsageDescription</key>
     <string>appTrackingTransparency</string>
+
+    <key>UISupportsDocumentBrowser</key>
+    <true/>
+
+    <key>LSSupportsOpeningDocumentsInPlace</key>
+    <true/>
 </dict>
 </plist>

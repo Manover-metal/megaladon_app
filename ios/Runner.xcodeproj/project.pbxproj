@@ -10,7 +10,6 @@
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		55CA5732CF40C1FCBB6CAE8A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 604412A229E97EC0751813CF /* GoogleService-Info.plist */; };
-		6398875829C6346300D78614 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6398875729C6345D00D78614 /* libsqlite3.0.tbd */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
@@ -48,7 +47,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B19BAD1AB644A149F2B7DD53 /* Pods_Runner.framework in Frameworks */,
-				6398875829C6346300D78614 /* libsqlite3.0.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

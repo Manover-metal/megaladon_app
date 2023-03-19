@@ -34,6 +34,24 @@ class AdCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
+              if(advert.media.isNotEmpty) ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Container(
+                  width: double.infinity,
+                  constraints: BoxConstraints(
+                      minHeight: MediaQuery.of(context).size.height / 4,
+                      maxHeight: MediaQuery.of(context).size.height / 3
+                  ),
+                  color: Theme.of(context).colorScheme.secondary,
+                  child: CachedNetworkImage(
+                    imageUrl: advert.media[0].url,
+                    progressIndicatorBuilder: (context, url, downloadProgress) => Icon(IconPack.chat, size: MediaQuery.of(context).size.width / 10),
+                    errorWidget:  (context, url, error) => Icon(IconPack.chat, size: MediaQuery.of(context).size.width / 10),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              SizedBox(height: 10,),
               Align(
                 alignment: Alignment.center,
                 child: Column(
@@ -41,24 +59,6 @@ class AdCard extends StatelessWidget {
                     Text(advert.title),
                     Text(advert.description, maxLines: 3,),
                   ],
-                ),
-              ),
-
-              SizedBox(height: 10,),
-              if(advert.media.isNotEmpty) ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Container(
-                  width: double.infinity,
-                  constraints: BoxConstraints(
-                    minHeight: 100
-                  ),
-                  color: Theme.of(context).colorScheme.secondary,
-                  child: CachedNetworkImage(
-                    imageUrl: advert.media[0],
-                    progressIndicatorBuilder: (context, url, downloadProgress) => Icon(IconPack.chat, size: MediaQuery.of(context).size.width / 10),
-                    errorWidget:  (context, url, error) => Icon(IconPack.chat, size: MediaQuery.of(context).size.width / 10),
-                    fit: BoxFit.cover,
-                  ),
                 ),
               ),
               SizedBox(height: 10,),

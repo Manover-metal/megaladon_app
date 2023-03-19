@@ -11,7 +11,7 @@ import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/description_field.dart';
-import 'package:megaladon/presentation/widgets/form/multi_picker/file_multi_picker.dart';
+import 'package:megaladon/presentation/widgets/form/multi_picker/media_multi_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/advert_category_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
@@ -32,6 +32,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
   late CityPickerController _cityController;
   late TextEditingController _priceController;
   late TextEditingController _phoneController;
+  late ImageMultiPickerController _imageController;
 
   _back() {
     context.router.pop();
@@ -65,7 +66,8 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
       price: _priceController.value.text,
       category: _advertCategoryController.value,
       city: _cityController.value,
-      phone: _phoneController.value.text
+      phone: _phoneController.value.text,
+      media: _imageController.value
     );
   }
 
@@ -87,6 +89,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
     _priceController = TextEditingController();
     _descriptionController = TextEditingController();
     _phoneController = TextEditingController();
+    _imageController = ImageMultiPickerController();
     super.initState();
   }
   
@@ -100,6 +103,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
     _priceController.dispose();
     _descriptionController.dispose();
     _phoneController.dispose();
+    _imageController.dispose();
     super.dispose();
   }
 
@@ -120,6 +124,8 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
                 DescriptionFieldApp(label: LocaleKeys.Description_of_your_offer.tr(), controller: _descriptionController),
                 NumberFieldApp(label: LocaleKeys.Price.tr(), controller: _priceController),
                 TextFieldApp(controller: _phoneController, label: 'Дополнительный телефон'),
+                ImageMultiPicker(controller: _imageController),
+                SizedBox(height: 20),
                 BlocConsumer<AdCreateFormCubit, AdCreateFormState>(
                   listener: _listenerForm,
                   builder: (context, state) {

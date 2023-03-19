@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:megaladon/core/icons/icons.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/screens/advert/details/advert_screen_details_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
@@ -84,7 +86,24 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                                 else ...[
                                   SubTitleApp('Прикреплённые файлы'),
                                   SizedBox(height: 10,),
-                                  // FileDownloadList(),
+                                  ...state.advert.media.map((e) {
+                                    return ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Container(
+                                        width: double.infinity,
+                                        constraints: BoxConstraints(
+                                            minHeight: 100
+                                        ),
+                                        color: Theme.of(context).colorScheme.secondary,
+                                        child: CachedNetworkImage(
+                                          imageUrl: e.url,
+                                          progressIndicatorBuilder: (context, url, downloadProgress) => Icon(IconPack.chat, size: MediaQuery.of(context).size.width / 10),
+                                          errorWidget:  (context, url, error) => Icon(IconPack.chat, size: MediaQuery.of(context).size.width / 10),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    );
+                                  }).toList()
                                 ],
                               ],
                             ),

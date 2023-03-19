@@ -1,11 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
+import 'package:permission_handler/permission_handler.dart';
 
-class FileMultiPickerController extends ValueNotifier<List<PlatformFile>> {
-  FileMultiPickerController() : super([]);
+class ImageMultiPickerController extends ValueNotifier<List<PlatformFile>> {
+  ImageMultiPickerController() : super([]);
 
   _listener() {
     notifyListeners();
@@ -16,42 +19,43 @@ class FileMultiPickerController extends ValueNotifier<List<PlatformFile>> {
     _listener();
   }
 
-  void _removeByIndex(int index) {
-    value = List.from(value)..removeAt(index);
+  void _removeByIndex(PlatformFile file) {
+    value = List.from(value)..remove(file);
     _listener();
   }
 
-  @override
-  void dispose() {
-
-    super.dispose();
+  Future<bool> _requestPermission() async {
+    await Permission.photos.request();
+    return await Permission.photos.request().isGranted;
   }
 }
 
-class FileMultiPicker extends StatefulWidget {
-  final FileMultiPickerController controller;
+class ImageMultiPicker extends StatefulWidget {
+  final ImageMultiPickerController controller;
 
-  const FileMultiPicker({super.key, required this.controller});
+  const ImageMultiPicker({super.key, required this.controller});
 
   @override
-  State<FileMultiPicker> createState() => _FileMultiPickerState();
+  State<ImageMultiPicker> createState() => _ImageMultiPickerState();
 }
 
-class _FileMultiPickerState extends State<FileMultiPicker> {
-  _addFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-        allowMultiple: true,
-        type: FileType.image
-    );
-
-    if (result != null) {
-      final List<PlatformFile> files = result.files;
-      widget.controller._addFiles(files);
+class _ImageMultiPickerState extends State<ImageMultiPicker> {
+  _addImage() async {
+    if(await widget.controller._requestPermission()) {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+          allowMultiple: true,
+          type: FileType.image
+      );
+      if (result != null) {
+        final List<PlatformFile> files = result.files;
+        widget.controller._addFiles(files);
+      }
     }
+
   }
 
-  _removeByIndex(int index) => () {
-    widget.controller._removeByIndex(index);
+  _removeByIndex(PlatformFile file) => () {
+    widget.controller._removeByIndex(file);
   };
 
   @override
@@ -60,30 +64,45 @@ class _FileMultiPickerState extends State<FileMultiPicker> {
       children: [
         ValueListenableBuilder(
           valueListenable: widget.controller,
-          builder: (context, List<PlatformFile> files, Widget? child) {
-            return ListView.builder(
-                itemCount: files.length,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, item) {
-                  return Row(
+          builder: (context, List<PlatformFile> images, Widget? child) {
+            if(images.isNotEmpty) {
+              return CarouselSlider(
+                items: images.map((image) {
+                  return Stack(
                     children: [
-                      Expanded(
-                          child: Text(files[item].name)
+                      Container(
+                        // width: double.infinity,
+                        // height: MediaQuery.of(context).size.height / 3,
+                        child: (image.bytes != null)? Image.memory(
+                          image.bytes!,
+                          fit: BoxFit.cover,
+                        ): null,
                       ),
-                      IconButton(
-                        onPressed: _removeByIndex(item),
-                        icon: Icon(Icons.remove_circle_outline_rounded,
-                          color: Theme.of(context).colorScheme.error,
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Container(
+                          padding: EdgeInsets.all(20),
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.cancel_outlined,
+                              color: Theme.of(context).colorScheme.error,
+                            ),
+                            onPressed: _removeByIndex(image),
+                          ),
                         ),
                       )
                     ],
                   );
-                }
-            );
+                }).toList(),
+                options: CarouselOptions(
+                    viewportFraction: 1,
+                    aspectRatio: 16/9
+                ),
+              );
+            } return Container();
           },
         ),
-        OutlinedButtonApp(text: 'Добавить файл', onPressed: _addFile,)
+        OutlinedButtonApp(text: 'Добавить изображение', onPressed: _addImage,)
       ],
     );
   }
