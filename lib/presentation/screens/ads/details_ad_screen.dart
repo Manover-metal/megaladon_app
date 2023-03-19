@@ -84,7 +84,7 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                                 else ...[
                                   SubTitleApp('Прикреплённые файлы'),
                                   SizedBox(height: 10,),
-                                  FileDownloadList(),
+                                  // FileDownloadList(),
                                 ],
                               ],
                             ),

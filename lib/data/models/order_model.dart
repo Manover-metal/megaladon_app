@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:megaladon/core/utils/parser.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
+import 'package:megaladon/data/models/dictionary/file_model.dart';
 import 'package:megaladon/data/models/dictionary/order_category_model.dart';
 import 'package:megaladon/data/models/executor_model.dart';
 import 'package:megaladon/data/models/user_model.dart';
@@ -28,7 +29,7 @@ class OrderModel extends Equatable {
   final OrderCategoryModel? category;
   final ExecutorModel? executor;
   final CityModel? city;
-  final List? files;
+  final List<FileModel>? files;
   final OrderStatus? status;
 
   const OrderModel({
@@ -73,7 +74,7 @@ class OrderModel extends Equatable {
       statusName: data['status'],
       createdAt: data['created_at'],
       countOffers: data['count_offers'],
-      files: data['files'],
+      files: data['files'] != null? FileModel.listFromJson(data['files']): null,
       user: data['user'] != null? UserModel.fromJson(data['user']): null,
       executor: data['executor'] != null? ExecutorModel.fromJson(data['executor']): null,
       category: data['category'] != null? OrderCategoryModel.fromJson(data['category']): null,

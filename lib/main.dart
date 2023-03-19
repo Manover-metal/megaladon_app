@@ -39,6 +39,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'core/get.dart';
 import 'generated/codegen_loader.g.dart';
 import 'logic/screens/advert/main/advert_screen_main_cubit.dart';
+
 // import 'generated/locale_keys.g.dart';
 
 void main() async {

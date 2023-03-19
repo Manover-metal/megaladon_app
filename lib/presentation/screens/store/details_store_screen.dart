@@ -120,8 +120,8 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
                         else ...[
                           SubTitleApp('Прайс лист'),
                           SizedBox(height: 10,),
-                          FileDownloadList(),
-                          SizedBox(height: 10,),
+                          // FileDownloadList(),
+                          // SizedBox(height: 10,),
 
                         ],
                         SizedBox(height: 20,),

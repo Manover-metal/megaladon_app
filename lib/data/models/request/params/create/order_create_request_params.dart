@@ -7,6 +7,7 @@ class OrderCreateRequestParams {
   final int priceMax;
   final int categoryId;
   final int cityId;
+  final List<MultipartFile> files;
 
   OrderCreateRequestParams({
     required this.title,
@@ -15,6 +16,7 @@ class OrderCreateRequestParams {
     required this.priceMax,
     required this.categoryId,
     required this.cityId,
+    required this.files
   });
 
   FormData toData() {
@@ -26,6 +28,9 @@ class OrderCreateRequestParams {
       'category_id': categoryId,
       'city_id': cityId,
     });
+    for (var element in files) {
+      data.files.add(MapEntry('files[]', element));
+    }
     return data;
   }
 }

@@ -111,7 +111,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 SizedBox(height: 20,),
                                 SubTitleApp(LocaleKeys.Price_lists.tr(), textAlign: TextAlign.start,),
                                 SizedBox(height: 10,),
-                                FileDownloadList(),
+                                // FileDownloadList(),
                                 SizedBox(height: 20,),
                                 Divider(thickness: 1),
                               ]

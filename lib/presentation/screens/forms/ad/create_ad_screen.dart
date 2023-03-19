@@ -11,6 +11,7 @@ import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/description_field.dart';
+import 'package:megaladon/presentation/widgets/form/multi_picker/file_multi_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/advert_category_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
@@ -40,7 +41,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
     if(_checkForm()) {
       context.read<AdCreateFormCubit>().createFetch().then((value) {
         context.router.popUntil((route) => route.settings.name == InitialRouter.name);
-        context.router.navigate(InitialRouter(
+        context.router.navigate( const InitialRouter(
           children: [
             AdRouter(
               children: [MyAdsRoute()]
