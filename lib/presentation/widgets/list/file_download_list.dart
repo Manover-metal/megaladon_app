@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/core/download/download_service.dart';
 import 'package:megaladon/data/models/dictionary/file_model.dart';

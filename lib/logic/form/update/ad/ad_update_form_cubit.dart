@@ -17,7 +17,7 @@ part 'ad_update_form_state.dart';
 
 class AdUpdateFormCubit extends Cubit<AdUpdateFormState> {
   final AdvertRepository _repository = AdvertRepository();
-  AdUpdateFormCubit() : super(AdUpdateFormState());
+  AdUpdateFormCubit() : super(const AdUpdateFormState());
 
   checkUpdate({
     required String title,

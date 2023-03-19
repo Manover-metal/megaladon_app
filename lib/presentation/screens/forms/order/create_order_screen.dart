@@ -19,9 +19,10 @@ import 'package:megaladon/presentation/widgets/form/field/number_field.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
-import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class CreateOrderScreen extends StatefulWidget {
+  const CreateOrderScreen({super.key});
+
   @override
   State<CreateOrderScreen> createState() => _CreateOrderScreenState();
 }
@@ -44,7 +45,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
     if(_checkForm()) {
       context.read<OrderCreateFormCubit>().createFetch().then((value) {
         context.router.popUntil((route) => route.settings.name == InitialRouter.name);
-        context.router.navigate(InitialRouter(
+        context.router.navigate(const InitialRouter(
             children: [
               OrderRouter(
                   children: [ListMyOrdersRoute()]
@@ -115,11 +116,11 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
                 HeaderAppBar(isBack: true, title: LocaleKeys.Create_an_order.tr()),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
 
                 OrderCategoryPicker(label: LocaleKeys.Select_a_category.tr(), controller: _orderCategoryController),
                 CityPicker(label: LocaleKeys.Choose_city.tr(), controller: _cityController),
@@ -128,7 +129,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                 NumberFieldApp(label: LocaleKeys.Desired_budget.tr(), controller: _priceMaxController,),
                 NumberFieldApp(label: LocaleKeys.Allowed_budget.tr(), controller: _priceRecommendedController,),
                 FileMultiPicker(controller: _fileController),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 // BlocConsumer(builder: builder, listener: listener)
                 BlocConsumer<OrderCreateFormCubit, OrderCreateFormState>(
                     listener: _listenerForm,

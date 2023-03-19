@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class StarPickerController extends ValueNotifier<int> {
@@ -24,7 +23,7 @@ class StarPicker extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text('Рейтинг: '),
+        const Text('Рейтинг: '),
         ValueListenableBuilder(
           builder: (context, int value, Widget? child) {
             return Row(

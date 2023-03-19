@@ -17,6 +17,8 @@ import 'package:megaladon/presentation/widgets/text/title.dart';
 
 
 class RegisterUserScreen extends StatefulWidget {
+  const RegisterUserScreen({super.key});
+
   @override
   State<RegisterUserScreen> createState() => _RegisterUserScreenState();
 }
@@ -108,34 +110,34 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
         ],
         child: SafeArea(
           child: Container(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                Spacer(),
+                const Spacer(),
                 TitleApp(LocaleKeys.Registration.tr()),
-                SizedBox(height: 20,),
+                const SizedBox(height: 20,),
                 TextFieldApp(
-                  icon: Icon(Icons.person_add_alt_1),
+                  icon: const Icon(Icons.person_add_alt_1),
                   label: LocaleKeys.What_is_your_name.tr(),
                   controller: _nameController,
                 ),
                 TextFieldApp(
-                  icon: Icon(Icons.phone),
+                  icon: const Icon(Icons.phone),
                   label: LocaleKeys.Your_phone_number.tr(),
                   controller: _phoneController,
                 ),
                 TextFieldApp(
-                  icon: Icon(Icons.lock),
+                  icon: const Icon(Icons.lock),
                   label: LocaleKeys.Choose_password.tr(),
                   controller: _passwordController,
                 ),
                 TextFieldApp(
-                  icon: Icon(Icons.lock),
+                  icon: const Icon(Icons.lock),
                   label: LocaleKeys.Confirm_the_password.tr(),
                   controller: _passwordVerifyController,
                 ),
                 CityPicker(
-                  icon: Icon(Icons.location_city),
+                  icon: const Icon(Icons.location_city),
                   label: LocaleKeys.Choose_city.tr(),
                   controller: _cityController,
                 ),
@@ -143,7 +145,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                   builder: (context, state) {
                     if(state is RegisterUserLoading) {
                       return ElevatedButtonApp(
-                        child: Loader(),
+                        child: const Loader(),
                         onPressed: () {},
                       );
                     }
@@ -167,7 +169,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                Spacer(flex: 3,),
+                const Spacer(flex: 3,),
 
               ],
             ),

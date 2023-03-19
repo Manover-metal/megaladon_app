@@ -3,8 +3,6 @@ import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:formz/formz.dart';
-import 'package:megaladon/data/models/advert_model.dart';
-import 'package:megaladon/data/models/category_model.dart';
 import 'package:megaladon/data/models/dictionary/advert_category_model.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/enum_form_state.dart';
@@ -14,7 +12,6 @@ import 'package:megaladon/data/models/form/dictionary/city.dart';
 import 'package:megaladon/data/models/form/phone.dart';
 import 'package:megaladon/data/models/form/price.dart';
 import 'package:megaladon/data/models/form/title.dart';
-import 'package:megaladon/data/models/form/title.dart';
 import 'package:megaladon/data/models/request/params/create/advert_create_request_params.dart';
 import 'package:megaladon/data/repositories/advert_repository.dart';
 
@@ -22,7 +19,7 @@ part 'ad_create_form_state.dart';
 
 class AdCreateFormCubit extends Cubit<AdCreateFormState> {
   final AdvertRepository _repository = AdvertRepository();
-  AdCreateFormCubit() : super(AdCreateFormState());
+  AdCreateFormCubit() : super(const AdCreateFormState());
 
   checkCreate({
     required String title,
@@ -65,28 +62,30 @@ class AdCreateFormCubit extends Cubit<AdCreateFormState> {
   }
 
   Future createFetch() async {
-    emit(state.copyWith(formState: EnumFormState.fetch));
+    if(state.formState == EnumFormState.fetch) {
+      emit(state.copyWith(formState: EnumFormState.fetch));
 
-    List<MultipartFile> files = [];
+      List<MultipartFile> files = [];
 
-    for (var file in state.media) {
-      if(file.path != null) {
-        files.add(await MultipartFile.fromFile(file.path!, filename: file.name));
+      for (var file in state.media) {
+        if(file.path != null) {
+          files.add(await MultipartFile.fromFile(file.path!, filename: file.name));
+        }
       }
-    }
 
-    return _repository.create(AdvertCreateRequestParams(
-      title: state.title.value,
-      description: state.title.value,
-      price: int.parse(state.price.value),
-      categoryId: state.category.value,
-      cityId: state.city.value,
-      additionalPhone: state.phone.value,
-      media: files,
-    )).then((value) {
-      emit(state.copyWith(formState: EnumFormState.success));
-    }).catchError((error) {
-      emit(state.copyWith(formState: EnumFormState.error));
-    });
+      return _repository.create(AdvertCreateRequestParams(
+        title: state.title.value,
+        description: state.title.value,
+        price: int.parse(state.price.value),
+        categoryId: state.category.value,
+        cityId: state.city.value,
+        additionalPhone: state.phone.value,
+        media: files,
+      )).then((value) {
+        emit(state.copyWith(formState: EnumFormState.success));
+      }).catchError((error) {
+        emit(state.copyWith(formState: EnumFormState.error));
+      });
+    }
   }
 }

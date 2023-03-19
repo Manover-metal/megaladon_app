@@ -2,12 +2,10 @@
 
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/presentation/routing/router.dart';
-import 'package:megaladon/presentation/screens/profile/settings_screen.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/tiles/drawer_route_tile.dart';
@@ -15,31 +13,33 @@ import 'package:megaladon/presentation/widgets/tiles/drawer_tile.dart';
 import 'package:megaladon/generated/locale_keys.g.dart';
 
 class DrawerApp extends StatelessWidget {
+  const DrawerApp({super.key});
+
   _login(BuildContext context) => () {
-        context.router.push(const LoginRoute());
-      };
+    context.router.push(const LoginRoute());
+  };
 
   _registerUser(BuildContext context) => () {
-        context.router.push(const RegisterUserRoute());
-      };
+    context.router.push(const RegisterUserRoute());
+  };
 
   _registerExecutor(BuildContext context) => () {
-        context.router.push(const RegisterExecutorRoute());
-      };
+    context.router.push(const RegisterExecutorRoute());
+  };
 
   _registerStore(BuildContext context) => () {
-        context.router.push(const RegisterStoreRoute());
-      };
+    context.router.push(const RegisterStoreRoute());
+  };
 
   _logout(BuildContext context) => () {
-        context.read<AuthBloc>().add(AuthLogoutEvent());
-      };
+    context.read<AuthBloc>().add(AuthLogoutEvent());
+  };
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: Container(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             BlocBuilder<AuthBloc, AuthState>(
@@ -57,7 +57,7 @@ class DrawerApp extends StatelessWidget {
                       ),
                     ]
                     else ...[
-                      DrawerRouteTile(
+                      const DrawerRouteTile(
                         text: 'Мои заказы',
                         page: InitialRouter(
                           children: [
@@ -65,7 +65,7 @@ class DrawerApp extends StatelessWidget {
                           ],
                         ),
                       ),
-                      DrawerRouteTile(
+                      const DrawerRouteTile(
                         text: 'Мои объявления',
                         page: InitialRouter(
                           children: [
@@ -73,19 +73,19 @@ class DrawerApp extends StatelessWidget {
                           ],
                         ),
                       ),
-                      DrawerRouteTile(
+                      const DrawerRouteTile(
                         text: 'Мои исполнители',
                         page: InitialRouter(children: [
                           ProfileRouter(children: [ListExecutorRoute()])]
                         ),
                       ),
-                      DrawerRouteTile(
+                      const DrawerRouteTile(
                         text: 'Чат',
                         page: InitialRouter(children: [
                           ProfileRouter(children: [ListChatsRoute()])
                         ]),
                       ),
-                      Divider(
+                      const Divider(
                         thickness: 1,
                       )
                     ],
@@ -96,25 +96,25 @@ class DrawerApp extends StatelessWidget {
             ...[
               DrawerRouteTile(
                 text: LocaleKeys.Orders.tr(),
-                page: InitialRouter(children: [OrderRouter()]),
+                page: const InitialRouter(children: [OrderRouter()]),
               ),
               DrawerRouteTile(
                 text: LocaleKeys.Theshops.tr(),
-                page: InitialRouter(children: [StoreRouter()]),
+                page: const InitialRouter(children: [StoreRouter()]),
               ),
-              DrawerRouteTile(
+              const DrawerRouteTile(
                 text: 'Торговая площадка',
                 page: InitialRouter(children: [AdRouter()]),
               ),
               //Create_ratkum
-              DrawerRouteTile(
+              const DrawerRouteTile(
                 text: 'Настройки',
                 page: InitialRouter(children: [
                   ProfileRouter(children: [SettingsRoute()])
                 ]),
               ),
 
-              Divider(
+              const Divider(
                 thickness: 1,
               )
             ],
@@ -127,7 +127,7 @@ class DrawerApp extends StatelessWidget {
                 }
               },
             ),
-            Spacer(),
+            const Spacer(),
             BlocBuilder<AuthBloc, AuthState>(
               builder: (context, state) {
                 return Column(

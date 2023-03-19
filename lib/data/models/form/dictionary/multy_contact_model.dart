@@ -26,7 +26,7 @@ class MultiContactFormModel extends FormzInput<List<ContactModel>, MultiContactV
       return MultiContactValidationError.empty;
     }
     for(var element in value) {
-      if(element.type == ContactType.home_phone || element.type == ContactType.phone
+      if(element.type == ContactType.homePhone || element.type == ContactType.phone
          && element.value.isEmpty || element.contactName!.isEmpty) {
         return MultiContactValidationError.dataEmpty;
       } else if(element.value.isEmpty) {

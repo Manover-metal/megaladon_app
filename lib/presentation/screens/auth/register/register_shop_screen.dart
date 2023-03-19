@@ -9,20 +9,19 @@ import 'package:megaladon/logic/form/register/register_store/register_store_form
 import 'package:megaladon/logic/register/register_store/register_store_bloc.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
-import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/double_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/number_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/form/multi_picker/contact_multi_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
-import 'package:megaladon/presentation/widgets/form/picker/dictionary/contact_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/store_type_picker.dart';
-import 'package:megaladon/presentation/widgets/list/file_delete_list.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class RegisterStoreScreen extends StatefulWidget {
+  const RegisterStoreScreen({super.key});
+
   @override
   State<RegisterStoreScreen> createState() => _RegisterStoreScreenState();
 }
@@ -70,7 +69,7 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
 
   _listenRegister(bool isListener) => (BuildContext context, RegisterStoreState state) {
     if(state is RegisterStoreSuccess) {
-      context.router.navigate(InitialRouter(
+      context.router.navigate(const InitialRouter(
           children: [
             ProfileRouter()
           ]
@@ -144,12 +143,12 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
                   const SizedBox(height: 20,),
                   TextFieldApp(
                     label: 'Названия',
-                    icon: Icon(Icons.person_add_alt_1),
+                    icon: const Icon(Icons.person_add_alt_1),
                     controller: _nameController,
                   ),
                   NumberFieldApp(
                     label: 'БИН',
-                    icon: Icon(Icons.wallet),
+                    icon: const Icon(Icons.wallet),
                     controller: _binController,
                   ),
                   StoreTypePicker(
@@ -158,7 +157,7 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
                   ),
                   TextFieldApp(
                     label: 'Полный адрес',
-                    icon: Icon(Icons.maps_home_work_outlined),
+                    icon: const Icon(Icons.maps_home_work_outlined),
                     controller: _fullAddressController,
                   ),
                   CityPicker(
@@ -167,18 +166,18 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
                   ),
                   DoubleFieldApp(
                     label: 'Широта',
-                    icon: Icon(Icons.place),
+                    icon: const Icon(Icons.place),
                     controller: _latController,
                   ),
                   DoubleFieldApp(
                     label: 'Долгота',
-                    icon: Icon(Icons.place_outlined),
+                    icon: const Icon(Icons.place_outlined),
                     controller: _lonController,
                   ),
                   ContactTypeMultiPicker(
                     controller: _contactController,
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
                   BlocBuilder<RegisterStoreBloc, RegisterStoreState>(
                     builder: (context, state) {

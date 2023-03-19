@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/request/params/index/order_index_request_params.dart';
@@ -13,6 +14,8 @@ import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/generated/locale_keys.g.dart';
 
 class ListOrdersScreen extends StatefulWidget {
+  const ListOrdersScreen({super.key});
+
   @override
   State<ListOrdersScreen> createState() => _ListOrdersScreenState();
 }
@@ -27,10 +30,12 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
 
   _showFilter() async {
     bool? result = await showModalBottomSheet(
+        useSafeArea: true,
         useRootNavigator: true,
+        isScrollControlled: true,
         context: context,
         elevation: 100,
-        builder: (_) => FilterOrderBottomSheet()
+        builder: (_) => const FilterOrderBottomSheet()
     );
     if(result != null) {
       context.read<OrderScreenMainCubit>().fetch();
@@ -40,9 +45,11 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
   _showSort() async {
     bool? result = await showModalBottomSheet(
         useRootNavigator: true,
+        isScrollControlled: true,
+        useSafeArea: true,
         context: context,
         elevation: 100,
-        builder: (_) => SortOrderBottomSheet()
+        builder: (_) => const SortOrderBottomSheet()
     );
     if(result != null && result) {
       context.read<OrderScreenMainCubit>().fetch();
@@ -85,7 +92,7 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: HeaderAppBar(isMenu: true, title: LocaleKeys.Orders.tr()),
                       ),
                       Padding(
@@ -94,13 +101,13 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             InkWell(
-                              child: Icon(Icons.sort, size: 30),
                               onTap: _showSort,
+                              child: const Icon(Icons.sort, size: 30),
                             ),
-                            SizedBox(width: 10,),
+                            const SizedBox(width: 10,),
                             InkWell(
-                              child: Icon(Icons.filter_alt, size: 30),
                               onTap: _showFilter,
+                              child: const Icon(Icons.filter_alt, size: 30),
                             ),
                           ],
                         ),
@@ -112,31 +119,34 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
           },
           body: RefreshIndicator(
             onRefresh: _onRefresh,
-            child: SingleChildScrollView(
+            child: CupertinoScrollbar(
               controller: _scrollController,
-              child: Container(
-                constraints: BoxConstraints(
-                    minHeight: MediaQuery.of(context).size.height
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  children: [
-                    BlocBuilder<OrderScreenMainCubit, OrderScreenMainState>(
-                      builder: (context, state) {
-                        return Column(
-                          children: [
-                            ...state.orders.map((order) {
-                              return OrderCard(order: order);
-                            }).toList(),
-                            if(state.status == OrderScreenMainStatus.loading) const Loader(padding: 10)
-                            else if(state.status == OrderScreenMainStatus.error) ErrorMessage(error: state.error!)
-                            else if(state.stock) StockMessage(name: 'Заказы')
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                child: Container(
+                  constraints: BoxConstraints(
+                      minHeight: MediaQuery.of(context).size.height
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    children: [
+                      BlocBuilder<OrderScreenMainCubit, OrderScreenMainState>(
+                        builder: (context, state) {
+                          return Column(
+                            children: [
+                              ...state.orders.map((order) {
+                                return OrderCard(order: order);
+                              }).toList(),
+                              if(state.status == OrderScreenMainStatus.loading) const Loader(padding: 10)
+                              else if(state.status == OrderScreenMainStatus.error) ErrorMessage(error: state.error!)
+                              else if(state.stock) const StockMessage(name: 'Заказы')
 
-                          ],
-                        );
-                      },
-                    ),
-                  ],
+                            ],
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

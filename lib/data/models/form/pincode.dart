@@ -21,8 +21,12 @@ class PincodeFormModel extends FormzInput<String, PincodeValidationError> {
 
   @override
   PincodeValidationError? validator(String value) {
-    if (value.isEmpty) return PincodeValidationError.empty;
-    else if (value.length < 6) return PincodeValidationError.min;
+    if (value.isEmpty) {
+      return PincodeValidationError.empty;
+    }
+    else if (value.length < 6) {
+      return PincodeValidationError.min;
+    }
     return null;
   }
 }

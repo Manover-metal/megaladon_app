@@ -5,7 +5,7 @@ class VerifyFormState extends Equatable {
   final FormzStatus status;
   final int countTry;
 
-  VerifyFormState({
+  const VerifyFormState({
     this.pincode = const PincodeFormModel.pure(),
     this.status = FormzStatus.pure,
     this.countTry = 0

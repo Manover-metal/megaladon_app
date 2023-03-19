@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/request/params/index/advert_index_request_params.dart';
@@ -9,9 +10,10 @@ import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/message/stock_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
-import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class MyAdsScreen extends StatefulWidget {
+  const MyAdsScreen({super.key});
+
   @override
   State<MyAdsScreen> createState() => _MyAdsScreenState();
 }
@@ -26,6 +28,8 @@ late ScrollController _scrollController;
 
   _showFilter() async {
     bool? result = await showModalBottomSheet(
+        isScrollControlled: true,
+        useSafeArea: true,
         useRootNavigator: true,
         context: context,
         elevation: 100,
@@ -70,7 +74,7 @@ _listenerScroll() {
               SliverToBoxAdapter(
                 child: Column(
                   children: [
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20),
                       child: HeaderAppBar(isMenu: true, title: 'Мои объявления'),
                     ),
@@ -79,8 +83,8 @@ _listenerScroll() {
                       child: Align(
                         alignment: Alignment.centerRight,
                         child: InkWell(
-                          child: Icon(Icons.filter_alt,  size: 30),
                           onTap: _showFilter,
+                          child: const Icon(Icons.filter_alt,  size: 30),
                         ),
                       ),
                     ),
@@ -91,30 +95,34 @@ _listenerScroll() {
           },
           body: RefreshIndicator(
             onRefresh: _onRefresh,
-            child: SingleChildScrollView(
-              child: Container(
-                constraints: BoxConstraints(
-                    minHeight: MediaQuery.of(context).size.height
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  children: [
-                    BlocBuilder<AdvertScreenMyCubit, AdvertScreenMyState>(
-                      builder: (context, state) {
-                           return Column(
-                          children: [
-                            ...state.advers.map((adver) {
-                              return AdCard(advert: adver);
-                            }).toList(),
-                            if(state.status == AdverScreenMyMainStatus.loading) const Loader(padding: 10)
-                            else if(state.status == AdverScreenMyMainStatus.error) ErrorMessage(error: state.error!)
-                            else if(state.stock) StockMessage(name: 'Объявления')
+            child: CupertinoScrollbar(
+              controller: _scrollController,
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                child: Container(
+                  constraints: BoxConstraints(
+                      minHeight: MediaQuery.of(context).size.height
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    children: [
+                      BlocBuilder<AdvertScreenMyCubit, AdvertScreenMyState>(
+                        builder: (context, state) {
+                             return Column(
+                            children: [
+                              ...state.advers.map((adver) {
+                                return AdCard(advert: adver);
+                              }).toList(),
+                              if(state.status == AdverScreenMyMainStatus.loading) const Loader(padding: 10)
+                              else if(state.status == AdverScreenMyMainStatus.error) ErrorMessage(error: state.error!)
+                              else if(state.stock) const StockMessage(name: 'Объявления')
 
-                          ],
-                        );
-                      },
-                    )
-                  ],
+                            ],
+                          );
+                        },
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

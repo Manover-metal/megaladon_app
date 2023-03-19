@@ -31,14 +31,14 @@ class DetailsStoreScreen extends StatefulWidget {
 class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
 
   _toChat() {
-    context.router.navigate(DetailsChatRouter());
+    context.router.navigate(const DetailsChatRouter());
   }
 
   _call(StoreModel store) => () {
     String? phone;
 
     store.contacts?.forEach((element) {
-      if(element.type == ContactType.home_phone || element.type == ContactType.phone) {
+      if(element.type == ContactType.homePhone || element.type == ContactType.phone) {
        phone = element.value;
       }
     });
@@ -66,16 +66,18 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
                   if(state is StoreScreenDetailsSuccess) {
                     return SliverToBoxAdapter(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: HeaderAppBar(isBack: true, title: '${state.store.type?.name} "${state.store.name}"'),
                         )
                     );
-                  } else return SliverToBoxAdapter(
+                  } else {
+                    return const SliverToBoxAdapter(
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20),
                         child: HeaderAppBar(isBack: true),
                       )
-                  );
+                    );
+                  }
 
                 }
               ),
@@ -86,13 +88,13 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
               constraints: BoxConstraints(
                   minHeight: MediaQuery.of(context).size.height
               ),
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: BlocBuilder<StoreScreenDetailsCubit, StoreScreenDetailsState>(
                 builder: (context, state) {
                   if(state is StoreScreenDetailsSuccess) {
                     return Column(
                       children: [
-                        SizedBox(height: 20,),
+                        const SizedBox(height: 20,),
                         ClipRRect(
                           borderRadius: BorderRadius.circular(100),
                           child: Container(
@@ -107,23 +109,23 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 20,),
+                        const SizedBox(height: 20,),
                         DataTile(title: 'Адрес:', data: state.store.fullAddress),
                         if(state.store.city != null) DataTile(title: 'Город:', data: state.store.city!.name),
                         if(state.store.bin != null) DataTile(title: 'БИН:', data: state.store.bin.toString()),
                         ...state.store.contacts!.map((contact) {
                           return ContactTile(contact: contact);
                         }).toList(),
-                        SizedBox(height: 20,),
+                        const SizedBox(height: 20,),
 
                         if(state.store.prices.isEmpty) SubTitleApp('Нет прайс листа')
                         else ...[
                           SubTitleApp('Прайс лист'),
-                          SizedBox(height: 10,),
+                          const SizedBox(height: 10,),
                           FileDownloadList(files: state.store.prices),
 
                         ],
-                        SizedBox(height: 20,),
+                        const SizedBox(height: 20,),
                         if(state.store.hasPhone) ElevatedButtonApp(
                           text: 'Позвонить',
                           onPressed: _call(state.store),
@@ -136,7 +138,7 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
                     );
                   }
                   else if(state is StoreScreenDetailsLoader) {
-                    return Loader(padding: 10,);
+                    return const Loader(padding: 10,);
                   } else if(state is StoreScreenDetailsError) {
                     return ErrorMessage(error: state.error);
                   }

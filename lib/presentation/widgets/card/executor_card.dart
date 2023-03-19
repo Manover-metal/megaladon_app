@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/data/models/executor_model.dart';
 import 'package:megaladon/presentation/routing/router.dart';
@@ -18,7 +17,7 @@ class ExecutorCard extends StatelessWidget {
   };
 
   _onTapChat(BuildContext context) => () {
-    context.router.push(DetailsChatRouter());
+    context.router.push(const DetailsChatRouter());
   };
 
   @override
@@ -28,12 +27,12 @@ class ExecutorCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         color: Theme.of(context).colorScheme.tertiary,
       ),
-      margin: EdgeInsets.symmetric(vertical: 10),
-      padding: EdgeInsets.all(10),
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.all(10),
       child: Column(
         children: [
           ExecutorTile(executor: executor),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Row(
@@ -41,7 +40,7 @@ class ExecutorCard extends StatelessWidget {
               Expanded(
                   child: ElevatedButtonApp(text: 'Подробнее', onPressed: _onTapDetails(context))
               ),
-              SizedBox(width: 10,),
+              const SizedBox(width: 10,),
               Expanded(
                   child: OutlinedButtonApp(
                       text: 'Чат',

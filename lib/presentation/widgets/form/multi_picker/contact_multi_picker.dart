@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/contact_picker.dart';
@@ -62,7 +61,7 @@ class _ContactTypeMultiPickerState extends State<ContactTypeMultiPicker> {
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, item) {
                   return Container(
-                    margin: EdgeInsets.symmetric(vertical: 20),
+                    margin: const EdgeInsets.symmetric(vertical: 20),
                     child: Row(
                       children: [
                         Expanded(

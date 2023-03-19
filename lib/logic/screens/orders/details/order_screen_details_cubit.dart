@@ -12,7 +12,7 @@ class OrderScreenDetailsCubit extends Cubit<OrderScreenDetailsState> {
   final OrderRepository _repository = OrderRepository();
   final OfferRepository _offerRepository = OfferRepository();
 
-  OrderScreenDetailsCubit() : super(OrderScreenDetailsState());
+  OrderScreenDetailsCubit() : super(const OrderScreenDetailsState());
 
   Future fetch({required int id}) async {
     emit(state.copyWith(

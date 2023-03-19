@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:megaladon/core/dio/index.dart';
 
 class UserRepository {

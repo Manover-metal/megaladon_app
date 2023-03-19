@@ -12,7 +12,7 @@ class ProfileScreenState extends Equatable {
   final bool isUpdatePrice;
   final ErrorModel? error;
 
-  ProfileScreenState({
+  const ProfileScreenState({
     this.status = ProfileScreenStatus.initial,
     this.user,
     this.executor,

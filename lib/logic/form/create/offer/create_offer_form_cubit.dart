@@ -8,7 +8,6 @@ import 'package:megaladon/data/models/form/description.dart';
 import 'package:megaladon/data/models/form/dictionary/city.dart';
 import 'package:megaladon/data/models/form/expired_at.dart';
 import 'package:megaladon/data/models/form/price.dart';
-import 'package:megaladon/data/models/offer_model.dart';
 import 'package:megaladon/data/models/request/params/create/offer_create_request_params.dart';
 import 'package:megaladon/data/repositories/offer_repository.dart';
 
@@ -53,17 +52,19 @@ class CreateOfferFormCubit extends Cubit<CreateOfferFormState> {
   }
 
   Future createFetch(int orderId) async {
-    emit(state.copyWith(formState: EnumFormState.fetch));
-    return _repository.create(orderId, OfferCreateRequestParams(
-      comment: state.description.value,
-      price: state.price.value,
-      cityId: state.city.value,
-      date: state.date.value,
-      expiredAt: state.expiredAt.value,
-    )).then((value) {
-      emit(state.copyWith(formState: EnumFormState.success));
-    }).catchError((error) {
-      emit(state.copyWith(formState: EnumFormState.error));
-    });
+    if (state.formState != EnumFormState.fetch) {
+      emit(state.copyWith(formState: EnumFormState.fetch));
+      return _repository.create(orderId, OfferCreateRequestParams(
+        comment: state.description.value,
+        price: state.price.value,
+        cityId: state.city.value,
+        date: state.date.value,
+        expiredAt: state.expiredAt.value,
+      )).then((value) {
+        emit(state.copyWith(formState: EnumFormState.success));
+      }).catchError((error) {
+        emit(state.copyWith(formState: EnumFormState.error));
+      });
+    }
   }
 }

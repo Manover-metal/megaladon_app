@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:megaladon/core/dio/index.dart';
 import 'package:megaladon/core/dio/interceptors/auth_interceptors.dart';
 import 'package:megaladon/core/isar/index.dart';

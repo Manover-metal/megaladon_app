@@ -42,11 +42,11 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
   };
 
   _toChat() {
-   context.router.navigate(DetailsChatRouter());
+   context.router.navigate(const DetailsChatRouter());
   }
 
   _toChats() {
-    context.router.navigate(InitialRouter(
+    context.router.navigate(const InitialRouter(
       children: [ProfileRouter(
         children: [ListChatsRoute()]
       )]
@@ -119,31 +119,31 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
 
                               Text(order.title),
                               Text(order.description),
-                              SizedBox(height: 20,),
+                              const SizedBox(height: 20,),
                               if(order.files!.isEmpty) ...[
                                 SubTitleApp('Нет прикреплённых файлов'),
-                                SizedBox(height: 10,),
+                                const SizedBox(height: 10,),
                               ]
                               else ...[
                                 SubTitleApp('Прикреплённые файлы'),
-                                SizedBox(height: 10,),
+                                const SizedBox(height: 10,),
                                 FileDownloadList(files: order.files!),
                               ],
                             ],
                           ),
                         ),
-                        Divider(thickness: 1),
+                        const Divider(thickness: 1),
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text('Желаемый бюджет: до ${order.priceRecommended} ₸'),
                               Text('Допустимый: до ${order.priceMax} ₸'),
-                              SizedBox(height: 20,),
+                              const SizedBox(height: 20,),
 
                               UserTile(user: order.user!),
-                              SizedBox(height: 20,),
+                              const SizedBox(height: 20,),
                               BlocBuilder<AuthBloc, AuthState>(
                                 builder: (context, stateUser) {
                                   if(stateUser is AuthLoginState) {
@@ -196,7 +196,7 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                       ],
                     );
                   } else if(state.status == OrderScreenDetailsStateStatus.loading) {
-                    return Loader(padding: 10,);
+                    return const Loader(padding: 10,);
                   } else if(state.status == OrderScreenDetailsStateStatus.error) {
                     return ErrorMessage(error: state.error!);
                   }

@@ -15,6 +15,8 @@ import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
@@ -24,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
   late TextEditingController _phone;
 
   _register() {
-    context.router.popAndPush(RegisterUserRoute());
+    context.router.popAndPush(const RegisterUserRoute());
   }
 
   _login() {
@@ -61,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   _listenerAuth(BuildContext context, AuthState state) {
     if(state is AuthLoginState) {
-      context.router.navigate(InitialRouter(
+      context.router.navigate(const InitialRouter(
           children: [
             ProfileRouter()
           ]
@@ -88,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child: MultiBlocListener(
             listeners: [
               BlocListener<AuthBloc, AuthState>(listener: _listenerAuth),
@@ -96,17 +98,17 @@ class _LoginScreenState extends State<LoginScreen> {
             ],
             child: Column(
               children: [
-                Spacer(),
+                const Spacer(),
                 TitleApp(LocaleKeys.Authorization.tr()),
                 // Spacer(),
-                SizedBox(height: 20,),
+                const SizedBox(height: 20,),
                 TextFieldApp(
-                  icon: Icon(Icons.person),
+                  icon: const Icon(Icons.person),
                   label: LocaleKeys.Your_phone_number.tr(),
                   controller: _phone,
                 ),
                 TextFieldApp(
-                  icon: Icon(Icons.lock),
+                  icon: const Icon(Icons.lock),
                   label: LocaleKeys.Your_password.tr(),
                   controller: _password,
                 ),
@@ -116,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: Theme.of(context).textTheme.bodySmall
                   ),
                 ),
-                SizedBox(height: 25,),
+                const SizedBox(height: 25,),
                 BlocBuilder<AuthBloc, AuthState>(
                   builder: (context, state) {
                     if(state is AuthLoadingState) {
@@ -126,7 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   }
                 ),
                 OutlinedButtonApp(text: LocaleKeys.Registration.tr(), onPressed: _register),
-                Spacer(flex: 3),
+                const Spacer(flex: 3),
               ],
             ),
           ),

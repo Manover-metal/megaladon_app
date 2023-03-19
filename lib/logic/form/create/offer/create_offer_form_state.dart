@@ -10,7 +10,7 @@ class CreateOfferFormState extends Equatable {
   final int countTry;
   final EnumFormState formState;
 
-  CreateOfferFormState({
+  const CreateOfferFormState({
     this.status = FormzStatus.pure,
     this.price = const PriceFormModel.pure(),
     this.description = const DescriptionFormModel.pure(),

@@ -1,6 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:megaladon/core/utils/parser.dart';
-import 'package:megaladon/data/models/category_model.dart';
 import 'package:megaladon/data/models/dictionary/advert_category_model.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/dictionary/file_model.dart';

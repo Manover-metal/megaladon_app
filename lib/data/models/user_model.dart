@@ -1,6 +1,5 @@
 import 'package:isar/isar.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
-import 'package:megaladon/data/models/executor_model.dart';
 
 part 'user_model.g.dart';
 

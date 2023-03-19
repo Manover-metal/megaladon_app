@@ -15,7 +15,6 @@ import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picke
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
-import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class CreateOfferScreen extends StatefulWidget {
 
@@ -104,16 +103,16 @@ class _CreateOfferScreenState extends State<CreateOfferScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
                 HeaderAppBar(isBack: true, title: 'Отклик на заказ №${widget.orderId}'),
-                SizedBox(height: 20,),
-                ExpiredAtFieldApp(label: 'Актуален до', icon: Icon(Icons.calendar_month), controller: _expiredAtController,),
-                TextFieldApp(label: 'Время на работу', icon: Icon(Icons.watch_later_outlined), controller: _dateController,),
-                NumberFieldApp(label: 'Цена', icon: Icon(Icons.credit_card), controller: _priceController,),
-                TextFieldApp(label: 'Описание', icon: Icon(Icons.message), controller: _descriptionController,),
-                CityPicker(label: 'Город', icon: Icon(Icons.place) , controller: _cityController),
+                const SizedBox(height: 20,),
+                ExpiredAtFieldApp(label: 'Актуален до', icon: const Icon(Icons.calendar_month), controller: _expiredAtController,),
+                TextFieldApp(label: 'Время на работу', icon: const Icon(Icons.watch_later_outlined), controller: _dateController,),
+                NumberFieldApp(label: 'Цена', icon: const Icon(Icons.credit_card), controller: _priceController,),
+                TextFieldApp(label: 'Описание', icon: const Icon(Icons.message), controller: _descriptionController,),
+                CityPicker(label: 'Город', icon: const Icon(Icons.place) , controller: _cityController),
                 BlocConsumer<CreateOfferFormCubit, CreateOfferFormState>(
                   listener: _listenerForm,
                   builder: (context, state) {

@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/core/get.dart';
 import 'package:megaladon/core/icons/icons.dart';
@@ -10,6 +9,8 @@ import 'package:megaladon/presentation/widgets/drawer/drawer_app.dart';
 
 
 class SplashScreen extends StatelessWidget {
+  const SplashScreen({super.key});
+
 
   _doubleTap(BuildContext context, PageRouteInfo page) => () {
     context.router.navigate(page);
@@ -20,8 +21,10 @@ class SplashScreen extends StatelessWidget {
   };
 
   _add(BuildContext context) => () async {
-    bool? result = await showModalBottomSheet(
+    await showModalBottomSheet(
         useRootNavigator: true,
+        isScrollControlled: true,
+        useSafeArea: true,
         context: context,
         elevation: 100,
         builder: (_) => AddAnythingBottomSheet()
@@ -44,7 +47,7 @@ class SplashScreen extends StatelessWidget {
         return Stack(
           alignment: Alignment.bottomCenter,
           children: [
-            Container(
+            SizedBox(
               height: 75,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -52,25 +55,25 @@ class SplashScreen extends StatelessWidget {
                   Tab(icon: IconPack.basket ,
                     isActive: 0 == tabsRouter.activeIndex,
                     click: _handleClick(tabsRouter, 0),
-                    doubleClick: _doubleTap(context, InitialRouter(children: [OrderRouter()])),
+                    doubleClick: _doubleTap(context, const InitialRouter(children: [OrderRouter()])),
                   ),
                   Tab(icon: IconPack.market,
                     isActive: 1 == tabsRouter.activeIndex,
                     click: _handleClick(tabsRouter, 1),
-                    doubleClick: _doubleTap(context, InitialRouter(children: [StoreRouter()])),
+                    doubleClick: _doubleTap(context, const InitialRouter(children: [StoreRouter()])),
 
                   ),
-                  SizedBox(width: 50,),
+                  const SizedBox(width: 50,),
                   Tab(icon: IconPack.chat,
                     isActive: 2 == tabsRouter.activeIndex,
                     click: _handleClick(tabsRouter, 2),
-                    doubleClick: _doubleTap(context, InitialRouter(children: [AdRouter()])),
+                    doubleClick: _doubleTap(context, const InitialRouter(children: [AdRouter()])),
 
                   ),
                   Tab(icon: IconPack.profile,
                     isActive: 3 == tabsRouter.activeIndex,
                     click: _handleClick(tabsRouter, 3),
-                    doubleClick: _doubleTap(context, InitialRouter(children: [ProfileRouter()])),
+                    doubleClick: _doubleTap(context, const InitialRouter(children: [ProfileRouter()])),
                   ),
                 ],
               )
@@ -80,10 +83,10 @@ class SplashScreen extends StatelessWidget {
               children: [
                 FloatingActionButton(
                   onPressed: _add(context),
-                  child: Icon(Icons.add, color: Theme.of(context).colorScheme.background, size: 40,),
                   backgroundColor: Theme.of(context).colorScheme.primary,
+                  child: Icon(Icons.add, color: Theme.of(context).colorScheme.background, size: 40,),
                 ),
-                SizedBox(height: 15,)
+                const SizedBox(height: 15,)
               ],
             )
           ],
@@ -104,12 +107,12 @@ class Tab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      onTap: click,
+      onDoubleTap: doubleClick,
       child: Icon(icon,
         color: isActive? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSecondary,
         size:  isActive? 30 : 25,
       ),
-      onTap: click,
-      onDoubleTap: doubleClick,
     );
   }
 }

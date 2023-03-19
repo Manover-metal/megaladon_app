@@ -1,6 +1,7 @@
+import 'dart:math';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/core/dio/index.dart';
@@ -57,13 +58,13 @@ void main() async {
 
   runApp(
     EasyLocalization(
-      assetLoader: CodegenLoader(),
-      supportedLocales: [
+      assetLoader: const CodegenLoader(),
+      supportedLocales: const [
         Locale('en'),
         Locale('ru')
       ],
       path: 'assets/translations',
-      startLocale: Locale('ru'),
+      startLocale: const Locale('ru'),
       child: App(),
     ),
   );
@@ -187,6 +188,7 @@ class AppState extends StatefulWidget {
 
 class _AppStateState extends State<AppState> {
   late AppRouter _appRouter;
+  final maxPossibleTsf = 1.1;
 
   @override
   void initState() {
@@ -200,6 +202,15 @@ class _AppStateState extends State<AppState> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      builder: (context, child) {
+        final data = MediaQuery.of(context);
+        return MediaQuery(
+          data: data.copyWith(
+            textScaleFactor: min(maxPossibleTsf, data.textScaleFactor),
+          ),
+          child: child ?? const SizedBox.shrink(),
+        );
+      },
       debugShowCheckedModeBanner: false,
       routerDelegate: _appRouter.delegate(),
       routeInformationParser: _appRouter.defaultRouteParser(),
