@@ -37,6 +37,8 @@ class ImageMultiPicker extends StatefulWidget {
 }
 
 class _ImageMultiPickerState extends State<ImageMultiPicker> {
+  late CarouselController _carouselController;
+
   _addImage() async {
     if(await widget.controller._requestPermission()) {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -57,6 +59,13 @@ class _ImageMultiPickerState extends State<ImageMultiPicker> {
   };
 
   @override
+  void initState() {
+    _carouselController = CarouselController();
+    super.initState();
+  }
+
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
@@ -64,42 +73,63 @@ class _ImageMultiPickerState extends State<ImageMultiPicker> {
           valueListenable: widget.controller,
           builder: (context, List<PlatformFile> images, Widget? child) {
             if(images.isNotEmpty) {
-              return CarouselSlider(
-                items: images.map((image) {
-                  return Stack(
-                    children: [
-                      Container(
-                        // width: double.infinity,
-                        // height: MediaQuery.of(context).size.height / 3,
-                        child: (image.bytes != null)? Image.memory(
-                          image.bytes!,
-                          fit: BoxFit.cover,
-                        ): null,
-                      ),
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: Container(
-                          padding: const EdgeInsets.all(20),
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.cancel_outlined,
-                              color: Theme.of(context).colorScheme.error,
+              return Stack(
+                alignment: Alignment.center,
+                children: [
+                  CarouselSlider(
+                    carouselController: _carouselController,
+                    items: images.map((image) {
+                      return Stack(
+                        children: [
+                          Container(
+                            width: double.infinity,
+                            child: Image.memory(
+                              image.bytes!,
+                              fit: BoxFit.cover,
                             ),
-                            onPressed: _removeByIndex(image),
                           ),
-                        ),
-                      )
-                    ],
-                  );
-                }).toList(),
-                options: CarouselOptions(
-                    viewportFraction: 1,
-                    aspectRatio: 16/9
-                ),
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              child: IconButton(
+                                icon: Icon(
+                                  Icons.cancel,
+                                  color: Theme.of(context).colorScheme.error,
+                                ),
+                                onPressed: _removeByIndex(image),
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    }).toList(),
+                    options: CarouselOptions(
+                        enableInfiniteScroll: false,
+                        viewportFraction: 1,
+                        aspectRatio: 1.6
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back_ios_rounded),
+                      onPressed: _carouselController.previousPage,
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_forward_ios_rounded),
+                      onPressed: _carouselController.nextPage,
+                    ),
+                  )
+                ],
               );
             } return Container();
           },
         ),
+        const SizedBox(height: 10),
         OutlinedButtonApp(text: 'Добавить изображение', onPressed: _addImage,)
       ],
     );
