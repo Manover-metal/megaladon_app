@@ -7,6 +7,8 @@ import 'package:megaladon/logic/dictionary/dictionary_cubit.dart';
 
 Future<List<int>?> showOrderCategoryPicker(BuildContext context, List<OrderCategoryModel> cities) async {
   return await Picker(
+    itemExtent: 30,
+    height: MediaQuery.of(context).size.height / 3.5,
     backgroundColor: Theme.of(context).colorScheme.background,
     adapter: PickerDataAdapter<OrderCategoryModel>(
         data: cities.map((orderCategory) {

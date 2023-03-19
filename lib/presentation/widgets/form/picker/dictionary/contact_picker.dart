@@ -4,6 +4,8 @@ import 'package:megaladon/data/models/contact_model.dart';
 
 Future<List<int>?> showContactTypePicker(BuildContext context) async {
   return await Picker(
+    itemExtent: 30,
+    height: MediaQuery.of(context).size.height / 3.5,
     backgroundColor: Theme.of(context).colorScheme.background,
     adapter: PickerDataAdapter<ContactType>(
         data: ContactType.values.map((type) {

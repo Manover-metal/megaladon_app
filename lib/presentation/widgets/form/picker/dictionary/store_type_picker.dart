@@ -7,6 +7,8 @@ import 'package:megaladon/logic/dictionary/dictionary_cubit.dart';
 
 Future<List<int>?> showStoreTypePicker(BuildContext context, List<StoreTypeModel> cities) async {
   return await Picker(
+    itemExtent: 30,
+    height: MediaQuery.of(context).size.height / 3.5,
     backgroundColor: Theme.of(context).colorScheme.background,
     adapter: PickerDataAdapter<StoreTypeModel>(
         data: cities.map((storeType) {

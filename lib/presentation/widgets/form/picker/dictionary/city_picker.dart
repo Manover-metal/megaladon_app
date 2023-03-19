@@ -7,6 +7,8 @@ import 'package:megaladon/logic/dictionary/dictionary_cubit.dart';
 
 Future<List<int>?> showCityPicker(BuildContext context, List<CityModel> cities) async {
   return await Picker(
+    itemExtent: 30,
+    height: MediaQuery.of(context).size.height / 3.5,
     backgroundColor: Theme.of(context).colorScheme.background,
     adapter: PickerDataAdapter<CityModel>(
         data: cities.map((city) {
@@ -86,7 +88,6 @@ class _CityPickerState extends State<CityPicker> {
       child: ValueListenableBuilder(
         builder: (BuildContext context, CityModel city, Widget? child) {
           return TextField(
-
             controller: _textController,
             onTap: _handleClick(context),
             decoration: InputDecoration(

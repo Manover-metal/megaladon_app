@@ -5,6 +5,8 @@ import 'package:megaladon/data/models/request/index_period_enum.dart';
 
 Future<List<int>?> showIndexPeriodPicker(BuildContext context) async {
   return await Picker(
+    itemExtent: 30,
+    height: MediaQuery.of(context).size.height / 3.5,
     backgroundColor: Theme.of(context).colorScheme.background,
     adapter: PickerDataAdapter<IndexPeriod>(
         data: IndexPeriod.values.map((e) {

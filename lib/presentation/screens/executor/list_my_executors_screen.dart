@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/logic/screens/executors/my/executor_screen_my_cubit.dart';
@@ -46,31 +47,33 @@ class _ListExecutorScreenState extends State<ListExecutorScreen> {
           },
           body: RefreshIndicator(
             onRefresh: _fetch,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Column(
-                    children: [
-                      BlocBuilder<ExecutorScreenMyCubit, ExecutorScreenMyState>(
-                        builder: (context, state) {
-                          return Column(
-                            children: [
-                              ...state.executors.map((executor) {
-                                return ExecutorCard(executor: executor);
-                              }).toList(),
-                              if(state.status == ExecutorScreenMyStatus.loading) const Loader(padding: 10,)
-                              else if(state.status == ExecutorScreenMyStatus.error) ErrorMessage(error: state.error!)
+            child: CupertinoScrollbar(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Column(
+                      children: [
+                        BlocBuilder<ExecutorScreenMyCubit, ExecutorScreenMyState>(
+                          builder: (context, state) {
+                            return Column(
+                              children: [
+                                ...state.executors.map((executor) {
+                                  return ExecutorCard(executor: executor);
+                                }).toList(),
+                                if(state.status == ExecutorScreenMyStatus.loading) const Loader(padding: 10,)
+                                else if(state.status == ExecutorScreenMyStatus.error) ErrorMessage(error: state.error!)
 
-                            ],
-                          );
-                        },
-                      ),
-                      // Column(
-                      //   children: List.generate(6, (index) => ExecutorCard(executor: ,)),
-                      // )
-                    ],
-                  ),
+                              ],
+                            );
+                          },
+                        ),
+                        // Column(
+                        //   children: List.generate(6, (index) => ExecutorCard(executor: ,)),
+                        // )
+                      ],
+                    ),
+                ),
               ),
             ),
           ),

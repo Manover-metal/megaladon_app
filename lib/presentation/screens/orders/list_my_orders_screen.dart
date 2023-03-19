@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/request/params/index/order_index_request_params.dart';
@@ -90,30 +91,32 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
           },
           body: RefreshIndicator(
             onRefresh: _onRefresh,
-            child: SingleChildScrollView(
-              child: Container(
-                constraints: BoxConstraints(
-                    minHeight: MediaQuery.of(context).size.height
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  children: [
-                    BlocBuilder<OrderScreenMyCubit, OrderScreenMyState>(
-                      builder: (context, state) {
+            child: CupertinoScrollbar(
+              child: SingleChildScrollView(
+                child: Container(
+                  constraints: BoxConstraints(
+                      minHeight: MediaQuery.of(context).size.height
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    children: [
+                      BlocBuilder<OrderScreenMyCubit, OrderScreenMyState>(
+                        builder: (context, state) {
 
-                        return Column(
-                          children: [
-                            ...state.orders.map((order) {
-                              return OrderCard(order: order);
-                            }).toList(),
-                            if(state.status == OrderScreenMyStatus.loading) const Loader(padding: 10)
-                            else if(state.status == OrderScreenMyStatus.error)  ErrorMessage(error: state.error!)
-                            else if(state.stock) const StockMessage(name: 'Заказы')
-                          ],
-                        );
-                      },
-                    ),
-                  ],
+                          return Column(
+                            children: [
+                              ...state.orders.map((order) {
+                                return OrderCard(order: order);
+                              }).toList(),
+                              if(state.status == OrderScreenMyStatus.loading) const Loader(padding: 10)
+                              else if(state.status == OrderScreenMyStatus.error)  ErrorMessage(error: state.error!)
+                              else if(state.stock) const StockMessage(name: 'Заказы')
+                            ],
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

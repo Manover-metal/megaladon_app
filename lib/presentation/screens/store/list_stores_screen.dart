@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/request/params/index/store_index_request_params.dart';
@@ -96,31 +97,33 @@ class _ListStoresScreenState extends State<ListStoresScreen> {
           },
           body: RefreshIndicator(
             onRefresh: _onRefresh,
-            child: SingleChildScrollView(
-              controller: _scrollController,
-              child: Container(
-                constraints: BoxConstraints(
-                    minHeight: MediaQuery.of(context).size.height
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  children: [
-                    BlocBuilder<StoreScreenMainCubit, StoreScreenMainState>(
-                      builder: (context, state) {
-                       return Column(
-                          children: [
-                            ...state.stores.map((store) {
-                             return StoreCard(store: store);
-                            }).toList(),
-                            if(state.status == StoreScreenMainStatus.loading) const Loader(padding: 10,)
-                            else if(state.status == StoreScreenMainStatus.error)  ErrorMessage(error: state.error!)
-                            else if(state.stock) const StockMessage(name: 'Магазины')
+            child: CupertinoScrollbar(
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                child: Container(
+                  constraints: BoxConstraints(
+                      minHeight: MediaQuery.of(context).size.height
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    children: [
+                      BlocBuilder<StoreScreenMainCubit, StoreScreenMainState>(
+                        builder: (context, state) {
+                         return Column(
+                            children: [
+                              ...state.stores.map((store) {
+                               return StoreCard(store: store);
+                              }).toList(),
+                              if(state.status == StoreScreenMainStatus.loading) const Loader(padding: 10,)
+                              else if(state.status == StoreScreenMainStatus.error)  ErrorMessage(error: state.error!)
+                              else if(state.stock) const StockMessage(name: 'Магазины')
 
-                        ],
-                        );
-                      },
-                    ),
-                  ],
+                          ],
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

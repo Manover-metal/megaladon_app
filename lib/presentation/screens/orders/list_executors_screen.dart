@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/logic/screens/offers/list/offer_screen_main_cubit.dart';
@@ -32,7 +33,6 @@ class _ListExecutorsScreenState extends State<ListExecutorsScreen> {
     return Scaffold(
       body: SafeArea(
         child: NestedScrollView(
-
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return [
               const SliverToBoxAdapter(
@@ -45,31 +45,33 @@ class _ListExecutorsScreenState extends State<ListExecutorsScreen> {
           },
           body: RefreshIndicator(
             onRefresh: _refresh,
-            child: SingleChildScrollView(
-              child: Container(
-                constraints: BoxConstraints(
-                    minHeight: MediaQuery.of(context).size.height
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  children: [
-                    BlocBuilder<OfferScreenMainCubit, OfferScreenMainState>(
-                      builder: (context, state) {
-                        if(state is OfferScreenMainSuccess) {
-                          return Column(
-                            children: state.offers.map((offer) {
-                              return OfferCard(offer: offer, orderId: widget.orderId);
-                            }).toList(),
-                          );
-                        }else if(state is OfferScreenMainLoader) {
-                          return const Loader();
-                        } else if(state is OfferScreenMainError) {
-                          return ErrorMessage(error: state.error);
-                        }
-                        return Container();
-                      },
-                    )
-                  ],
+            child: CupertinoScrollbar(
+              child: SingleChildScrollView(
+                child: Container(
+                  constraints: BoxConstraints(
+                      minHeight: MediaQuery.of(context).size.height
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    children: [
+                      BlocBuilder<OfferScreenMainCubit, OfferScreenMainState>(
+                        builder: (context, state) {
+                          if(state is OfferScreenMainSuccess) {
+                            return Column(
+                              children: state.offers.map((offer) {
+                                return OfferCard(offer: offer, orderId: widget.orderId);
+                              }).toList(),
+                            );
+                          }else if(state is OfferScreenMainLoader) {
+                            return const Loader();
+                          } else if(state is OfferScreenMainError) {
+                            return ErrorMessage(error: state.error);
+                          }
+                          return Container();
+                        },
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

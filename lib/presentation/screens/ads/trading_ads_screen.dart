@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/request/params/index/advert_index_request_params.dart';
@@ -92,31 +93,33 @@ class _TradingAdsScreenState extends State<TradingAdsScreen> {
             body: RefreshIndicator(
               color: Colors.white,
               onRefresh: _onRefresh,
-              child: SingleChildScrollView(
-                controller: _scrollController,
-                child: Container(
-                  constraints: BoxConstraints(
-                      minHeight: MediaQuery.of(context).size.height
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    children: [
-                      BlocBuilder<AdvertScreenMainCubit, AdvertScreenMainState>(
-                        builder: (context, state) {
-                           return Column(
-                            children: [
-                              ...state.advers.map((adver) {
-                                return AdCard(advert: adver);
-                              }).toList(),
-                              if(state.status == AdverScreenMainStatus.loading) const Loader(padding: 10)
-                              else if(state.status == AdverScreenMainStatus.error)  ErrorMessage(error: state.error!)
-                              else if(state.stock) const StockMessage(name: 'Объявления')
+              child: CupertinoScrollbar(
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  child: Container(
+                    constraints: BoxConstraints(
+                        minHeight: MediaQuery.of(context).size.height
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      children: [
+                        BlocBuilder<AdvertScreenMainCubit, AdvertScreenMainState>(
+                          builder: (context, state) {
+                             return Column(
+                              children: [
+                                ...state.advers.map((adver) {
+                                  return AdCard(advert: adver);
+                                }).toList(),
+                                if(state.status == AdverScreenMainStatus.loading) const Loader(padding: 10)
+                                else if(state.status == AdverScreenMainStatus.error)  ErrorMessage(error: state.error!)
+                                else if(state.stock) const StockMessage(name: 'Объявления')
 
-                            ],
-                          );
-                        },
-                      ),
-                    ],
+                              ],
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
