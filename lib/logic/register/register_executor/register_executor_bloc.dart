@@ -24,7 +24,6 @@ class RegisterExecutorBloc extends Bloc<RegisterExecutorEvent, RegisterExecutorS
 
       emit(RegisterExecutorSuccess(executor));
     }).catchError((error) {
-      print(error);
       if(error is DioError) {
         emit(RegisterExecutorError(ErrorModel.parseDio(error)));
       } else {

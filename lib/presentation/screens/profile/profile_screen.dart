@@ -1,15 +1,23 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:megaladon/data/models/executor_model.dart';
 import 'package:megaladon/data/models/store_model.dart';
 import 'package:megaladon/data/models/user_model.dart';
 import 'package:megaladon/generated/locale_keys.g.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
+import 'package:megaladon/logic/form/price/price_form_cubit.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
+import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
+import 'package:megaladon/presentation/widgets/form/multi_picker/price_multi_picker.dart';
 import 'package:megaladon/presentation/widgets/list/file_download_list.dart';
+import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/message/auth_message.dart';
+import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
+import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 import 'package:megaladon/presentation/widgets/tiles/contact_tile.dart';
 import 'package:megaladon/presentation/widgets/tiles/data_tile.dart';
@@ -21,6 +29,8 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  // late PriceMultiPickerController _priceController;
+
   Future _fetch() async {
     final state = context.read<AuthBloc>().state;
     if(state is AuthLoginState) {
@@ -30,10 +40,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  // _addFile(PlatformFile file) async {
+  //   await context.read<ProfileScreenCubit>().addPrice(file);
+  // }
+  //
+  // _deleteFile(int indexFile) async {
+  //   await context.read<ProfileScreenCubit>().deleteByIndex(indexFile);
+  // }
+
   @override
   void initState() {
     _fetch();
+    // _priceController = PriceMultiPickerController(
+    //     _addFile,
+    //     _deleteFile
+    // );
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // _priceController.dispose();
+    super.dispose();
   }
 
   @override
@@ -60,16 +88,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: [
                     BlocBuilder<ProfileScreenCubit, ProfileScreenState>(
                       builder: (context, state) {
-                        if(state is ProfileScreenSuccess) {
-                          UserModel user = state.user;
+                        if(state.status == ProfileScreenStatus.success) {
+                          UserModel user = state.user!;
                           ExecutorModel? executor = state.executor;
                           StoreModel? store = state.store;
                           return Column(
                             children: [
-                              CircleAvatar(
-                                radius: MediaQuery.of(context).size.width / 6,
-                                backgroundColor: Colors.grey.shade300,
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(100),
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width/3,
+                                  height: MediaQuery.of(context).size.width/3,
+                                  color: Theme.of(context).colorScheme.secondary,
+                                  child: CachedNetworkImage(
+                                    imageUrl: user.photo ?? '',
+                                    progressIndicatorBuilder: (context, url, downloadProgress) => Icon(Icons.person, size: MediaQuery.of(context).size.width / 4),
+                                    errorWidget:  (context, url, error) => Icon(Icons.person, size: MediaQuery.of(context).size.width / 4),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                               ),
+
                               SizedBox(height: 20,),
                               DataTile(title: LocaleKeys.Name.tr(), data: user.name),
                               if(user.phone != null) DataTile(title: LocaleKeys.Telephone.tr() , data: user.phone!),
@@ -97,16 +136,77 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   return ContactTile(contact: e);
                                 }).toList(),
                                 SizedBox(height: 20,),
-                                SubTitleApp(LocaleKeys.Price_lists.tr(), textAlign: TextAlign.start,),
-                                SizedBox(height: 10,),
-                                FileDownloadList(),
+                                TitleApp('Прайс-лист'),
+
+                                BlocConsumer<PriceFormCubit, PriceFormState>(
+                                    builder: (context, state) {
+                                      return Column(
+                                        children: [
+                                          Column(
+                                            children: state.prices.map((file) {
+                                              return Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Expanded(
+                                                      child: Text(
+                                                        file.name,
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow.ellipsis,
+                                                      )
+                                                  ),
+                                                  if(file.active) IconButton(
+                                                      onPressed: () => context.read<PriceFormCubit>().deactivate(file.id),
+                                                      icon: const Icon(Icons.check_circle_rounded, color: Colors.green)
+                                                  )else IconButton(
+                                                      onPressed:  () => context.read<PriceFormCubit>().activate(file.id),
+                                                      icon: const Icon(Icons.remove_circle_outline, color: Colors.red)
+                                                  )
+
+                                                ],
+                                              );
+                                            }).toList(),
+                                          ),
+                                          ElevatedButtonApp(
+                                            text: 'Добавить прайс',
+                                            onPressed: context.read<PriceFormCubit>().addPrice,
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                    listener: (context, state) {
+                                      if(state.error != null) {
+                                        showErrorSnackBar(context, state.error!.messages[0]);
+                                      }
+                                    }
+                                ),
+                                // SubTitleApp(LocaleKeys.Price_lists.tr(), textAlign: TextAlign.start,),
+                                // SizedBox(height: 10,),
+                                // if(state.isUpdatePrice) ...[
+                                //   PriceMultiPicker(controller: _priceController, files: store.prices!,),
+                                //   ElevatedButtonApp(
+                                //     text: 'Сохранить',
+                                //     onPressed: context.read<ProfileScreenCubit>().hoverChangePrice,
+                                //   ),
+                                // ] else ...[
+                                //   if(store.prices!.isNotEmpty) FileDownloadList(files: store.prices!)
+                                //   else Text('Прайс-лист пустой'),
+                                //   ElevatedButtonApp(
+                                //     text: 'Изменить',
+                                //     onPressed: context.read<ProfileScreenCubit>().hoverChangePrice,
+                                //   ),
+                                // ],
+
                                 SizedBox(height: 20,),
                                 Divider(thickness: 1),
                               ]
                             ],
                           );
-                        } else if(state is ProfileScreenUnauthorization) {
+                        } else if(state.status == ProfileScreenStatus.notAuth) {
                           return const AuthMessage();
+                        } else if(state.status == ProfileScreenStatus.loading) {
+                          return const Loader();
+                        } else if(state.status == ProfileScreenStatus.notAuth) {
+                          return ErrorMessage(error: state.error!);
                         } else {
                           return Container();
                         }

@@ -127,7 +127,7 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                               else ...[
                                 SubTitleApp('Прикреплённые файлы'),
                                 SizedBox(height: 10,),
-                                FileDownloadList(),
+                                FileDownloadList(files: order.files!),
                               ],
                             ],
                           ),

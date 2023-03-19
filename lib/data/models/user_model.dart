@@ -27,7 +27,6 @@ class UserModel {
   });
 
   static UserModel fromJson(data) {
-    print(data);
     return UserModel(
       id: data['id'],
       name: data['name'],

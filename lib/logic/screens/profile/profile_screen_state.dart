@@ -1,61 +1,45 @@
 part of 'profile_screen_cubit.dart';
 
-abstract class ProfileScreenState extends Equatable {}
-
-class ProfileScreenInitial extends ProfileScreenState {
-  ProfileScreenInitial();
-
-  @override
-  List<Object> get props => [];
+enum ProfileScreenStatus {
+  initial, loading, success, error, notAuth
 }
 
-class ProfileScreenLoader extends ProfileScreenState {
-  ProfileScreenLoader();
-
-  @override
-  List<Object> get props => [];
-}
-
-class ProfileScreenUnauthorization extends ProfileScreenState {
-
-  ProfileScreenUnauthorization();
-
-  @override
-  List<Object> get props => [];
-}
-
-class ProfileScreenError extends ProfileScreenState {
-  final ErrorModel error;
-
-  ProfileScreenError(this.error);
-
-  @override
-  List<Object> get props => [error];
-}
-
-class ProfileScreenSuccess extends  ProfileScreenState {
-  final UserModel user;
+class ProfileScreenState extends Equatable {
+  final ProfileScreenStatus status;
+  final UserModel? user;
   final ExecutorModel? executor;
   final StoreModel? store;
+  final bool isUpdatePrice;
+  final ErrorModel? error;
 
-  ProfileScreenSuccess({
-    required this.user,
+  ProfileScreenState({
+    this.status = ProfileScreenStatus.initial,
+    this.user,
     this.executor,
-    this.store
+    this.store,
+    this.isUpdatePrice = false,
+    this.error
   });
 
   @override
-  List<Object?> get props => [user, executor, store];
+  List<Object?> get props => [status, user, executor, store, isUpdatePrice, error];
 
-  ProfileScreenSuccess copyWith({
+  ProfileScreenState copyWith({
+    ProfileScreenStatus? status,
     UserModel? user,
     ExecutorModel? executor,
-    StoreModel? store
+    StoreModel? store,
+    bool? isUpdatePrice,
+    ErrorModel? error
   }) {
-    return ProfileScreenSuccess(
+    return ProfileScreenState(
+        status: status ?? this.status,
         user: user ?? this.user,
         executor: executor ?? this.executor,
-        store: store ?? this.store
+        store: store ?? this.store,
+        isUpdatePrice: isUpdatePrice ?? this.isUpdatePrice,
+        error: error ?? this.error
     );
   }
 }
+

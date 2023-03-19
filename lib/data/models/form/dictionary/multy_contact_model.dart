@@ -23,10 +23,8 @@ class MultiContactFormModel extends FormzInput<List<ContactModel>, MultiContactV
   @override
   MultiContactValidationError? validator(List<ContactModel> value) {
     if (value.isEmpty) {
-      print('a');
       return MultiContactValidationError.empty;
     }
-    print('b');
     for(var element in value) {
       if(element.type == ContactType.home_phone || element.type == ContactType.phone
          && element.value.isEmpty || element.contactName!.isEmpty) {

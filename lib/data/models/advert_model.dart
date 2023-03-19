@@ -3,6 +3,7 @@ import 'package:megaladon/core/utils/parser.dart';
 import 'package:megaladon/data/models/category_model.dart';
 import 'package:megaladon/data/models/dictionary/advert_category_model.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
+import 'package:megaladon/data/models/dictionary/file_model.dart';
 import 'package:megaladon/data/models/user_model.dart';
 
 class AdvertModel extends Equatable {
@@ -13,7 +14,7 @@ class AdvertModel extends Equatable {
   final AdvertCategoryModel? category;
   final CityModel? city;
   final String? additionalPhone;
-  final List media;
+  final List<FileModel> media;
   final UserModel? user;
 
   const AdvertModel({
@@ -24,7 +25,7 @@ class AdvertModel extends Equatable {
     this.category,
     this.additionalPhone,
     this.city,
-    required this.media,
+    this.media = const [],
     this.user
   });
 
@@ -34,7 +35,8 @@ class AdvertModel extends Equatable {
         title: data['title'],
         description: data['description'],
         price: data['price'],
-        media: data['media'],
+        media: data['media'] != null? FileModel.listFromJson(data['media']): [],
+
     );
   }
 
@@ -50,7 +52,7 @@ class AdvertModel extends Equatable {
       title: data['title'],
       description: data['description'],
       price: data['price'],
-      media: data['media'],
+      media: data['media'] != null? FileModel.listFromJson(data['media']): [],
       category: data['category'] != null ? AdvertCategoryModel.fromJson(data['category']) : null,
       additionalPhone: data['additional_phone'],
       user: data['user'] != null ? UserModel.fromJson(data['user']) : null

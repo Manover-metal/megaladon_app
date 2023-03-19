@@ -66,7 +66,6 @@ class OrderScreenDetailsCubit extends Cubit<OrderScreenDetailsState> {
 
   Future _fetch(int id) async {
     return await _repository.info(id).then((value) {
-      print(value.status);
       emit(state.copyWith(
         order: value,
         status: OrderScreenDetailsStateStatus.success,

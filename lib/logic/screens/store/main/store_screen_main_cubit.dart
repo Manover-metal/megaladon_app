@@ -25,7 +25,6 @@ class StoreScreenMainCubit extends Cubit<StoreScreenMainState> {
       )
     );
     return await _repository.index(mainParams).then((value) {
-      print(value);
       if(mainParams.startRow == 0) {
         emit(state.copyWith(
             stores: value,
@@ -43,7 +42,6 @@ class StoreScreenMainCubit extends Cubit<StoreScreenMainState> {
         ));
       }
     }).catchError(( error) {
-      print(error);
       if(error is DioError) {
         emit(state.copyWith(
             status: StoreScreenMainStatus.error,

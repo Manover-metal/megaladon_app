@@ -2,6 +2,7 @@ import 'package:isar/isar.dart';
 import 'package:megaladon/core/utils/parser.dart';
 import 'package:megaladon/data/models/contact_model.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
+import 'package:megaladon/data/models/dictionary/file_model.dart';
 import 'package:megaladon/data/models/dictionary/store_type_model.dart';
 
 
@@ -22,7 +23,7 @@ class StoreModel {
   final bool hasPhone;
 
   @ignore
-  final List? prices;
+  final List<FileModel> prices;
 
   @ignore
   final CityModel? city;
@@ -40,7 +41,7 @@ class StoreModel {
     required this.hasPhone,
     this.photo,
     this.rating,
-    this.prices,
+    this.prices = const [],
     this.contacts,
     this.bin,
     this.lat,
@@ -65,6 +66,7 @@ class StoreModel {
   }
 
   static StoreModel fromJsonFull(data) {
+
     List<ContactModel>? contacts = data['contacts'] != null? ContactModel.fromJsonList(data['contacts']): null;
     return StoreModel(
         id: data['id'],
@@ -72,7 +74,7 @@ class StoreModel {
         fullAddress: data['full_address'],
         photo: data['photo_url'],
         name: data['name'],
-        prices: data['prices'],
+        prices: data['prices'] != null? FileModel.listFromJson(data['prices']): [],
         lat: Parser.toDouble(data['lat']),
         lon: Parser.toDouble(data['lon']),
         contacts: contacts,
