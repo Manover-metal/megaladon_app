@@ -8,9 +8,10 @@ import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/message/stock_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
-import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class TradingAdsScreen extends StatefulWidget {
+  const TradingAdsScreen({super.key});
+
   @override
   State<TradingAdsScreen> createState() => _TradingAdsScreenState();
 }
@@ -69,7 +70,7 @@ class _TradingAdsScreenState extends State<TradingAdsScreen> {
                 SliverToBoxAdapter(
                   child: Column(
                     children: [
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20),
                         child: HeaderAppBar(isMenu: true, title: 'Торговая площадка'),
                       ),
@@ -78,8 +79,8 @@ class _TradingAdsScreenState extends State<TradingAdsScreen> {
                         child: Align(
                           alignment: Alignment.centerRight,
                           child: InkWell(
-                            child: Icon(Icons.filter_alt,  size: 30),
                             onTap: _showFilter,
+                            child: const Icon(Icons.filter_alt,  size: 30),
                           ),
                         ),
                       ),
@@ -97,7 +98,7 @@ class _TradingAdsScreenState extends State<TradingAdsScreen> {
                   constraints: BoxConstraints(
                       minHeight: MediaQuery.of(context).size.height
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     children: [
                       BlocBuilder<AdvertScreenMainCubit, AdvertScreenMainState>(
@@ -109,7 +110,7 @@ class _TradingAdsScreenState extends State<TradingAdsScreen> {
                               }).toList(),
                               if(state.status == AdverScreenMainStatus.loading) const Loader(padding: 10)
                               else if(state.status == AdverScreenMainStatus.error)  ErrorMessage(error: state.error!)
-                              else if(state.stock) StockMessage(name: 'Объявления')
+                              else if(state.stock) const StockMessage(name: 'Объявления')
 
                             ],
                           );

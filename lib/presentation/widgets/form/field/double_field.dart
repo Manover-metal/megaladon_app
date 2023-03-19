@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -13,6 +12,7 @@ class DoubleFieldApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 60,
+      margin: const EdgeInsets.symmetric(vertical: 5),
       child: TextField(
         inputFormatters: [
           FilteringTextInputFormatter.allow(RegExp(r'(\d|\.)'))
@@ -22,7 +22,7 @@ class DoubleFieldApp extends StatelessWidget {
         decoration: InputDecoration(
             icon: icon,
             labelText: label,
-            contentPadding: EdgeInsets.symmetric(horizontal: 10)
+            contentPadding: const EdgeInsets.symmetric(horizontal: 10)
         ),
       ),
     );

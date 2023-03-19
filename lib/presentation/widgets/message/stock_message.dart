@@ -8,7 +8,7 @@ class StockMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 20),
+      margin: const EdgeInsets.symmetric(vertical: 20),
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -22,7 +22,7 @@ class StockMessage extends StatelessWidget {
             text: TextSpan(
               children: [
                 TextSpan(text: name),
-                TextSpan(text: ' по данному запросу закончились'),
+                const TextSpan(text: ' по данному запросу закончились'),
               ],
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w700,

@@ -10,10 +10,11 @@ import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/message/stock_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
-import 'package:megaladon/presentation/widgets/text/title.dart';
 
 
 class ListStoresScreen extends StatefulWidget {
+  const ListStoresScreen({super.key});
+
 
   @override
   State<ListStoresScreen> createState() => _ListStoresScreenState();
@@ -75,7 +76,7 @@ class _ListStoresScreenState extends State<ListStoresScreen> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: HeaderAppBar(isMenu: true, title: LocaleKeys.Theshops.tr()),
                       ),
                       Padding(
@@ -83,8 +84,8 @@ class _ListStoresScreenState extends State<ListStoresScreen> {
                         child: Align(
                           alignment: Alignment.centerRight,
                           child: InkWell(
-                            child: Icon(Icons.filter_alt, size: 30),
                             onTap: _showFilter,
+                            child: const Icon(Icons.filter_alt, size: 30),
                           ),
                         ),
                       ),
@@ -101,7 +102,7 @@ class _ListStoresScreenState extends State<ListStoresScreen> {
                 constraints: BoxConstraints(
                     minHeight: MediaQuery.of(context).size.height
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: [
                     BlocBuilder<StoreScreenMainCubit, StoreScreenMainState>(
@@ -113,7 +114,7 @@ class _ListStoresScreenState extends State<ListStoresScreen> {
                             }).toList(),
                             if(state.status == StoreScreenMainStatus.loading) const Loader(padding: 10,)
                             else if(state.status == StoreScreenMainStatus.error)  ErrorMessage(error: state.error!)
-                            else if(state.stock) StockMessage(name: 'Магазины')
+                            else if(state.stock) const StockMessage(name: 'Магазины')
 
                         ],
                         );

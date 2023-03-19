@@ -21,6 +21,8 @@ import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
 
 class CreateAdScreen extends StatefulWidget {
+  const CreateAdScreen({super.key});
+
   @override
   State<CreateAdScreen> createState() => _CreateAdScreenState();
 }
@@ -113,11 +115,11 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
                 HeaderAppBar(isBack: true, title: LocaleKeys.Creating_an_ad.tr(),),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 TextFieldApp(controller: _titleController, label: 'Название'),
                 AdvertCategoryPicker(label: LocaleKeys.Select_a_category.tr(), controller: _advertCategoryController),
                 CityPicker(label: LocaleKeys.Choose_city.tr(), controller: _cityController),
@@ -125,7 +127,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
                 NumberFieldApp(label: LocaleKeys.Price.tr(), controller: _priceController),
                 TextFieldApp(controller: _phoneController, label: 'Дополнительный телефон'),
                 ImageMultiPicker(controller: _imageController),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 BlocConsumer<AdCreateFormCubit, AdCreateFormState>(
                   listener: _listenerForm,
                   builder: (context, state) {

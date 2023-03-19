@@ -7,8 +7,8 @@ class VerifyRepository {
     required String phone,
   }) {
     return ApiService.I.post('/auth/confirm-code', data: {
-      "code": code, //101010
-      "phone": phone, //+77074054407
+      "code": code,
+      "phone": phone,
     });
   }
 }

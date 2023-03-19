@@ -1,9 +1,7 @@
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_picker/Picker.dart';
-import 'package:megaladon/data/models/category_model.dart';
 import 'package:megaladon/data/models/dictionary/order_category_model.dart';
 import 'package:megaladon/logic/dictionary/dictionary_cubit.dart';
 
@@ -84,6 +82,7 @@ class _OrderCategoryPickerState extends State<OrderCategoryPicker> {
   Widget build(BuildContext context) {
     return Container(
       height: 60,
+      margin: const EdgeInsets.symmetric(vertical: 5),
       child: ValueListenableBuilder(
         builder: (BuildContext context, OrderCategoryModel orderCategory, Widget? child) {
           return TextField(
@@ -91,10 +90,10 @@ class _OrderCategoryPickerState extends State<OrderCategoryPicker> {
             onTap: _handleClick(context),
             decoration: InputDecoration(
                 labelText: widget.label,
-                labelStyle: TextStyle(
+                labelStyle: const TextStyle(
                     fontSize: 18
                 ),
-                contentPadding: EdgeInsets.symmetric(horizontal: 10)
+                contentPadding: const EdgeInsets.symmetric(horizontal: 10)
 
             ),
           );

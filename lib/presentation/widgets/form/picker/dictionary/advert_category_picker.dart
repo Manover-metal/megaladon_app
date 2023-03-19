@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_picker/Picker.dart';
@@ -79,6 +78,7 @@ class _AdvertCategoryPickerState extends State<AdvertCategoryPicker> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.symmetric(vertical: 5),
       height: 60,
       child: ValueListenableBuilder(
         builder: (BuildContext context, AdvertCategoryModel advertCategory, Widget? child) {
@@ -87,11 +87,10 @@ class _AdvertCategoryPickerState extends State<AdvertCategoryPicker> {
             onTap: _handleClick(context),
             decoration: InputDecoration(
                 labelText: widget.label,
-                labelStyle: TextStyle(
+                labelStyle: const TextStyle(
                     fontSize: 18
                 ),
-                contentPadding: EdgeInsets.symmetric(horizontal: 10)
-
+                contentPadding: const EdgeInsets.symmetric(horizontal: 10)
             ),
           );
         },

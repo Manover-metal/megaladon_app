@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
@@ -12,6 +11,8 @@ import 'package:megaladon/presentation/widgets/form/picker/dictionary/store_type
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class FilterStoreBottomSheet extends StatefulWidget {
+  const FilterStoreBottomSheet({super.key});
+
   @override
   State<FilterStoreBottomSheet> createState() => _FilterStoreBottomSheetState();
 }
@@ -61,11 +62,11 @@ class _FilterStoreBottomSheetState extends State<FilterStoreBottomSheet> {
     return SingleChildScrollView(
       child: Container(
         color: Theme.of(context).colorScheme.background,
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Column(
           children: [
             TitleApp('Фильтр'),
-            Divider(thickness: 1,height: 20,),
+            const Divider(thickness: 1,height: 20,),
             Row(
               children: [
                 Expanded(
@@ -80,12 +81,12 @@ class _FilterStoreBottomSheetState extends State<FilterStoreBottomSheet> {
                 )
               ],
             ),
-            SizedBox(height: 30,),
+            const SizedBox(height: 30,),
             ElevatedButtonApp(
                 text: 'Применить',
                 onPressed: _back
             ),
-            SizedBox(height: 30,),
+            const SizedBox(height: 30,),
           ],
         ),
       ),

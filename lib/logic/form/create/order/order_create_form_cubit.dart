@@ -18,7 +18,7 @@ part 'order_create_form_state.dart';
 
 class OrderCreateFormCubit extends Cubit<OrderCreateFormState> {
   final OrderRepository _repository = OrderRepository();
-  OrderCreateFormCubit() : super(OrderCreateFormState());
+  OrderCreateFormCubit() : super(const OrderCreateFormState());
 
   checkCreate({
     required String title,

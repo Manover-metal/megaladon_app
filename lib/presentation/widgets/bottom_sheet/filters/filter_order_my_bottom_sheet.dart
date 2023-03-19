@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
@@ -13,6 +12,8 @@ import 'package:megaladon/presentation/widgets/form/picker/last_day_picker.dart'
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class FilterMyOrderBottomSheet extends StatefulWidget {
+  const FilterMyOrderBottomSheet({super.key});
+
   @override
   State<FilterMyOrderBottomSheet> createState() => _FilterMyOrderBottomSheetState();
 }
@@ -60,11 +61,11 @@ class _FilterMyOrderBottomSheetState extends State<FilterMyOrderBottomSheet> {
     return SingleChildScrollView(
       child: Container(
         color: Theme.of(context).colorScheme.background,
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Column(
           children: [
             TitleApp('Фильтр'),
-            Divider(thickness: 1,height: 20,),
+            const Divider(thickness: 1,height: 20,),
             Row(
               children: [
                 Expanded(
@@ -79,12 +80,12 @@ class _FilterMyOrderBottomSheetState extends State<FilterMyOrderBottomSheet> {
                 )
               ],
             ),
-            SizedBox(height: 30,),
+            const SizedBox(height: 30,),
             ElevatedButtonApp(
                 text: 'Применить',
                 onPressed: _back
             ),
-            SizedBox(height: 30,),
+            const SizedBox(height: 30,),
           ],
         ),
       ),

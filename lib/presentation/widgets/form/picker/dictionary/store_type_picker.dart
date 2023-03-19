@@ -1,5 +1,4 @@
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_picker/Picker.dart';
@@ -78,6 +77,7 @@ class _StoreTypePickerState extends State<StoreTypePicker> {
   Widget build(BuildContext context) {
     return Container(
       height: 60,
+      margin: const EdgeInsets.symmetric(vertical: 5),
       child: ValueListenableBuilder(
         builder: (BuildContext context, StoreTypeModel storeType, Widget? child) {
           return TextField(
@@ -85,10 +85,10 @@ class _StoreTypePickerState extends State<StoreTypePicker> {
             onTap: _handleClick(context),
             decoration: InputDecoration(
                 labelText: widget.label,
-                labelStyle: TextStyle(
+                labelStyle: const TextStyle(
                     fontSize: 18
                 ),
-                contentPadding: EdgeInsets.symmetric(horizontal: 10)
+                contentPadding: const EdgeInsets.symmetric(horizontal: 10)
 
           ),
           );

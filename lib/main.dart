@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/core/dio/index.dart';
@@ -57,13 +56,13 @@ void main() async {
 
   runApp(
     EasyLocalization(
-      assetLoader: CodegenLoader(),
-      supportedLocales: [
+      assetLoader: const CodegenLoader(),
+      supportedLocales: const [
         Locale('en'),
         Locale('ru')
       ],
       path: 'assets/translations',
-      startLocale: Locale('ru'),
+      startLocale: const Locale('ru'),
       child: App(),
     ),
   );

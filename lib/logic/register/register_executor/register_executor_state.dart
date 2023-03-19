@@ -27,7 +27,7 @@ class RegisterExecutorLoading extends RegisterExecutorState {
 class RegisterExecutorError extends RegisterExecutorState {
   final ErrorModel error;
 
-  RegisterExecutorError(this.error);
+  const RegisterExecutorError(this.error);
 
   @override
   List<Object> get props => [error];

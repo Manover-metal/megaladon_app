@@ -5,7 +5,6 @@ import 'package:megaladon/presentation/widgets/card/offer_card.dart';
 import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
-import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class ListExecutorsScreen extends StatefulWidget {
   final int orderId;
@@ -36,7 +35,7 @@ class _ListExecutorsScreenState extends State<ListExecutorsScreen> {
 
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return [
-              SliverToBoxAdapter(
+              const SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child: HeaderAppBar(isBack: true, title: 'Исполнители'),
@@ -51,7 +50,7 @@ class _ListExecutorsScreenState extends State<ListExecutorsScreen> {
                 constraints: BoxConstraints(
                     minHeight: MediaQuery.of(context).size.height
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: [
                     BlocBuilder<OfferScreenMainCubit, OfferScreenMainState>(
@@ -63,7 +62,7 @@ class _ListExecutorsScreenState extends State<ListExecutorsScreen> {
                             }).toList(),
                           );
                         }else if(state is OfferScreenMainLoader) {
-                          return Loader();
+                          return const Loader();
                         } else if(state is OfferScreenMainError) {
                           return ErrorMessage(error: state.error);
                         }

@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/request/order_index_sort_enum.dart';
@@ -9,6 +8,8 @@ import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class SortOrderBottomSheet extends StatefulWidget {
+  const SortOrderBottomSheet({super.key});
+
   @override
   State<SortOrderBottomSheet> createState() => _SortOrderBottomSheetState();
 }
@@ -54,11 +55,11 @@ class _SortOrderBottomSheetState extends State<SortOrderBottomSheet> {
     return SingleChildScrollView(
       child: Container(
         color: Theme.of(context).colorScheme.background,
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Column(
           children: [
             TitleApp('Сортировать'),
-            Divider(thickness: 1,height: 20,),
+            const Divider(thickness: 1,height: 20,),
             BlocBuilder<OrderScreenMainCubit, OrderScreenMainState>(
                 builder: (context, state) {
                   return Column(
@@ -73,12 +74,12 @@ class _SortOrderBottomSheetState extends State<SortOrderBottomSheet> {
                   );
                 }
             ),
-            SizedBox(height: 30,),
+            const SizedBox(height: 30,),
             ElevatedButtonApp(
                 text: 'Применить',
                 onPressed: _back
             ),
-            SizedBox(height: 30,),
+            const SizedBox(height: 30,),
           ],
         ),
       ),
@@ -109,13 +110,13 @@ class SortTile extends StatelessWidget {
           ),
           borderRadius: BorderRadius.circular(10)
         ),
-        padding: EdgeInsets.all(10),
-        margin: EdgeInsets.symmetric(vertical: 5),
+        padding: const EdgeInsets.all(10),
+        margin: const EdgeInsets.symmetric(vertical: 5),
         child: Row(
           children: [
             if(isActive && desc) Icon(Icons.arrow_downward_rounded, color: Theme.of(context).colorScheme.primary)
             else if(isActive && !desc) Icon(Icons.arrow_upward_rounded, color: Theme.of(context).colorScheme.primary),
-            SizedBox(width: 10,),
+            const SizedBox(width: 10,),
             Expanded(
               child: Text(title,
                 style: TextStyle(

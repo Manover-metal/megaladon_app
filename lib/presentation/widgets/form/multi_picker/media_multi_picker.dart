@@ -1,8 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -44,6 +41,7 @@ class _ImageMultiPickerState extends State<ImageMultiPicker> {
     if(await widget.controller._requestPermission()) {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
           allowMultiple: true,
+          withData: true,
           type: FileType.image
       );
       if (result != null) {
@@ -81,7 +79,7 @@ class _ImageMultiPickerState extends State<ImageMultiPicker> {
                       Align(
                         alignment: Alignment.topRight,
                         child: Container(
-                          padding: EdgeInsets.all(20),
+                          padding: const EdgeInsets.all(20),
                           child: IconButton(
                             icon: Icon(
                               Icons.cancel_outlined,

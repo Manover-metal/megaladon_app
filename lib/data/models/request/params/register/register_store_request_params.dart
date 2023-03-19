@@ -1,7 +1,6 @@
 
 import 'package:megaladon/data/models/contact_model.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
-import 'package:megaladon/data/models/dictionary/service_type_model.dart';
 import 'package:megaladon/data/models/dictionary/store_type_model.dart';
 
 class RegisterStoreRequestParams {

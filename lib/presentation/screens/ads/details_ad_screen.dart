@@ -9,7 +9,6 @@ import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/message/error_message.dart';
-import 'package:megaladon/presentation/widgets/list/file_download_list.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
@@ -43,7 +42,7 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
   };
 
   _toChat() {
-    context.router.navigate(DetailsChatRouter());
+    context.router.navigate(const DetailsChatRouter());
   }
 
   @override
@@ -55,9 +54,9 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
             return [
               SliverToBoxAdapter(
                   child: Column(
-                    children: [
+                    children: const [
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        padding:  EdgeInsets.symmetric(horizontal: 20.0),
                         child: HeaderAppBar(isBack: true, title: 'Объявление'),
                       ),
                     ],
@@ -81,17 +80,17 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                               children: [
                                 Text(state.advert.title),
                                 Text(state.advert.description),
-                                SizedBox(height: 20,),
+                                const SizedBox(height: 20,),
                                 if(state.advert.media.isEmpty) SubTitleApp('Нет прикреплённых файлов')
                                 else ...[
                                   SubTitleApp('Прикреплённые файлы'),
-                                  SizedBox(height: 10,),
+                                  const SizedBox(height: 10,),
                                   ...state.advert.media.map((e) {
                                     return ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
                                       child: Container(
                                         width: double.infinity,
-                                        constraints: BoxConstraints(
+                                        constraints: const BoxConstraints(
                                             minHeight: 100
                                         ),
                                         color: Theme.of(context).colorScheme.secondary,
@@ -108,16 +107,16 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                               ],
                             ),
                           ),
-                          Divider(thickness: 1),
+                          const Divider(thickness: 1),
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text('Цена: до ${state.advert.price} ₸'),
-                                SizedBox(height: 10,),
+                                const SizedBox(height: 10,),
                                 UserTile(user: state.advert.user!),
-                                SizedBox(height: 20),
+                                const SizedBox(height: 20),
                                 BlocBuilder<AuthBloc, AuthState>(
                                   builder: (context, stateUser) {
                                     if(stateUser is AuthLoginState) {
@@ -150,7 +149,7 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                         ],
                       );
                     } else if(state is AdvertScreenDetailsLoader) {
-                      return Loader(padding: 10,);
+                      return const Loader(padding: 10,);
                     } else if(state is AdvertScreenDetailsError) {
                       return ErrorMessage(error: state.error);
                     }

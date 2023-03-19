@@ -8,9 +8,10 @@ import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/message/stock_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
-import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class ListMyOrdersScreen extends StatefulWidget {
+  const ListMyOrdersScreen({super.key});
+
   @override
   State<ListMyOrdersScreen> createState() => _ListMyOrdersScreenState();
 }
@@ -68,7 +69,7 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
               SliverToBoxAdapter(
                   child: Column(
                     children: [
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20),
                         child: HeaderAppBar(isMenu: true, title: 'Мои заказы'),
                       ),
@@ -77,8 +78,8 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
                         child: Align(
                           alignment: Alignment.centerRight,
                           child: InkWell(
-                            child: Icon(Icons.filter_alt,  size: 30),
                             onTap: _showFilter,
+                            child: const Icon(Icons.filter_alt,  size: 30),
                           ),
                         ),
                       ),
@@ -94,7 +95,7 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
                 constraints: BoxConstraints(
                     minHeight: MediaQuery.of(context).size.height
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: [
                     BlocBuilder<OrderScreenMyCubit, OrderScreenMyState>(
@@ -107,7 +108,7 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
                             }).toList(),
                             if(state.status == OrderScreenMyStatus.loading) const Loader(padding: 10)
                             else if(state.status == OrderScreenMyStatus.error)  ErrorMessage(error: state.error!)
-                            else if(state.stock) StockMessage(name: 'Заказы')
+                            else if(state.stock) const StockMessage(name: 'Заказы')
                           ],
                         );
                       },

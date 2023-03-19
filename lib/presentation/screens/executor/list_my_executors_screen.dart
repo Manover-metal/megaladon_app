@@ -5,7 +5,6 @@ import 'package:megaladon/presentation/widgets/card/executor_card.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
-import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class ListExecutorScreen extends StatefulWidget {
   const ListExecutorScreen({super.key});
@@ -50,7 +49,7 @@ class _ListExecutorScreenState extends State<ListExecutorScreen> {
             child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Column(
                     children: [
                       BlocBuilder<ExecutorScreenMyCubit, ExecutorScreenMyState>(

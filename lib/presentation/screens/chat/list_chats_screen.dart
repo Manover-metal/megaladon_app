@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:megaladon/presentation/widgets/card/chat_card.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
-import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class ListChatsScreen extends StatelessWidget {
+  const ListChatsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,12 +17,12 @@ class ListChatsScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: [
-                    HeaderAppBar(
+                    const HeaderAppBar(
                       isMenu: true,
                       title: 'Чаты',
                     ),
                     Column(
-                      children: List.generate(6, (index) => ChatCard()),
+                      children: List.generate(6, (index) => const ChatCard()),
                     )
                   ],
                 ),

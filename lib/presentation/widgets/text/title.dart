@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TitleApp extends StatelessWidget {
   final String text;
 
-  TitleApp(this.text, {super.key});
+  const TitleApp(this.text, {super.key});
 
   @override
   Widget build(BuildContext context) {

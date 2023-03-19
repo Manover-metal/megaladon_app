@@ -1,9 +1,7 @@
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/Picker.dart';
 import 'package:megaladon/data/models/request/index_period_enum.dart';
-import 'package:megaladon/data/repositories/advert_repository.dart';
 
 Future<List<int>?> showIndexPeriodPicker(BuildContext context) async {
   return await Picker(
@@ -78,6 +76,7 @@ class _IndexPeriodPickerState extends State<IndexPeriodPicker> {
   Widget build(BuildContext context) {
     return Container(
       height: 60,
+      margin: const EdgeInsets.symmetric(vertical: 5),
       child: ValueListenableBuilder(
         builder: (BuildContext context, IndexPeriod period, Widget? child) {
           return TextField(
@@ -85,10 +84,10 @@ class _IndexPeriodPickerState extends State<IndexPeriodPicker> {
             onTap: _handleClick(context),
             decoration: InputDecoration(
                 labelText: widget.label,
-                labelStyle: TextStyle(
+                labelStyle: const TextStyle(
                     fontSize: 18
                 ),
-                contentPadding: EdgeInsets.symmetric(horizontal: 10)
+                contentPadding: const EdgeInsets.symmetric(horizontal: 10)
 
             ),
           );

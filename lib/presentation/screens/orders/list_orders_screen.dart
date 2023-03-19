@@ -13,6 +13,8 @@ import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/generated/locale_keys.g.dart';
 
 class ListOrdersScreen extends StatefulWidget {
+  const ListOrdersScreen({super.key});
+
   @override
   State<ListOrdersScreen> createState() => _ListOrdersScreenState();
 }
@@ -85,7 +87,7 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: HeaderAppBar(isMenu: true, title: LocaleKeys.Orders.tr()),
                       ),
                       Padding(
@@ -94,13 +96,13 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             InkWell(
-                              child: Icon(Icons.sort, size: 30),
                               onTap: _showSort,
+                              child: const Icon(Icons.sort, size: 30),
                             ),
-                            SizedBox(width: 10,),
+                            const SizedBox(width: 10,),
                             InkWell(
-                              child: Icon(Icons.filter_alt, size: 30),
                               onTap: _showFilter,
+                              child: const Icon(Icons.filter_alt, size: 30),
                             ),
                           ],
                         ),
@@ -118,7 +120,7 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
                 constraints: BoxConstraints(
                     minHeight: MediaQuery.of(context).size.height
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: [
                     BlocBuilder<OrderScreenMainCubit, OrderScreenMainState>(
@@ -130,7 +132,7 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
                             }).toList(),
                             if(state.status == OrderScreenMainStatus.loading) const Loader(padding: 10)
                             else if(state.status == OrderScreenMainStatus.error) ErrorMessage(error: state.error!)
-                            else if(state.stock) StockMessage(name: 'Заказы')
+                            else if(state.stock) const StockMessage(name: 'Заказы')
 
                           ],
                         );
