@@ -33,7 +33,7 @@ TextTheme _textTheme = TextTheme(
       fontWeight: FontWeight.w600
     ),
     bodyMedium: TextStyle(
-      fontSize: 16,
+      fontSize: 20,
       color: ColorSchemeApp.bodyText.color
     ),
     bodySmall: TextStyle(
@@ -43,6 +43,7 @@ TextTheme _textTheme = TextTheme(
     titleLarge: TextStyle(
       color: ColorSchemeApp.bodyText.color
     ),
+   
 );
 
 ThemeData themeDark =  FlexThemeData.dark(
