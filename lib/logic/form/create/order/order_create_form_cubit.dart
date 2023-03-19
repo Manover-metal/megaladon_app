@@ -61,27 +61,30 @@ class OrderCreateFormCubit extends Cubit<OrderCreateFormState> {
   }
 
   Future createFetch() async {
-    emit(state.copyWith(formState: EnumFormState.fetch));
+    if (state.formState != EnumFormState.fetch) {
+      emit(state.copyWith(formState: EnumFormState.fetch));
 
-    List<MultipartFile> files = [];
-    for (var file in state.files) {
-      if(file.path != null) {
-        files.add(await MultipartFile.fromFile(file.path!, filename: file.name));
+      List<MultipartFile> files = [];
+      for (var file in state.files) {
+        if (file.path != null) {
+          files.add(
+              await MultipartFile.fromFile(file.path!, filename: file.name));
+        }
       }
-    }
 
-    return _repository.create(OrderCreateRequestParams(
-        title: state.title.value,
-        description: state.description.value,
-        priceMax: int.parse(state.priceMax.value),
-        priceRecommended: int.parse(state.priceRecommended.value),
-        categoryId: state.category.value,
-        cityId: state.city.value,
-        files: files
-    )).then((value) {
-      emit(state.copyWith(formState: EnumFormState.success));
-    }).catchError((error) {
-      emit(state.copyWith(formState: EnumFormState.error));
-    });
+      return _repository.create(OrderCreateRequestParams(
+          title: state.title.value,
+          description: state.description.value,
+          priceMax: int.parse(state.priceMax.value),
+          priceRecommended: int.parse(state.priceRecommended.value),
+          categoryId: state.category.value,
+          cityId: state.city.value,
+          files: files
+      )).then((value) {
+        emit(state.copyWith(formState: EnumFormState.success));
+      }).catchError((error) {
+        emit(state.copyWith(formState: EnumFormState.error));
+      });
+    }
   }
 }
