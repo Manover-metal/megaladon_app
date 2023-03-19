@@ -23,7 +23,7 @@ class StoreModel {
   final bool hasPhone;
 
   @ignore
-  final List<FileModel>? prices;
+  final List<FileModel> prices;
 
   @ignore
   final CityModel? city;
@@ -74,7 +74,7 @@ class StoreModel {
         fullAddress: data['full_address'],
         photo: data['photo_url'],
         name: data['name'],
-        prices: data['prices'] != null? FileModel.listFromJson(data['prices']): null,
+        prices: data['prices'] != null? FileModel.listFromJson(data['prices']): [],
         lat: Parser.toDouble(data['lat']),
         lon: Parser.toDouble(data['lon']),
         contacts: contacts,

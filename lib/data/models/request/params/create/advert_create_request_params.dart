@@ -21,7 +21,6 @@ class AdvertCreateRequestParams {
   });
 
   toData() {
-    print(media);
     FormData data = FormData.fromMap({
       'title': title,
       'description': description,

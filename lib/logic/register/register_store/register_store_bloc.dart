@@ -23,7 +23,6 @@ class RegisterStoreBloc extends Bloc<RegisterStoreEvent, RegisterStoreState> {
       final StoreModel store = StoreModel.fromJsonMini(value.data['store']);
       emit(RegisterStoreSuccess(store));
     }).catchError((error) {
-      print(error);
       if(error is DioError) {
         emit(RegisterStoreError(ErrorModel.parseDio(error)));
       } else {

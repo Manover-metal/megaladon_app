@@ -38,7 +38,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   _initial(AuthInitialEvent event, Emitter emit) async {
     AuthModel? auth = await _authRepository.read();
-    print(auth?.token);
     if(auth != null) {
       emit(AuthLoginState(auth));
     }
@@ -63,7 +62,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       emit(AuthLoginState(auth));
     }).catchError((error) {
-      print(error);
 
       if(error is DioError) {
         if(error.response?.statusCode == 406) {
@@ -97,7 +95,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       emit(AuthLoginState(auth));
     }).catchError((error) {
-      print(error);
       if(error is DioError) {
         emit(AuthErrorState(ErrorModel.parseDio(error)));
       } else {

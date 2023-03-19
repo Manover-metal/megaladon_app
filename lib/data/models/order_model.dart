@@ -64,7 +64,6 @@ class OrderModel extends Equatable {
   }
 
   static OrderModel fromJsonFull(data) {
-    print(data);
     return OrderModel(
       id: data['id'],
       title: data['title'],

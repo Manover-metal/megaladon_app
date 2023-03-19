@@ -47,7 +47,6 @@ class AdvertModel extends Equatable {
   }
 
   static AdvertModel fromJsonAll(data) {
-    print(data);
     return AdvertModel(
       id: data['id'],
       title: data['title'],

@@ -8,6 +8,7 @@ import 'package:megaladon/data/models/store_model.dart';
 import 'package:megaladon/data/models/user_model.dart';
 import 'package:megaladon/generated/locale_keys.g.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
+import 'package:megaladon/logic/form/price/price_form_cubit.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/form/multi_picker/price_multi_picker.dart';
@@ -16,6 +17,7 @@ import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/message/auth_message.dart';
 import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
+import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 import 'package:megaladon/presentation/widgets/tiles/contact_tile.dart';
 import 'package:megaladon/presentation/widgets/tiles/data_tile.dart';
@@ -134,6 +136,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   return ContactTile(contact: e);
                                 }).toList(),
                                 SizedBox(height: 20,),
+                                TitleApp('Прайс-лист'),
+
+                                BlocConsumer<PriceFormCubit, PriceFormState>(
+                                    builder: (context, state) {
+                                      return Column(
+                                        children: [
+                                          Column(
+                                            children: state.prices.map((file) {
+                                              return Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Expanded(
+                                                      child: Text(
+                                                        file.name,
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow.ellipsis,
+                                                      )
+                                                  ),
+                                                  if(file.active) IconButton(
+                                                      onPressed: () => context.read<PriceFormCubit>().deactivate(file.id),
+                                                      icon: const Icon(Icons.check_circle_rounded, color: Colors.green)
+                                                  )else IconButton(
+                                                      onPressed:  () => context.read<PriceFormCubit>().activate(file.id),
+                                                      icon: const Icon(Icons.remove_circle_outline, color: Colors.red)
+                                                  )
+
+                                                ],
+                                              );
+                                            }).toList(),
+                                          ),
+                                          ElevatedButtonApp(
+                                            text: 'Добавить прайс',
+                                            onPressed: context.read<PriceFormCubit>().addPrice,
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                    listener: (context, state) {
+                                      if(state.error != null) {
+                                        showErrorSnackBar(context, state.error!.messages[0]);
+                                      }
+                                    }
+                                ),
                                 // SubTitleApp(LocaleKeys.Price_lists.tr(), textAlign: TextAlign.start,),
                                 // SizedBox(height: 10,),
                                 // if(state.isUpdatePrice) ...[

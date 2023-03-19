@@ -28,36 +28,14 @@ class ProfileScreenCubit extends Cubit<ProfileScreenState> {
 
   Future fetch({required int id}) async {
     emit(ProfileScreenState(status: ProfileScreenStatus.loading));
-    return _fetch(id);
+    return updateData(id);
   }
 
-  hoverChangePrice() {
-    emit(state.copyWith(isUpdatePrice: !state.isUpdatePrice));
-  }
-
-  // addPrice(PlatformFile file) async {
-  //   FormData data = FormData();
-  //   data.files.add(MapEntry('file', await MultipartFile.fromFile(file.path!, filename: file.name)));
-  //   await _repository.addPrice(data).then((value) {
-  //     return _fetch(state.user!.id);
-  //   }).catchError((error) {
-  //     print(error.response.data);
-  //   });
+  // hoverChangePrice() {
+  //   emit(state.copyWith(isUpdatePrice: !state.isUpdatePrice));
   // }
 
-  // deleteByIndex(int index) async {
-  //   if(state.store != null) {
-  //     FileModel file = state.store!.prices![index];
-  //     await _repository.deletePrice(file.id).then((value) {
-  //       return _fetch(state.user!.id);
-  //     }).catchError((error) {
-  //       print(error.response.data);
-  //     });
-  //   }
-  // }
-
-
-  Future _fetch(int id) async {
+  Future updateData(int id) async {
     return await _repository.profile(id).then((value) {
       UserModel user = UserModel.fromJson(value['user']);
       ExecutorModel? executor = value['user']['executor'] != null? ExecutorModel.fromJson(value['user']['executor']): null;
