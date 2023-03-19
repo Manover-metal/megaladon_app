@@ -47,6 +47,7 @@ class DrawerApp extends StatelessWidget {
                 return Column(
                   children: [
                     if(state is! AuthLoginState)...[
+                      SizedBox(height: 40,),
                       ElevatedButtonApp(
                         text: 'Войти',
                         onPressed: _login(context),
@@ -57,6 +58,7 @@ class DrawerApp extends StatelessWidget {
                       ),
                     ]
                     else ...[
+                      SizedBox(height:40 ,),
                       DrawerRouteTile(
                         text: 'Мои заказы',
                         page: InitialRouter(
@@ -95,6 +97,7 @@ class DrawerApp extends StatelessWidget {
             ),
             ...[
               DrawerRouteTile(
+                
                 text: LocaleKeys.Orders.tr(),
                 page: InitialRouter(children: [OrderRouter()]),
               ),
