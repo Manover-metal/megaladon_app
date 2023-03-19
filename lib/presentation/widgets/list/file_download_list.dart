@@ -1,12 +1,7 @@
-
-
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:megaladon/core/dio/index.dart';
+import 'package:megaladon/core/download/download_service.dart';
 import 'package:megaladon/data/models/dictionary/file_model.dart';
-import 'package:path_provider/path_provider.dart';
 
 class FileDownloadList extends StatefulWidget {
 
@@ -21,19 +16,8 @@ class FileDownloadList extends StatefulWidget {
 class _FileDownloadListState extends State<FileDownloadList> {
 
   _download(FileModel file) => () async {
-    Directory? dir = await getDownloadsDirectory();
-    if(dir != null) {
-      ApiService.I.download(
-          file.url,
-          dir.path,
-          onReceiveProgress: (received, total) {
-        if (total != -1) {
-          print((received / total * 100).toStringAsFixed(0) + "%");
-        }
-      });
-    }
+    DownloadService.download(url: file.url);
   };
-
 
   @override
   Widget build(BuildContext context) {
