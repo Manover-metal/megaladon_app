@@ -134,8 +134,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   return ContactTile(contact: e);
                                 }).toList(),
                                 SizedBox(height: 20,),
-                                SubTitleApp(LocaleKeys.Price_lists.tr(), textAlign: TextAlign.start,),
-                                SizedBox(height: 10,),
+                                // SubTitleApp(LocaleKeys.Price_lists.tr(), textAlign: TextAlign.start,),
+                                // SizedBox(height: 10,),
                                 // if(state.isUpdatePrice) ...[
                                 //   PriceMultiPicker(controller: _priceController, files: store.prices!,),
                                 //   ElevatedButtonApp(
