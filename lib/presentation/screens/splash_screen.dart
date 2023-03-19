@@ -23,6 +23,8 @@ class SplashScreen extends StatelessWidget {
   _add(BuildContext context) => () async {
     await showModalBottomSheet(
         useRootNavigator: true,
+        isScrollControlled: true,
+        useSafeArea: true,
         context: context,
         elevation: 100,
         builder: (_) => AddAnythingBottomSheet()

@@ -26,6 +26,8 @@ class _TradingAdsScreenState extends State<TradingAdsScreen> {
 
   _showFilter() async {
     bool? result = await showModalBottomSheet(
+        isScrollControlled: true,
+        useSafeArea: true,
         useRootNavigator: true,
         context: context,
         elevation: 100,
@@ -94,6 +96,7 @@ class _TradingAdsScreenState extends State<TradingAdsScreen> {
               color: Colors.white,
               onRefresh: _onRefresh,
               child: CupertinoScrollbar(
+                controller: _scrollController,
                 child: SingleChildScrollView(
                   controller: _scrollController,
                   child: Container(

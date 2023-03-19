@@ -58,36 +58,35 @@ class _FilterMyOrderBottomSheetState extends State<FilterMyOrderBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        color: Theme.of(context).colorScheme.background,
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: Column(
-          children: [
-            TitleApp('Фильтр'),
-            const Divider(thickness: 1,height: 20,),
-            Row(
-              children: [
-                Expanded(
-                  child: CityPicker(label: 'Город', controller: _cityPickerController,),
-                )
-              ],
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: OrderCategoryPicker(label: 'Категория', controller: _orderCategoryPickerController,),
-                )
-              ],
-            ),
-            const SizedBox(height: 30,),
-            ElevatedButtonApp(
-                text: 'Применить',
-                onPressed: _back
-            ),
-            const SizedBox(height: 30,),
-          ],
-        ),
+    return Container(
+      color: Theme.of(context).colorScheme.background,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const TitleApp('Фильтр'),
+          const Divider(thickness: 1,height: 20,),
+          Row(
+            children: [
+              Expanded(
+                child: CityPicker(label: 'Город', controller: _cityPickerController,),
+              )
+            ],
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: OrderCategoryPicker(label: 'Категория', controller: _orderCategoryPickerController,),
+              )
+            ],
+          ),
+          const SizedBox(height: 30,),
+          ElevatedButtonApp(
+              text: 'Применить',
+              onPressed: _back
+          ),
+          const SizedBox(height: 30,),
+        ],
       ),
     );
   }

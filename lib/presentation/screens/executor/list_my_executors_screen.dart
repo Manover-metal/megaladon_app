@@ -15,12 +15,20 @@ class ListExecutorScreen extends StatefulWidget {
 }
 
 class _ListExecutorScreenState extends State<ListExecutorScreen> {
+  late ScrollController _scrollController;
 
 
   @override
   void initState() {
     _fetch();
+    _scrollController = ScrollController();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   Future _fetch() async {
@@ -48,7 +56,9 @@ class _ListExecutorScreenState extends State<ListExecutorScreen> {
           body: RefreshIndicator(
             onRefresh: _fetch,
             child: CupertinoScrollbar(
+              controller: _scrollController,
               child: SingleChildScrollView(
+                controller: _scrollController,
                 scrollDirection: Axis.vertical,
                 child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),

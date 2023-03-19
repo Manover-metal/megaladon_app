@@ -5,13 +5,16 @@ import 'package:flutter_picker/Picker.dart';
 import 'package:megaladon/data/models/dictionary/order_category_model.dart';
 import 'package:megaladon/logic/dictionary/dictionary_cubit.dart';
 
-Future<List<int>?> showOrderCategoryPicker(BuildContext context, List<OrderCategoryModel> cities) async {
-  return await Picker(
+Future<OrderCategoryModel?> showOrderCategoryPicker(BuildContext context) async {
+  List<OrderCategoryModel> orderCategories = context.read<DictionaryCubit>().state.orderCategories;
+
+
+  final result = await Picker(
     itemExtent: 30,
     height: MediaQuery.of(context).size.height / 3.5,
     backgroundColor: Theme.of(context).colorScheme.background,
     adapter: PickerDataAdapter<OrderCategoryModel>(
-        data: cities.map((orderCategory) {
+        data: orderCategories.map((orderCategory) {
           return PickerItem<OrderCategoryModel>(
               text: Text(orderCategory.name),
               value: orderCategory
@@ -23,6 +26,9 @@ Future<List<int>?> showOrderCategoryPicker(BuildContext context, List<OrderCateg
     cancelText: 'Отмена',
     confirmText: 'Выбрать',
   ).showModal(context);
+
+  if(result == null) return null;
+  return orderCategories[result[0]];
 }
 
 
@@ -50,58 +56,53 @@ class OrderCategoryPicker extends StatefulWidget {
 }
 
 class _OrderCategoryPickerState extends State<OrderCategoryPicker> {
-  late TextEditingController _textController;
 
-  _handleClick(BuildContext context) => () async {
-    List<OrderCategoryModel> orderCategories = context.read<DictionaryCubit>().state.orderCategories;
+  _handleClick() async {
+    OrderCategoryModel? orderCategory = await showOrderCategoryPicker(context);
 
-    List<int>? result = await showOrderCategoryPicker(context, orderCategories);
-
-    try{
-      if (result != null) {
-        OrderCategoryModel orderCategory = orderCategories[result[0]];
-        widget.controller._changeOrderCategory(orderCategory);
-        _textController.value = TextEditingValue(text: orderCategory.name);
-      }
-    }catch (e) {}
-
-    FocusManager.instance.primaryFocus?.unfocus();
-  };
-
-  @override
-  void initState() {
-    _textController = TextEditingController(text: widget.controller.value.name);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _textController.dispose();
-    super.dispose();
+    if (orderCategory != null) {
+      widget.controller._changeOrderCategory(orderCategory);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 60,
-      margin: const EdgeInsets.symmetric(vertical: 5),
-      child: ValueListenableBuilder(
-        builder: (BuildContext context, OrderCategoryModel orderCategory, Widget? child) {
-          return TextField(
-            controller: _textController,
-            onTap: _handleClick(context),
-            decoration: InputDecoration(
-                labelText: widget.label,
-                labelStyle: const TextStyle(
-                    fontSize: 18
+    return ValueListenableBuilder(
+      builder: (BuildContext context, OrderCategoryModel orderCategory, Widget? child) {
+        return GestureDetector(
+          onTap: _handleClick,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(widget.label,
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary
                 ),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 10)
-
-            ),
-          );
-        },
-        valueListenable: widget.controller,
-      ),
+              ),
+              const SizedBox(height: 5),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(13),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.onBackground,
+                    border: Border.all(
+                        color: Theme.of(context).colorScheme.primary,
+                        width: 0.5
+                    ),
+                    borderRadius: BorderRadius.circular(10)
+                ),
+                child: Row(
+                  children: [
+                    Expanded(child: Text(orderCategory.name)),
+                    const Icon(Icons.keyboard_arrow_down_outlined)
+                  ],
+                ),
+              )
+            ],
+          ),
+        );
+      },
+      valueListenable: widget.controller,
     );
   }
 }

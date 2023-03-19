@@ -30,10 +30,12 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
 
   _showFilter() async {
     bool? result = await showModalBottomSheet(
+        useSafeArea: true,
         useRootNavigator: true,
+        isScrollControlled: true,
         context: context,
         elevation: 100,
-        builder: (_) => FilterOrderBottomSheet()
+        builder: (_) => const FilterOrderBottomSheet()
     );
     if(result != null) {
       context.read<OrderScreenMainCubit>().fetch();
@@ -43,9 +45,11 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
   _showSort() async {
     bool? result = await showModalBottomSheet(
         useRootNavigator: true,
+        isScrollControlled: true,
+        useSafeArea: true,
         context: context,
         elevation: 100,
-        builder: (_) => SortOrderBottomSheet()
+        builder: (_) => const SortOrderBottomSheet()
     );
     if(result != null && result) {
       context.read<OrderScreenMainCubit>().fetch();
@@ -116,6 +120,7 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
           body: RefreshIndicator(
             onRefresh: _onRefresh,
             child: CupertinoScrollbar(
+              controller: _scrollController,
               child: SingleChildScrollView(
                 controller: _scrollController,
                 child: Container(

@@ -21,33 +21,32 @@ class AddAnythingBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        color: Theme.of(context).colorScheme.background,
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: BlocBuilder<AuthBloc, AuthState>(
-          builder: (context, state) {
-            if(state is AuthLoginState) {
-              return Column(
-                children: [
-                  TitleApp('Создать'),
-                  const Divider(thickness: 1,height: 20,),
-                  ElevatedButtonApp(
-                    text: 'Объявление',
-                    onPressed: _createAdvert(context),
-                  ),
-                  ElevatedButtonApp(
-                    text: 'Заказ',
-                    onPressed: _createOrder(context),
-                  ),
-                  const SizedBox(height: 30,),
-                ],
-              );
-            } else {
-              return const AuthMessage(continueText: ', чтобы создать объявление или заказ',);
-            }
-          },
-        ),
+    return Container(
+      color: Theme.of(context).colorScheme.background,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, state) {
+          if(state is AuthLoginState) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const TitleApp('Создать'),
+                const Divider(thickness: 1,height: 20,),
+                ElevatedButtonApp(
+                  text: 'Объявление',
+                  onPressed: _createAdvert(context),
+                ),
+                ElevatedButtonApp(
+                  text: 'Заказ',
+                  onPressed: _createOrder(context),
+                ),
+                const SizedBox(height: 30,),
+              ],
+            );
+          } else {
+            return const AuthMessage(continueText: ', чтобы создать объявление или заказ',);
+          }
+        },
       ),
     );
   }

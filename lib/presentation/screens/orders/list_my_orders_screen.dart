@@ -50,6 +50,8 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
 
   _showFilter() async {
     bool? result = await showModalBottomSheet(
+        isScrollControlled: true,
+        useSafeArea: true,
         useRootNavigator: true,
         context: context,
         elevation: 100,
@@ -92,7 +94,9 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
           body: RefreshIndicator(
             onRefresh: _onRefresh,
             child: CupertinoScrollbar(
+              controller: _scrollController,
               child: SingleChildScrollView(
+                controller: _scrollController,
                 child: Container(
                   constraints: BoxConstraints(
                       minHeight: MediaQuery.of(context).size.height

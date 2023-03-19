@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_picker/Picker.dart';
 import 'package:megaladon/data/models/request/index_period_enum.dart';
 
-Future<List<int>?> showIndexPeriodPicker(BuildContext context) async {
-  return await Picker(
+Future<IndexPeriod?> showIndexPeriodPicker(BuildContext context) async {
+  final result =  await Picker(
     itemExtent: 30,
     height: MediaQuery.of(context).size.height / 3.5,
     backgroundColor: Theme.of(context).colorScheme.background,
@@ -21,6 +21,9 @@ Future<List<int>?> showIndexPeriodPicker(BuildContext context) async {
     cancelText: 'Отмена',
     confirmText: 'Выбрать',
   ).showModal(context);
+
+  if(result == null) return null;
+  return IndexPeriod.values[result[0]];
 }
 
 
@@ -48,49 +51,51 @@ class IndexPeriodPicker extends StatefulWidget {
 }
 
 class _IndexPeriodPickerState extends State<IndexPeriodPicker> {
-  late TextEditingController _textController;
 
-  _handleClick(BuildContext context) => () async {
-    List<int>? result = await showIndexPeriodPicker(context);
+  _handleClick() async {
+    IndexPeriod? period = await showIndexPeriodPicker(context);
 
-    if(result != null) {
-      IndexPeriod period = IndexPeriod.values[result[0]];
+    if(period != null) {
       widget.controller._changeIndexPeriod(period);
-      _textController.value = TextEditingValue(text: period.toString());
     }
-
-    FocusManager.instance.primaryFocus?.unfocus();
-  };
-
-  @override
-  void initState() {
-    _textController = TextEditingController(text: widget.controller.value.toString());
-    super.initState();
   }
 
-  @override
-  void dispose() {
-    _textController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 60,
-      margin: const EdgeInsets.symmetric(vertical: 5),
       child: ValueListenableBuilder(
         builder: (BuildContext context, IndexPeriod period, Widget? child) {
-          return TextField(
-            controller: _textController,
-            onTap: _handleClick(context),
-            decoration: InputDecoration(
-                labelText: widget.label,
-                labelStyle: const TextStyle(
-                    fontSize: 18
+          return GestureDetector(
+            onTap: _handleClick,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(widget.label,
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.secondary
+                  ),
                 ),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 10)
-
+                const SizedBox(height: 5),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(13),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onBackground,
+                      border: Border.all(
+                          color: Theme.of(context).colorScheme.primary,
+                          width: 0.5
+                      ),
+                      borderRadius: BorderRadius.circular(10)
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(child: Text(period.toString())),
+                      const Icon(Icons.keyboard_arrow_down_outlined)
+                    ],
+                  ),
+                )
+              ],
             ),
           );
         },
