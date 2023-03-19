@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/request/params/index/store_index_request_params.dart';
@@ -10,10 +11,11 @@ import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/message/stock_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
-import 'package:megaladon/presentation/widgets/text/title.dart';
 
 
 class ListStoresScreen extends StatefulWidget {
+  const ListStoresScreen({super.key});
+
 
   @override
   State<ListStoresScreen> createState() => _ListStoresScreenState();
@@ -29,10 +31,12 @@ class _ListStoresScreenState extends State<ListStoresScreen> {
 
   _showFilter() async {
     bool? result = await showModalBottomSheet(
+        isScrollControlled: true,
+        useSafeArea: true,
         useRootNavigator: true,
         context: context,
         elevation: 100,
-        builder: (_) => FilterStoreBottomSheet()
+        builder: (_) => const FilterStoreBottomSheet()
     );
     if(result != null) {
       context.read<StoreScreenMainCubit>().fetch();
@@ -75,7 +79,7 @@ class _ListStoresScreenState extends State<ListStoresScreen> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: HeaderAppBar(isMenu: true, title: LocaleKeys.Theshops.tr()),
                       ),
                       Padding(
@@ -83,8 +87,8 @@ class _ListStoresScreenState extends State<ListStoresScreen> {
                         child: Align(
                           alignment: Alignment.centerRight,
                           child: InkWell(
-                            child: Icon(Icons.filter_alt, size: 30),
                             onTap: _showFilter,
+                            child: const Icon(Icons.filter_alt, size: 30),
                           ),
                         ),
                       ),
@@ -95,31 +99,34 @@ class _ListStoresScreenState extends State<ListStoresScreen> {
           },
           body: RefreshIndicator(
             onRefresh: _onRefresh,
-            child: SingleChildScrollView(
+            child: CupertinoScrollbar(
               controller: _scrollController,
-              child: Container(
-                constraints: BoxConstraints(
-                    minHeight: MediaQuery.of(context).size.height
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  children: [
-                    BlocBuilder<StoreScreenMainCubit, StoreScreenMainState>(
-                      builder: (context, state) {
-                       return Column(
-                          children: [
-                            ...state.stores.map((store) {
-                             return StoreCard(store: store);
-                            }).toList(),
-                            if(state.status == StoreScreenMainStatus.loading) const Loader(padding: 10,)
-                            else if(state.status == StoreScreenMainStatus.error)  ErrorMessage(error: state.error!)
-                            else if(state.stock) StockMessage(name: 'Магазины')
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                child: Container(
+                  constraints: BoxConstraints(
+                      minHeight: MediaQuery.of(context).size.height
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    children: [
+                      BlocBuilder<StoreScreenMainCubit, StoreScreenMainState>(
+                        builder: (context, state) {
+                         return Column(
+                            children: [
+                              ...state.stores.map((store) {
+                               return StoreCard(store: store);
+                              }).toList(),
+                              if(state.status == StoreScreenMainStatus.loading) const Loader(padding: 10,)
+                              else if(state.status == StoreScreenMainStatus.error)  ErrorMessage(error: state.error!)
+                              else if(state.stock) const StockMessage(name: 'Магазины')
 
-                        ],
-                        );
-                      },
-                    ),
-                  ],
+                          ],
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

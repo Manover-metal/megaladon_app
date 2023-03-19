@@ -70,13 +70,14 @@ ThemeData themeDark =  FlexThemeData.dark(
 
 
 
-  subThemesData: FlexSubThemesData(
+  subThemesData: const FlexSubThemesData(
     defaultRadius: 10.0,
     inputDecoratorRadius: 10.0,
     inputDecoratorUnfocusedBorderIsColored: false,
     navigationBarHeight: 80.0,
     navigationRailIndicatorOpacity: 0.08,
     inputDecoratorSchemeColor: SchemeColor.secondaryContainer,
+
   ),
 
   visualDensity: FlexColorScheme.comfortablePlatformDensity,

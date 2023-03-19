@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/data/models/store_model.dart';
 import 'package:megaladon/presentation/routing/router.dart';
@@ -12,13 +11,13 @@ class StoreCard extends StatelessWidget {
   const StoreCard({super.key, required this.store});
 
   _onTap(BuildContext context) => () {
-        context.router.push(DetailsStoreRoute(storeId: store.id));
-      };
+    context.router.push(DetailsStoreRoute(storeId: store.id));
+  };
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
+      margin: const EdgeInsets.symmetric(vertical: 10),
       child: InkWell(
         onTap: _onTap(context),
         child: Container(
@@ -26,16 +25,16 @@ class StoreCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             color: Theme.of(context).colorScheme.tertiary,
           ),
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           child: Column(
             children: [
               StoreTile(store: store),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               DataTile(title: 'Рейтинг: ', data: store.rating ?? '0'),
               DataTile(title: 'Местоположение: ', data: store.fullAddress),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
             ],

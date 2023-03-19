@@ -16,7 +16,7 @@ part 'order_update_form_state.dart';
 
 class OrderUpdateFormCubit extends Cubit<OrderUpdateFormState> {
   final OrderRepository _repository = OrderRepository();
-  OrderUpdateFormCubit() : super(OrderUpdateFormState());
+  OrderUpdateFormCubit() : super(const OrderUpdateFormState());
 
   checkUpdate({
     required String title,

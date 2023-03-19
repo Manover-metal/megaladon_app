@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TextFieldApp extends StatelessWidget {
@@ -12,17 +11,16 @@ class TextFieldApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 60,
-      margin: EdgeInsets.symmetric(vertical: 5),
+      margin: const EdgeInsets.symmetric(vertical: 5),
       child: TextField(
-
         controller: controller,
         decoration: InputDecoration(
           icon: icon,
           labelText: label,
-          labelStyle: TextStyle(
+          labelStyle: const TextStyle(
               fontSize: 18
           ),
-          contentPadding: EdgeInsets.symmetric(horizontal: 10)
+          contentPadding: const EdgeInsets.symmetric(horizontal: 10)
         ),
       ),
     );

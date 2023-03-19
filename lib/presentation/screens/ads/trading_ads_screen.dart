@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/request/params/index/advert_index_request_params.dart';
@@ -8,9 +9,10 @@ import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/message/stock_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
-import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class TradingAdsScreen extends StatefulWidget {
+  const TradingAdsScreen({super.key});
+
   @override
   State<TradingAdsScreen> createState() => _TradingAdsScreenState();
 }
@@ -24,6 +26,8 @@ class _TradingAdsScreenState extends State<TradingAdsScreen> {
 
   _showFilter() async {
     bool? result = await showModalBottomSheet(
+        isScrollControlled: true,
+        useSafeArea: true,
         useRootNavigator: true,
         context: context,
         elevation: 100,
@@ -69,7 +73,7 @@ class _TradingAdsScreenState extends State<TradingAdsScreen> {
                 SliverToBoxAdapter(
                   child: Column(
                     children: [
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20),
                         child: HeaderAppBar(isMenu: true, title: 'Торговая площадка'),
                       ),
@@ -78,8 +82,8 @@ class _TradingAdsScreenState extends State<TradingAdsScreen> {
                         child: Align(
                           alignment: Alignment.centerRight,
                           child: InkWell(
-                            child: Icon(Icons.filter_alt,  size: 30),
                             onTap: _showFilter,
+                            child: const Icon(Icons.filter_alt,  size: 30),
                           ),
                         ),
                       ),
@@ -91,31 +95,34 @@ class _TradingAdsScreenState extends State<TradingAdsScreen> {
             body: RefreshIndicator(
               color: Colors.white,
               onRefresh: _onRefresh,
-              child: SingleChildScrollView(
+              child: CupertinoScrollbar(
                 controller: _scrollController,
-                child: Container(
-                  constraints: BoxConstraints(
-                      minHeight: MediaQuery.of(context).size.height
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    children: [
-                      BlocBuilder<AdvertScreenMainCubit, AdvertScreenMainState>(
-                        builder: (context, state) {
-                           return Column(
-                            children: [
-                              ...state.advers.map((adver) {
-                                return AdCard(advert: adver);
-                              }).toList(),
-                              if(state.status == AdverScreenMainStatus.loading) const Loader(padding: 10)
-                              else if(state.status == AdverScreenMainStatus.error)  ErrorMessage(error: state.error!)
-                              else if(state.stock) StockMessage(name: 'Объявления')
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  child: Container(
+                    constraints: BoxConstraints(
+                        minHeight: MediaQuery.of(context).size.height
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      children: [
+                        BlocBuilder<AdvertScreenMainCubit, AdvertScreenMainState>(
+                          builder: (context, state) {
+                             return Column(
+                              children: [
+                                ...state.advers.map((adver) {
+                                  return AdCard(advert: adver);
+                                }).toList(),
+                                if(state.status == AdverScreenMainStatus.loading) const Loader(padding: 10)
+                                else if(state.status == AdverScreenMainStatus.error)  ErrorMessage(error: state.error!)
+                                else if(state.stock) const StockMessage(name: 'Объявления')
 
-                            ],
-                          );
-                        },
-                      ),
-                    ],
+                              ],
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

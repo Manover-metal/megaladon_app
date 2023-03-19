@@ -9,7 +9,6 @@ import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
-import 'package:megaladon/presentation/widgets/text/title.dart';
 import 'package:megaladon/presentation/widgets/tiles/data_tile.dart';
 import 'package:megaladon/presentation/widgets/tiles/executor_tile.dart';
 
@@ -61,7 +60,7 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
               child: NestedScrollView(
                 headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
                   return [
-                    SliverToBoxAdapter(
+                    const SliverToBoxAdapter(
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20),
                         child: HeaderAppBar(isBack: true, title: 'Предложение исполнителя'),
@@ -74,7 +73,7 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
                     constraints: BoxConstraints(
                         minHeight: MediaQuery.of(context).size.height
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
                       children: [
                         BlocBuilder<OfferScreenDetailsCubit, OfferScreenDetailsState>(
@@ -83,18 +82,18 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
                               return Column(
                                 children: [
                                   if(state.offer.executor != null) ExecutorTile(executor: state.offer.executor!,),
-                                  SizedBox(height: 20,),
+                                  const SizedBox(height: 20,),
                                   DataTile(title: 'Актуален до: ', data: state.offer.expiredAt,),
                                   DataTile(title: 'Цена: ', data: '${state.offer.price} ₸',),
                                   DataTile(title: 'Сроки: ', data: state.offer.date,),
                                   DataTile(title: 'Местоположение: ', data: 'г. ${state.offer.city?.name }',),
                                   if(state.offer.comment != null) DataTile(title: 'Описание:  ', data: state.offer.comment!,),
-                                  SizedBox(height: 20,),
+                                  const SizedBox(height: 20,),
                                   ElevatedButtonApp(text: 'Назначить исполнителем', onPressed: _acceptOffer,)
                                 ],
                               );
                             } else if(state is OfferScreenDetailsLoader) {
-                              return Loader();
+                              return const Loader();
                             } else if(state is OfferScreenDetailsError) {
                               return ErrorMessage(error: state.error);
                             }

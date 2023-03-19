@@ -1,6 +1,4 @@
-import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 
@@ -21,11 +19,6 @@ class FileMultiPickerController extends ValueNotifier<List<PlatformFile>> {
     _listener();
   }
 
-  @override
-  void dispose() {
-    
-    super.dispose();
-  }
 }
 
 class FileMultiPicker extends StatefulWidget {

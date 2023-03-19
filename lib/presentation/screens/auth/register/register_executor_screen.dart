@@ -18,6 +18,8 @@ import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class RegisterExecutorScreen extends StatefulWidget {
+  const RegisterExecutorScreen({super.key});
+
 
   @override
   State<RegisterExecutorScreen> createState() => _RegisterExecutorScreenState();
@@ -61,7 +63,7 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
 
   _listenRegister(bool isListener) => (BuildContext context, RegisterExecutorState state) {
     if(state is RegisterExecutorSuccess) {
-      context.router.navigate(InitialRouter(
+      context.router.navigate(const InitialRouter(
           children: [
             ProfileRouter()
           ]
@@ -121,44 +123,44 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
         child: SafeArea(
           child: SingleChildScrollView(
             child: Container(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
                   TitleApp('Регистрация исполнителя'),
-                  SizedBox(height: 20,),
+                  const SizedBox(height: 20,),
                   TextFieldApp(
                     label: 'Имя',
-                    icon: Icon(Icons.person_add_alt_1),
+                    icon: const Icon(Icons.person_add_alt_1),
                     controller: _nameController,
                   ),
                   NumberFieldApp(
                     label: 'БИН',
-                    icon: Icon(Icons.wallet),
+                    icon: const Icon(Icons.wallet),
                     controller: _binController,
                   ),
                   TextFieldApp(
                     label: 'Полный адрес',
-                    icon: Icon(Icons.maps_home_work_outlined),
+                    icon: const Icon(Icons.maps_home_work_outlined),
                     controller: _fullAddressController,
                   ),
                   DoubleFieldApp(
                     label: 'Широта',
-                    icon: Icon(Icons.place),
+                    icon: const Icon(Icons.place),
                     controller: _latController,
                   ),
                   DoubleFieldApp(
                     label: 'Долгота',
-                    icon: Icon(Icons.place_outlined),
+                    icon: const Icon(Icons.place_outlined),
                     controller: _lonController,
                   ),
                   ServiceTypeMultiPicker(serviceTypeControllers: _serviceController),
 
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   BlocBuilder<RegisterExecutorBloc, RegisterExecutorState>(
                     builder: (context, state) {
                       if (state is RegisterExecutorLoading) {
                         return ElevatedButtonApp(
-                          child: Loader(),
+                          child: const Loader(),
                           onPressed: () {},
                         );
                       }
@@ -168,9 +170,9 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
                       );
                     },
                   ),
-                  Text.rich(
+                  const Text.rich(
                     TextSpan(
-                        children: const [
+                        children: [
                           TextSpan(
                             text: 'Нажимая на кнопку “Продолжить”, вы принимаете '
                           ),

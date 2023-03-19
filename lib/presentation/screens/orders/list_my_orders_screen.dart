@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/request/params/index/order_index_request_params.dart';
@@ -8,9 +9,10 @@ import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/message/stock_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
-import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class ListMyOrdersScreen extends StatefulWidget {
+  const ListMyOrdersScreen({super.key});
+
   @override
   State<ListMyOrdersScreen> createState() => _ListMyOrdersScreenState();
 }
@@ -48,6 +50,8 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
 
   _showFilter() async {
     bool? result = await showModalBottomSheet(
+        isScrollControlled: true,
+        useSafeArea: true,
         useRootNavigator: true,
         context: context,
         elevation: 100,
@@ -68,7 +72,7 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
               SliverToBoxAdapter(
                   child: Column(
                     children: [
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20),
                         child: HeaderAppBar(isMenu: true, title: 'Мои заказы'),
                       ),
@@ -77,8 +81,8 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
                         child: Align(
                           alignment: Alignment.centerRight,
                           child: InkWell(
-                            child: Icon(Icons.filter_alt,  size: 30),
                             onTap: _showFilter,
+                            child: const Icon(Icons.filter_alt,  size: 30),
                           ),
                         ),
                       ),
@@ -89,30 +93,34 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
           },
           body: RefreshIndicator(
             onRefresh: _onRefresh,
-            child: SingleChildScrollView(
-              child: Container(
-                constraints: BoxConstraints(
-                    minHeight: MediaQuery.of(context).size.height
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  children: [
-                    BlocBuilder<OrderScreenMyCubit, OrderScreenMyState>(
-                      builder: (context, state) {
+            child: CupertinoScrollbar(
+              controller: _scrollController,
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                child: Container(
+                  constraints: BoxConstraints(
+                      minHeight: MediaQuery.of(context).size.height
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    children: [
+                      BlocBuilder<OrderScreenMyCubit, OrderScreenMyState>(
+                        builder: (context, state) {
 
-                        return Column(
-                          children: [
-                            ...state.orders.map((order) {
-                              return OrderCard(order: order);
-                            }).toList(),
-                            if(state.status == OrderScreenMyStatus.loading) const Loader(padding: 10)
-                            else if(state.status == OrderScreenMyStatus.error)  ErrorMessage(error: state.error!)
-                            else if(state.stock) StockMessage(name: 'Заказы')
-                          ],
-                        );
-                      },
-                    ),
-                  ],
+                          return Column(
+                            children: [
+                              ...state.orders.map((order) {
+                                return OrderCard(order: order);
+                              }).toList(),
+                              if(state.status == OrderScreenMyStatus.loading) const Loader(padding: 10)
+                              else if(state.status == OrderScreenMyStatus.error)  ErrorMessage(error: state.error!)
+                              else if(state.stock) const StockMessage(name: 'Заказы')
+                            ],
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -5,18 +5,20 @@ import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
+  const ResetPasswordScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: Column(
               children: [
                 TitleApp('Изменить пароль'),
-                SizedBox(height: 20,),
-                TextFieldApp(),
+                const SizedBox(height: 20,),
+                const TextFieldApp(),
                 ElevatedButtonApp(text: 'Изменить'),
                 OutlinedButtonApp(text: 'Отмена')
               ],

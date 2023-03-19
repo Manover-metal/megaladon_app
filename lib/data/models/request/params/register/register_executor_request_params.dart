@@ -1,9 +1,4 @@
-import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/dictionary/service_type_model.dart';
-import 'package:megaladon/data/models/dictionary/store_type_model.dart';
-import 'package:megaladon/data/models/request/index_period_enum.dart';
-
-
 
 class RegisterExecutorRequestParams {
   final String name;

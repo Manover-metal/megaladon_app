@@ -1,10 +1,7 @@
-import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
-import 'package:megaladon/core/dio/index.dart';
-import 'package:megaladon/core/dio/interceptors/auth_interceptors.dart';
 import 'package:megaladon/data/models/auth/auth_model.dart';
 import 'package:megaladon/data/models/error_model.dart';
 import 'package:megaladon/data/models/executor_model.dart';

@@ -3,20 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 
 class ChatCard extends StatelessWidget {
+
   const ChatCard({
     super.key,
   });
+
   _onTap(BuildContext context) => () {
-      
-      context.router.navigate(const DetailsChatRouter());
-      };
+    context.router.navigate(const DetailsChatRouter());
+  };
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: _onTap(context),
       child: Container(
-        padding: EdgeInsets.all(5),
-        margin: EdgeInsets.symmetric(vertical: 5),
+        padding: const EdgeInsets.all(5),
+        margin: const EdgeInsets.symmetric(vertical: 5),
         width: double.infinity,
         // height: MediaQuery.of(context).size.height / 7,
         decoration: BoxDecoration(
@@ -31,9 +33,10 @@ class ChatCard extends StatelessWidget {
                 height: 50,
                 width: 50,
                 decoration: BoxDecoration(
-                  image: DecorationImage(
+                  image: const DecorationImage(
                       image: AssetImage('assets/logo/logo.png'),
-                      fit: BoxFit.fill),
+                      fit: BoxFit.fill
+                  ),
                   borderRadius: BorderRadius.circular(30),
                 ),
               ),
@@ -42,7 +45,7 @@ class ChatCard extends StatelessWidget {
               child: Column(
                 children: [
                   Row(
-                    children: [
+                    children: const [
                       Expanded(
                         child: Text(
                           'Дональд Трамп',
@@ -54,7 +57,7 @@ class ChatCard extends StatelessWidget {
                       Icon(Icons.check),
                     ],
                   ),
-                  Text(
+                  const Text(
                       'Видеохотинг, предоставляющий пользователям услуги хранения, доставки и показа видео. ',
                       softWrap: true,
                       maxLines: 2,

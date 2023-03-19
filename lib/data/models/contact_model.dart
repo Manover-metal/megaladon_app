@@ -1,12 +1,12 @@
 enum ContactType {
-  phone, home_phone, site, email;
+  phone, homePhone, site, email;
 
   static ContactType parse(String data) {
     switch(data) {
       case 'phone': {
         return phone;
       } case 'home_phone': {
-        return home_phone;
+        return homePhone;
       } case 'site': {
         return site;
       } case 'email': {
@@ -21,7 +21,7 @@ enum ContactType {
     switch(this) {
       case phone: {
         return 'Мобильный телефон';
-      } case home_phone: {
+      } case homePhone: {
         return 'Домашний телефон';
       } case site: {
         return 'Сайт';

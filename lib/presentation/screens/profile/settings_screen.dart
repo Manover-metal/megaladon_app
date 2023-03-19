@@ -4,6 +4,8 @@ import 'package:megaladon/presentation/widgets/navigate/header.dart';
 
 
 class SettingsScreen extends StatefulWidget {
+  const SettingsScreen({super.key});
+
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
 }
@@ -19,15 +21,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                HeaderAppBar(
+                const HeaderAppBar(
                   isMenu: true,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                  children: const [
                     Text('Push-уведомления'),
                     SwitchExample(),
                   ],
@@ -35,7 +37,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Язык'),
+                    const Text('Язык'),
                     DropdownButton<String>(
                       value: dropdownvalue,
                       items: items.map((String listLang) {
@@ -65,7 +67,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   text: 'Сменить номер телефона',
                   onPressed: () {},
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 50,
                 ),
                 OutlinedButtonApp(

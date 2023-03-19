@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/request/params/index/advert_index_request_params.dart';
@@ -10,6 +9,8 @@ import 'package:megaladon/presentation/widgets/form/field/number_field.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class FilterAdBottomSheet extends StatefulWidget {
+  const FilterAdBottomSheet({super.key});
+
   @override
   State<FilterAdBottomSheet> createState() => _FilterAdBottomSheetState();
 }
@@ -60,63 +61,62 @@ class _FilterAdBottomSheetState extends State<FilterAdBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        color: Theme.of(context).colorScheme.background,
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: Column(
-          children: [
-            TitleApp('Фильтр'),
-            Divider(
-              thickness: 1,
-              height: 20,
-            ),
-            IntrinsicHeight(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 10.0),
-                    child: Text('Цена от:',
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontWeight: FontWeight.w700)),
-                  ),
-                  Expanded(
-                      child: NumberFieldApp(
-                    controller: _fromController,
-                  )),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: Text('До:',
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontWeight: FontWeight.w700)),
-                  ),
-                  Expanded(
-                      child: NumberFieldApp(controller: _beforeController)),
-                ],
-              ),
-            ),
-            Row(
+    return Container(
+      color: Theme.of(context).colorScheme.background,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const TitleApp('Фильтр'),
+          const Divider(
+            thickness: 1,
+            height: 20,
+          ),
+          IntrinsicHeight(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 10.0),
+                  child: Text('Цена от:',
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                          fontWeight: FontWeight.w700)),
+                ),
                 Expanded(
-                  child: IndexPeriodPicker(
-                    label: 'За последние период',
-                    controller: _indexPeriodPickerController,
-                  ),
-                )
+                    child: NumberFieldApp(
+                  controller: _fromController,
+                )),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Text('До:',
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                          fontWeight: FontWeight.w700)),
+                ),
+                Expanded(
+                    child: NumberFieldApp(controller: _beforeController)),
               ],
             ),
-            SizedBox(
-              height: 30,
-            ),
-            ElevatedButtonApp(text: 'Применить', onPressed: _back),
-            SizedBox(
-              height: 30,
-            ),
-          ],
-        ),
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: IndexPeriodPicker(
+                  label: 'За последние период',
+                  controller: _indexPeriodPickerController,
+                ),
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          ElevatedButtonApp(text: 'Применить', onPressed: _back),
+          const SizedBox(
+            height: 30,
+          ),
+        ],
       ),
     );
   }

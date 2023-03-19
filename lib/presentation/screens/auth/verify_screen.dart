@@ -57,7 +57,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
 
   _listenerVerify(bool isListener) => (BuildContext context, AuthState state) {
     if(state is AuthLoginState) {
-      context.router.navigate(InitialRouter(
+      context.router.navigate(const InitialRouter(
         children: [
           ProfileRouter()
         ]
@@ -81,12 +81,12 @@ class _VerifyScreenState extends State<VerifyScreen> {
         ],
         child: SafeArea(
           child: Container(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                Spacer(),
+                const Spacer(),
                 TitleApp('Регистрация'),
-                SizedBox(height: 20,),
+                const SizedBox(height: 20,),
                 PinCodeTextField(
                     appContext: context,
                     length: 6,
@@ -105,17 +105,20 @@ class _VerifyScreenState extends State<VerifyScreen> {
                       inactiveFillColor: Theme.of(context).colorScheme.onBackground,
                     ), onChanged: (String value) {  },
                 ),
-                Text('Введите 6-ти значный код из смс'),
+                const Text('Введите 6-ти значный код из смс'),
                 BlocBuilder<AuthBloc,AuthState>(
                   builder: (context, state) {
                     if(state is AuthLoginState) {
-                      return ElevatedButtonApp(child: Loader(color: Theme.of(context).colorScheme.background,), onPressed: _verify,);
+                      return ElevatedButtonApp(
+                        onPressed: _verify,
+                        child: Loader(color: Theme.of(context).colorScheme.background)
+                      );
                     }
                     return ElevatedButtonApp(text: 'Подтвердить', onPressed: _verify,);
                   }
                 ),
                 OutlinedButtonApp(text: 'Выслать код повторно'),
-                Spacer(flex: 3),
+                const Spacer(flex: 3),
               ],
             ),
           ),

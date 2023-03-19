@@ -1,10 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/Picker.dart';
 import 'package:megaladon/data/models/contact_model.dart';
 
 Future<List<int>?> showContactTypePicker(BuildContext context) async {
   return await Picker(
+    itemExtent: 30,
+    height: MediaQuery.of(context).size.height / 3.5,
     backgroundColor: Theme.of(context).colorScheme.background,
     adapter: PickerDataAdapter<ContactType>(
         data: ContactType.values.map((type) {
@@ -38,7 +39,7 @@ class ContactTypePickerController extends ValueNotifier<ContactType> {
     _nameController?.dispose();
 
     _valueController = TextEditingController();
-    if(value == ContactType.phone || value == ContactType.home_phone) {
+    if(value == ContactType.phone || value == ContactType.homePhone) {
       _nameController = TextEditingController();
     } else {
       _nameController = null;
@@ -125,7 +126,7 @@ class _ContactTypePickerState extends State<ContactTypePicker> {
                 contentPadding: const EdgeInsets.symmetric(horizontal: 10)
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             TextField(
               controller: widget.controller._valueController,
               decoration: InputDecoration(
@@ -136,7 +137,7 @@ class _ContactTypePickerState extends State<ContactTypePicker> {
                   contentPadding: const EdgeInsets.symmetric(horizontal: 10)
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             if(widget.controller._nameController != null) TextField(
               controller: widget.controller._nameController,
               decoration: const InputDecoration(
