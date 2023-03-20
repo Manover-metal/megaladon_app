@@ -12,5 +12,4 @@ class AdTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(advert.title);
   }
-
 }

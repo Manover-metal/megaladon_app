@@ -16,6 +16,9 @@ class RegisterUserBloc extends Bloc<RegisterUserEvent, RegisterUserState> {
   }
 
   _register(RegisterUserFetchEvent event, Emitter emit ) async {
+    if(state is RegisterUserLoading) return;
+
+
     emit(RegisterUserLoading());
     await _repository.registerUser(event.params).then((value) {
       emit(RegisterUserSuccess());

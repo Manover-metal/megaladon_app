@@ -71,6 +71,7 @@ class StoreModel {
     return StoreModel(
         id: data['id'],
         rating: data['rating'],
+        bin: Parser.toInt(data['bin']),
         fullAddress: data['full_address'],
         photo: data['photo_url'],
         name: data['name'],

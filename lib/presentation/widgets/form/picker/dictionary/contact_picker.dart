@@ -27,9 +27,11 @@ class ContactTypePickerController extends ValueNotifier<ContactType> {
   late TextEditingController _valueController;
   TextEditingController? _nameController;
 
-  ContactTypePickerController({ ContactType type = ContactType.phone}) : super(type) {
-    _valueController = TextEditingController();
-    _nameController = TextEditingController();
+  ContactTypePickerController({ ContactModel? type}) : super(type?.type ?? ContactType.phone) {
+    _valueController = TextEditingController(text: type?.value);
+    if(_checkPhone()) {
+      _nameController = TextEditingController(text: type?.contactName);
+    }
   }
 
   void _changeContactType(ContactType type) {
@@ -39,7 +41,7 @@ class ContactTypePickerController extends ValueNotifier<ContactType> {
     _nameController?.dispose();
 
     _valueController = TextEditingController();
-    if(value == ContactType.phone || value == ContactType.homePhone) {
+    if(_checkPhone()) {
       _nameController = TextEditingController();
     } else {
       _nameController = null;
@@ -53,6 +55,10 @@ class ContactTypePickerController extends ValueNotifier<ContactType> {
       value: _valueController.value.text,
       contactName: _nameController?.value.text
     );
+  }
+
+  bool _checkPhone() {
+    return value == ContactType.phone || value == ContactType.homePhone;
   }
 
   @override
