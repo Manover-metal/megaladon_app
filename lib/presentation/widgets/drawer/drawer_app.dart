@@ -73,18 +73,18 @@ class DrawerApp extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const DrawerRouteTile(
-                        text: 'Мои исполнители',
-                        page: InitialRouter(children: [
-                          ProfileRouter(children: [ListExecutorRoute()])]
-                        ),
-                      ),
-                      const DrawerRouteTile(
-                        text: 'Чат',
-                        page: InitialRouter(children: [
-                          ProfileRouter(children: [ListChatsRoute()])
-                        ]),
-                      ),
+                      // const DrawerRouteTile(
+                      //   text: 'Мои исполнители',
+                      //   page: InitialRouter(children: [
+                      //     ProfileRouter(children: [ListExecutorRoute()])]
+                      //   ),
+                      // ),
+                      // const DrawerRouteTile(
+                      //   text: 'Чат',
+                      //   page: InitialRouter(children: [
+                      //     ProfileRouter(children: [ListChatsRoute()])
+                      //   ]),
+                      // ),
                       const Divider(
                         thickness: 1,
                       )
