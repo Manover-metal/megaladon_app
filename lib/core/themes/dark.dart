@@ -33,7 +33,7 @@ TextTheme _textTheme = TextTheme(
       fontWeight: FontWeight.w600
     ),
     bodyMedium: TextStyle(
-      fontSize: 20,
+      fontSize: 18,
       color: ColorSchemeApp.bodyText.color
     ),
     bodySmall: TextStyle(
