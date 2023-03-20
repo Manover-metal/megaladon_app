@@ -112,7 +112,7 @@ flutter:
     - family: IconPack
 
       fonts:
-        - asset: assets/fonts/MyIcon.ttf
+        - asset: assets/fonts/MyPack.ttf
     # - family: Schyler
     #   fonts:
     #     - asset: fonts/Schyler-Regular.ttf

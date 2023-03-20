@@ -16,7 +16,7 @@ enum ColorSchemeApp {
   onError(Colors.white),
   success(Color.fromRGBO(5, 150, 105, 1)),
   onSuccess(Colors.white),
-  container(Color.fromRGBO(54, 54, 54, 1)),
+  container(Color.fromRGBO(54, 54, 54, 0.3)),
   onContainer(Color.fromRGBO(54, 54, 54, 1));
 
 
@@ -33,7 +33,7 @@ TextTheme _textTheme = TextTheme(
       fontWeight: FontWeight.w600
     ),
     bodyMedium: TextStyle(
-      fontSize: 16,
+      fontSize: 18,
       color: ColorSchemeApp.bodyText.color
     ),
     bodySmall: TextStyle(
@@ -43,6 +43,7 @@ TextTheme _textTheme = TextTheme(
     titleLarge: TextStyle(
       color: ColorSchemeApp.bodyText.color
     ),
+   
 );
 
 ThemeData themeDark =  FlexThemeData.dark(

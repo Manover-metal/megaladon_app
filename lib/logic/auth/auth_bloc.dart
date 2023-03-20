@@ -41,6 +41,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   _login(AuthLoginEvent event, Emitter emit) async {
+    if(state is AuthLoadingState) return;
     emit(AuthLoadingState());
     await _authRepository.login(phone: event.phone, password: event.password).then((value) {
 

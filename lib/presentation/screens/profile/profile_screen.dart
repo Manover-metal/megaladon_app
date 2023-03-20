@@ -8,8 +8,10 @@ import 'package:megaladon/data/models/user_model.dart';
 import 'package:megaladon/generated/locale_keys.g.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/form/price/price_form_cubit.dart';
+import 'package:megaladon/logic/screens/profile/change_photo/change_photo_cubit.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
+import 'package:megaladon/presentation/widgets/drawer/drawer_profile.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/message/auth_message.dart';
 import 'package:megaladon/presentation/widgets/message/error_message.dart';
@@ -28,7 +30,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  // late PriceMultiPickerController _priceController;
 
   Future _fetch() async {
     final state = context.read<AuthBloc>().state;
@@ -38,43 +39,48 @@ class _ProfileScreenState extends State<ProfileScreen> {
       return await context.read<ProfileScreenCubit>().fetch(id: 0);
     }
   }
-
-  // _addFile(PlatformFile file) async {
-  //   await context.read<ProfileScreenCubit>().addPrice(file);
-  // }
-  //
-  // _deleteFile(int indexFile) async {
-  //   await context.read<ProfileScreenCubit>().deleteByIndex(indexFile);
-  // }
-
   @override
   void initState() {
     _fetch();
-    // _priceController = PriceMultiPickerController(
-    //     _addFile,
-    //     _deleteFile
-    // );
     super.initState();
   }
 
   @override
   void dispose() {
-    // _priceController.dispose();
     super.dispose();
+  }
+
+  _context(context) => () {
+    Scaffold.of(context).openEndDrawer();
+  };
+
+  _changePhoto() {
+    context.read<ChangePhotoCubit>().changePhoto();
+  }
+
+  _photoListener(BuildContext context, ChangePhotoState state) {
+    if(state.status == PhotoStatus.error) {
+      showErrorSnackBar(context, state.error!.messages[0]);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      endDrawer: DrawerProfile(),
       body: SafeArea(
         child: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return [
-              const SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: HeaderAppBar(isMenu: true, title: 'Профиль'),
-                ),
+              BlocBuilder<ProfileScreenCubit, ProfileScreenState>(
+                builder: (context, state) {
+                  return SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: HeaderAppBar(isMenu: true, title: 'Профиль', onTrailing: (state.status == ProfileScreenStatus.success)? _context(context): null ),
+                    ),
+                  );
+                },
               )
             ];
           },
@@ -93,19 +99,53 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           StoreModel? store = state.store;
                           return Column(
                             children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(100),
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width/3,
-                                  height: MediaQuery.of(context).size.width/3,
-                                  color: Theme.of(context).colorScheme.secondary,
-                                  child: CachedNetworkImage(
-                                    imageUrl: user.photo ?? '',
-                                    progressIndicatorBuilder: (context, url, downloadProgress) => Icon(Icons.person, size: MediaQuery.of(context).size.width / 4),
-                                    errorWidget:  (context, url, error) => Icon(Icons.person, size: MediaQuery.of(context).size.width / 4),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
+                              BlocConsumer<ChangePhotoCubit, ChangePhotoState>(
+                                listener: _photoListener,
+                                builder: (context, state) {
+                                  return SizedBox(
+                                    width: MediaQuery.of(context).size.width/3,
+                                    height: MediaQuery.of(context).size.width/3,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(100),
+                                      clipBehavior : Clip.hardEdge,
+                                      child: Stack(
+                                        alignment: Alignment.bottomCenter,
+                                        children: [
+                                          Container(
+                                            width: double.infinity,
+                                            height: MediaQuery.of(context).size.width/3,
+                                            color: Theme.of(context).colorScheme.secondary,
+                                            child: state.status == PhotoStatus.bytes? Image.memory(
+                                                state.imageData!,
+                                                fit: BoxFit.cover,
+                                            ) : CachedNetworkImage(
+                                              imageUrl: state.url ?? '',
+                                              fadeInDuration: Duration.zero,
+                                              progressIndicatorBuilder: (context, url, downloadProgress) => Icon(Icons.person, size: MediaQuery.of(context).size.width / 4),
+                                              errorWidget:  (context, url, error) => Icon(Icons.person, size: MediaQuery.of(context).size.width / 4),
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                          Align(
+                                            alignment: Alignment.bottomCenter,
+                                            child: GestureDetector(
+                                              onTap: _changePhoto,
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius: const BorderRadius.vertical(bottom: Radius.circular(1000)),
+                                                  color: Theme.of(context).colorScheme.background.withOpacity(0.5),
+                                                ),
+                                                padding: const EdgeInsets.symmetric(vertical: 3),
+                                                width: double.infinity,
+                                                child: const Icon(Icons.edit),
+                                              ),
+                                            )
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
 
                               const SizedBox(height: 20,),

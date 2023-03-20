@@ -64,6 +64,7 @@ class _IndexPeriodPickerState extends State<IndexPeriodPicker> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
       child: ValueListenableBuilder(
         builder: (BuildContext context, IndexPeriod period, Widget? child) {
           return GestureDetector(

@@ -13,7 +13,7 @@ class DrawerTile extends StatelessWidget {
       onTap: callback,
       child: Container(
         alignment: Alignment.centerLeft,
-        padding: const EdgeInsets.symmetric(vertical: 10),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         child: Text(text),
       ),
     );

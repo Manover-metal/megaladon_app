@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:megaladon/core/icons/icons.dart';
 import 'package:megaladon/data/models/enum_form_state.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:megaladon/generated/locale_keys.g.dart';
@@ -120,12 +121,12 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
               children: [
                 HeaderAppBar(isBack: true, title: LocaleKeys.Creating_an_ad.tr(),),
                 const SizedBox(height: 30),
-                TextFieldApp(controller: _titleController, label: 'Название'),
+                TextFieldApp(controller: _titleController, label: 'Название', icon: const Icon(Icons.edit)),
                 AdvertCategoryPicker(label: LocaleKeys.Select_a_category.tr(), controller: _advertCategoryController),
                 CityPicker(label: LocaleKeys.Choose_city.tr(), controller: _cityController),
-                DescriptionFieldApp(label: LocaleKeys.Description_of_your_offer.tr(), controller: _descriptionController),
-                NumberFieldApp(label: LocaleKeys.Price.tr(), controller: _priceController),
-                TextFieldApp(controller: _phoneController, label: 'Дополнительный телефон'),
+                DescriptionFieldApp(label: LocaleKeys.Description_of_your_offer.tr(), controller: _descriptionController, icon: const Icon(IconPack.description),),
+                NumberFieldApp(label: LocaleKeys.Price.tr(), controller: _priceController, icon: const  Icon(Icons.money_sharp),),
+                TextFieldApp(controller: _phoneController, label: 'Дополнительный телефон', icon: const Icon(Icons.phone),),
                 ImageMultiPicker(controller: _imageController),
                 const SizedBox(height: 20),
                 BlocConsumer<AdCreateFormCubit, AdCreateFormState>(

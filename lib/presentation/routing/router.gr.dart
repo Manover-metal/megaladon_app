@@ -28,49 +28,49 @@ class _$AppRouter extends RootStackRouter {
     InitialRouter.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: SplashScreen(),
+        child: const SplashScreen(),
       );
     },
     DetailsChatRouter.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: DetailsChatScreen(),
+        child: const DetailsChatScreen(),
       );
     },
     LoginRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: LoginScreen(),
+        child: const LoginScreen(),
       );
     },
     ForgotPasswordRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: ForgotPasswordScreen(),
+        child: const ForgotPasswordScreen(),
       );
     },
     ResetPasswordRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: ResetPasswordScreen(),
+        child: const ResetPasswordScreen(),
       );
     },
     RegisterUserRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: RegisterUserScreen(),
+        child: const RegisterUserScreen(),
       );
     },
     RegisterExecutorRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: RegisterExecutorScreen(),
+        child: const RegisterExecutorScreen(),
       );
     },
     RegisterStoreRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: RegisterStoreScreen(),
+        child: const RegisterStoreScreen(),
       );
     },
     VerifyRoute.name: (routeData) {
@@ -86,13 +86,13 @@ class _$AppRouter extends RootStackRouter {
     CreateAdRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: CreateAdScreen(),
+        child: const CreateAdScreen(),
       );
     },
     CreateOrderRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: CreateOrderScreen(),
+        child: const CreateOrderScreen(),
       );
     },
     UpdateAdRoute.name: (routeData) {
@@ -152,13 +152,13 @@ class _$AppRouter extends RootStackRouter {
     ListOrdersRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: ListOrdersScreen(),
+        child: const ListOrdersScreen(),
       );
     },
     ListMyOrdersRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: ListMyOrdersScreen(),
+        child: const ListMyOrdersScreen(),
       );
     },
     DetailsOrderRoute.name: (routeData) {
@@ -205,7 +205,7 @@ class _$AppRouter extends RootStackRouter {
     ListStoresRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: ListStoresScreen(),
+        child: const ListStoresScreen(),
       );
     },
     DetailsStoreRoute.name: (routeData) {
@@ -221,7 +221,7 @@ class _$AppRouter extends RootStackRouter {
     TradingAdsRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: TradingAdsScreen(),
+        child: const TradingAdsScreen(),
       );
     },
     DetailsAdRoute.name: (routeData) {
@@ -237,25 +237,37 @@ class _$AppRouter extends RootStackRouter {
     MyAdsRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: MyAdsScreen(),
+        child: const MyAdsScreen(),
       );
     },
     ProfileRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: ProfileScreen(),
+        child: const ProfileScreen(),
       );
     },
     SettingsRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: SettingsScreen(),
+        child: const SettingsScreen(),
+      );
+    },
+    ChangeExecutorRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const ChangeExecutorScreen(),
+      );
+    },
+    ChangeStoreRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const ChangeStoreScreen(),
       );
     },
     ListChatsRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: ListChatsScreen(),
+        child: const ListChatsScreen(),
       );
     },
     ListExecutorRoute.name: (routeData) {
@@ -371,6 +383,18 @@ class _$AppRouter extends RootStackRouter {
                   SettingsRoute.name,
                   path: 'settings-screen',
                   parent: ProfileRouter.name,
+                ),
+                RouteConfig(
+                  ChangeExecutorRoute.name,
+                  path: 'change-executor-screen',
+                  parent: ProfileRouter.name,
+                  guards: [authGuard],
+                ),
+                RouteConfig(
+                  ChangeStoreRoute.name,
+                  path: 'change-store-screen',
+                  parent: ProfileRouter.name,
+                  guards: [authGuard],
                 ),
                 RouteConfig(
                   ListChatsRoute.name,
@@ -1055,6 +1079,30 @@ class SettingsRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'SettingsRoute';
+}
+
+/// generated route for
+/// [ChangeExecutorScreen]
+class ChangeExecutorRoute extends PageRouteInfo<void> {
+  const ChangeExecutorRoute()
+      : super(
+          ChangeExecutorRoute.name,
+          path: 'change-executor-screen',
+        );
+
+  static const String name = 'ChangeExecutorRoute';
+}
+
+/// generated route for
+/// [ChangeStoreScreen]
+class ChangeStoreRoute extends PageRouteInfo<void> {
+  const ChangeStoreRoute()
+      : super(
+          ChangeStoreRoute.name,
+          path: 'change-store-screen',
+        );
+
+  static const String name = 'ChangeStoreRoute';
 }
 
 /// generated route for

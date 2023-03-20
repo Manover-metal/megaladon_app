@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:megaladon/data/models/dictionary/service_type_model.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/service_type_picker.dart';
 
 class ServiceTypeMultiPickerController extends ValueNotifier<List<ServiceTypePickerController>> {
-  ServiceTypeMultiPickerController({List<ServiceTypePickerController>? services }) : super(services ?? []);
+  ServiceTypeMultiPickerController({List<ServiceTypeModel>? services }) : super(
+    services != null? services.map((e) {
+      return ServiceTypePickerController(period: e);
+    }).toList(): []
+  );
 
   _listener() {
     notifyListeners();
