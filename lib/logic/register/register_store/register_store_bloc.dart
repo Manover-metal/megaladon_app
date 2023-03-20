@@ -17,6 +17,9 @@ class RegisterStoreBloc extends Bloc<RegisterStoreEvent, RegisterStoreState> {
   }
 
   _register(RegisterStoreFetchEvent event, Emitter emit ) async {
+    if(state is RegisterStoreLoading) return;
+
+
     emit(RegisterStoreLoading());
     await _repository.registerStore(event.params).then((value) {
       final StoreModel store = StoreModel.fromJsonMini(value.data['store']);

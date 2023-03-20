@@ -36,6 +36,7 @@ class ProfileScreenCubit extends Cubit<ProfileScreenState> {
   Future updateData(int id) async {
     return await _repository.profile(id).then((value) {
       UserModel user = UserModel.fromJson(value['user']);
+      print(value['user']['executor']);
       ExecutorModel? executor = value['user']['executor'] != null? ExecutorModel.fromJson(value['user']['executor']): null;
       StoreModel? store = value['user']['store'] != null? StoreModel.fromJsonFull(value['user']['store']): null;
       emit(ProfileScreenState(

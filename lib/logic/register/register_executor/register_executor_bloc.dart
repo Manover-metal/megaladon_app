@@ -17,6 +17,8 @@ class RegisterExecutorBloc extends Bloc<RegisterExecutorEvent, RegisterExecutorS
   }
 
   _register(RegisterExecutorFetchEvent event, Emitter emit ) async {
+    if(state is RegisterExecutorLoading) return;
+
     emit(RegisterExecutorLoading());
     await _repository.registerExecutor(event.params).then((value) {
       final ExecutorModel executor = ExecutorModel.fromJson(value.data['executor']);

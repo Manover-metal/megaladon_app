@@ -42,7 +42,6 @@ class _ImageMultiPickerState extends State<ImageMultiPicker> {
       final List<PlatformFile> files = result.files;
       widget.controller._addFiles(files);
     }
-
   }
 
   _removeByIndex(PlatformFile file) => () {
@@ -72,7 +71,7 @@ class _ImageMultiPickerState extends State<ImageMultiPicker> {
                     items: images.map((image) {
                       return Stack(
                         children: [
-                          Container(
+                          SizedBox(
                             width: double.infinity,
                             child: Image.memory(
                               image.bytes!,
