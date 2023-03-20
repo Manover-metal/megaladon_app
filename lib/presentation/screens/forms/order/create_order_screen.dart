@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:megaladon/core/icons/icons.dart';
 import 'package:megaladon/data/models/enum_form_state.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:megaladon/generated/locale_keys.g.dart';
@@ -121,12 +122,12 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                 HeaderAppBar(isBack: true, title: LocaleKeys.Create_an_order.tr()),
                 SizedBox(height: 30),
 
-                OrderCategoryPicker(label: LocaleKeys.Select_a_category.tr(), controller: _orderCategoryController),
+                OrderCategoryPicker(label: LocaleKeys.Select_a_category.tr(), controller: _orderCategoryController, ),
                 CityPicker(label: LocaleKeys.Choose_city.tr(), controller: _cityController),
-                TextFieldApp(controller: _titleController, label: 'Заголовок',),
-                DescriptionFieldApp(label: LocaleKeys.Description_of_work.tr(), controller: _descriptionController),
-                NumberFieldApp(label: LocaleKeys.Desired_budget.tr(), controller: _priceMaxController,),
-                NumberFieldApp(label: LocaleKeys.Allowed_budget.tr(), controller: _priceRecommendedController,),
+                TextFieldApp(controller: _titleController, label: 'Заголовок', icon: Icon(IconPack.job_description_kwo7og605c2l),),
+                DescriptionFieldApp(label: LocaleKeys.Description_of_work.tr(), controller: _descriptionController,icon: Icon(IconPack.description),),
+                NumberFieldApp(label: LocaleKeys.Desired_budget.tr(), controller: _priceMaxController,icon: Icon(Icons.money_sharp),),
+                NumberFieldApp(label: LocaleKeys.Allowed_budget.tr(), controller: _priceRecommendedController,icon: Icon(Icons.money_sharp),),
                 FileMultiPicker(controller: _fileController),
                 SizedBox(height: 30),
                 // BlocConsumer(builder: builder, listener: listener)
