@@ -7,6 +7,7 @@ import 'package:megaladon/generated/locale_keys.g.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/form/auth/auth_form_cubit.dart';
 import 'package:megaladon/logic/screens/profile/change_password/change_password_cubit.dart';
+import 'package:megaladon/logic/screens/profile/change_phone/change_phone_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
@@ -16,29 +17,22 @@ import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
 import 'package:megaladon/presentation/widgets/snackbars/success_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
-class ChangePasswordScreen extends StatefulWidget {
-  const ChangePasswordScreen({super.key});
+class ChangePhoneStartScreen extends StatefulWidget {
+  const ChangePhoneStartScreen({super.key});
 
   @override
-  State<ChangePasswordScreen> createState() => _ChangePasswordScreenState();
+  State<ChangePhoneStartScreen> createState() => _ChangePhoneStartScreenState();
 }
 
-class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
-  late TextEditingController _oldPassword;
+class _ChangePhoneStartScreenState extends State<ChangePhoneStartScreen> {
+  late TextEditingController _newPhone;
   late TextEditingController _password;
-  late TextEditingController _passwordConfirmation;
-
-
-  _register() {
-    context.router.popAndPush(const RegisterUserRoute());
-  }
 
   _login() {
     if(_checkForm()) {
-      context.read<ChangePasswordCubit>().changePassword(
-        oldPassword: _oldPassword.value.text,
-        password: _password.value.text,
-        passwordConfirmation: _passwordConfirmation.value.text
+      context.read<ChangePhoneCubit>().changePhoneStart(
+          phone: _newPhone.value.text,
+          password: _password.value.text,
       );
     }
   }
@@ -46,38 +40,32 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   @override
   void initState() {
     _password = TextEditingController();
-    _oldPassword = TextEditingController();
-    _passwordConfirmation = TextEditingController();
+    _newPhone = TextEditingController();
 
     super.initState();
   }
 
   _checkForm() {
-    ChangePasswordCubit form = context.read<ChangePasswordCubit>();
-    return form.check(
-      oldPassword: _oldPassword.value.text,
+    ChangePhoneCubit form = context.read<ChangePhoneCubit>();
+    return form.checkStep1(
+      phone: _newPhone.value.text,
       password: _password.value.text,
-      passwordConfirmation: _passwordConfirmation.value.text
     );
   }
 
   @override
   void dispose() {
     _password.dispose();
-    _oldPassword.dispose();
-    _passwordConfirmation.dispose();
+    _newPhone.dispose();
     super.dispose();
   }
 
-  _listenerForm(BuildContext context, ChangePasswordState state) {
-    if(state.status == ChangePasswordStatus.success) {
-      showSuccessSnackBar(context, 'Пароль успешно изменен');
-      context.router.navigate(const InitialRouter(
-          children: [
-            ProfileRouter()
-          ]
-      ));
-    } else if(state.status == ChangePasswordStatus.error) {
+  _listenerForm(BuildContext context, ChangePhoneState state) {
+    if(state.status == ChangePhoneStatus.success
+      || state.status == ChangePhoneStatus.initial2
+    ) {
+      context.router.popAndPush(const ChangePhoneEndRoute());
+    } else if(state.status == ChangePhoneStatus.error) {
       return showErrorSnackBar(context, state.error!.messages[0]);
     }
   }
@@ -90,35 +78,31 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           padding: const EdgeInsets.all(20),
           child: MultiBlocListener(
             listeners: [
-              BlocListener<ChangePasswordCubit, ChangePasswordState>(listener: _listenerForm)
+              BlocListener<ChangePhoneCubit, ChangePhoneState>(listener: _listenerForm)
             ],
             child: Column(
               children: [
                 const Spacer(),
-                const TitleApp('Изменить пароль'),
+                const TitleApp('Изменить номер телефона'),
                 const SizedBox(height: 20,),
                 TextFieldApp(
-                  icon: const Icon(Icons.lock),
-                  label: LocaleKeys.Your_password.tr(),
-                  controller: _oldPassword,
+                  icon: const Icon(Icons.phone),
+                  label: 'Новый телефон',
+                  controller: _newPhone,
                 ),
                 TextFieldApp(
                   icon: const Icon(Icons.lock),
                   label: LocaleKeys.Choose_password.tr(),
                   controller: _password,
                 ),
-                TextFieldApp(
-                  icon: const Icon(Icons.lock),
-                  label: LocaleKeys.Confirm_the_password.tr(),
-                  controller: _passwordConfirmation,
-                ),
+
                 const SizedBox(height: 25,),
-                BlocBuilder<ChangePasswordCubit, ChangePasswordState>(
+                BlocBuilder<ChangePhoneCubit, ChangePhoneState>(
                     builder: (context, state) {
-                      if(state.status == ChangePasswordStatus.loading) {
+                      if(state.status == ChangePhoneStatus.loading) {
                         return ElevatedButtonApp(child: Loader(color: Theme.of(context).colorScheme.background), onPressed: (){});
                       }
-                      return ElevatedButtonApp(text: 'Изменить', onPressed: _login);
+                      return ElevatedButtonApp(text: 'Отправить код', onPressed: _login);
                     }
                 ),
                 const Spacer(flex: 3),
