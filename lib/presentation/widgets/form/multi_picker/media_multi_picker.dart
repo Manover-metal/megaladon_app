@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:megaladon/core/image/image_service.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -20,11 +21,6 @@ class ImageMultiPickerController extends ValueNotifier<List<PlatformFile>> {
     value = List.from(value)..remove(file);
     _listener();
   }
-
-  Future<bool> _requestPermission() async {
-    await Permission.photos.request();
-    return await Permission.photos.request().isGranted;
-  }
 }
 
 class ImageMultiPicker extends StatefulWidget {
@@ -40,16 +36,11 @@ class _ImageMultiPickerState extends State<ImageMultiPicker> {
   late CarouselController _carouselController;
 
   _addImage() async {
-    if(await widget.controller._requestPermission()) {
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
-          allowMultiple: true,
-          withData: true,
-          type: FileType.image
-      );
-      if (result != null) {
-        final List<PlatformFile> files = result.files;
-        widget.controller._addFiles(files);
-      }
+    final result = await ImageService.getImages();
+
+    if (result != null) {
+      final List<PlatformFile> files = result.files;
+      widget.controller._addFiles(files);
     }
 
   }

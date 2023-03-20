@@ -32,6 +32,7 @@ import 'package:megaladon/logic/screens/offers/list/offer_screen_main_cubit.dart
 import 'package:megaladon/logic/screens/orders/details/order_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/orders/main/order_screen_main_cubit.dart';
 import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
+import 'package:megaladon/logic/screens/profile/change_photo/change_photo_cubit.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/logic/screens/store/details/store_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/store/main/store_screen_main_cubit.dart';
@@ -167,12 +168,17 @@ class App extends StatelessWidget {
                 create: (context) => OrderUpdateFormCubit()
             )
           ],
-          child: BlocProvider<PriceFormCubit>(
-            create: (context) => PriceFormCubit(profileCubit),
-            child: const AppState()
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider<PriceFormCubit>(
+                  create: (context) => PriceFormCubit(profileCubit),
+              ),
+              BlocProvider<ChangePhotoCubit>(
+                create: (context) => ChangePhotoCubit(profileCubit),
+              ),
+            ],
+            child: const AppState(),
           ),
-
-          //
         ),
       ),
     );
