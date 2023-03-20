@@ -66,42 +66,45 @@ class _CityPickerState extends State<CityPicker> {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      builder: (BuildContext context, CityModel city, Widget? child) {
-        return GestureDetector(
-          onTap: _handleClick,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(widget.label,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary
-                ),
-              ),
-              const SizedBox(height: 5),
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(13),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.onBackground,
-                  border: Border.all(
-                    color: Theme.of(context).colorScheme.primary,
-                    width: 0.5
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: ValueListenableBuilder(
+        builder: (BuildContext context, CityModel city, Widget? child) {
+          return GestureDetector(
+            onTap: _handleClick,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(widget.label,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary
                   ),
-                  borderRadius: BorderRadius.circular(10)
                 ),
-                child: Row(
-                  children: [
-                    Expanded(child: Text(city.name)),
-                    const Icon(Icons.keyboard_arrow_down_outlined)
-                  ],
-                ),
-              )
-            ],
-          ),
-        );
-      },
-      valueListenable: widget.controller,
+                const SizedBox(height: 5),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(13),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.tertiary,
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.primary,
+                      width: 0.5
+                    ),
+                    borderRadius: BorderRadius.circular(10)
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(child: Text(city.name)),
+                      const Icon(Icons.keyboard_arrow_down_outlined)
+                    ],
+                  ),
+                )
+              ],
+            ),
+          );
+        },
+        valueListenable: widget.controller,
+      ),
     );
   }
 }

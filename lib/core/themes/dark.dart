@@ -16,7 +16,7 @@ enum ColorSchemeApp {
   onError(Colors.white),
   success(Color.fromRGBO(5, 150, 105, 1)),
   onSuccess(Colors.white),
-  container(Color.fromRGBO(54, 54, 54, 1)),
+  container(Color.fromRGBO(54, 54, 54, 0.3)),
   onContainer(Color.fromRGBO(54, 54, 54, 1));
 
 
