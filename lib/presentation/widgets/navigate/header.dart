@@ -13,7 +13,7 @@ class HeaderAppBar extends StatelessWidget {
 
   final EdgeInsets padding;
 
-  const  HeaderAppBar({
+  const HeaderAppBar({
     super.key,
     this.padding = const EdgeInsets.only(bottom: 30, top: 10),
     this.isMenu = false,
@@ -56,11 +56,10 @@ class HeaderAppBar extends StatelessWidget {
           else Container(),
           Expanded(child: TitleApp(title ?? '')),
           if(onTrailing != null) GestureDetector(
-            onTap: _back(context),
+            onTap: onTrailing,
             child: const Icon(
-              Icons.menu,
+              Icons.more_horiz,
               size: 30,
-              color: Colors.black,
             ),
           ) else Container(width: 30)
         ],
