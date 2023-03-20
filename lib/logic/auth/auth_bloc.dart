@@ -36,6 +36,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   _initial(AuthInitialEvent event, Emitter emit) async {
     AuthModel? auth = await _authRepository.read();
     if(auth != null) {
+      print(auth.token);
       emit(AuthLoginState(auth));
     }
   }

@@ -17,7 +17,8 @@ class DrawerProfile extends StatelessWidget {
               children: [
                 const SizedBox(height: 20,),
                 if(state.user != null) ...[
-                  DrawerTile(text: 'Изменить номер телефона', callback: () {}),
+                  const DrawerRouteTile(text: 'Изменить номер телефона', page: ChangePhoneStartRoute()),
+
                   const DrawerRouteTile(text: 'Изменить пароль', page: ChangePasswordRoute()),
                 ],
                 if(state.executor != null) ...[

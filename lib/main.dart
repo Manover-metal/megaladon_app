@@ -37,6 +37,7 @@ import 'package:megaladon/logic/screens/orders/main/order_screen_main_cubit.dart
 import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
 import 'package:megaladon/logic/screens/profile/change_executor/change_executor_bloc.dart';
 import 'package:megaladon/logic/screens/profile/change_password/change_password_cubit.dart';
+import 'package:megaladon/logic/screens/profile/change_phone/change_phone_cubit.dart';
 import 'package:megaladon/logic/screens/profile/change_photo/change_photo_cubit.dart';
 import 'package:megaladon/logic/screens/profile/change_store/change_store_bloc.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
@@ -197,6 +198,9 @@ class App extends StatelessWidget {
               ),
               BlocProvider<ChangePasswordCubit>(
                 create: (context) => ChangePasswordCubit(),
+              ),
+              BlocProvider<ChangePhoneCubit>(
+                create: (context) => ChangePhoneCubit(profileCubit),
               ),
             ],
             child: const AppState(),
