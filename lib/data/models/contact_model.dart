@@ -57,4 +57,7 @@ class ContactModel {
       return ContactModel.fromJson(e);
     }).toList();
   }
+
+  static ContactModel get nothing => ContactModel(value: '', contactName: '', type: ContactType.phone);
+
 }

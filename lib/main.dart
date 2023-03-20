@@ -21,6 +21,7 @@ import 'package:megaladon/logic/form/register/register_user/register_user_form_c
 import 'package:megaladon/logic/form/update/ad/ad_update_form_cubit.dart';
 import 'package:megaladon/logic/form/update/executor/change_executor_form_cubit.dart';
 import 'package:megaladon/logic/form/update/order/order_update_form_cubit.dart';
+import 'package:megaladon/logic/form/update/store/change_store_form_cubit.dart';
 import 'package:megaladon/logic/form/verify/verify_form_cubit.dart';
 import 'package:megaladon/logic/register/register_executor/register_executor_bloc.dart';
 import 'package:megaladon/logic/register/register_store/register_store_bloc.dart';
@@ -35,6 +36,7 @@ import 'package:megaladon/logic/screens/orders/main/order_screen_main_cubit.dart
 import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
 import 'package:megaladon/logic/screens/profile/change_executor/change_executor_bloc.dart';
 import 'package:megaladon/logic/screens/profile/change_photo/change_photo_cubit.dart';
+import 'package:megaladon/logic/screens/profile/change_store/change_store_bloc.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/logic/screens/store/details/store_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/store/main/store_screen_main_cubit.dart';
@@ -183,6 +185,12 @@ class App extends StatelessWidget {
               ),
               BlocProvider<ChangeExecutorFormCubit>(
                 create: (context) => ChangeExecutorFormCubit(),
+              ),
+              BlocProvider<ChangeStoreBloc>(
+                create: (context) => ChangeStoreBloc(profileCubit),
+              ),
+              BlocProvider<ChangeStoreFormCubit>(
+                create: (context) => ChangeStoreFormCubit(),
               ),
             ],
             child: const AppState(),

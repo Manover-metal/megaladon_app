@@ -33,7 +33,16 @@ class DrawerProfile extends StatelessWidget {
                   ),
                 ],
                 if(state.store != null) ...[
-                  DrawerTile(text: 'Изменить магазин', callback: () {}),
+                  const DrawerRouteTile(text: 'Изменить магазин', page: InitialRouter(
+                      children: [
+                        ProfileRouter(
+                            children: [
+                              ChangeStoreRoute()
+                            ]
+                        )
+                      ]
+                  )
+                  ),
                 ]
               ],
             );

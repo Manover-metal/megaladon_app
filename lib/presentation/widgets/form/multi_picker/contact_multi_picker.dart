@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:megaladon/data/models/contact_model.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/contact_picker.dart';
 
 class ContactTypeMultiPickerController extends ValueNotifier<List<ContactTypePickerController>> {
-  ContactTypeMultiPickerController({List<ContactTypePickerController>? contacts }) : super(contacts ?? []);
+  ContactTypeMultiPickerController({List<ContactModel>? contacts }) : super(
+      contacts != null? contacts.map((e) {
+        return ContactTypePickerController(type: e);
+      }).toList() : []
+  );
 
   _listener() {
     notifyListeners();

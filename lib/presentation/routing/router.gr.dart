@@ -258,6 +258,12 @@ class _$AppRouter extends RootStackRouter {
         child: const ChangeExecutorScreen(),
       );
     },
+    ChangeStoreRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const ChangeStoreScreen(),
+      );
+    },
     ListChatsRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
@@ -381,6 +387,12 @@ class _$AppRouter extends RootStackRouter {
                 RouteConfig(
                   ChangeExecutorRoute.name,
                   path: 'change-executor-screen',
+                  parent: ProfileRouter.name,
+                  guards: [authGuard],
+                ),
+                RouteConfig(
+                  ChangeStoreRoute.name,
+                  path: 'change-store-screen',
                   parent: ProfileRouter.name,
                   guards: [authGuard],
                 ),
@@ -1079,6 +1091,18 @@ class ChangeExecutorRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'ChangeExecutorRoute';
+}
+
+/// generated route for
+/// [ChangeStoreScreen]
+class ChangeStoreRoute extends PageRouteInfo<void> {
+  const ChangeStoreRoute()
+      : super(
+          ChangeStoreRoute.name,
+          path: 'change-store-screen',
+        );
+
+  static const String name = 'ChangeStoreRoute';
 }
 
 /// generated route for
