@@ -104,24 +104,20 @@ class _TradingAdsScreenState extends State<TradingAdsScreen> {
                         minHeight: MediaQuery.of(context).size.height
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      children: [
-                        BlocBuilder<AdvertScreenMainCubit, AdvertScreenMainState>(
-                          builder: (context, state) {
-                             return Column(
-                              children: [
-                                ...state.advers.map((adver) {
-                                  return AdCard(advert: adver);
-                                }).toList(),
-                                if(state.status == AdverScreenMainStatus.loading) const Loader(padding: 10)
-                                else if(state.status == AdverScreenMainStatus.error)  ErrorMessage(error: state.error!)
-                                else if(state.stock) const StockMessage(name: 'Объявления')
+                    child: BlocBuilder<AdvertScreenMainCubit, AdvertScreenMainState>(
+                      builder: (context, state) {
+                         return Column(
+                          children: [
+                            ...state.advers.map((adver) {
+                              return AdCard(advert: adver);
+                            }).toList(),
+                            if(state.status == AdverScreenMainStatus.loading) const Loader(padding: 10)
+                            else if(state.status == AdverScreenMainStatus.error)  ErrorMessage(error: state.error!)
+                            else if(state.stock) const StockMessage(name: 'Объявления')
 
-                              ],
-                            );
-                          },
-                        ),
-                      ],
+                          ],
+                        );
+                      },
                     ),
                   ),
                 ),
