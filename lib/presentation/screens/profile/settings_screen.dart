@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
@@ -11,9 +12,12 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  List <String> items = <String>['Ru', 'Kz', 'Eng'];
 
-  String dropdownvalue = 'Ru';
+  _changeLocalization(Locale? newValue) {
+    if(newValue != null) {
+      context.setLocale(newValue);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,61 +30,63 @@ class _SettingsScreenState extends State<SettingsScreen> {
               children: [
                 const HeaderAppBar(
                   isMenu: true,
+                  title: 'Настройки',
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text('Push-уведомления'),
-                    SwitchExample(),
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: const [
+                //     Text('Push-уведомления'),
+                //     SwitchExample(),
+                //   ],
+                // ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('Язык'),
-                    DropdownButton<String>(
-                      value: dropdownvalue,
-                      items: items.map((String listLang) {
-                        return DropdownMenuItem(
-                          value: listLang,
-                          child: Text(listLang),
-                        );
-                      }).toList(),
-                       onChanged: (String? newValue) {
-                        setState(() {
-                          dropdownvalue = newValue!;
-                        });
-                      },
+                    const Expanded(
+                        child: Text('Язык')
+                    ),
+                    Expanded(
+                      child: DropdownButton<Locale>(
+                        isExpanded: true,
+                        value: context.locale,
+                        items: context.supportedLocales.map((Locale locale) {
+                          return DropdownMenuItem(
+                            value: locale,
+                            child: Text(locale.languageCode),
+                          );
+                        }).toList(),
+                        onChanged: _changeLocalization
+                      ),
                     ),
 
                   ],
                 ),
-                OutlinedButtonApp(
-                  text: 'ЧАВО',
-                  onPressed: () {},
-                ),
+                // OutlinedButtonApp(
+                //   text: 'ЧАВО',
+                //   onPressed: () {},
+                // ),
                 OutlinedButtonApp(
                   text: 'О приложении',
                   onPressed: () {},
                 ),
-                OutlinedButtonApp(
-                  text: 'Сменить номер телефона',
-                  onPressed: () {},
-                ),
+                // OutlinedButtonApp(
+                //   text: 'Сменить номер телефона',
+                //   onPressed: () {},
+                // ),
                 const SizedBox(
                   height: 50,
                 ),
-                OutlinedButtonApp(
-                  text: 'Сканировать QR код',
-                  onPressed: () {},
-                ),
-                Text(
-                  'Сканируйте QR код для\nавторизации в Web-версии приложения ',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.secondary
-                  ),
-                ),
+                // OutlinedButtonApp(
+                //   text: 'Сканировать QR код',
+                //   onPressed: () {},
+                // ),
+                // Text(
+                //   'Сканируйте QR код для\nавторизации в Web-версии приложения ',
+                //   textAlign: TextAlign.center,
+                //   style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                //     color: Theme.of(context).colorScheme.secondary
+                //   ),
+                // ),
               ],
             ),
           ),
