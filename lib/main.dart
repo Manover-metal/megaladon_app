@@ -36,6 +36,7 @@ import 'package:megaladon/logic/screens/orders/details/order_screen_details_cubi
 import 'package:megaladon/logic/screens/orders/main/order_screen_main_cubit.dart';
 import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
 import 'package:megaladon/logic/screens/profile/change_executor/change_executor_bloc.dart';
+import 'package:megaladon/logic/screens/profile/change_password/change_password_cubit.dart';
 import 'package:megaladon/logic/screens/profile/change_photo/change_photo_cubit.dart';
 import 'package:megaladon/logic/screens/profile/change_store/change_store_bloc.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
@@ -47,8 +48,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'core/get.dart';
 import 'generated/codegen_loader.g.dart';
 import 'logic/screens/advert/main/advert_screen_main_cubit.dart';
-
-// import 'generated/locale_keys.g.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -195,6 +194,9 @@ class App extends StatelessWidget {
               ),
               BlocProvider<ChangeStoreFormCubit>(
                 create: (context) => ChangeStoreFormCubit(),
+              ),
+              BlocProvider<ChangePasswordCubit>(
+                create: (context) => ChangePasswordCubit(),
               ),
             ],
             child: const AppState(),

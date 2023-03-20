@@ -29,6 +29,7 @@ import 'package:megaladon/presentation/screens/orders/list_executors_screen.dart
 import 'package:megaladon/presentation/screens/orders/list_my_orders_screen.dart';
 import 'package:megaladon/presentation/screens/orders/list_orders_screen.dart';
 import 'package:megaladon/presentation/screens/orders/review_screen.dart';
+import 'package:megaladon/presentation/screens/profile/change_password.dart';
 import 'package:megaladon/presentation/screens/profile/profile_screen.dart';
 import 'package:megaladon/presentation/screens/profile/settings_screen.dart';
 import 'package:megaladon/presentation/screens/store/details_store_screen.dart';
@@ -117,7 +118,9 @@ const List<AutoRoute> form = [
     AutoRoute(
       page: DetailsChatScreen,
       name: 'DetailsChatRouter',
-      path: 'detailchat',
+    ),
+    AutoRoute(
+      page: ChangePasswordScreen,
     ),
     ...auth,
     ...form

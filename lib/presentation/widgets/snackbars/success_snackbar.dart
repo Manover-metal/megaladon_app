@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:megaladon/core/themes/dark.dart';
 
 showSuccessSnackBar(BuildContext context, String success) {
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+  ScaffoldMessenger.of(context)..hideCurrentSnackBar()..showSnackBar(SnackBar(
       margin: const EdgeInsets.all(20),
       behavior: SnackBarBehavior.floating,
       elevation: 40,

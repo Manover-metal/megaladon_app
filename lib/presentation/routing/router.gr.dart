@@ -37,6 +37,12 @@ class _$AppRouter extends RootStackRouter {
         child: const DetailsChatScreen(),
       );
     },
+    ChangePasswordRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const ChangePasswordScreen(),
+      );
+    },
     LoginRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
@@ -414,7 +420,11 @@ class _$AppRouter extends RootStackRouter {
         ),
         RouteConfig(
           DetailsChatRouter.name,
-          path: 'detailchat',
+          path: '/details-chat-screen',
+        ),
+        RouteConfig(
+          ChangePasswordRoute.name,
+          path: '/change-password-screen',
         ),
         RouteConfig(
           LoginRoute.name,
@@ -498,10 +508,22 @@ class DetailsChatRouter extends PageRouteInfo<void> {
   const DetailsChatRouter()
       : super(
           DetailsChatRouter.name,
-          path: 'detailchat',
+          path: '/details-chat-screen',
         );
 
   static const String name = 'DetailsChatRouter';
+}
+
+/// generated route for
+/// [ChangePasswordScreen]
+class ChangePasswordRoute extends PageRouteInfo<void> {
+  const ChangePasswordRoute()
+      : super(
+          ChangePasswordRoute.name,
+          path: '/change-password-screen',
+        );
+
+  static const String name = 'ChangePasswordRoute';
 }
 
 /// generated route for

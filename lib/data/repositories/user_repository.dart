@@ -19,4 +19,14 @@ class UserRepository {
   Future changeStore(ChangeStoreRequestParams params) => ApiService.I
       .put('/store/update', data: params.toData())
       .then((value) => value.data);
+
+  Future changePassword(
+    String oldPassword,
+    String password,
+    String passwordConfirmation
+  ) => ApiService.I.post('/user/change-password', data: {
+    'old_password': oldPassword,
+    'password': password,
+    'password_confirmation': passwordConfirmation
+  }).then((value) => value.data);
 }
