@@ -13,6 +13,10 @@ class OrderRepository {
       .get('/order/my', queryParameters: params.toData())
       .then((value) => OrderModel.listFromJsonMini(value.data['list']));
 
+  Future indexMyResponded(OrderIndexRequestParams params) => ApiService.I
+      .get('/order/my-responded', queryParameters: params.toData())
+      .then((value) => OrderModel.listFromJsonMini(value.data['list']));
+
   Future info(int id) => ApiService.I
       .get('/order/$id',)
       .then((value) => OrderModel.fromJsonFull(value.data['order']));
