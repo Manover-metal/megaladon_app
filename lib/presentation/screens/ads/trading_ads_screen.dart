@@ -115,7 +115,6 @@ class _TradingAdsScreenState extends State<TradingAdsScreen> {
                             if(state.status == AdverScreenMainStatus.loading) const Loader(padding: 10)
                             else if(state.status == AdverScreenMainStatus.error)  ErrorMessage(error: state.error!)
                             else if(state.stock)  StockMessage(name: 'Объявления'.tr())
-
                           ],
                         );
                       },
