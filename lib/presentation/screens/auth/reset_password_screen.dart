@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
@@ -16,11 +17,11 @@ class ResetPasswordScreen extends StatelessWidget {
             padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                TitleApp('Изменить пароль'),
+                TitleApp("Изменить пароль".tr()),
                 const SizedBox(height: 20,),
                 const TextFieldApp(),
-                ElevatedButtonApp(text: 'Изменить'),
-                OutlinedButtonApp(text: 'Отмена')
+                ElevatedButtonApp(text: "Изменить".tr()),
+                OutlinedButtonApp(text: "Отмена".tr())
               ],
             ),
           ),

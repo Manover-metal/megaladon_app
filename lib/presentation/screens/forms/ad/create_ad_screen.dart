@@ -119,14 +119,14 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                HeaderAppBar(isBack: true, title: LocaleKeys.Creating_an_ad.tr(),),
+                HeaderAppBar(isBack: true, title: "Создание объявления".tr(),),
                 const SizedBox(height: 30),
-                TextFieldApp(controller: _titleController, label: 'Название', icon: const Icon(Icons.edit)),
-                AdvertCategoryPicker(label: LocaleKeys.Select_a_category.tr(), controller: _advertCategoryController),
-                CityPicker(label: LocaleKeys.Choose_city.tr(), controller: _cityController),
-                DescriptionFieldApp(label: LocaleKeys.Description_of_your_offer.tr(), controller: _descriptionController, icon: const Icon(IconPack.description),),
-                NumberFieldApp(label: LocaleKeys.Price.tr(), controller: _priceController, icon: const  Icon(Icons.money_sharp),),
-                TextFieldApp(controller: _phoneController, label: 'Дополнительный телефон', icon: const Icon(Icons.phone),),
+                TextFieldApp(controller: _titleController, label: "Название {}*".tr(), icon: const Icon(Icons.edit)),
+                AdvertCategoryPicker(label: "Выберите категорию".tr(), controller: _advertCategoryController),
+                CityPicker(label: "Выберите город".tr(), controller: _cityController),
+                DescriptionFieldApp(label: "Описание вашего предложения".tr(), controller: _descriptionController, icon: const Icon(IconPack.description),),
+                NumberFieldApp(label: "Цена".tr(), controller: _priceController, icon: const  Icon(Icons.money_sharp),),
+                TextFieldApp(controller: _phoneController, label: "Дополнительный телефон".tr(), icon: const Icon(Icons.phone),),
                 ImageMultiPicker(controller: _imageController),
                 const SizedBox(height: 20),
                 BlocConsumer<AdCreateFormCubit, AdCreateFormState>(
@@ -135,10 +135,10 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
                     if(state.formState == EnumFormState.fetch) {
                       return ElevatedButtonApp(child: Loader(color: Theme.of(context).colorScheme.background), onPressed: () {},);
                     }
-                    return ElevatedButtonApp(text: LocaleKeys.Create_ad.tr(), onPressed: _create,);
+                    return ElevatedButtonApp(text: "Создать объявление".tr(), onPressed: _create,);
                   }
                 ),
-                OutlinedButtonApp(text: LocaleKeys.Cancel.tr(), onPressed: _back,),
+                OutlinedButtonApp(text: "Отмена".tr(), onPressed: _back,),
               ],
             ),
           ),

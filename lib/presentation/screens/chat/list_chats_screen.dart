@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/logic/screens/chats/chat_screen_main_cubit.dart';
@@ -41,12 +42,12 @@ class _ListChatsScreenState extends State<ListChatsScreen> {
         child: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool isBool) {
             return [
-              const SliverToBoxAdapter(
+               SliverToBoxAdapter(
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: HeaderAppBar(
                       isMenu: true,
-                      title: 'Чаты',
+                      title: "Чаты".tr(),
                     ),
                   )
               ),
@@ -69,7 +70,7 @@ class _ListChatsScreenState extends State<ListChatsScreen> {
                       return Column(
                         children: [
                           ...state.chats.map((chat) {
-                            return ChatCard();
+                            return const ChatCard();
                           }).toList(),
                           if(state.status == ChatScreenMainStatus.loading) const Loader(padding: 10)
                           else if(state.status == ChatScreenMainStatus.error)  ErrorMessage(error: state.error!)

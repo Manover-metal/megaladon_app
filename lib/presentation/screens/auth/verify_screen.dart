@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
@@ -85,7 +86,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
             child: Column(
               children: [
                 const Spacer(),
-                TitleApp('Регистрация'),
+                TitleApp("Регистрация".tr()),
                 const SizedBox(height: 20,),
                 PinCodeTextField(
                     appContext: context,
@@ -105,7 +106,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                       inactiveFillColor: Theme.of(context).colorScheme.onBackground,
                     ), onChanged: (String value) {  },
                 ),
-                const Text('Введите 6-ти значный код из смс'),
+                 Text("Введите 6-ти значный код из смс".tr()),
                 BlocBuilder<AuthBloc,AuthState>(
                   builder: (context, state) {
                     if(state is AuthLoginState) {
@@ -114,10 +115,10 @@ class _VerifyScreenState extends State<VerifyScreen> {
                         child: Loader(color: Theme.of(context).colorScheme.background)
                       );
                     }
-                    return ElevatedButtonApp(text: 'Подтвердить', onPressed: _verify,);
+                    return ElevatedButtonApp(text: "Подтвердить".tr(), onPressed: _verify,);
                   }
                 ),
-                OutlinedButtonApp(text: 'Выслать код повторно'),
+                OutlinedButtonApp(text: "Выслать код повторно".tr()),
                 const Spacer(flex: 3),
               ],
             ),

@@ -27,9 +27,12 @@ class ChangeStoreBloc extends Bloc<ChangeStoreEvent, ChangeStoreState> {
 
     emit(ChangeStoreLoading());
     await _repository.changeStore(event.params).then((value) {
+      print(value);
+
       profileCubit.updateData(profileCubit.state.user!.id);
       emit(const ChangeStoreSuccess());
     }).catchError((error) {
+      print(error.response);
       if(error is DioError) {
         emit(ChangeStoreError(ErrorModel.parseDio(error)));
       } else {

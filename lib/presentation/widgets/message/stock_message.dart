@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:megaladon/generated/locale_keys.g.dart';
 
 class StockMessage extends StatelessWidget {
   final String name;
@@ -22,7 +24,7 @@ class StockMessage extends StatelessWidget {
             text: TextSpan(
               children: [
                 TextSpan(text: name),
-                const TextSpan(text: ' по данному запросу отсутствуют'),
+                TextSpan(text: LocaleKeys.for_this_request_ended.tr()),
               ],
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w700,

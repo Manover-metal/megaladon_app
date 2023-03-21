@@ -1,14 +1,9 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:megaladon/data/models/request/params/register/register_store_request_params.dart';
 import 'package:megaladon/data/models/request/params/update/change_store_request_params.dart';
-import 'package:megaladon/generated/locale_keys.g.dart';
-import 'package:megaladon/logic/form/register/register_store/register_store_form_cubit.dart';
 import 'package:megaladon/logic/form/update/store/change_store_form_cubit.dart';
-import 'package:megaladon/logic/register/register_store/register_store_bloc.dart';
 import 'package:megaladon/logic/screens/profile/change_store/change_store_bloc.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';

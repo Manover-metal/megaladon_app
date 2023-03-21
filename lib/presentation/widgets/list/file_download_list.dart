@@ -21,7 +21,7 @@ class _FileDownloadListState extends State<FileDownloadList> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: widget.files.map((file) {
+      children: widget.files.where((file) => file.active).map((file) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
