@@ -1,8 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/core/icons/icons.dart';
+import 'package:megaladon/generated/locale_keys.g.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/screens/advert/details/advert_screen_details_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
@@ -54,10 +56,11 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
             return [
               SliverToBoxAdapter(
                   child: Column(
-                    children: const [
+                    children:  [
                       Padding(
                         padding:  EdgeInsets.symmetric(horizontal: 20.0),
-                        child: HeaderAppBar(isBack: true, title: 'Объявление'),
+                      
+                        child: HeaderAppBar(isBack: true, title: "Объявление".tr()),
                       ),
                     ],
                   )
@@ -81,9 +84,9 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                                 Text(state.advert.title),
                                 Text(state.advert.description),
                                 const SizedBox(height: 20,),
-                                if(state.advert.media.isEmpty) SubTitleApp('Нет прикреплённых файлов')
+                                if(state.advert.media.isEmpty) SubTitleApp("Нет прикреплённых файлов".tr())
                                 else ...[
-                                  SubTitleApp('Прикреплённые файлы'),
+                                  SubTitleApp("Прикрепленные файлы".tr()),
                                   const SizedBox(height: 10,),
                                   ...state.advert.media.map((e) {
                                     return ClipRRect(
@@ -113,7 +116,7 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Цена: до ${state.advert.price} ₸'),
+                                Text( "Цена: до".tr()+'${state.advert.price} ₸'),
                                 const SizedBox(height: 10,),
                                 UserTile(user: state.advert.user!),
                                 const SizedBox(height: 20),
@@ -124,16 +127,16 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                                         children: [
                                           if(state.advert.user!.id == stateUser.auth.user.value!.id)...[
                                             ElevatedButtonApp(
-                                              text: 'Изменить',
+                                              text: "Изменить".tr(),
                                             ),
                                           ] else ...[
                                             ElevatedButtonApp(
-                                              text: 'Позвонить',
+                                              text: "Позвонить".tr(),
                                               onPressed: _call(state.advert.additionalPhone!),
                                             ),
                                             OutlinedButtonApp(
                                                 onPressed: _toChat,
-                                                text: 'Задать вопрос в чате'
+                                                text: "Задать вопрос в чате".tr()
                                             ),
                                           ]
                                         ],

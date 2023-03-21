@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
@@ -16,11 +17,12 @@ class ForgotPasswordScreen extends StatelessWidget {
             padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                TitleApp('Восстановление пароля'),
+                // aad tr()
+                TitleApp("Восстановление пароля".tr()),
                 const SizedBox(height: 20,),
                 const TextFieldApp(),
-                ElevatedButtonApp(text: 'Отправить пароль'),
-                OutlinedButtonApp(text: 'Отмена')
+                ElevatedButtonApp(text: "Отправить пароль".tr()),
+                OutlinedButtonApp(text: "Отмена".tr())
               ],
             ),
           ),

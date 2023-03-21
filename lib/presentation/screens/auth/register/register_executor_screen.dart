@@ -126,30 +126,30 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
-                  TitleApp('Регистрация исполнителя'),
+                  TitleApp("Регистрация исполнителя".tr()),
                   const SizedBox(height: 20,),
                   TextFieldApp(
-                    label: 'Имя',
+                    label: "Имя".tr(),
                     icon: const Icon(Icons.person_add_alt_1),
                     controller: _nameController,
                   ),
                   NumberFieldApp(
-                    label: 'БИН',
+                    label: "БИН".tr(),
                     icon: const Icon(Icons.wallet),
                     controller: _binController,
                   ),
                   TextFieldApp(
-                    label: 'Полный адрес',
+                    label: "Полный адрес".tr(),
                     icon: const Icon(Icons.maps_home_work_outlined),
                     controller: _fullAddressController,
                   ),
                   DoubleFieldApp(
-                    label: 'Широта',
+                    label: "Широта".tr(),
                     icon: const Icon(Icons.place),
                     controller: _latController,
                   ),
                   DoubleFieldApp(
-                    label: 'Долгота',
+                    label: "Долгота".tr(),
                     icon: const Icon(Icons.place_outlined),
                     controller: _lonController,
                   ),
@@ -165,18 +165,18 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
                         );
                       }
                       return ElevatedButtonApp(
-                        text: LocaleKeys.Register.tr(),
+                        text: "Зарегистрироваться".tr(),
                         onPressed: _register,
                       );
                     },
                   ),
-                  const Text.rich(
+                   Text.rich(
                     TextSpan(
                         children: [
                           TextSpan(
-                            text: 'Нажимая на кнопку “Продолжить”, вы принимаете '
+                            text: "Нажимая на кнопку 'Продолжить', вы принимаете ".tr()
                           ),
-                          TextSpan(text: 'Условия пользовательского соглашения',
+                          TextSpan(text: "Условия пользовательского соглашения".tr(),
                             style: TextStyle(
                                 decoration: TextDecoration.underline
                             )

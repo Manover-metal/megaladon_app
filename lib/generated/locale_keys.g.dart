@@ -1,7 +1,5 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
-// ignore_for_file: constant_identifier_names
-
 abstract class  LocaleKeys {
   static const main_screen = 'main_screen';
   static const element = 'element';
@@ -63,10 +61,51 @@ abstract class  LocaleKeys {
   static const Your_password = 'Your_password';
   static const Forgot_your_password = 'Forgot_your_password';
   static const Sign_in = 'Sign_in';
+  static const You_need_to_log_into_the_application = 'You_need_to_log_into_the_application';
   static const Registration = 'Registration';
+  static const Continue = 'Continue';
+  static const for_this_request_ended = 'for_this_request_ended';
   static const What_is_your_name = 'What_is_your_name';
   static const Choose_password = 'Choose_password';
   static const Confirm_the_password = 'Confirm_the_password';
   static const Register = 'Register';
+  static const Ad = 'Ad';
+  static const No_attached_files = 'No_attached_files';
+  static const Attached_files = 'Attached_files';
+  static const Price_up_to = 'Price_up_to';
+  static const Change = 'Change';
+  static const Call = 'Call';
+  static const Ask_a_question_in_the_chat = 'Ask_a_question_in_the_chat';
+  static const My_announcement = 'My_announcement';
+  static const Ads = 'Ads';
+  static const Marketplace = 'Marketplace';
+  static const Artist_registration = 'Artist_registration';
+  static const BIN = 'BIN';
+  static const Full_address = 'Full_address';
+  static const Latitude = 'Latitude';
+  static const Longitude = 'Longitude';
+  static const By_clicking_on_the_Continue_button_you_accept = 'By_clicking_on_the_Continue_button_you_accept';
+  static const user_Agreement_Terms = 'user_Agreement_Terms';
+  static const Shop_registration = 'Shop_registration';
+  static const Names = 'Names';
+  static const Type_of_business = 'Type_of_business';
+  static const City = 'City';
+  static const Password_recovery = 'Password_recovery';
+  static const Send_password = 'Send_password';
+  static const Change_password = 'Change_password';
+  static const Enter_6digit_code_from_SMS = 'Enter_6digit_code_from_SMS';
+  static const Confirm = 'Confirm';
+  static const Send_code_again = 'Send_code_again';
+  static const Chat = 'Chat';
+  static const Chats = 'Chats';
+  static const Executor = 'Executor';
+  static const Additional_Phone = 'Additional_Phone';
+  static const Edit_ad = 'Edit_ad';
+  static const Response_to_order = 'Response_to_order';
+  static const Actual_until = 'Actual_until';
+  static const Time_to_work = 'Time_to_work';
+  static const Respond = 'Respond';
+  static const Header = 'Header';
+  static const Change_order = 'Change_order';
 
 }

@@ -66,8 +66,8 @@ class DrawerApp extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const DrawerRouteTile(
-                        text: 'Мои объявления',
+                       DrawerRouteTile(
+                        text:"My_announcement".tr(),
                         page: InitialRouter(
                           children: [
                             AdRouter(children: [MyAdsRoute()])

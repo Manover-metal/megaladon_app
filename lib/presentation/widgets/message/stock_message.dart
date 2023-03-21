@@ -22,6 +22,7 @@ class StockMessage extends StatelessWidget {
             text: TextSpan(
               children: [
                 TextSpan(text: name),
+                // не смог добавить LocaleKeys.for_this_request_ended.tr()
                 const TextSpan(text: ' по данному запросу закончились'),
               ],
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(

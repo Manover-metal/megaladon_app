@@ -114,31 +114,31 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
             child: Column(
               children: [
                 const Spacer(),
-                TitleApp(LocaleKeys.Registration.tr()),
+                TitleApp("Регистрация".tr()),
                 const SizedBox(height: 20,),
                 TextFieldApp(
                   icon: const Icon(Icons.person_add_alt_1),
-                  label: LocaleKeys.What_is_your_name.tr(),
+                  label: "Как вас зовут".tr(),
                   controller: _nameController,
                 ),
                 TextFieldApp(
                   icon: const Icon(Icons.phone),
-                  label: LocaleKeys.Your_phone_number.tr(),
+                  label: "Ваш телефон".tr(),
                   controller: _phoneController,
                 ),
                 TextFieldApp(
                   icon: const Icon(Icons.lock),
-                  label: LocaleKeys.Choose_password.tr(),
+                  label: "Выберите пароль".tr(),
                   controller: _passwordController,
                 ),
                 TextFieldApp(
                   icon: const Icon(Icons.lock),
-                  label: LocaleKeys.Confirm_the_password.tr(),
+                  label: "Подтвердите пароль".tr(),
                   controller: _passwordVerifyController,
                 ),
                 CityPicker(
                   icon: const Icon(Icons.location_city),
-                  label: LocaleKeys.Choose_city.tr(),
+                  label: "Выберите город".tr(),
                   controller: _cityController,
                 ),
                 BlocBuilder<RegisterUserBloc, RegisterUserState>(
@@ -150,16 +150,16 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                       );
                     }
                     return ElevatedButtonApp(
-                      text: LocaleKeys.Register.tr(),
+                      text: "Зарегистрироваться".tr(),
                       onPressed: _register,
                     );
                   },
                 ),
                 Text.rich(
                   TextSpan(
-                    children: const [
-                      TextSpan(text: 'Нажимая на кнопку “Продолжить”, вы принимаете '),
-                      TextSpan(text: 'Условия пользовательского соглашения',
+                    children:  [
+                      TextSpan(text: "Нажимая на кнопку 'Продолжить', вы принимаете ".tr()),
+                      TextSpan(text: "Условия пользовательского соглашения".tr(),
                           style: TextStyle(
                               decoration: TextDecoration.underline
                           )

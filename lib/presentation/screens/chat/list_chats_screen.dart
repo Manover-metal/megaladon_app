@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/presentation/widgets/card/chat_card.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
@@ -17,9 +18,9 @@ class ListChatsScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: [
-                    const HeaderAppBar(
+                     HeaderAppBar(
                       isMenu: true,
-                      title: 'Чаты',
+                      title: "Чаты".tr(),
                     ),
                     Column(
                       children: List.generate(6, (index) => const ChatCard()),

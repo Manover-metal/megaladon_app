@@ -69,11 +69,62 @@
 "Your_password":"Your password",
 "Forgot_your_password":"Forgot your password ?",
 "Sign_in":"Sign in",
+
+"You_need_to_log_into_the_application":"You need to log into the application",
+
 "Registration":"Registration",
+"Continue":"Continue",
+
+"for_this_request_ended":"for this request ended",
 
 "What_is_your_name":"What is your name",
 "Choose_password":"Choose password",
 "Confirm_the_password":"Confirm the password",
-"Register":"Register"
+"Register":"Register",
 
+"Ad":"Ad",
+"No_attached_files": "No attached files",
+"Attached_files": "Attached files",
+"Price_up_to": "Price: up to",
+"Change": "Change",
+"Call": "Call",
+"Ask_a_question_in_the_chat": "Ask a question in the chat",
+"My_announcement": "My announcements",
+"Ads": "Ads",
+"Marketplace": "Marketplace",
+
+"Artist_registration": "Artist registration",
+
+"BIN": "BIN",
+"Full_address": "Full address",
+"Latitude": "Latitude",
+"Longitude": "Longitude",
+"By_clicking_on_the_Continue_button_you_accept": "By clicking on the 'Continue' button you accept ",
+"user_Agreement_Terms": "user agreement terms",
+
+"Shop_registration": "Shop registration",
+"Names": "Names",
+"Type_of_business": "Type of business",
+"City": "City",
+
+"Password_recovery": "Password recovery",
+"Send_password": "Send password",
+
+"Change_password": "Change password",
+"Enter_6digit_code_from_SMS": "Enter 6-digit code from SMS",
+"Confirm": "Confirm",
+"Send_code_again": "Send code again",
+
+"Chat": "Chat",
+"Chats": "Chats",
+"Executor": "Executors",
+
+"Additional_Phone": "Additional phone",
+"Edit_ad": "Edit ad",
+"Response_to_order": "Response to order №",
+"Actual_until": "Actual until",
+"Time_to_work": "Time to work",
+"Respond": "Respond",
+"Header": "Header",
+"Change_order": "Change order"
 }

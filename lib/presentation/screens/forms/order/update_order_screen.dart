@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -117,24 +118,24 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                HeaderAppBar(isBack: true, title: 'Изменить заказ',),
+                HeaderAppBar(isBack: true, title: "Изменить заказ".tr(),),
                 SizedBox(height: 30),
-                OrderCategoryPicker(label: 'Категория', controller: _orderCategoryController),
-                TextFieldApp(controller: _titleController, label: 'Заголовок',),
-                CityPicker(label: 'Город', controller: _cityController),
-                DescriptionFieldApp(label: 'Описание', controller: _descriptionController),
-                NumberFieldApp(label: 'Желаемый бюджет (не обязательно)', controller: _priceMaxController,),
-                NumberFieldApp(label: 'Допустимый бюджет (не обязательно)', controller: _priceRecommendedController,),
+                OrderCategoryPicker(label: "Категория".tr(), controller: _orderCategoryController),
+                TextFieldApp(controller: _titleController, label: "Заголовок".tr(),),
+                CityPicker(label: "Город".tr(), controller: _cityController),
+                DescriptionFieldApp(label: "Описание {}".tr(), controller: _descriptionController),
+                NumberFieldApp(label: "Желаемый бюджет (не обязательно)".tr(), controller: _priceMaxController,),
+                NumberFieldApp(label: "Допустимый бюджет (не обязательно)".tr(), controller: _priceRecommendedController,),
                 BlocConsumer<OrderUpdateFormCubit, OrderUpdateFormState>(
                   listener: _listenerForm,
                   builder: (context, state) {
                     if(state.formState == EnumFormState.fetch) {
                       return ElevatedButtonApp(child: Loader(color: Theme.of(context).colorScheme.background), onPressed: () {},);
                     }
-                    return ElevatedButtonApp(text: 'Изменить', onPressed: _create,);
+                    return ElevatedButtonApp(text: "Изменить".tr(), onPressed: _create,);
                   }
                 ),
-                OutlinedButtonApp(text: 'Отменить', onPressed: _back,),
+                OutlinedButtonApp(text: "Отмена".tr(), onPressed: _back,),
               ],
             ),
           ),

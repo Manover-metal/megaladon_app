@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -106,24 +107,24 @@ class _CreateOfferScreenState extends State<CreateOfferScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                HeaderAppBar(isBack: true, title: 'Отклик на заказ №${widget.orderId}'),
+                HeaderAppBar(isBack: true, title: "Отклик на заказ №".tr()+'${widget.orderId}'),
                 const SizedBox(height: 20,),
-                ExpiredAtFieldApp(label: 'Актуален до', icon: const Icon(Icons.calendar_month), controller: _expiredAtController,),
-                TextFieldApp(label: 'Время на работу', icon: const Icon(Icons.watch_later_outlined), controller: _dateController,),
-                NumberFieldApp(label: 'Цена', icon: const Icon(Icons.credit_card), controller: _priceController,),
-                TextFieldApp(label: 'Описание', icon: const Icon(Icons.message), controller: _descriptionController,),
-                CityPicker(label: 'Город', icon: const Icon(Icons.place) , controller: _cityController),
+                ExpiredAtFieldApp(label: "Актуален до".tr(), icon: const Icon(Icons.calendar_month), controller: _expiredAtController,),
+                TextFieldApp(label: "Время на работу".tr(), icon: const Icon(Icons.watch_later_outlined), controller: _dateController,),
+                NumberFieldApp(label: "Цена".tr(), icon: const Icon(Icons.credit_card), controller: _priceController,),
+                TextFieldApp(label: "Описание {}".tr(), icon: const Icon(Icons.message), controller: _descriptionController,),
+                CityPicker(label: "Город".tr(), icon: const Icon(Icons.place) , controller: _cityController),
                 BlocConsumer<CreateOfferFormCubit, CreateOfferFormState>(
                   listener: _listenerForm,
                   builder: (context, state) {
                     if(state.formState == EnumFormState.fetch) {
                       return ElevatedButtonApp(child: Loader(color: Theme.of(context).colorScheme.background), onPressed: () {},);
                     }
-                    return ElevatedButtonApp(text: 'Откликнуться', onPressed: _create,);
+                    return ElevatedButtonApp(text: "Откликнуться".tr(), onPressed: _create,);
                   }
                 ),
                 OutlinedButtonApp(
-                  text: 'Отмена',
+                  text: "Отмена".tr(),
                   onPressed: _back,
                 )
               ],
