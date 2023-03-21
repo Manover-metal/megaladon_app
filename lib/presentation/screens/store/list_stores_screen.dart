@@ -80,7 +80,8 @@ class _ListStoresScreenState extends State<ListStoresScreen> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: HeaderAppBar(isMenu: true, title: LocaleKeys.Theshops.tr()),
+                        //
+                        child: HeaderAppBar(isMenu: true, title: "Магазины".tr()),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),

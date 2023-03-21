@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/logic/screens/profile/change_phone/change_phone_cubit.dart';
@@ -54,7 +55,7 @@ class _ChangePhoneEndScreenState extends State<ChangePhoneEndScreen> {
 
   _listenerForm(BuildContext context, ChangePhoneState state) {
     if(state.status == ChangePhoneStatus.success2) {
-      showSuccessSnackBar(context, 'Номер телефона успешно изменен');
+      showSuccessSnackBar(context, "Номер телефона успешно изменен".tr());
       context.router.navigate(const InitialRouter(
           children: [
             ProfileRouter()
@@ -78,16 +79,16 @@ class _ChangePhoneEndScreenState extends State<ChangePhoneEndScreen> {
             child: Column(
               children: [
                 const Spacer(),
-                const TitleApp('Изменить номер телефона'),
+                 TitleApp("Изменить номер телефона".tr()),
                 const SizedBox(height: 20,),
                 TextFieldApp(
                   icon: const Icon(Icons.phone),
-                  label: 'Старый телефон',
+                  label: "Старый телефон".tr(),
                   controller: _newPhone,
                 ),
                 TextFieldApp(
                   icon: const Icon(Icons.lock),
-                  label: 'Код',
+                  label: "Код".tr(),
                   controller: _code,
                 ),
 
@@ -97,7 +98,7 @@ class _ChangePhoneEndScreenState extends State<ChangePhoneEndScreen> {
                       if(state.status == ChangePhoneStatus.loading2) {
                         return ElevatedButtonApp(child: Loader(color: Theme.of(context).colorScheme.background), onPressed: (){});
                       }
-                      return ElevatedButtonApp(text: 'Изменить', onPressed: _login);
+                      return ElevatedButtonApp(text: "Изменить".tr(), onPressed: _login);
                     }
                 ),
                 const Spacer(flex: 3),

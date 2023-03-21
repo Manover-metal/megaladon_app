@@ -93,7 +93,7 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: HeaderAppBar(isMenu: true, title: LocaleKeys.Orders.tr()),
+                        child: HeaderAppBar(isMenu: true, title: "Заказы".tr()),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -139,7 +139,7 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
                               }).toList(),
                               if(state.status == OrderScreenMainStatus.loading) const Loader(padding: 10)
                               else if(state.status == OrderScreenMainStatus.error) ErrorMessage(error: state.error!)
-                              else if(state.stock) const StockMessage(name: 'Заказы')
+                              else if(state.stock)  StockMessage(name: "Заказы".tr())
 
                             ],
                           );

@@ -100,7 +100,7 @@ class DrawerApp extends StatelessWidget {
                 page: const InitialRouter(children: [OrderRouter()]),
               ),
               DrawerRouteTile(
-                text: LocaleKeys.Theshops.tr(),
+                text: "Магазины".tr(),
                 page: const InitialRouter(children: [StoreRouter()]),
               ),
               const DrawerRouteTile(

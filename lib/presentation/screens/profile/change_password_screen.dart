@@ -62,7 +62,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
   _listenerForm(BuildContext context, ChangePasswordState state) {
     if(state.status == ChangePasswordStatus.success) {
-      showSuccessSnackBar(context, 'Пароль успешно изменен');
+      showSuccessSnackBar(context, "Пароль успешно изменен".tr());
       context.router.navigate(const InitialRouter(
           children: [
             ProfileRouter()
@@ -86,21 +86,21 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             child: Column(
               children: [
                 const Spacer(),
-                const TitleApp('Изменить пароль'),
+                 TitleApp("Изменить пароль".tr()),
                 const SizedBox(height: 20,),
                 TextFieldApp(
                   icon: const Icon(Icons.lock),
-                  label: LocaleKeys.Your_password.tr(),
+                  label: "Ваш пароль".tr(),
                   controller: _oldPassword,
                 ),
                 TextFieldApp(
                   icon: const Icon(Icons.lock),
-                  label: LocaleKeys.Choose_password.tr(),
+                  label: "Выберите пароль".tr(),
                   controller: _password,
                 ),
                 TextFieldApp(
                   icon: const Icon(Icons.lock),
-                  label: LocaleKeys.Confirm_the_password.tr(),
+                  label: "Подтвердите пароль".tr(),
                   controller: _passwordConfirmation,
                 ),
                 const SizedBox(height: 25,),
@@ -109,7 +109,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       if(state.status == ChangePasswordStatus.loading) {
                         return ElevatedButtonApp(child: Loader(color: Theme.of(context).colorScheme.background), onPressed: (){});
                       }
-                      return ElevatedButtonApp(text: 'Изменить', onPressed: _login);
+                      return ElevatedButtonApp(text: "Изменить".tr(), onPressed: _login);
                     }
                 ),
                 const Spacer(flex: 3),

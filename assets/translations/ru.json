@@ -134,7 +134,51 @@
 "Respond":"Откликнуться",
 "Header":"Заголовок",
 
-"Change_order":"Изменить заказ"
+"Change_order":"Изменить заказ",
+
+"Artist's suggestion":"Предложение исполнителя",
+"Relevant until":"Актуален до:",
+"Price2":"Цена:",
+"Terms":"Сроки:",
+"Location2":"Местоположение:",
+"Description2":"Описание: ",
+"Set as executor":"Назначить исполнителем",
+
+"Order":"Заказ №",
+"No attached files":"Нет прикреплённых файлов",
+"Attached files":"Прикреплённые файлы",
+"Desired budget_up to":"Желаемый бюджет: до",
+"Valid: to":"Допустимый: до",
+"Offer services":"Предложить услуги",
+"Discuss in chat":"Обсудить в чате",
+"Offers":"Предложения",
+"Discuss in chat2":"Обсудить в чате (5 новых)",
+"To finish work":"Завершить работу",
+
+"My orders":"Мои заказы",
+"As a user":"Как пользователя",
+"As a executor":"Как исполнителя",
+
+"Feedback on order":"Отзыв по заказу",
+"Leave feedback":"Оставить отзыв",
+"Back":"Назад",
+
+"Password changed successfully":"Пароль успешно изменен",
+"Phone number changed successfully":"Номер телефона успешно изменен",
+"Change phone number":"Изменить номер телефона",
+"Old phone":"Старый телефон",
+"Code":"Код",
+
+"New phone":"Новый телефон",
+"Submit Code":"Отправить код",
+
+"Profile":"Профиль",
+"Add price":"Добавить прайс",
+"Settings":"Настройки",
+"Language":"Язык",
+"About the application":"О приложении"
+
+
 
 
 
