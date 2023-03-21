@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/Picker.dart';
 import 'package:megaladon/data/models/contact_model.dart';
@@ -17,7 +18,7 @@ Future<List<int>?> showContactTypePicker(BuildContext context) async {
     ),
     changeToFirst: false,
     hideHeader: false,
-    cancelText: 'Отмена',
+    cancelText: 'Cancel'.tr(),
     confirmText: 'Выбрать',
   ).showModal(context);
 }

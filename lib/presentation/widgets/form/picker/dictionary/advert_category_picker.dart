@@ -21,7 +21,7 @@ Future<AdvertCategoryModel?> showAdvertCategoryPicker(BuildContext context) asyn
     ),
     changeToFirst: false,
     hideHeader: false,
-    cancelText: 'Отмена',
+    cancelText: 'Cancel',
     confirmText: 'Выбрать',
   ).showModal(context);
 

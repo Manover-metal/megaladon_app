@@ -83,7 +83,7 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                     return SliverToBoxAdapter(
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: HeaderAppBar(isBack: true, title: "Заказ №".tr()+'${state.order!.id}'),
+                          child: HeaderAppBar(isBack: true, title: "Order".tr()+'${state.order!.id}'),
                         )
                     );
                   } else {
@@ -122,7 +122,7 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                               Text(order.description),
                               const SizedBox(height: 20,),
                               if(order.files!.isEmpty) ...[
-                                SubTitleApp("Нет прикреплённых файлов".tr()),
+                                SubTitleApp("No_attached_files".tr()),
                                 const SizedBox(height: 10,),
                               ]
                               else ...[
@@ -139,8 +139,8 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Желаемый бюджет: до".tr()+'${order.priceRecommended} ₸'),
-                              Text("Допустимый: до".tr()+' ${order.priceMax} ₸'),
+                              Text("Desired_budget_up_to".tr()+'${order.priceRecommended} ₸'),
+                              Text("Valid_to".tr()+' ${order.priceMax} ₸'),
                               const SizedBox(height: 20,),
 
                               UserTile(user: order.user!),
@@ -156,28 +156,28 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                             && order.status == OrderStatus.active
                                         )...[
                                           ElevatedButtonApp(
-                                            text: "Предложить услуги".tr(),
+                                            text: "Offer_services".tr(),
                                             onPressed: _createOffer,
                                           ),
                                           OutlinedButtonApp(
-                                            text: "Обсудить в чате".tr(),
+                                            text: "Discuss_in_chat".tr(),
                                             onPressed: _toChat,
                                           ),
                                         ]
                                         else ...[
                                           if(order.status == OrderStatus.active) ...[
                                             ElevatedButtonApp(
-                                              text: "Предложения".tr()+ '(${order.countOffers} новых)',
+                                              text: "Offers".tr()+ '(${order.countOffers} новых)',
                                               onPressed: _checkExecutors,
                                             ),
                                             OutlinedButtonApp(
-                                              text: "Обсудить в чате (5 новых)".tr(),
+                                              text: "Discuss_in_chat2".tr(),
                                               onPressed: _toChats,
                                             ),
                                           ],
                                           if(order.status == OrderStatus.hasExecutor) ...[
                                             ElevatedButtonApp(
-                                              text: "Завершить работу".tr(),
+                                              text: "To_finish_work".tr(),
                                               onPressed: _complete(order),
                                             ),
                                           ],

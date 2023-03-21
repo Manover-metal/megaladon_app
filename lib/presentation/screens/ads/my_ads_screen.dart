@@ -77,7 +77,7 @@ _listenerScroll() {
                   children: [
                      Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: HeaderAppBar(isMenu: true, title: "Мои объявления".tr()),
+                      child: HeaderAppBar(isMenu: true, title: "My_announcement".tr()),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -116,7 +116,7 @@ _listenerScroll() {
                               }).toList(),
                               if(state.status == AdverScreenMyMainStatus.loading) const Loader(padding: 10)
                               else if(state.status == AdverScreenMyMainStatus.error) ErrorMessage(error: state.error!)
-                              else if(state.stock)  StockMessage(name: "Объявления".tr())
+                              else if(state.stock)  StockMessage(name: "Ads".tr())
 
                             ],
                           );

@@ -18,11 +18,11 @@ class ForgotPasswordScreen extends StatelessWidget {
             child: Column(
               children: [
                 // aad tr()
-                TitleApp("Восстановление пароля".tr()),
+                TitleApp("Password_recovery".tr()),
                 const SizedBox(height: 20,),
                 const TextFieldApp(),
-                ElevatedButtonApp(text: "Отправить пароль".tr()),
-                OutlinedButtonApp(text: "Отмена".tr())
+                ElevatedButtonApp(text: "Send_password".tr()),
+                OutlinedButtonApp(text: "Cancel".tr())
               ],
             ),
           ),

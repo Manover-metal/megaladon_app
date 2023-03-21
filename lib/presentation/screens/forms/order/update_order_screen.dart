@@ -118,14 +118,14 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                HeaderAppBar(isBack: true, title: "Изменить заказ".tr(),),
+                HeaderAppBar(isBack: true, title: "Change_order".tr(),),
                 SizedBox(height: 30),
                 OrderCategoryPicker(label: "Категория".tr(), controller: _orderCategoryController),
-                TextFieldApp(controller: _titleController, label: "Заголовок".tr(),),
-                CityPicker(label: "Город".tr(), controller: _cityController),
-                DescriptionFieldApp(label: "Описание {}".tr(), controller: _descriptionController),
-                NumberFieldApp(label: "Желаемый бюджет (не обязательно)".tr(), controller: _priceMaxController,),
-                NumberFieldApp(label: "Допустимый бюджет (не обязательно)".tr(), controller: _priceRecommendedController,),
+                TextFieldApp(controller: _titleController, label: "Header".tr(),),
+                CityPicker(label: "City".tr(), controller: _cityController),
+                DescriptionFieldApp(label: "Store_data".tr(), controller: _descriptionController),
+                NumberFieldApp(label: "Desired_budget".tr(), controller: _priceMaxController,),
+                NumberFieldApp(label: "Allowed_budget".tr(), controller: _priceRecommendedController,),
                 BlocConsumer<OrderUpdateFormCubit, OrderUpdateFormState>(
                   listener: _listenerForm,
                   builder: (context, state) {
@@ -135,7 +135,7 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
                     return ElevatedButtonApp(text: "Изменить".tr(), onPressed: _create,);
                   }
                 ),
-                OutlinedButtonApp(text: "Отмена".tr(), onPressed: _back,),
+                OutlinedButtonApp(text: "Cancel".tr(), onPressed: _back,),
               ],
             ),
           ),

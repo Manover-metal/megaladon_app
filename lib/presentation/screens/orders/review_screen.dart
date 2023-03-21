@@ -63,7 +63,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
               children: [
                  HeaderAppBar(
                   isBack: true,
-                  title: "Отзыв по заказу".tr()+'№1321412313',
+                  title: "Feedback_on_order".tr()+'№1321412313',
                 ),
                 const SizedBox(height: 20,),
                 if(widget.order.executor != null) ...[
@@ -72,8 +72,8 @@ class _ReviewScreenState extends State<ReviewScreen> {
                 ],
                 StarPicker(controller: controller),
                 const SizedBox(height: 20,),
-                ElevatedButtonApp(text: "Оставить отзыв".tr(), onPressed: _review),
-                OutlinedButtonApp(text: "Назад".tr(), onPressed: _back)
+                ElevatedButtonApp(text: "Leave_feedback".tr(), onPressed: _review),
+                OutlinedButtonApp(text: "Back".tr(), onPressed: _back)
 
               ],
             ),

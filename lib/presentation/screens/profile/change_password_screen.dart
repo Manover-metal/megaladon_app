@@ -62,7 +62,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
   _listenerForm(BuildContext context, ChangePasswordState state) {
     if(state.status == ChangePasswordStatus.success) {
-      showSuccessSnackBar(context, "Пароль успешно изменен".tr());
+      showSuccessSnackBar(context, "Password_changed_successfully".tr());
       context.router.navigate(const InitialRouter(
           children: [
             ProfileRouter()
@@ -86,21 +86,21 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             child: Column(
               children: [
                 const Spacer(),
-                 TitleApp("Изменить пароль".tr()),
+                 TitleApp("Change_password".tr()),
                 const SizedBox(height: 20,),
                 TextFieldApp(
                   icon: const Icon(Icons.lock),
-                  label: "Ваш пароль".tr(),
+                  label: "Your_password".tr(),
                   controller: _oldPassword,
                 ),
                 TextFieldApp(
                   icon: const Icon(Icons.lock),
-                  label: "Выберите пароль".tr(),
+                  label: "Choose_password".tr(),
                   controller: _password,
                 ),
                 TextFieldApp(
                   icon: const Icon(Icons.lock),
-                  label: "Подтвердите пароль".tr(),
+                  label: "Confirm_the_password".tr(),
                   controller: _passwordConfirmation,
                 ),
                 const SizedBox(height: 25,),

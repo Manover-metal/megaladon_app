@@ -99,22 +99,22 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               children: [
                 const Spacer(),
-                TitleApp("Авторизация".tr()),
+                TitleApp("Authorization".tr()),
                 // Spacer(),
                 const SizedBox(height: 20,),
                 TextFieldApp(
                   icon: const Icon(Icons.person),
-                  label: "Ваш телефон".tr(),
+                  label: "Your_phone_number".tr(),
                   controller: _phone,
                 ),
                 TextFieldApp(
                   icon: const Icon(Icons.lock),
-                  label: "Ваш пароль".tr(),
+                  label: "Your_password".tr(),
                   controller: _password,
                 ),
                 Align(
                   alignment: Alignment.centerRight,
-                  child: Text("Забыли пароль?".tr(),
+                  child: Text("Forgot_your_password".tr(),
                     style: Theme.of(context).textTheme.bodySmall
                   ),
                 ),
@@ -124,10 +124,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     if(state is AuthLoadingState) {
                       return ElevatedButtonApp(child: Loader(color: Theme.of(context).colorScheme.background), onPressed: (){});
                     }
-                    return ElevatedButtonApp(text: "Войти".tr(), onPressed: _login);
+                    return ElevatedButtonApp(text: "Sign_in".tr(), onPressed: _login);
                   }
                 ),
-                OutlinedButtonApp(text:"Регистрация".tr(), onPressed: _register),
+                OutlinedButtonApp(text:"Registration".tr(), onPressed: _register),
                 const Spacer(flex: 3),
               ],
             ),

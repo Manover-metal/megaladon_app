@@ -17,11 +17,11 @@ class ResetPasswordScreen extends StatelessWidget {
             padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                TitleApp("Изменить пароль".tr()),
+                TitleApp("Change_password".tr()),
                 const SizedBox(height: 20,),
                 const TextFieldApp(),
                 ElevatedButtonApp(text: "Изменить".tr()),
-                OutlinedButtonApp(text: "Отмена".tr())
+                OutlinedButtonApp(text: "Cancel".tr())
               ],
             ),
           ),

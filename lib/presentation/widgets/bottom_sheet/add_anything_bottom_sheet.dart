@@ -33,7 +33,7 @@ class AddAnythingBottomSheet extends StatelessWidget {
                 const TitleApp('Создать'),
                 const Divider(thickness: 1,height: 20,),
                 ElevatedButtonApp(
-                  text: 'Объявление',
+                  text: 'Ad',
                   onPressed: _createAdvert(context),
                 ),
                 ElevatedButtonApp(

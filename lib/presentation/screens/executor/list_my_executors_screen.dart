@@ -48,7 +48,7 @@ class _ListExecutorScreenState extends State<ListExecutorScreen> {
                   padding: EdgeInsets.symmetric(horizontal: 20.0),
                   child: HeaderAppBar(
                     isMenu: true,
-                    title: "Исполнители".tr(),
+                    title: "Executor".tr(),
                   ),
                 ),
               )

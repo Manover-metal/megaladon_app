@@ -22,7 +22,7 @@ Future<CityModel?> showCityPicker(BuildContext context) async {
     ),
     changeToFirst: false,
     hideHeader: false,
-    cancelText: 'Отмена',
+    cancelText: 'Cancel',
     confirmText: 'Выбрать',
   ).showModal(context);
 

@@ -83,16 +83,16 @@ class _ChangePhoneStartScreenState extends State<ChangePhoneStartScreen> {
             child: Column(
               children: [
                 const Spacer(),
-                 TitleApp("Изменить номер телефона".tr()),
+                 TitleApp("Change_phone_number".tr()),
                 const SizedBox(height: 20,),
                 TextFieldApp(
                   icon: const Icon(Icons.phone),
-                  label: "Новый телефон".tr(),
+                  label: "New_phone".tr(),
                   controller: _newPhone,
                 ),
                 TextFieldApp(
                   icon: const Icon(Icons.lock),
-                  label: "Ваш пароль".tr(),
+                  label: "Your_password".tr(),
                   controller: _password,
                 ),
                 const SizedBox(height: 25,),
@@ -101,7 +101,7 @@ class _ChangePhoneStartScreenState extends State<ChangePhoneStartScreen> {
                       if(state.status == ChangePhoneStatus.loading) {
                         return ElevatedButtonApp(child: Loader(color: Theme.of(context).colorScheme.background), onPressed: (){});
                       }
-                      return ElevatedButtonApp(text: "Отправить код".tr(), onPressed: _login);
+                      return ElevatedButtonApp(text: "Submit_Code".tr(), onPressed: _login);
                     }
                 ),
                 const Spacer(flex: 3),

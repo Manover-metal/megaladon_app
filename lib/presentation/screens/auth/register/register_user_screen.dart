@@ -114,26 +114,26 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
             child: Column(
               children: [
                 const Spacer(),
-                TitleApp("Регистрация".tr()),
+                TitleApp("Registration".tr()),
                 const SizedBox(height: 20,),
                 TextFieldApp(
                   icon: const Icon(Icons.person_add_alt_1),
-                  label: "Как вас зовут".tr(),
+                  label: "What_is_your_name".tr(),
                   controller: _nameController,
                 ),
                 TextFieldApp(
                   icon: const Icon(Icons.phone),
-                  label: "Ваш телефон".tr(),
+                  label: "Your_phone_number".tr(),
                   controller: _phoneController,
                 ),
                 TextFieldApp(
                   icon: const Icon(Icons.lock),
-                  label: "Выберите пароль".tr(),
+                  label: "Choose_password".tr(),
                   controller: _passwordController,
                 ),
                 TextFieldApp(
                   icon: const Icon(Icons.lock),
-                  label: "Подтвердите пароль".tr(),
+                  label: "Confirm_the_password".tr(),
                   controller: _passwordVerifyController,
                 ),
                 CityPicker(
@@ -150,7 +150,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                       );
                     }
                     return ElevatedButtonApp(
-                      text: "Зарегистрироваться".tr(),
+                      text: "Register".tr(),
                       onPressed: _register,
                     );
                   },
@@ -158,8 +158,8 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                 Text.rich(
                   TextSpan(
                     children:  [
-                      TextSpan(text: "Нажимая на кнопку 'Продолжить', вы принимаете ".tr()),
-                      TextSpan(text: "Условия пользовательского соглашения".tr(),
+                      TextSpan(text: "By_clicking_on_the_Continue_button_you_accept".tr()),
+                      TextSpan(text: "ser_Agreement_Terms".tr(),
                           style: TextStyle(
                               decoration: TextDecoration.underline
                           )

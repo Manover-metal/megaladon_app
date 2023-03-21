@@ -48,7 +48,7 @@ class _ListExecutorsScreenState extends State<ListExecutorsScreen> {
                SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: HeaderAppBar(isBack: true, title: "Исполнители".tr()),
+                  child: HeaderAppBar(isBack: true, title: "Executor".tr()),
                 ),
               )
             ];

@@ -28,9 +28,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                const HeaderAppBar(
+                 HeaderAppBar(
                   isMenu: true,
-                  title: 'Настройки',
+                  title: 'Settings'.tr(),
                 ),
                 // Row(
                 //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -42,8 +42,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Expanded(
-                        child: Text('Язык')
+                     Expanded(
+                        child: Text('Language'.tr())
                     ),
                     Expanded(
                       child: DropdownButton<Locale>(
@@ -66,7 +66,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 //   onPressed: () {},
                 // ),
                 OutlinedButtonApp(
-                  text: 'О приложении',
+                  text: 'About_the_application'.tr(),
                   onPressed: () {},
                 ),
                 // OutlinedButtonApp(

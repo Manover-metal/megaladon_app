@@ -123,12 +123,12 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                 HeaderAppBar(isBack: true, title: "Создание заказа".tr()),
                 const SizedBox(height: 30),
 
-                OrderCategoryPicker(label: "Выберите категорию".tr(), controller: _orderCategoryController, ),
+                OrderCategoryPicker(label: "Select_a_category".tr(), controller: _orderCategoryController, ),
                 CityPicker(label: "Выберите город".tr(), controller: _cityController),
-                TextFieldApp(controller: _titleController, label: "Заголовок".tr(), icon: Icon(IconPack.job_description_kwo7og605c2l),),
-                DescriptionFieldApp(label: "Описание работы".tr(), controller: _descriptionController,icon: Icon(IconPack.description),),
-                NumberFieldApp(label:"Желаемый бюджет (не обязательно)".tr(), controller: _priceMaxController,icon: Icon(Icons.money_sharp),),
-                NumberFieldApp(label: "Допустимый бюджет (не обязательно)".tr(), controller: _priceRecommendedController,icon: Icon(Icons.money_sharp),),
+                TextFieldApp(controller: _titleController, label: "Header".tr(), icon: Icon(IconPack.job_description_kwo7og605c2l),),
+                DescriptionFieldApp(label: "Description_of_work".tr(), controller: _descriptionController,icon: Icon(IconPack.description),),
+                NumberFieldApp(label:"Desired_budget".tr(), controller: _priceMaxController,icon: Icon(Icons.money_sharp),),
+                NumberFieldApp(label: "Allowed_budget".tr(), controller: _priceRecommendedController,icon: Icon(Icons.money_sharp),),
                 FileMultiPicker(controller: _fileController),
                 const SizedBox(height: 30),
                 // BlocConsumer(builder: builder, listener: listener)
@@ -141,7 +141,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                       return ElevatedButtonApp(text: "Создать".tr(), onPressed: _create,);
                     }
                 ),
-                OutlinedButtonApp(text: "Отмена".tr(), onPressed: _back,),
+                OutlinedButtonApp(text: "Cancel".tr(), onPressed: _back,),
               ],
             ),
           ),

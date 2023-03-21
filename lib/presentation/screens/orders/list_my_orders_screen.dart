@@ -96,7 +96,7 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> with SingleTick
                       children: [
                          Padding(
                           padding: EdgeInsets.symmetric(horizontal: 20),
-                          child: HeaderAppBar(isMenu: true, title: "Мои заказы".tr()),
+                          child: HeaderAppBar(isMenu: true, title: "My_orders".tr()),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -121,8 +121,8 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> with SingleTick
                       unselectedLabelColor: Colors.grey,
                       indicatorColor: Theme.of(context).colorScheme.primary,
                       tabs:  [
-                        Tab(text: "Как пользователя".tr()),
-                        Tab(text:"Как исполнителя".tr()),
+                        Tab(text: "As_a_user".tr()),
+                        Tab(text:"As_a_executor".tr()),
                       ],
                     ),
                   )

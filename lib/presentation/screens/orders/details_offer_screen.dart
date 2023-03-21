@@ -64,7 +64,7 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
                      SliverToBoxAdapter(
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: HeaderAppBar(isBack: true, title: "Предложение исполнителя".tr()),
+                        child: HeaderAppBar(isBack: true, title: "Artists_suggestion".tr()),
                       ),
                     )
                   ];
@@ -84,13 +84,13 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
                                 children: [
                                   if(state.offer.executor != null) ExecutorTile(executor: state.offer.executor!,),
                                   const SizedBox(height: 20,),
-                                  DataTile(title: "Актуален до:".tr(), data: state.offer.expiredAt,),
-                                  DataTile(title: "Цена:".tr(), data: '${state.offer.price} ₸',),
-                                  DataTile(title: "Сроки:".tr(), data: state.offer.date,),
-                                  DataTile(title: "Местоположение:".tr(), data: 'г. ${state.offer.city?.name }',),
-                                  if(state.offer.comment != null) DataTile(title: "Описание: ".tr(), data: state.offer.comment!,),
+                                  DataTile(title: "Actual_until:".tr(), data: state.offer.expiredAt,),
+                                  DataTile(title: "Price:".tr(), data: '${state.offer.price} ₸',),
+                                  DataTile(title: "Terms".tr(), data: state.offer.date,),
+                                  DataTile(title: "Location:".tr(), data: 'г. ${state.offer.city?.name }',),
+                                  if(state.offer.comment != null) DataTile(title: "Description2".tr(), data: state.offer.comment!,),
                                   const SizedBox(height: 20,),
-                                  ElevatedButtonApp(text: "Назначить исполнителем".tr(), onPressed: _acceptOffer,)
+                                  ElevatedButtonApp(text: "Set_as_executor".tr(), onPressed: _acceptOffer,)
                                 ],
                               );
                             } else if(state is OfferScreenDetailsLoader) {

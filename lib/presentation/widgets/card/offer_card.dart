@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/data/models/offer_model.dart';
 import 'package:megaladon/presentation/routing/router.dart';
@@ -28,9 +29,9 @@ class OfferCard extends StatelessWidget {
       child: Column(
         children: [
           if(offer.executor != null) ExecutorTile(executor: offer.executor!),
-          DataTile(title: 'Описание: ', data: offer.comment ?? 'Нет описания'),
-          DataTile(title: 'Сроки: ', data: offer.date),
-          DataTile(title: 'Цена: ', data: offer.price),
+          DataTile(title: 'Description2'.tr(), data: offer.comment ?? 'Нет описания'),
+          DataTile(title: 'Terms '.tr(), data: offer.date),
+          DataTile(title: 'Price: '.tr(), data: offer.price),
           const SizedBox(
             height: 30,
           ),

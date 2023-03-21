@@ -80,7 +80,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: HeaderAppBar(
                           isMenu: true,
-                          title: "Профиль".tr(),
+                          title: "Profile".tr(),
                           onTrailing:
                               (state.status == ProfileScreenStatus.success)
                                   ? _context(context)
@@ -192,31 +192,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 height: 20,
                               ),
                               DataTile(
-                                  title: "Имя".tr(), data: user.name),
+                                  title: "Name".tr(), data: user.name),
                               if (user.phone != null)
                                 DataTile(
-                                    title: "Телефон".tr(), data: user.phone!),
+                                    title: "Telephone".tr(), data: user.phone!),
                               if (user.city != null)
                                 DataTile(
-                                    title: "Местоположение".tr(),
+                                    title: "Location".tr(),
                                     data: 'г.${user.city?.name ?? ''}'),
                               const Divider(thickness: 1),
                               if (executor != null) ...[
-                                TitleApp("Данные исполнителя".tr()),
+                                TitleApp("Artist_data".tr()),
                                 const SizedBox(
                                   height: 20,
                                 ),
                                 DataTile(
-                                    title:"Организация".tr(),
+                                    title:"Organization".tr(),
                                     data: executor.name),
                                 DataTile(title: "BIN".tr(), data: executor.bin!),
                                 DataTile(
-                                    title: "Рейтинг ".tr(),
+                                    title: "Rating".tr(),
                                     data: executor.rating ?? '0'),
                                 if (executor.fullAddress != null)
                                   DataTile(
                                     //
-                                      title: "Адрес".tr(),
+                                      title: "Address".tr(),
                                       data: executor.fullAddress!),
                                 if (executor.countOrders != null)
                                   DataTile(
@@ -225,27 +225,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 const Divider(thickness: 1),
                               ],
                               if (store != null) ...[
-                                TitleApp("Данные магазина".tr()),
+                                TitleApp("Store_data".tr()),
                                 const SizedBox(
                                   height: 20,
                                 ),
                                 if (store.name != null)
                                   DataTile(
-                                      title: "Организация".tr(),
+                                      title: "Organization".tr(),
                                       data:
                                           '${store.type?.name ?? ''} "${store.name!}"'),
                                 DataTile(
-                                    title:"Адрес".tr(),
+                                    title:"Address".tr(),
                                     data: store.fullAddress),
                                 DataTile(
                                     title: "Рейтинг ".tr(),
                                     data: store.rating ?? '0'),
                                 if (store.bin != null)
                                   DataTile(
-                                      title: "БИН".tr(), data: store.bin.toString()),
+                                      title: "BIN".tr(), data: store.bin.toString()),
                                 if (store.city != null)
                                   DataTile(
-                                      title: "Город".tr(), data: store.city!.name),
+                                      title: "City".tr(), data: store.city!.name),
                                 if (store.contacts != null)
                                   ...store.contacts!.map((e) {
                                     return ContactTile(contact: e);
@@ -253,7 +253,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 const SizedBox(
                                   height: 20,
                                 ),
-                                TitleApp("Прайс-листы".tr()),
+                                TitleApp("Price_lists".tr()),
 
                                 BlocConsumer<PriceFormCubit, PriceFormState>(
                                     builder: (context, state) {
@@ -294,7 +294,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         }).toList(),
                                       ),
                                       ElevatedButtonApp(
-                                        text: "Добавить прайс".tr(),
+                                        text: "Add_price".tr(),
                                         onPressed: context
                                             .read<PriceFormCubit>()
                                             .addPrice,

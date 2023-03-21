@@ -55,7 +55,7 @@ class _ChangePhoneEndScreenState extends State<ChangePhoneEndScreen> {
 
   _listenerForm(BuildContext context, ChangePhoneState state) {
     if(state.status == ChangePhoneStatus.success2) {
-      showSuccessSnackBar(context, "Номер телефона успешно изменен".tr());
+      showSuccessSnackBar(context, "Phone_number_changed_successfully".tr());
       context.router.navigate(const InitialRouter(
           children: [
             ProfileRouter()
@@ -79,16 +79,16 @@ class _ChangePhoneEndScreenState extends State<ChangePhoneEndScreen> {
             child: Column(
               children: [
                 const Spacer(),
-                 TitleApp("Изменить номер телефона".tr()),
+                 TitleApp("Change_phone_number".tr()),
                 const SizedBox(height: 20,),
                 TextFieldApp(
                   icon: const Icon(Icons.phone),
-                  label: "Старый телефон".tr(),
+                  label: "Old_phone".tr(),
                   controller: _newPhone,
                 ),
                 TextFieldApp(
                   icon: const Icon(Icons.lock),
-                  label: "Код".tr(),
+                  label: "Code".tr(),
                   controller: _code,
                 ),
 

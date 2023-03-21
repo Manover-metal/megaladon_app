@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/data/models/executor_model.dart';
 import 'package:megaladon/presentation/routing/router.dart';
@@ -43,7 +44,7 @@ class ExecutorCard extends StatelessWidget {
               const SizedBox(width: 10,),
               Expanded(
                   child: OutlinedButtonApp(
-                      text: 'Чат',
+                      text: 'Chat'.tr(),
                       onPressed: _onTapChat(context)
                   )
               )

@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -131,22 +132,22 @@ class _ChangeExecutorScreenState extends State<ChangeExecutorScreen> {
                     controller: _nameController,
                   ),
                   NumberFieldApp(
-                    label: 'БИН',
+                    label: 'BIN',
                     icon: const Icon(Icons.wallet),
                     controller: _binController,
                   ),
                   TextFieldApp(
-                    label: 'Полный адрес',
+                    label: 'Full_address'.tr(),
                     icon: const Icon(Icons.maps_home_work_outlined),
                     controller: _fullAddressController,
                   ),
                   DoubleFieldApp(
-                    label: 'Широта',
+                    label: 'Latitude',
                     icon: const Icon(Icons.place),
                     controller: _latController,
                   ),
                   DoubleFieldApp(
-                    label: 'Долгота',
+                    label: 'Longitude',
                     icon: const Icon(Icons.place_outlined),
                     controller: _lonController,
                   ),
