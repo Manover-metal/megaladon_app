@@ -29,7 +29,6 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
     ]).then((value) {
       final my = value[0];
       final myResponded = value[1];
-      print(myResponded);
 
       if(mainParams.startRow == 0) {
         emit(state.copyWith(
