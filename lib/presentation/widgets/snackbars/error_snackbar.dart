@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 showErrorSnackBar(BuildContext context, String error) {
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+  ScaffoldMessenger.of(context)..hideCurrentSnackBar()..showSnackBar(SnackBar(
       margin: const EdgeInsets.all(20),
       behavior: SnackBarBehavior.floating,
       elevation: 40,

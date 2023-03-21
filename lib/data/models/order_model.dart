@@ -83,6 +83,7 @@ class OrderModel extends Equatable {
   }
 
   static List<OrderModel> listFromJsonMini(List data) {
+    print(data);
     return data.map<OrderModel>((advert) {
       return OrderModel.fromJsonMini(advert);
     }).toList();

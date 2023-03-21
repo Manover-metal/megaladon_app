@@ -29,6 +29,9 @@ import 'package:megaladon/presentation/screens/orders/list_executors_screen.dart
 import 'package:megaladon/presentation/screens/orders/list_my_orders_screen.dart';
 import 'package:megaladon/presentation/screens/orders/list_orders_screen.dart';
 import 'package:megaladon/presentation/screens/orders/review_screen.dart';
+import 'package:megaladon/presentation/screens/profile/change_password_screen.dart';
+import 'package:megaladon/presentation/screens/profile/change_phone_end_screen.dart';
+import 'package:megaladon/presentation/screens/profile/change_phone_start_screen.dart';
 import 'package:megaladon/presentation/screens/profile/profile_screen.dart';
 import 'package:megaladon/presentation/screens/profile/settings_screen.dart';
 import 'package:megaladon/presentation/screens/store/details_store_screen.dart';
@@ -81,7 +84,19 @@ const List<AutoRoute> form = [
   AutoRoute(page: CreateOrderScreen, guards: [AuthGuard]),
   AutoRoute(page: UpdateAdScreen, guards: [AuthGuard]),
   AutoRoute(page: UpdateOrderScreen, guards: [AuthGuard]),
-  AutoRoute(page: CreateOfferScreen, guards: [AuthGuard])
+  AutoRoute(page: CreateOfferScreen, guards: [AuthGuard]),
+  AutoRoute(
+    page: ChangePasswordScreen,
+    guards: [AuthGuard]
+  ),
+  AutoRoute(
+    page: ChangePhoneStartScreen,
+    guards: [AuthGuard]
+  ),
+  AutoRoute(
+    page: ChangePhoneEndScreen,
+    guards: [AuthGuard]
+  ),
 ];
 
 @MaterialAutoRouter(
@@ -117,8 +132,8 @@ const List<AutoRoute> form = [
     AutoRoute(
       page: DetailsChatScreen,
       name: 'DetailsChatRouter',
-      path: 'detailchat',
     ),
+
     ...auth,
     ...form
   ],

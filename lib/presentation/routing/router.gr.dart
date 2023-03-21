@@ -125,6 +125,24 @@ class _$AppRouter extends RootStackRouter {
         ),
       );
     },
+    ChangePasswordRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const ChangePasswordScreen(),
+      );
+    },
+    ChangePhoneStartRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const ChangePhoneStartScreen(),
+      );
+    },
+    ChangePhoneEndRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const ChangePhoneEndScreen(),
+      );
+    },
     OrderRouter.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
@@ -414,7 +432,7 @@ class _$AppRouter extends RootStackRouter {
         ),
         RouteConfig(
           DetailsChatRouter.name,
-          path: 'detailchat',
+          path: '/details-chat-screen',
         ),
         RouteConfig(
           LoginRoute.name,
@@ -476,6 +494,21 @@ class _$AppRouter extends RootStackRouter {
           path: '/create-offer-screen',
           guards: [authGuard],
         ),
+        RouteConfig(
+          ChangePasswordRoute.name,
+          path: '/change-password-screen',
+          guards: [authGuard],
+        ),
+        RouteConfig(
+          ChangePhoneStartRoute.name,
+          path: '/change-phone-start-screen',
+          guards: [authGuard],
+        ),
+        RouteConfig(
+          ChangePhoneEndRoute.name,
+          path: '/change-phone-end-screen',
+          guards: [authGuard],
+        ),
       ];
 }
 
@@ -498,7 +531,7 @@ class DetailsChatRouter extends PageRouteInfo<void> {
   const DetailsChatRouter()
       : super(
           DetailsChatRouter.name,
-          path: 'detailchat',
+          path: '/details-chat-screen',
         );
 
   static const String name = 'DetailsChatRouter';
@@ -734,6 +767,42 @@ class CreateOfferRouteArgs {
   String toString() {
     return 'CreateOfferRouteArgs{key: $key, orderId: $orderId}';
   }
+}
+
+/// generated route for
+/// [ChangePasswordScreen]
+class ChangePasswordRoute extends PageRouteInfo<void> {
+  const ChangePasswordRoute()
+      : super(
+          ChangePasswordRoute.name,
+          path: '/change-password-screen',
+        );
+
+  static const String name = 'ChangePasswordRoute';
+}
+
+/// generated route for
+/// [ChangePhoneStartScreen]
+class ChangePhoneStartRoute extends PageRouteInfo<void> {
+  const ChangePhoneStartRoute()
+      : super(
+          ChangePhoneStartRoute.name,
+          path: '/change-phone-start-screen',
+        );
+
+  static const String name = 'ChangePhoneStartRoute';
+}
+
+/// generated route for
+/// [ChangePhoneEndScreen]
+class ChangePhoneEndRoute extends PageRouteInfo<void> {
+  const ChangePhoneEndRoute()
+      : super(
+          ChangePhoneEndRoute.name,
+          path: '/change-phone-end-screen',
+        );
+
+  static const String name = 'ChangePhoneEndRoute';
 }
 
 /// generated route for

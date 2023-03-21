@@ -27,7 +27,6 @@ class ChangeExecutorBloc extends Bloc<ChangeExecutorEvent, ChangeExecutorState> 
       profileCubit.updateData(profileCubit.state.user!.id);
       emit(ChangeExecutorSuccess());
     }).catchError((error) {
-      print(error);
       if(error is DioError) {
         emit(ChangeExecutorError(ErrorModel.parseDio(error)));
       } else {
