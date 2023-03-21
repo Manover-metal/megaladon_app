@@ -37,7 +37,7 @@ class RegisterStoreRequestParams {
         return {
           'type': e.type.name,
           'value': e.value,
-          'name_contact': e.contactName ?? ''
+          'contact_name': e.contactName ?? ''
         };
       }).toList()
     };

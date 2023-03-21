@@ -34,11 +34,19 @@ class ChangeStoreRequestParams {
       'city_id': city.id,
       'type_id': type.id,
       'contacts': contacts.map((e) {
-        return {
-          'type': e.type.name,
-          'value': e.value,
-          'name_contact': e.contactName ?? ''
-        };
+        if(e.type == ContactType.phone || e.type == ContactType.homePhone) {
+          return {
+            'type': e.type.name,
+            'value': e.value,
+            'contact_name': e.contactName ?? ''
+          };
+        } else {
+          return {
+            'type': e.type.name,
+            'value': e.value,
+          };
+        }
+        
       }).toList()
     };
     return data;

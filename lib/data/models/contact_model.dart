@@ -45,6 +45,7 @@ class ContactModel {
   });
 
   static ContactModel fromJson(data) {
+    print(data);
     return ContactModel(
         type: ContactType.parse(data['type']),
         value: data['value'],
