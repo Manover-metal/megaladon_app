@@ -63,7 +63,7 @@ class _FilterOrderBottomSheetState extends State<FilterOrderBottomSheet> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          TitleApp('Фильтр'),
+          const TitleApp('Фильтр'),
           const Divider(thickness: 1,height: 20,),
           Row(
             children: [

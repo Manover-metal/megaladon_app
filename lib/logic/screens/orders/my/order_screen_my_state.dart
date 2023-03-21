@@ -9,16 +9,22 @@ enum OrderScreenMyStatus {
 class OrderScreenMyState extends Equatable {
   final OrderScreenMyStatus status;
   final List<OrderModel> orders;
+  final List<OrderModel> ordersResponded;
+
   final ErrorModel? error;
   final OrderIndexRequestParams params;
   final bool stock;
+  final bool stockResponded;
 
   const OrderScreenMyState({
     this.status = OrderScreenMyStatus.success,
     this.orders = const [],
+    this.ordersResponded = const [],
     this.error,
     this.params =  const OrderIndexRequestParams(),
-    this.stock = false
+    this.stock = false,
+    this.stockResponded = false
+
   });
 
   @override
@@ -27,16 +33,21 @@ class OrderScreenMyState extends Equatable {
   OrderScreenMyState copyWith({
     OrderScreenMyStatus? status,
     List<OrderModel>? orders,
+    List<OrderModel>? ordersResponded,
+
     ErrorModel? error,
     OrderIndexRequestParams? params,
-    bool? stock
+    bool? stock,
+    bool? stockResponded,
   }) {
     return OrderScreenMyState(
       status: status ?? this.status,
       orders: orders ?? this.orders,
+      ordersResponded: ordersResponded ?? this.ordersResponded,
       error: error,
       params: params ?? this.params,
-      stock: stock ?? this.stock
+      stock: stock ?? this.stock,
+      stockResponded: stockResponded ?? this.stockResponded
     );
   }
 

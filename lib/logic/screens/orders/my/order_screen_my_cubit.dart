@@ -21,25 +21,32 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
     emit(state.copyWith(
         status: OrderScreenMyStatus.loading,
         error: null,
-        orders: state.orders,
-
       )
     );
+    return await Future.wait([
+      _repository.indexMy(mainParams),
+      _repository.indexMyResponded(mainParams)
+    ]).then((value) {
+      final my = value[0];
+      final myResponded = value[1];
 
-    return await _repository.indexMy(mainParams).then((value) {
       if(mainParams.startRow == 0) {
         emit(state.copyWith(
-            orders: value,
+            orders: my,
+            ordersResponded: myResponded,
             params: mainParams,
             status: OrderScreenMyStatus.success,
-            stock: value.length < mainParams.rowsPerPage
+            stock: my.length < mainParams.rowsPerPage,
+            stockResponded: myResponded.length < mainParams.rowsPerPage
         ));
       } else {
         emit(state.copyWith(
           status: OrderScreenMyStatus.success,
-          orders: [...state.orders, ...value],
+          orders: [...state.orders, ...my],
+          ordersResponded: [...state.ordersResponded, ...myResponded],
           params: mainParams,
-          stock: value.length < mainParams.rowsPerPage
+          stock: my.length < mainParams.rowsPerPage,
+          stockResponded: myResponded.length < mainParams.rowsPerPage
         ));
       }
     }).catchError(( error) {

@@ -15,7 +15,7 @@ class OrderIndexRequestParams {
   const OrderIndexRequestParams({
       this.startRow = 0,
       this.rowsPerPage = 15,
-      this.desc = false,
+      this.desc = true,
       this.city,
       this.category,
       this.last = IndexPeriod.last3day,

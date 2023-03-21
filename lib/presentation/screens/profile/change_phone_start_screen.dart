@@ -92,10 +92,9 @@ class _ChangePhoneStartScreenState extends State<ChangePhoneStartScreen> {
                 ),
                 TextFieldApp(
                   icon: const Icon(Icons.lock),
-                  label: LocaleKeys.Choose_password.tr(),
+                  label: 'Ваш пароль',
                   controller: _password,
                 ),
-
                 const SizedBox(height: 25,),
                 BlocBuilder<ChangePhoneCubit, ChangePhoneState>(
                     builder: (context, state) {

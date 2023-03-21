@@ -22,7 +22,7 @@ class StockMessage extends StatelessWidget {
             text: TextSpan(
               children: [
                 TextSpan(text: name),
-                const TextSpan(text: ' по данному запросу закончились'),
+                const TextSpan(text: ' по данному запросу отсутствуют'),
               ],
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w700,

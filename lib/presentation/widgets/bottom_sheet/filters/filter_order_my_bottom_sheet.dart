@@ -80,6 +80,13 @@ class _FilterMyOrderBottomSheetState extends State<FilterMyOrderBottomSheet> {
               )
             ],
           ),
+          Row(
+            children: [
+              Expanded(
+                child: IndexPeriodPicker(label: 'За последние период', controller: _indexPeriodPickerController,),
+              )
+            ],
+          ),
           const SizedBox(height: 30,),
           ElevatedButtonApp(
               text: 'Применить',
