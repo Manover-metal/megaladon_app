@@ -139,38 +139,38 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
               ],
               child: Column(
                 children: [
-                  TitleApp('Регистрация магазина'),
+                  TitleApp("Регистрация магазина".tr()),
                   const SizedBox(height: 20,),
                   TextFieldApp(
-                    label: 'Названия',
+                    label: "Названия".tr(),
                     icon: const Icon(Icons.person_add_alt_1),
                     controller: _nameController,
                   ),
                   NumberFieldApp(
-                    label: 'БИН',
+                    label: "БИН".tr(),
                     icon: const Icon(Icons.wallet),
                     controller: _binController,
                   ),
                   StoreTypePicker(
-                    label: 'Тип бизнеса',
+                    label: "Тип бизнеса".tr(),
                     controller: _storeTypeController,
                   ),
                   TextFieldApp(
-                    label: 'Полный адрес',
+                    label: "Полный адрес".tr(),
                     icon: const Icon(Icons.maps_home_work_outlined),
                     controller: _fullAddressController,
                   ),
                   CityPicker(
-                      label: 'Город',
+                      label: "Город".tr(),
                       controller: _cityPickerController
                   ),
                   DoubleFieldApp(
-                    label: 'Широта',
+                    label: "Широта".tr(),
                     icon: const Icon(Icons.place),
                     controller: _latController,
                   ),
                   DoubleFieldApp(
-                    label: 'Долгота',
+                    label: "Долгота".tr(),
                     icon: const Icon(Icons.place_outlined),
                     controller: _lonController,
                   ),
@@ -188,16 +188,16 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
                         );
                       }
                       return ElevatedButtonApp(
-                        text: LocaleKeys.Register.tr(),
+                        text: "Зарегистрироваться".tr(),
                         onPressed: _register,
                       );
                     },
                   ),
-                  const Text.rich(
+                   Text.rich(
                       TextSpan(
                           children: [
-                            TextSpan(text: 'Нажимая на кнопку “Продолжить”, вы принимаете '),
-                            TextSpan(text: 'Условия пользовательского соглашения',
+                            TextSpan(text: "Нажимая на кнопку 'Продолжить', вы принимаете ".tr()),
+                            TextSpan(text: "Условия пользовательского соглашения".tr(),
                                 style: TextStyle(
                                     decoration: TextDecoration.underline
                                 )

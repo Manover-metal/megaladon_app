@@ -76,12 +76,67 @@
 "Forgot_your_password":"Забыли пароль?",
 "Sign_in":"Войти",
 
+"You_need_to_log_into_the_application":"Вам нужно авторизоваться в приложение",
+
 "Registration":"Регистрация",
+"Continue":"Продолжить",
+
+"for_this_request_ended":"по данному запросу закончились",
 
 
 "What_is_your_name":"Как вас зовут",
 "Choose_password":"Выберите пароль",
 "Confirm_the_password":"Подтвердите пароль",
-"Register":"Зарегистрироваться"
+"Register":"Зарегистрироваться",
+
+"Ad":"Объявление",
+"No_attached_files":"Нет прикреплённых файлов",
+"Attached_files":"Прикрепленные файлы",
+"Price_up_to":"Цена: до",
+"Call":"Позвонить",
+"Ask_a_question_in_the_chat":"Задать вопрос в чате",
+"My_announcement":"Мои объявления",
+"Ads":"Объявления",
+"Marketplace":"Торговая площадка",
+
+"Artist_registration":"Регистрация исполнителя",
+
+"BIN":"БИН",
+"Full_address":"Полный адрес",
+"Latitude":"Широта",
+"Longitude":"Долгота",
+"By_clicking_on_the_Continue_button_you_accept":"Нажимая на кнопку 'Продолжить', вы принимаете ",
+"ser_Agreement_Terms":"Условия пользовательского соглашения",
+
+"Shop_registration":"Регистрация магазина",
+"Names":"Названия",
+"Type_of_business":"Тип бизнеса",
+"City":"Город",
+
+"Password_recovery":"Восстановление пароля",
+"Send_password":"Отправить пароль",
+
+"Change_password":"Изменить пароль",
+"Enter_6digit_code_from_SMS":"Введите 6-ти значный код из смс",
+"Confirm":"Подтвердить",
+"Send_code_again":"Выслать код повторно",
+
+"Chat":"Чат",
+"Chats":"Чаты",
+"Executor":"Исполнители",
+
+"Additional_Phone":"Дополнительный телефон",
+"Edit_ad":"Изменить объявление",
+
+"Response_to_order":"Отклик на заказ №",
+"Actual_until":"Актуален до",
+"Time_to_work":"Время на работу",
+"Respond":"Откликнуться",
+"Header":"Заголовок",
+
+"Change_order":"Изменить заказ"
+
+
+
 
 }

@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -110,14 +111,14 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                HeaderAppBar(isBack: true, title: 'Изменить объявление'),
+                HeaderAppBar(isBack: true, title: "Изменить объявление".tr()),
                 SizedBox(height: 30),
-                AdvertCategoryPicker(label: 'Категория', controller: _advertCategoryController),
-                TextFieldApp(controller: _titleController, label: 'Название',),
-                CityPicker(label: 'Город', controller: _cityController),
-                DescriptionFieldApp(label: 'Описание', controller: _descriptionController),
-                NumberFieldApp(label: 'Цена', controller: _priceController,),
-                TextFieldApp(controller: _phoneController, label: 'Дополнительный телефон'),
+                AdvertCategoryPicker(label: "Категория".tr(), controller: _advertCategoryController),
+                TextFieldApp(controller: _titleController, label: "Название {}*".tr(),),
+                CityPicker(label: "Город".tr(), controller: _cityController),
+                DescriptionFieldApp(label: "Описание {}".tr(), controller: _descriptionController),
+                NumberFieldApp(label: "Цена".tr(), controller: _priceController,),
+                TextFieldApp(controller: _phoneController, label: "Дополнительный телефон".tr()),
 
                 // BlocConsumer(builder: builder, listener: listener)
                 BlocConsumer<AdUpdateFormCubit, AdUpdateFormState>(
@@ -126,10 +127,10 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
                       if(state.formState == EnumFormState.fetch) {
                         return ElevatedButtonApp(child: Loader(color: Theme.of(context).colorScheme.background), onPressed: () {},);
                       }
-                      return ElevatedButtonApp(text: 'Изменить', onPressed: _create,);
+                      return ElevatedButtonApp(text: "Изменить".tr(), onPressed: _create,);
                     }
                 ),
-                OutlinedButtonApp(text: 'Отменить', onPressed: _back,),
+                OutlinedButtonApp(text: "Отмена".tr(), onPressed: _back,),
               ],
             ),
           ),

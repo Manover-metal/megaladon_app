@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -74,9 +75,9 @@ _listenerScroll() {
               SliverToBoxAdapter(
                 child: Column(
                   children: [
-                    const Padding(
+                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: HeaderAppBar(isMenu: true, title: 'Мои объявления'),
+                      child: HeaderAppBar(isMenu: true, title: "Мои объявления".tr()),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -115,7 +116,7 @@ _listenerScroll() {
                               }).toList(),
                               if(state.status == AdverScreenMyMainStatus.loading) const Loader(padding: 10)
                               else if(state.status == AdverScreenMyMainStatus.error) ErrorMessage(error: state.error!)
-                              else if(state.stock) const StockMessage(name: 'Объявления')
+                              else if(state.stock)  StockMessage(name: "Объявления".tr())
 
                             ],
                           );

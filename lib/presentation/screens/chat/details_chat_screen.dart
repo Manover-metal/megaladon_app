@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 
@@ -14,7 +15,7 @@ class DetailsChatScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 children: [
-                  const HeaderAppBar(isBack: true, title: 'Чат с Трамп'),
+                   HeaderAppBar(isBack: true, title: "Чат".tr()),
                   Padding(
                     padding: const EdgeInsets.only(top: 5, bottom: 10),
                     child: SizedBox(
@@ -23,10 +24,7 @@ class DetailsChatScreen extends StatelessWidget {
                       child: SingleChildScrollView(
                         scrollDirection: Axis.vertical,
                         child: Column(
-                          children: [
-                            message_one(context),
-                            message_tw(context)
-                          ],
+                          children: [message_one(context), message_tw(context)],
                         ),
                       ),
                     ),
@@ -39,17 +37,16 @@ class DetailsChatScreen extends StatelessWidget {
                         margin: const EdgeInsets.symmetric(horizontal: 5),
                         decoration: BoxDecoration(
                           border: Border.all(
-                              color: Theme.of(context).colorScheme.primary
-                          ),
+                              color: Theme.of(context).colorScheme.primary),
                           borderRadius: BorderRadius.circular(20),
                           color: Theme.of(context).colorScheme.tertiary,
                         ),
                         child: IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.near_me_outlined,
-                          color: Theme.of(context).colorScheme.primary,
-                        )),
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.near_me_outlined,
+                              color: Theme.of(context).colorScheme.primary,
+                            )),
                       ),
                     ],
                   )
@@ -71,39 +68,30 @@ class DetailsChatScreen extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color:
-                  Theme.of(context).colorScheme.primary,
+              color: Theme.of(context).colorScheme.primary,
             ),
             padding: const EdgeInsets.all(10),
-            width:
-                MediaQuery.of(context).size.width * 0.8,
+            width: MediaQuery.of(context).size.width * 0.8,
             child: Column(
               children: [
                 Row(
-                  mainAxisAlignment:
-                      MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-
                     Padding(
-                      padding: const EdgeInsets.only(
-                          right: 10, left: 10),
+                      padding: const EdgeInsets.only(right: 10, left: 10),
                       child: Column(
-                        crossAxisAlignment:
-                            CrossAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            'Nick Name 2',
+                            'Человек 2',
                             style: TextStyle(
-                              fontWeight:
-                                  FontWeight.bold,
+                              fontWeight: FontWeight.bold,
                               fontSize: 20,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onPrimary,
+                              color: Theme.of(context).colorScheme.onPrimary,
                             ),
                           ),
                           Text(
-                            'заказчик',
+                            'Заказчик',
                             style: TextStyle(
                               fontSize: 12,
                               color: Theme.of(context).colorScheme.tertiary,
@@ -117,11 +105,9 @@ class DetailsChatScreen extends StatelessWidget {
                       width: 50,
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                            image: AssetImage(
-                                'assets/logo/logo.png'),
+                            image: AssetImage('assets/logo/logo.png'),
                             fit: BoxFit.fill),
-                        borderRadius:
-                            BorderRadius.circular(30),
+                        borderRadius: BorderRadius.circular(30),
                       ),
                     ),
                   ],
@@ -129,19 +115,16 @@ class DetailsChatScreen extends StatelessWidget {
                 Text(
                   'Таким образом, внедрение современных методик предоставляет широкие возможности для форм воздействия. В своём стремлении улучшить пользовательский опыт мы упускаем, что активно развивающиеся страны третьего мира, превозмогая сложившуюся непростую экономическую.',
                   style: TextStyle(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onPrimary,
+                    color: Theme.of(context).colorScheme.onPrimary,
                   ),
                 ),
                 Row(
-                  mainAxisAlignment:
-                      MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
                       '12:32',
                       style: TextStyle(
-                         color: Theme.of(context).colorScheme.tertiary,
+                        color: Theme.of(context).colorScheme.tertiary,
                       ),
                     ),
                     SizedBox(
@@ -180,30 +163,28 @@ class DetailsChatScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Container(
-                                              height: 50,
-                                              width: 50,
-                                              decoration: BoxDecoration(
-                                                image: DecorationImage(
-                                                    image: AssetImage(
-                                                        'assets/logo/logo.png'),
-                                                    fit: BoxFit.fill),
-                                                borderRadius:
-                                                    BorderRadius.circular(30),
-                                              ),
-                                            ),
+                      height: 50,
+                      width: 50,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage('assets/logo/logo.png'),
+                            fit: BoxFit.fill),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
                     Padding(
-                      padding: const EdgeInsets.only(right: 10 , left: 10),
+                      padding: const EdgeInsets.only(right: 10, left: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Nick Name',
+                            'Человек 1',
                             style: TextStyle(
                               fontSize: 20,
                             ),
                           ),
                           Text(
-                            'исполнитель',
+                            'Исполнитель',
                             style: TextStyle(
                               fontSize: 12,
                               color: Theme.of(context)
@@ -214,7 +195,6 @@ class DetailsChatScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    
                   ],
                 ),
                 Text(
