@@ -1,4 +1,5 @@
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:formz/formz.dart';
 
 enum BinValidationError {
@@ -8,11 +9,11 @@ enum BinValidationError {
   String toString() {
     switch(this) {
       case BinValidationError.empty:
-        return 'БИН не заполнен';
+        return 'BIN_is_not_filled'.tr();
       case BinValidationError.min:
-        return 'БИН не полностью заполнен';
+        return 'BIN_is_not_fully_filled'.tr();
       case BinValidationError.max:
-        return 'БИН максимум 12 цифр';
+        return 'BIN_maximum_12_digits'.tr();
 
     }
   }

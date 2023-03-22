@@ -220,7 +220,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       data: executor.fullAddress!),
                                 if (executor.countOrders != null)
                                   DataTile(
-                                      title: 'Количество заказов',
+                                      title: 'The_number_of_orders'.tr(),
                                       data: executor.countOrders.toString()),
                                 const Divider(thickness: 1),
                               ],

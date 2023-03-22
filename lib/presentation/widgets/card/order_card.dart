@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/data/models/order_model.dart';
 import 'package:megaladon/presentation/routing/router.dart';
@@ -39,7 +40,7 @@ class OrderCard extends StatelessWidget {
                       children: [
                         const Icon(Icons.people),
                         const SizedBox(width: 10,),
-                        Text('offers'+'${order.countOffers}')
+                        Text('offers'.tr()+'${order.countOffers}')
                       ],
                     ),
                     const SizedBox(height: 10,),

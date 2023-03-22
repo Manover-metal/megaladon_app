@@ -59,7 +59,7 @@ class _SortOrderBottomSheetState extends State<SortOrderBottomSheet> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const TitleApp('Сортировать'),
+           TitleApp('Sort'.tr()),
           const Divider(thickness: 1,height: 20,),
           BlocBuilder<OrderScreenMainCubit, OrderScreenMainState>(
               builder: (context, state) {

@@ -78,7 +78,7 @@ class _FilterMyAdBottomSheetState extends State<FilterMyAdBottomSheet> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Text('price_toДо'.tr(), style: TextStyle(
+                  child: Text('price_to'.tr(), style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
                       fontWeight: FontWeight.w700
                   )),

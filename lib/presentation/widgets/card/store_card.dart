@@ -34,7 +34,7 @@ class StoreCard extends StatelessWidget {
                 height: 5,
               ),
               DataTile(title: 'Rating2'.tr(), data: store.rating ?? '0'),
-              DataTile(title: 'Location: ', data: store.fullAddress),
+              DataTile(title: 'Location2'.tr(), data: store.fullAddress),
               const SizedBox(
                 height: 5,
               ),

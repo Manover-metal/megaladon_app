@@ -176,7 +176,7 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
                           TextSpan(
                             text: "By_clicking_on_the_Continue_button_you_accept".tr()
                           ),
-                          TextSpan(text: "ser_Agreement_Terms".tr(),
+                          TextSpan(text: "user_Agreement_Terms".tr(),
                             style: TextStyle(
                                 decoration: TextDecoration.underline
                             )

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/data/models/dictionary/service_type_model.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
@@ -69,7 +70,7 @@ class _ServiceTypeMultiPickerState extends State<ServiceTypeMultiPicker> {
                     children: [
                       Expanded(
                         child: ServiceTypePicker(
-                          label: 'service',
+                          label: 'service'.tr(),
                           controller: widget.serviceTypeControllers.value[item],
                         ),
                       ),
@@ -85,7 +86,7 @@ class _ServiceTypeMultiPickerState extends State<ServiceTypeMultiPicker> {
             );
           },
         ),
-        OutlinedButtonApp(text: 'add_image', onPressed: _addService,)
+        OutlinedButtonApp(text: 'add_image'.tr(), onPressed: _addService,)
       ],
     );
   }

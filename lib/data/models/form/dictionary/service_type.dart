@@ -1,4 +1,5 @@
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:formz/formz.dart';
 import 'package:megaladon/data/models/dictionary/service_type_model.dart';
 
@@ -9,7 +10,7 @@ enum ServiceTypeValidationError {
   String toString() {
     switch(this) {
       case ServiceTypeValidationError.empty:
-        return 'Тип не указан';
+        return 'Type_is_not_specified'.tr();
     }
   }
 }

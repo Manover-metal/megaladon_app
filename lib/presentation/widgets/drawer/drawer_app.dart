@@ -48,7 +48,7 @@ class DrawerApp extends StatelessWidget {
                   children: [
                     if(state is! AuthLoginState)...[
                       ElevatedButtonApp(
-                        text: 'Sign_in',
+                        text: 'Sign_in'.tr(),
                         onPressed: _login(context),
                       ),
                       OutlinedButtonApp(
@@ -96,7 +96,7 @@ class DrawerApp extends StatelessWidget {
             ...[
               DrawerRouteTile(
 
-                text: LocaleKeys.Orders.tr(),
+                text: "Orders".tr(),
                 page: const InitialRouter(children: [OrderRouter()]),
               ),
               DrawerRouteTile(
@@ -140,7 +140,7 @@ class DrawerApp extends StatelessWidget {
                         onPressed: _registerExecutor(context),
                       ),
                       if(state.auth.store.value == null)  OutlinedButtonApp(
-                        text: 'Shop_registration',
+                        text: 'Shop_registration'.tr(),
                         onPressed: _registerStore(context),
                       ),
                     ],

@@ -132,7 +132,7 @@ class _ChangeExecutorScreenState extends State<ChangeExecutorScreen> {
                     controller: _nameController,
                   ),
                   NumberFieldApp(
-                    label: 'BIN',
+                    label: 'BIN'.tr(),
                     icon: const Icon(Icons.wallet),
                     controller: _binController,
                   ),
@@ -142,12 +142,12 @@ class _ChangeExecutorScreenState extends State<ChangeExecutorScreen> {
                     controller: _fullAddressController,
                   ),
                   DoubleFieldApp(
-                    label: 'Latitude',
+                    label: 'Latitude'.tr(),
                     icon: const Icon(Icons.place),
                     controller: _latController,
                   ),
                   DoubleFieldApp(
-                    label: 'Longitude',
+                    label: 'Longitude'.tr(),
                     icon: const Icon(Icons.place_outlined),
                     controller: _lonController,
                   ),

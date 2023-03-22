@@ -1,4 +1,5 @@
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:formz/formz.dart';
 
 enum TitleValidationError {
@@ -8,7 +9,7 @@ enum TitleValidationError {
   String toString() {
     switch(this) {
       case TitleValidationError.empty:
-        return 'Заголок пустой';
+        return 'Header_is_empty'.tr();
     }
   }
 }

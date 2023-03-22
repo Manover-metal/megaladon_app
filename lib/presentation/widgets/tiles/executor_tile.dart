@@ -38,7 +38,7 @@ class ExecutorTile extends StatelessWidget {
                 Text.rich(
                     TextSpan(
                         children: [
-                          const TextSpan(text: 'Иполнитель: '),
+                           TextSpan(text: 'Artist2'.tr()),
                           TextSpan(text: executor.name)
                         ]
                     )

@@ -140,7 +140,7 @@ class _ChangeStoreScreenState extends State<ChangeStoreScreen> {
               ],
               child: Column(
                 children: [
-                  TitleApp('Shop_registration'),
+                  TitleApp('Shop_registration'.tr()),
                   const SizedBox(height: 20,),
                   TextFieldApp(
                     label: 'Names'.tr(),
@@ -148,7 +148,7 @@ class _ChangeStoreScreenState extends State<ChangeStoreScreen> {
                     controller: _nameController,
                   ),
                   NumberFieldApp(
-                    label: 'BIN',
+                    label: 'BIN'.tr(),
                     icon: const Icon(Icons.wallet),
                     controller: _binController,
                   ),
@@ -166,12 +166,12 @@ class _ChangeStoreScreenState extends State<ChangeStoreScreen> {
                       controller: _cityPickerController
                   ),
                   DoubleFieldApp(
-                    label: 'Latitude',
+                    label: 'Latitude'.tr(),
                     icon: const Icon(Icons.place),
                     controller: _latController,
                   ),
                   DoubleFieldApp(
-                    label: 'Longitude',
+                    label: 'Longitude'.tr(),
                     icon: const Icon(Icons.place_outlined),
                     controller: _lonController,
                   ),
@@ -189,9 +189,7 @@ class _ChangeStoreScreenState extends State<ChangeStoreScreen> {
                         );
                       }
                       return ElevatedButtonApp(
-                        text: 'Edit'.tr(
-                          
-                        ),
+                        text: 'Edit'.tr(),
                         onPressed: _register,
                       );
                     },

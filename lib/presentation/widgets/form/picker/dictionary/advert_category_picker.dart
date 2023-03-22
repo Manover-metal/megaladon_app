@@ -22,7 +22,7 @@ Future<AdvertCategoryModel?> showAdvertCategoryPicker(BuildContext context) asyn
     ),
     changeToFirst: false,
     hideHeader: false,
-    cancelText: 'Cancel',
+    cancelText: 'Cancel'.tr(),
     confirmText: 'select'.tr(),
   ).showModal(context);
 

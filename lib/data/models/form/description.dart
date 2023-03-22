@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:formz/formz.dart';
 
 enum DescriptionValidationError {
@@ -7,7 +8,7 @@ enum DescriptionValidationError {
   String toString() {
     switch(this) {
       case DescriptionValidationError.limit:
-        return 'Описание превысело 1000 символов';
+        return 'Description_exceeds_1000_characters'.tr();
     }
   }
 }

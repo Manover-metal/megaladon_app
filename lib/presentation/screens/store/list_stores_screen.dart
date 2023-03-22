@@ -120,7 +120,7 @@ class _ListStoresScreenState extends State<ListStoresScreen> {
                               }).toList(),
                               if(state.status == StoreScreenMainStatus.loading) const Loader(padding: 10,)
                               else if(state.status == StoreScreenMainStatus.error)  ErrorMessage(error: state.error!)
-                              else if(state.stock) const StockMessage(name: 'Theshops')
+                              else if(state.stock)  StockMessage(name: 'Theshops'.tr())
 
                           ],
                           );

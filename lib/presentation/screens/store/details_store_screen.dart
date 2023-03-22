@@ -112,27 +112,27 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
                         ),
                         const SizedBox(height: 20,),
                         DataTile(title: 'Address:'.tr(), data: state.store.fullAddress),
-                        if(state.store.city != null) DataTile(title: 'Город:', data: state.store.city!.name),
-                        if(state.store.bin != null) DataTile(title: 'БИН:', data: state.store.bin.toString()),
+                        if(state.store.city != null) DataTile(title: 'City2'.tr(), data: state.store.city!.name),
+                        if(state.store.bin != null) DataTile(title: 'BIN2'.tr(), data: state.store.bin.toString()),
                         ...state.store.contacts!.map((contact) {
                           return ContactTile(contact: contact);
                         }).toList(),
                         const SizedBox(height: 20,),
 
-                        if(state.store.prices.isEmpty) SubTitleApp('Нет прайс листа')
+                        if(state.store.prices.isEmpty) SubTitleApp('No_price_list'.tr())
                         else ...[
-                          SubTitleApp('Прайс лист'),
+                          SubTitleApp('Price_list'.tr()),
                           const SizedBox(height: 10,),
                           FileDownloadList(files: state.store.prices),
 
                         ],
                         const SizedBox(height: 20,),
                         if(state.store.hasPhone) ElevatedButtonApp(
-                          text: 'Call',
+                          text: 'Call'.tr(),
                           onPressed: _call(state.store),
                         ),
                         OutlinedButtonApp(
-                          text: 'Написать',
+                          text: 'Write'.tr(),
                           onPressed: _toChat,
                         ),
                       ],

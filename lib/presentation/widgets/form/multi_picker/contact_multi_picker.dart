@@ -72,7 +72,7 @@ class _ContactTypeMultiPickerState extends State<ContactTypeMultiPicker> {
                       children: [
                         Expanded(
                           child: ContactTypePicker(
-                            label: 'Контакт',
+                            label: 'Contact'.tr(),
                             controller: widget.controller.value[item],
                           ),
                         ),

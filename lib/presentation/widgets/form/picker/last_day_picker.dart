@@ -19,7 +19,7 @@ Future<IndexPeriod?> showIndexPeriodPicker(BuildContext context) async {
     ),
     changeToFirst: false,
     hideHeader: false,
-    cancelText: 'Cancel',
+    cancelText: 'Cancel'.tr(),
     confirmText: 'select'.tr(),
   ).showModal(context);
 
