@@ -52,7 +52,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         items: context.supportedLocales.map((Locale locale) {
                           return DropdownMenuItem(
                             value: locale,
-                            child: Text(locale.languageCode),
+                            child: Text(locale.languageCode.tr()),
                           );
                         }).toList(),
                         onChanged: _changeLocalization

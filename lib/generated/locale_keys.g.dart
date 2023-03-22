@@ -212,5 +212,8 @@ abstract class  LocaleKeys {
   static const Sort = 'Sort';
   static const Contact = 'Contact';
   static const Artist2 = 'Artist2';
+  static const Address2 = 'Address2';
+  static const en = 'en';
+  static const ru = 'ru';
 
 }
