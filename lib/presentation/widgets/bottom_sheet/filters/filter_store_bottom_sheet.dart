@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
@@ -56,25 +57,25 @@ class _FilterStoreBottomSheetState extends State<FilterStoreBottomSheet> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const TitleApp('Фильтр'),
+           TitleApp('filter'.tr()),
           const Divider(thickness: 1,height: 20,),
           Row(
             children: [
               Expanded(
-                child: CityPicker(label: 'Город', controller: _cityPickerController,),
+                child: CityPicker(label: 'City'.tr(), controller: _cityPickerController,),
               )
             ],
           ),
           Row(
             children: [
               Expanded(
-                child: StoreTypePicker(label: 'Тип', controller: _storeTypePickerController,),
+                child: StoreTypePicker(label: 'type'.tr(), controller: _storeTypePickerController,),
               )
             ],
           ),
           const SizedBox(height: 30,),
           ElevatedButtonApp(
-              text: 'Применить',
+              text: 'Apply'.tr(),
               onPressed: _back
           ),
           const SizedBox(height: 30,),

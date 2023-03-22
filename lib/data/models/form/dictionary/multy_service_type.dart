@@ -1,4 +1,5 @@
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:formz/formz.dart';
 import 'package:megaladon/data/models/dictionary/service_type_model.dart';
 
@@ -9,7 +10,7 @@ enum MultiServiceTypeValidationError {
   String toString() {
     switch(this) {
       case MultiServiceTypeValidationError.empty:
-        return 'Добавьте минимум один сервис';
+        return 'Add_at_least_one_service'.tr();
     }
   }
 }

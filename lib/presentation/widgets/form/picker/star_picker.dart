@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class StarPickerController extends ValueNotifier<int> {
@@ -23,7 +24,7 @@ class StarPicker extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Text('Рейтинг: '),
+         Text('Rating2'.tr()),
         ValueListenableBuilder(
           builder: (context, int value, Widget? child) {
             return Row(

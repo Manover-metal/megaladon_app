@@ -1,4 +1,5 @@
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:formz/formz.dart';
 
 enum LatValidationError {
@@ -8,11 +9,11 @@ enum LatValidationError {
   String toString() {
     switch(this) {
       case LatValidationError.empty:
-        return 'Широта не заполнен';
+        return 'Latitude_not_filled'.tr();
       case LatValidationError.min:
-        return 'Широта не может быть меньше -90°';
+        return 'Latitude_cannot_be_less_than_90'.tr();
       case LatValidationError.max:
-        return 'Широта не может быть больше +90°';
+        return 'Latitude_cannot_be_greater_than_90'.tr();
     }
   }
 }

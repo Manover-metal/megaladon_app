@@ -126,30 +126,30 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
-                  TitleApp("Регистрация исполнителя".tr()),
+                  TitleApp("Artist_registration".tr()),
                   const SizedBox(height: 20,),
                   TextFieldApp(
-                    label: "Имя".tr(),
+                    label: "Name".tr(),
                     icon: const Icon(Icons.person_add_alt_1),
                     controller: _nameController,
                   ),
                   NumberFieldApp(
-                    label: "БИН".tr(),
+                    label: "BIN".tr(),
                     icon: const Icon(Icons.wallet),
                     controller: _binController,
                   ),
                   TextFieldApp(
-                    label: "Полный адрес".tr(),
+                    label: "Full_address".tr(),
                     icon: const Icon(Icons.maps_home_work_outlined),
                     controller: _fullAddressController,
                   ),
                   DoubleFieldApp(
-                    label: "Широта".tr(),
+                    label: "Latitude".tr(),
                     icon: const Icon(Icons.place),
                     controller: _latController,
                   ),
                   DoubleFieldApp(
-                    label: "Долгота".tr(),
+                    label: "Longitude".tr(),
                     icon: const Icon(Icons.place_outlined),
                     controller: _lonController,
                   ),
@@ -165,7 +165,7 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
                         );
                       }
                       return ElevatedButtonApp(
-                        text: "Зарегистрироваться".tr(),
+                        text: "Register".tr(),
                         onPressed: _register,
                       );
                     },
@@ -174,9 +174,9 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
                     TextSpan(
                         children: [
                           TextSpan(
-                            text: "Нажимая на кнопку 'Продолжить', вы принимаете ".tr()
+                            text: "By_clicking_on_the_Continue_button_you_accept".tr()
                           ),
-                          TextSpan(text: "Условия пользовательского соглашения".tr(),
+                          TextSpan(text: "user_Agreement_Terms".tr(),
                             style: TextStyle(
                                 decoration: TextDecoration.underline
                             )

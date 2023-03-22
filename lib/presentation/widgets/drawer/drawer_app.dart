@@ -48,17 +48,17 @@ class DrawerApp extends StatelessWidget {
                   children: [
                     if(state is! AuthLoginState)...[
                       ElevatedButtonApp(
-                        text: 'Войти',
+                        text: 'Sign_in'.tr(),
                         onPressed: _login(context),
                       ),
                       OutlinedButtonApp(
-                        text: 'Регистрация',
+                        text: 'Registration'.tr(),
                         onPressed: _registerUser(context),
                       ),
                     ]
                     else ...[
-                      const DrawerRouteTile(
-                        text: 'Мои заказы',
+                       DrawerRouteTile(
+                        text: 'My_orders'.tr(),
                         page: InitialRouter(
                           children: [
                             OrderRouter(children: [ListMyOrdersRoute()])
@@ -96,20 +96,20 @@ class DrawerApp extends StatelessWidget {
             ...[
               DrawerRouteTile(
 
-                text: LocaleKeys.Orders.tr(),
+                text: "Orders".tr(),
                 page: const InitialRouter(children: [OrderRouter()]),
               ),
               DrawerRouteTile(
-                text: LocaleKeys.Theshops.tr(),
+                text: "Theshops".tr(),
                 page: const InitialRouter(children: [StoreRouter()]),
               ),
-              const DrawerRouteTile(
-                text: 'Торговая площадка',
+               DrawerRouteTile(
+                text: 'Marketplace'.tr(),
                 page: InitialRouter(children: [AdRouter()]),
               ),
               //Create_ratkum
-              const DrawerRouteTile(
-                text: 'Настройки',
+               DrawerRouteTile(
+                text: 'Settings'.tr(),
                 page: InitialRouter(children: [
                   ProfileRouter(children: [SettingsRoute()])
                 ]),
@@ -122,7 +122,7 @@ class DrawerApp extends StatelessWidget {
             BlocBuilder<AuthBloc, AuthState>(
               builder: (context, state) {
                 if (state is AuthLoginState) {
-                  return DrawerTile(text: 'Выход', callback: _logout(context));
+                  return DrawerTile(text: 'exit'.tr(), callback: _logout(context));
                 } else {
                   return Container();
                 }
@@ -136,11 +136,11 @@ class DrawerApp extends StatelessWidget {
                     if(state is AuthLoginState) ...[
 
                       if(state.auth.executor.value == null) ElevatedButtonApp(
-                        text: 'Регистрация исполнителя',
+                        text: 'Artist_registration'.tr(),
                         onPressed: _registerExecutor(context),
                       ),
                       if(state.auth.store.value == null)  OutlinedButtonApp(
-                        text: 'Регистрация магазина',
+                        text: 'Shop_registration'.tr(),
                         onPressed: _registerStore(context),
                       ),
                     ],

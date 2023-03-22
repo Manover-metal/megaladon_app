@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/logic/screens/offers/details/offer_screen_details_cubit.dart';
@@ -60,10 +61,10 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
               child: NestedScrollView(
                 headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
                   return [
-                    const SliverToBoxAdapter(
+                     SliverToBoxAdapter(
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: HeaderAppBar(isBack: true, title: 'Предложение исполнителя'),
+                        child: HeaderAppBar(isBack: true, title: "Artists_suggestion".tr()),
                       ),
                     )
                   ];
@@ -83,13 +84,13 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
                                 children: [
                                   if(state.offer.executor != null) ExecutorTile(executor: state.offer.executor!,),
                                   const SizedBox(height: 20,),
-                                  DataTile(title: 'Актуален до: ', data: state.offer.expiredAt,),
-                                  DataTile(title: 'Цена: ', data: '${state.offer.price} ₸',),
-                                  DataTile(title: 'Сроки: ', data: state.offer.date,),
-                                  DataTile(title: 'Местоположение: ', data: 'г. ${state.offer.city?.name }',),
-                                  if(state.offer.comment != null) DataTile(title: 'Описание:  ', data: state.offer.comment!,),
+                                  DataTile(title: "Actual_until:".tr(), data: state.offer.expiredAt,),
+                                  DataTile(title: "Price:".tr(), data: '${state.offer.price} ₸',),
+                                  DataTile(title: "Terms".tr(), data: state.offer.date,),
+                                  DataTile(title: "Location:".tr(), data: 'г. ${state.offer.city?.name }',),
+                                  if(state.offer.comment != null) DataTile(title: "Description2".tr(), data: state.offer.comment!,),
                                   const SizedBox(height: 20,),
-                                  ElevatedButtonApp(text: 'Назначить исполнителем', onPressed: _acceptOffer,)
+                                  ElevatedButtonApp(text: "Set_as_executor".tr(), onPressed: _acceptOffer,)
                                 ],
                               );
                             } else if(state is OfferScreenDetailsLoader) {

@@ -76,7 +76,7 @@ class _TradingAdsScreenState extends State<TradingAdsScreen> {
                     children: [
                        Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: HeaderAppBar(isMenu: true, title: "Торговая площадка".tr()),
+                        child: HeaderAppBar(isMenu: true, title: "Marketplace".tr()),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -114,7 +114,7 @@ class _TradingAdsScreenState extends State<TradingAdsScreen> {
                             }).toList(),
                             if(state.status == AdverScreenMainStatus.loading) const Loader(padding: 10)
                             else if(state.status == AdverScreenMainStatus.error)  ErrorMessage(error: state.error!)
-                            else if(state.stock)  StockMessage(name: 'Объявления'.tr())
+                            else if(state.stock)  StockMessage(name: 'Ads'.tr())
                           ],
                         );
                       },

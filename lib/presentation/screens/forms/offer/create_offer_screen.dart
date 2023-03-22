@@ -107,24 +107,24 @@ class _CreateOfferScreenState extends State<CreateOfferScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                HeaderAppBar(isBack: true, title: "Отклик на заказ №".tr()+'${widget.orderId}'),
+                HeaderAppBar(isBack: true, title: "Response_to_order".tr()+'${widget.orderId}'),
                 const SizedBox(height: 20,),
-                ExpiredAtFieldApp(label: "Актуален до".tr(), icon: const Icon(Icons.calendar_month), controller: _expiredAtController,),
-                TextFieldApp(label: "Время на работу".tr(), icon: const Icon(Icons.watch_later_outlined), controller: _dateController,),
-                NumberFieldApp(label: "Цена".tr(), icon: const Icon(Icons.credit_card), controller: _priceController,),
-                TextFieldApp(label: "Описание {}".tr(), icon: const Icon(Icons.message), controller: _descriptionController,),
-                CityPicker(label: "Город".tr(), icon: const Icon(Icons.place) , controller: _cityController),
+                ExpiredAtFieldApp(label: "Actual_until".tr(), icon: const Icon(Icons.calendar_month), controller: _expiredAtController,),
+                TextFieldApp(label: "Time_to_work".tr(), icon: const Icon(Icons.watch_later_outlined), controller: _dateController,),
+                NumberFieldApp(label: "Price".tr(), icon: const Icon(Icons.credit_card), controller: _priceController,),
+                TextFieldApp(label: "Store_data".tr(), icon: const Icon(Icons.message), controller: _descriptionController,),
+                CityPicker(label: "City".tr(), icon: const Icon(Icons.place) , controller: _cityController),
                 BlocConsumer<CreateOfferFormCubit, CreateOfferFormState>(
                   listener: _listenerForm,
                   builder: (context, state) {
                     if(state.formState == EnumFormState.fetch) {
                       return ElevatedButtonApp(child: Loader(color: Theme.of(context).colorScheme.background), onPressed: () {},);
                     }
-                    return ElevatedButtonApp(text: "Откликнуться".tr(), onPressed: _create,);
+                    return ElevatedButtonApp(text: "Respond".tr(), onPressed: _create,);
                   }
                 ),
                 OutlinedButtonApp(
-                  text: "Отмена".tr(),
+                  text: "Cancel".tr(),
                   onPressed: _back,
                 )
               ],

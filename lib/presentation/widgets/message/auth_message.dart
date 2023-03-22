@@ -19,12 +19,12 @@ class AuthMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(LocaleKeys.Authorization.tr(),
+        Text("Authorization".tr(),
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: Colors.white
             )
         ),
-        Text(LocaleKeys.You_need_to_log_into_the_application.tr() +'${continueText ?? ''}',
+        Text("You_need_to_log_into_the_application".tr() +'${continueText ?? ''}',
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: Theme.of(context).colorScheme.secondary
           ),
@@ -33,7 +33,7 @@ class AuthMessage extends StatelessWidget {
         const SizedBox(height: 10,),
         ElevatedButtonApp(
           onPressed: _login(context),
-          text: LocaleKeys.Continue.tr(),
+          text: "Continue".tr(),
         )
       ],
     );

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,12 +18,12 @@ class DrawerProfile extends StatelessWidget {
               children: [
                 const SizedBox(height: 20,),
                 if(state.user != null) ...[
-                  const DrawerRouteTile(text: 'Изменить номер телефона', page: ChangePhoneStartRoute()),
+                   DrawerRouteTile(text: 'Change_phone_number'.tr(), page: ChangePhoneStartRoute()),
 
-                  const DrawerRouteTile(text: 'Изменить пароль', page: ChangePasswordRoute()),
+                   DrawerRouteTile(text: 'Change_password'.tr(), page: ChangePasswordRoute()),
                 ],
                 if(state.executor != null) ...[
-                  const DrawerRouteTile(text: 'Изменить исполнителя', page: InitialRouter(
+                   DrawerRouteTile(text: 'change_executor'.tr(), page: InitialRouter(
                       children: [
                         ProfileRouter(
                           children: [
@@ -34,7 +35,7 @@ class DrawerProfile extends StatelessWidget {
                   ),
                 ],
                 if(state.store != null) ...[
-                  const DrawerRouteTile(text: 'Изменить магазин', page: InitialRouter(
+                   DrawerRouteTile(text: 'change_store'.tr(), page: InitialRouter(
                       children: [
                         ProfileRouter(
                             children: [

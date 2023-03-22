@@ -1,4 +1,5 @@
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:formz/formz.dart';
 import 'package:megaladon/data/models/contact_model.dart';
 
@@ -9,9 +10,9 @@ enum MultiContactValidationError {
   String toString() {
     switch(this) {
       case MultiContactValidationError.empty:
-        return 'Добавьте минимум один контакт';
+        return 'Add_at_least_one_contact'.tr();
       case MultiContactValidationError.dataEmpty:
-        return 'Контакты не полностью заполнены';
+        return 'Contacts_are_not_fully_filled_out'.tr();
     }
   }
 }

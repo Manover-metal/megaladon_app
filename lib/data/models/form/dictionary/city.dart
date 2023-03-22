@@ -1,4 +1,5 @@
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:formz/formz.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
 
@@ -9,7 +10,7 @@ enum CityValidationError {
   String toString() {
     switch(this) {
       case CityValidationError.empty:
-        return 'Категория не заполнена';
+        return 'Select_city'.tr();
     }
   }
 }

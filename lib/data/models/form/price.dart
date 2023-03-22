@@ -1,4 +1,5 @@
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:formz/formz.dart';
 
 enum PriceValidationError {
@@ -8,7 +9,7 @@ enum PriceValidationError {
   String toString() {
     switch(this) {
       case PriceValidationError.empty:
-        return 'Заполните Цену';
+        return 'Fill_in_the_price'.tr();
     }
   }
 }

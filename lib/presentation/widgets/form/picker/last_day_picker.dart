@@ -1,4 +1,5 @@
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/Picker.dart';
 import 'package:megaladon/data/models/request/index_period_enum.dart';
@@ -18,8 +19,8 @@ Future<IndexPeriod?> showIndexPeriodPicker(BuildContext context) async {
     ),
     changeToFirst: false,
     hideHeader: false,
-    cancelText: 'Отмена',
-    confirmText: 'Выбрать',
+    cancelText: 'Cancel'.tr(),
+    confirmText: 'select'.tr(),
   ).showModal(context);
 
   if(result == null) return null;

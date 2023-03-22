@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/Picker.dart';
 import 'package:megaladon/data/models/contact_model.dart';
@@ -17,8 +18,8 @@ Future<List<int>?> showContactTypePicker(BuildContext context) async {
     ),
     changeToFirst: false,
     hideHeader: false,
-    cancelText: 'Отмена',
-    confirmText: 'Выбрать',
+    cancelText: 'Cancel'.tr(),
+    confirmText: 'select'.tr(),
   ).showModal(context);
 }
 
@@ -146,8 +147,8 @@ class _ContactTypePickerState extends State<ContactTypePicker> {
             const SizedBox(height: 10),
             if(widget.controller._nameController != null) TextField(
               controller: widget.controller._nameController,
-              decoration: const InputDecoration(
-                  labelText: "Имя контакта",
+              decoration:  InputDecoration(
+                  labelText: "contact_name".tr(),
                   labelStyle: TextStyle(
                       fontSize: 18
                   ),

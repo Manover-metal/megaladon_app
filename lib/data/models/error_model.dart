@@ -17,5 +17,5 @@ class ErrorModel {
     return ErrorModel.nothing;
   }
 
-  static ErrorModel get nothing => ErrorModel(['Неизвестная ошибка']);
+  static ErrorModel get nothing => ErrorModel(['Unknown_error']);
 }

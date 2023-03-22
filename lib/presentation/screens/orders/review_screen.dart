@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/data/models/error_model.dart';
 import 'package:megaladon/data/models/order_model.dart';
@@ -60,9 +61,9 @@ class _ReviewScreenState extends State<ReviewScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                const HeaderAppBar(
+                 HeaderAppBar(
                   isBack: true,
-                  title: 'Отзыв по заказу №1321412313',
+                  title: "Feedback_on_order".tr()+'№1321412313',
                 ),
                 const SizedBox(height: 20,),
                 if(widget.order.executor != null) ...[
@@ -71,8 +72,8 @@ class _ReviewScreenState extends State<ReviewScreen> {
                 ],
                 StarPicker(controller: controller),
                 const SizedBox(height: 20,),
-                ElevatedButtonApp(text: 'Оставить отзыв', onPressed: _review),
-                OutlinedButtonApp(text: 'Назад', onPressed: _back)
+                ElevatedButtonApp(text: "Leave_feedback".tr(), onPressed: _review),
+                OutlinedButtonApp(text: "Back".tr(), onPressed: _back)
 
               ],
             ),

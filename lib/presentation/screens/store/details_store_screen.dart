@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/core/icons/icons.dart';
@@ -110,28 +111,28 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
                           ),
                         ),
                         const SizedBox(height: 20,),
-                        DataTile(title: 'Адрес:', data: state.store.fullAddress),
-                        if(state.store.city != null) DataTile(title: 'Город:', data: state.store.city!.name),
-                        if(state.store.bin != null) DataTile(title: 'БИН:', data: state.store.bin.toString()),
+                        DataTile(title: 'Address:'.tr(), data: state.store.fullAddress),
+                        if(state.store.city != null) DataTile(title: 'City2'.tr(), data: state.store.city!.name),
+                        if(state.store.bin != null) DataTile(title: 'BIN2'.tr(), data: state.store.bin.toString()),
                         ...state.store.contacts!.map((contact) {
                           return ContactTile(contact: contact);
                         }).toList(),
                         const SizedBox(height: 20,),
 
-                        if(state.store.prices.isEmpty) SubTitleApp('Нет прайс листа')
+                        if(state.store.prices.isEmpty) SubTitleApp('No_price_list'.tr())
                         else ...[
-                          SubTitleApp('Прайс лист'),
+                          SubTitleApp('Price_list'.tr()),
                           const SizedBox(height: 10,),
                           FileDownloadList(files: state.store.prices),
 
                         ],
                         const SizedBox(height: 20,),
                         if(state.store.hasPhone) ElevatedButtonApp(
-                          text: 'Позвонить',
+                          text: 'Call'.tr(),
                           onPressed: _call(state.store),
                         ),
                         OutlinedButtonApp(
-                          text: 'Написать',
+                          text: 'Write'.tr(),
                           onPressed: _toChat,
                         ),
                       ],

@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/order_model.dart';
@@ -82,7 +83,7 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                     return SliverToBoxAdapter(
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: HeaderAppBar(isBack: true, title: 'Заказ №${state.order!.id}'),
+                          child: HeaderAppBar(isBack: true, title: "Order".tr()+'${state.order!.id}'),
                         )
                     );
                   } else {
@@ -121,11 +122,11 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                               Text(order.description),
                               const SizedBox(height: 20,),
                               if(order.files!.isEmpty) ...[
-                                SubTitleApp('Нет прикреплённых файлов'),
+                                SubTitleApp("No_attached_files".tr()),
                                 const SizedBox(height: 10,),
                               ]
                               else ...[
-                                SubTitleApp('Прикреплённые файлы'),
+                                SubTitleApp("Attached_files".tr()),
                                 const SizedBox(height: 10,),
                                 FileDownloadList(files: order.files!),
                               ],
@@ -138,8 +139,8 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Желаемый бюджет: до ${order.priceRecommended} ₸'),
-                              Text('Допустимый: до ${order.priceMax} ₸'),
+                              Text("Desired_budget_up_to".tr()+'${order.priceRecommended} ₸'),
+                              Text("Valid_to".tr()+' ${order.priceMax} ₸'),
                               const SizedBox(height: 20,),
 
                               UserTile(user: order.user!),
@@ -155,28 +156,28 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                             && order.status == OrderStatus.active
                                         )...[
                                           ElevatedButtonApp(
-                                            text: 'Предложить услуги',
+                                            text: "Offer_services".tr(),
                                             onPressed: _createOffer,
                                           ),
                                           OutlinedButtonApp(
-                                            text: 'Обсудить в чате',
+                                            text: "Discuss_in_chat".tr(),
                                             onPressed: _toChat,
                                           ),
                                         ]
                                         else ...[
                                           if(order.status == OrderStatus.active) ...[
                                             ElevatedButtonApp(
-                                              text: 'Предложения (${order.countOffers} новых)',
+                                              text: "Offers".tr()+ '(${order.countOffers} новых)',
                                               onPressed: _checkExecutors,
                                             ),
                                             OutlinedButtonApp(
-                                              text: 'Обсудить в чате (5 новых)',
+                                              text: "Discuss_in_chat2".tr(),
                                               onPressed: _toChats,
                                             ),
                                           ],
                                           if(order.status == OrderStatus.hasExecutor) ...[
                                             ElevatedButtonApp(
-                                              text: 'Завершить работу',
+                                              text: "To_finish_work".tr(),
                                               onPressed: _complete(order),
                                             ),
                                           ],

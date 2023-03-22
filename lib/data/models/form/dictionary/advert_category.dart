@@ -1,4 +1,5 @@
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:formz/formz.dart';
 import 'package:megaladon/data/models/dictionary/advert_category_model.dart';
 
@@ -9,7 +10,7 @@ enum AdvertCategoryValidationError {
   String toString() {
     switch(this) {
       case AdvertCategoryValidationError.empty:
-        return 'Категория не заполнена';
+        return 'Select_category'.tr();
     }
   }
 }

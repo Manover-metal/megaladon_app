@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -139,38 +140,38 @@ class _ChangeStoreScreenState extends State<ChangeStoreScreen> {
               ],
               child: Column(
                 children: [
-                  TitleApp('Регистрация магазина'),
+                  TitleApp('Shop_registration'.tr()),
                   const SizedBox(height: 20,),
                   TextFieldApp(
-                    label: 'Названия',
+                    label: 'Names'.tr(),
                     icon: const Icon(Icons.person_add_alt_1),
                     controller: _nameController,
                   ),
                   NumberFieldApp(
-                    label: 'БИН',
+                    label: 'BIN'.tr(),
                     icon: const Icon(Icons.wallet),
                     controller: _binController,
                   ),
                   StoreTypePicker(
-                    label: 'Тип бизнеса',
+                    label: 'Type_of_business'.tr(),
                     controller: _storeTypeController,
                   ),
                   TextFieldApp(
-                    label: 'Полный адрес',
+                    label: 'Full_address'.tr(),
                     icon: const Icon(Icons.maps_home_work_outlined),
                     controller: _fullAddressController,
                   ),
                   CityPicker(
-                      label: 'Город',
+                      label: 'City'.tr(),
                       controller: _cityPickerController
                   ),
                   DoubleFieldApp(
-                    label: 'Широта',
+                    label: 'Latitude'.tr(),
                     icon: const Icon(Icons.place),
                     controller: _latController,
                   ),
                   DoubleFieldApp(
-                    label: 'Долгота',
+                    label: 'Longitude'.tr(),
                     icon: const Icon(Icons.place_outlined),
                     controller: _lonController,
                   ),
@@ -188,7 +189,7 @@ class _ChangeStoreScreenState extends State<ChangeStoreScreen> {
                         );
                       }
                       return ElevatedButtonApp(
-                        text: 'Изменить',
+                        text: 'Edit'.tr(),
                         onPressed: _register,
                       );
                     },
