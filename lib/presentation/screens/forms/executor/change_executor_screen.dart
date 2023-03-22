@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -123,30 +124,30 @@ class _ChangeExecutorScreenState extends State<ChangeExecutorScreen> {
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
-                  const TitleApp('Изменить данные исполнителя'),
+                   TitleApp('Change_artist_details'.tr()),
                   const SizedBox(height: 20,),
                   TextFieldApp(
-                    label: 'Имя',
+                    label: 'Name'.tr(),
                     icon: const Icon(Icons.person_add_alt_1),
                     controller: _nameController,
                   ),
                   NumberFieldApp(
-                    label: 'БИН',
+                    label: 'BIN'.tr(),
                     icon: const Icon(Icons.wallet),
                     controller: _binController,
                   ),
                   TextFieldApp(
-                    label: 'Полный адрес',
+                    label: 'Full_address'.tr(),
                     icon: const Icon(Icons.maps_home_work_outlined),
                     controller: _fullAddressController,
                   ),
                   DoubleFieldApp(
-                    label: 'Широта',
+                    label: 'Latitude'.tr(),
                     icon: const Icon(Icons.place),
                     controller: _latController,
                   ),
                   DoubleFieldApp(
-                    label: 'Долгота',
+                    label: 'Longitude'.tr(),
                     icon: const Icon(Icons.place_outlined),
                     controller: _lonController,
                   ),
@@ -162,7 +163,7 @@ class _ChangeExecutorScreenState extends State<ChangeExecutorScreen> {
                         );
                       }
                       return ElevatedButtonApp(
-                        text: 'Изменить',
+                        text: 'Edit'.tr(),
                         onPressed: _register,
                       );
                     },

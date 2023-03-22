@@ -111,14 +111,14 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                HeaderAppBar(isBack: true, title: "Изменить объявление".tr()),
+                HeaderAppBar(isBack: true, title: "Edit_ad".tr()),
                 SizedBox(height: 30),
-                AdvertCategoryPicker(label: "Категория".tr(), controller: _advertCategoryController),
-                TextFieldApp(controller: _titleController, label: "Название {}*".tr(),),
-                CityPicker(label: "Город".tr(), controller: _cityController),
-                DescriptionFieldApp(label: "Описание {}".tr(), controller: _descriptionController),
-                NumberFieldApp(label: "Цена".tr(), controller: _priceController,),
-                TextFieldApp(controller: _phoneController, label: "Дополнительный телефон".tr()),
+                AdvertCategoryPicker(label: "category".tr(), controller: _advertCategoryController),
+                TextFieldApp(controller: _titleController, label: "name_field".tr(),),
+                CityPicker(label: "City".tr(), controller: _cityController),
+                DescriptionFieldApp(label: "Store_data".tr(), controller: _descriptionController),
+                NumberFieldApp(label: "Price".tr(), controller: _priceController,),
+                TextFieldApp(controller: _phoneController, label: "Additional_Phone".tr()),
 
                 // BlocConsumer(builder: builder, listener: listener)
                 BlocConsumer<AdUpdateFormCubit, AdUpdateFormState>(
@@ -127,10 +127,10 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
                       if(state.formState == EnumFormState.fetch) {
                         return ElevatedButtonApp(child: Loader(color: Theme.of(context).colorScheme.background), onPressed: () {},);
                       }
-                      return ElevatedButtonApp(text: "Изменить".tr(), onPressed: _create,);
+                      return ElevatedButtonApp(text: "Edit".tr(), onPressed: _create,);
                     }
                 ),
-                OutlinedButtonApp(text: "Отмена".tr(), onPressed: _back,),
+                OutlinedButtonApp(text: "Cancel".tr(), onPressed: _back,),
               ],
             ),
           ),

@@ -15,7 +15,7 @@ class DetailsChatScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 children: [
-                   HeaderAppBar(isBack: true, title: "Чат".tr()),
+                   HeaderAppBar(isBack: true, title: "Chat".tr()),
                   Padding(
                     padding: const EdgeInsets.only(top: 5, bottom: 10),
                     child: SizedBox(
@@ -91,7 +91,7 @@ class DetailsChatScreen extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            'Заказчик',
+                            'customer',
                             style: TextStyle(
                               fontSize: 12,
                               color: Theme.of(context).colorScheme.tertiary,
@@ -184,7 +184,7 @@ class DetailsChatScreen extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            'Исполнитель',
+                            'executor'.tr(),
                             style: TextStyle(
                               fontSize: 12,
                               color: Theme.of(context)

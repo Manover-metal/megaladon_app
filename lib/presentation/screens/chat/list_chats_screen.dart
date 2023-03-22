@@ -47,7 +47,7 @@ class _ListChatsScreenState extends State<ListChatsScreen> {
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: HeaderAppBar(
                       isMenu: true,
-                      title: "Чаты".tr(),
+                      title: "Chats".tr(),
                     ),
                   )
               ),

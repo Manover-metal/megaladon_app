@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+
 enum ContactType {
   phone, homePhone, site, email;
 
@@ -20,15 +22,15 @@ enum ContactType {
   String toString() {
     switch(this) {
       case phone: {
-        return 'Мобильный телефон';
+        return 'Mobile_phone'.tr();
       } case homePhone: {
-        return 'Домашний телефон';
+        return 'Home_phone'.tr();
       } case site: {
-        return 'Сайт';
+        return 'Website'.tr();
       } case email: {
-        return 'Email';
+        return 'Email'.tr();
       }
-      default: return 'Доп. данные';
+      default: return 'Additional_data'.tr();
     }
   }
 }

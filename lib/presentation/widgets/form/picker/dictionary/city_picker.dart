@@ -1,4 +1,5 @@
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_picker/Picker.dart';
@@ -22,8 +23,8 @@ Future<CityModel?> showCityPicker(BuildContext context) async {
     ),
     changeToFirst: false,
     hideHeader: false,
-    cancelText: 'Отмена',
-    confirmText: 'Выбрать',
+    cancelText: 'Cancel'.tr(),
+    confirmText: 'select'.tr(),
   ).showModal(context);
 
   if(result == null) return null;

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
@@ -73,7 +74,7 @@ class _FileMultiPickerState extends State<FileMultiPicker> {
             );
           },
         ),
-        OutlinedButtonApp(text: 'Добавить файл', onPressed: _addFile,)
+        OutlinedButtonApp(text: 'Add_file'.tr(), onPressed: _addFile,)
       ],
     );
   }

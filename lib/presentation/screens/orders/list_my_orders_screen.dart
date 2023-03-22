@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -93,9 +94,9 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> with SingleTick
                 SliverToBoxAdapter(
                     child: Column(
                       children: [
-                        const Padding(
+                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 20),
-                          child: HeaderAppBar(isMenu: true, title: 'Мои заказы'),
+                          child: HeaderAppBar(isMenu: true, title: "My_orders".tr()),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -119,9 +120,9 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> with SingleTick
                       unselectedLabelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
                       unselectedLabelColor: Colors.grey,
                       indicatorColor: Theme.of(context).colorScheme.primary,
-                      tabs: const [
-                        Tab(text: 'Как пользователя'),
-                        Tab(text: 'Как исполнителя'),
+                      tabs:  [
+                        Tab(text: "As_a_user".tr()),
+                        Tab(text:"As_a_executor".tr()),
                       ],
                     ),
                   )
@@ -152,7 +153,7 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> with SingleTick
                                 }).toList(),
                                 if(state.status == OrderScreenMyStatus.loading) const Loader(padding: 10)
                                 else if(state.status == OrderScreenMyStatus.error)  ErrorMessage(error: state.error!)
-                                else if(state.stock) const StockMessage(name: 'Заказы')
+                                else if(state.stock)  StockMessage(name: "Orders".tr())
                               ],
                             );
                           },
@@ -181,7 +182,7 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> with SingleTick
                                 }).toList(),
                                 if(state.status == OrderScreenMyStatus.loading) const Loader(padding: 10)
                                 else if(state.status == OrderScreenMyStatus.error)  ErrorMessage(error: state.error!)
-                                else if(state.stockResponded) const StockMessage(name: 'Заказы')
+                                else if(state.stockResponded)  StockMessage(name: "Orders".tr())
                               ],
                             );
                           },

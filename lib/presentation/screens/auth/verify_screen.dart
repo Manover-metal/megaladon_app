@@ -86,7 +86,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
             child: Column(
               children: [
                 const Spacer(),
-                TitleApp("Регистрация".tr()),
+                TitleApp("Registration".tr()),
                 const SizedBox(height: 20,),
                 PinCodeTextField(
                     appContext: context,
@@ -106,7 +106,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                       inactiveFillColor: Theme.of(context).colorScheme.onBackground,
                     ), onChanged: (String value) {  },
                 ),
-                 Text("Введите 6-ти значный код из смс".tr()),
+                 Text("Enter_6digit_code_from_SMS".tr()),
                 BlocBuilder<AuthBloc,AuthState>(
                   builder: (context, state) {
                     if(state is AuthLoginState) {
@@ -115,10 +115,10 @@ class _VerifyScreenState extends State<VerifyScreen> {
                         child: Loader(color: Theme.of(context).colorScheme.background)
                       );
                     }
-                    return ElevatedButtonApp(text: "Подтвердить".tr(), onPressed: _verify,);
+                    return ElevatedButtonApp(text: "Confirm".tr(), onPressed: _verify,);
                   }
                 ),
-                OutlinedButtonApp(text: "Выслать код повторно".tr()),
+                OutlinedButtonApp(text: "Send_code_again".tr()),
                 const Spacer(flex: 3),
               ],
             ),

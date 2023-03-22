@@ -1,4 +1,5 @@
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:formz/formz.dart';
 
 enum PasswordValidationError {
@@ -8,9 +9,9 @@ enum PasswordValidationError {
   String toString() {
     switch(this) {
       case PasswordValidationError.min:
-        return 'Пароль должен состоять минимально из 8 символов';
+        return 'Password_must_be_at_least_8_characters'.tr();
       case PasswordValidationError.empty:
-        return 'Пароль пустой';
+        return 'Password_is_empty'.tr();
     }
   }
 }

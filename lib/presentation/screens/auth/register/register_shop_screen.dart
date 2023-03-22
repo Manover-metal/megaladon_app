@@ -139,38 +139,38 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
               ],
               child: Column(
                 children: [
-                  TitleApp("Регистрация магазина".tr()),
+                  TitleApp("Shop_registration".tr()),
                   const SizedBox(height: 20,),
                   TextFieldApp(
-                    label: "Названия".tr(),
+                    label: "Names".tr(),
                     icon: const Icon(Icons.person_add_alt_1),
                     controller: _nameController,
                   ),
                   NumberFieldApp(
-                    label: "БИН".tr(),
+                    label: "BIN".tr(),
                     icon: const Icon(Icons.wallet),
                     controller: _binController,
                   ),
                   StoreTypePicker(
-                    label: "Тип бизнеса".tr(),
+                    label: "Type_of_business".tr(),
                     controller: _storeTypeController,
                   ),
                   TextFieldApp(
-                    label: "Полный адрес".tr(),
+                    label: "Full_address".tr(),
                     icon: const Icon(Icons.maps_home_work_outlined),
                     controller: _fullAddressController,
                   ),
                   CityPicker(
-                      label: "Город".tr(),
+                      label: "City".tr(),
                       controller: _cityPickerController
                   ),
                   DoubleFieldApp(
-                    label: "Широта".tr(),
+                    label: "Latitude".tr(),
                     icon: const Icon(Icons.place),
                     controller: _latController,
                   ),
                   DoubleFieldApp(
-                    label: "Долгота".tr(),
+                    label: "Longitude".tr(),
                     icon: const Icon(Icons.place_outlined),
                     controller: _lonController,
                   ),
@@ -188,7 +188,7 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
                         );
                       }
                       return ElevatedButtonApp(
-                        text: "Зарегистрироваться".tr(),
+                        text: "Register".tr(),
                         onPressed: _register,
                       );
                     },
@@ -196,8 +196,8 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
                    Text.rich(
                       TextSpan(
                           children: [
-                            TextSpan(text: "Нажимая на кнопку 'Продолжить', вы принимаете ".tr()),
-                            TextSpan(text: "Условия пользовательского соглашения".tr(),
+                            TextSpan(text: "By_clicking_on_the_Continue_button_you_accept".tr()),
+                            TextSpan(text: "user_Agreement_Terms".tr(),
                                 style: TextStyle(
                                     decoration: TextDecoration.underline
                                 )

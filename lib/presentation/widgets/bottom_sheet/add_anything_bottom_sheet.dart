@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
@@ -30,21 +31,21 @@ class AddAnythingBottomSheet extends StatelessWidget {
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const TitleApp('Создать'),
+                 TitleApp('create'.tr()),
                 const Divider(thickness: 1,height: 20,),
                 ElevatedButtonApp(
-                  text: 'Объявление',
+                  text: 'Ad'.tr(),
                   onPressed: _createAdvert(context),
                 ),
                 ElevatedButtonApp(
-                  text: 'Заказ',
+                  text: 'Order2'.tr(),
                   onPressed: _createOrder(context),
                 ),
                 const SizedBox(height: 30,),
               ],
             );
           } else {
-            return const AuthMessage(continueText: ', чтобы создать объявление или заказ',);
+            return  AuthMessage(continueText: 'to_create_an_ad_or_order'.tr(),);
           }
         },
       ),

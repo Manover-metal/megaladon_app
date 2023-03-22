@@ -1,4 +1,5 @@
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:formz/formz.dart';
 
 enum EmailValidationError {
@@ -8,9 +9,9 @@ enum EmailValidationError {
   String toString() {
     switch(this) {
       case EmailValidationError.notEmail:
-        return 'Не является Email-ом';
+        return 'Not_an_email'.tr();
       case EmailValidationError.empty:
-        return 'Email пустой';
+        return 'Email_is_empty'.tr();
     }
   }
 }

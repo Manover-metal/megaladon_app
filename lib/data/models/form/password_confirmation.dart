@@ -1,4 +1,5 @@
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:formz/formz.dart';
 
 enum PasswordConfirmationValidationError {
@@ -8,7 +9,7 @@ enum PasswordConfirmationValidationError {
   String toString() {
     switch(this) {
       case PasswordConfirmationValidationError.notMatch:
-        return 'Пароли не совпадают';
+        return 'Passwords_do_not_match'.tr();
     }
   }
 }

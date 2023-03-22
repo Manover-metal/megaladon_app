@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:formz/formz.dart';
 import 'package:megaladon/data/models/dictionary/store_type_model.dart';
 
@@ -8,7 +9,7 @@ enum StoreTypeValidationError {
   String toString() {
     switch(this) {
       case StoreTypeValidationError.empty:
-        return 'Тип не указан';
+        return 'Type_is_not_specified'.tr();
     }
   }
 }

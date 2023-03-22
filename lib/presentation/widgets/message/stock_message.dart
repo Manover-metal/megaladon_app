@@ -24,7 +24,7 @@ class StockMessage extends StatelessWidget {
             text: TextSpan(
               children: [
                 TextSpan(text: name),
-                TextSpan(text: LocaleKeys.for_this_request_ended.tr()),
+                TextSpan(text: "for_this_request_ended".tr()),
               ],
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w700,

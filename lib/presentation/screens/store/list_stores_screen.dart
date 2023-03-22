@@ -80,7 +80,8 @@ class _ListStoresScreenState extends State<ListStoresScreen> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: HeaderAppBar(isMenu: true, title: LocaleKeys.Theshops.tr()),
+                        //
+                        child: HeaderAppBar(isMenu: true, title: "Theshops".tr()),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -119,7 +120,7 @@ class _ListStoresScreenState extends State<ListStoresScreen> {
                               }).toList(),
                               if(state.status == StoreScreenMainStatus.loading) const Loader(padding: 10,)
                               else if(state.status == StoreScreenMainStatus.error)  ErrorMessage(error: state.error!)
-                              else if(state.stock) const StockMessage(name: 'Магазины')
+                              else if(state.stock)  StockMessage(name: 'Theshops'.tr())
 
                           ],
                           );

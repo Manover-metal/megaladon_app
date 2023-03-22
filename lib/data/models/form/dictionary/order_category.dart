@@ -1,4 +1,5 @@
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:formz/formz.dart';
 import 'package:megaladon/data/models/dictionary/order_category_model.dart';
 
@@ -9,7 +10,7 @@ enum OrderCategoryValidationError {
   String toString() {
     switch(this) {
       case OrderCategoryValidationError.empty:
-        return 'Категория не заполнена';
+        return 'Category_is_not_filled_out'.tr();
     }
   }
 }

@@ -60,7 +60,7 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                       Padding(
                         padding:  EdgeInsets.symmetric(horizontal: 20.0),
                       
-                        child: HeaderAppBar(isBack: true, title: "Объявление".tr()),
+                        child: HeaderAppBar(isBack: true, title: "Ad".tr()),
                       ),
                     ],
                   )
@@ -84,9 +84,9 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                                 Text(state.advert.title),
                                 Text(state.advert.description),
                                 const SizedBox(height: 20,),
-                                if(state.advert.media.isEmpty) SubTitleApp("Нет прикреплённых файлов".tr())
+                                if(state.advert.media.isEmpty) SubTitleApp("No_attached_files".tr())
                                 else ...[
-                                  SubTitleApp("Прикрепленные файлы".tr()),
+                                  SubTitleApp("Attached_files".tr()),
                                   const SizedBox(height: 10,),
                                   ...state.advert.media.map((e) {
                                     return ClipRRect(
@@ -116,7 +116,7 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text( "Цена: до".tr()+'${state.advert.price} ₸'),
+                                Text( "Price_up_to".tr()+'${state.advert.price} ₸'),
                                 const SizedBox(height: 10,),
                                 UserTile(user: state.advert.user!),
                                 const SizedBox(height: 20),
@@ -127,16 +127,16 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                                         children: [
                                           if(state.advert.user!.id == stateUser.auth.user.value!.id)...[
                                             ElevatedButtonApp(
-                                              text: "Изменить".tr(),
+                                              text: "Edit".tr(),
                                             ),
                                           ] else ...[
                                             ElevatedButtonApp(
-                                              text: "Позвонить".tr(),
+                                              text: "Call".tr(),
                                               onPressed: _call(state.advert.additionalPhone!),
                                             ),
                                             OutlinedButtonApp(
                                                 onPressed: _toChat,
-                                                text: "Задать вопрос в чате".tr()
+                                                text: "Ask_a_question_in_the_chat".tr()
                                             ),
                                           ]
                                         ],

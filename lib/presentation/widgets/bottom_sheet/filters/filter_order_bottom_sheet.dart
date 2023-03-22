@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
@@ -63,32 +64,32 @@ class _FilterOrderBottomSheetState extends State<FilterOrderBottomSheet> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const TitleApp('Фильтр'),
+           TitleApp('filter'.tr()),
           const Divider(thickness: 1,height: 20,),
           Row(
             children: [
               Expanded(
-                child: CityPicker(label: 'Город', controller: _cityPickerController,),
+                child: CityPicker(label: 'City'.tr(), controller: _cityPickerController,),
               )
             ],
           ),
           Row(
             children: [
               Expanded(
-                child: OrderCategoryPicker(label: 'Категория', controller: _orderCategoryPickerController,),
+                child: OrderCategoryPicker(label: 'category'.tr(), controller: _orderCategoryPickerController,),
               )
             ],
           ),
           Row(
             children: [
               Expanded(
-                child: IndexPeriodPicker(label: 'За последние период', controller: _indexPeriodPickerController,),
+                child: IndexPeriodPicker(label: 'last_period'.tr(), controller: _indexPeriodPickerController,),
               )
             ],
           ),
           const SizedBox(height: 30,),
           ElevatedButtonApp(
-              text: 'Применить',
+              text: 'Apply'.tr(),
               onPressed: _back
           ),
           const SizedBox(height: 30,),
