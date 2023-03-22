@@ -110,10 +110,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 listener: _photoListener,
                                 builder: (context, state) {
                                   return SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width / 3,
-                                    height:
-                                        MediaQuery.of(context).size.width / 3,
+                                    width: MediaQuery.of(context).size.width / 3,
+                                    height: MediaQuery.of(context).size.width / 3,
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(100),
                                       clipBehavior: Clip.hardEdge,
@@ -122,40 +120,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         children: [
                                           Container(
                                             width: double.infinity,
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                3,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .secondary,
-                                            child: state.status ==
-                                                    PhotoStatus.bytes
+                                            height: MediaQuery.of(context).size.width /  3,
+                                            color: Theme.of(context).colorScheme.secondary,
+                                            child: state.status == PhotoStatus.bytes
                                                 ? Image.memory(
                                                     state.imageData!,
                                                     fit: BoxFit.cover,
                                                   )
                                                 : CachedNetworkImage(
                                                     imageUrl: state.url ?? '',
-                                                    fadeInDuration:
-                                                        Duration.zero,
-                                                    progressIndicatorBuilder: (context,
-                                                            url,
-                                                            downloadProgress) =>
-                                                        Icon(Icons.person,
-                                                            size: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width /
-                                                                4),
-                                                    errorWidget: (context, url,
-                                                            error) =>
-                                                        Icon(Icons.person,
-                                                            size: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width /
-                                                                4),
+                                                    fadeInDuration: Duration.zero,
+                                                    progressIndicatorBuilder: (context, url, downloadProgress) => Icon(Icons.person, size: MediaQuery.of(context).size.width / 4),
+                                                    errorWidget: (context, url, error) => Icon(Icons.person, size: MediaQuery.of(context).size.width / 4),
                                                     fit: BoxFit.cover,
                                                   ),
                                           ),
@@ -256,8 +232,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 TitleApp("Price_lists".tr()),
 
                                 BlocConsumer<PriceFormCubit, PriceFormState>(
-                                    builder: (context, state) {
-                                  return Column(
+                                  builder: (context, state) {
+                                    return Column(
                                     children: [
                                       Column(
                                         children: state.prices.map((file) {
@@ -273,22 +249,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               )),
                                               if (file.active)
                                                 IconButton(
-                                                    onPressed: () => context
-                                                        .read<PriceFormCubit>()
-                                                        .deactivate(file.id),
-                                                    icon: const Icon(
-                                                        Icons
-                                                            .check_circle_rounded,
-                                                        color: Colors.green))
-                                              else
-                                                IconButton(
-                                                    onPressed: () => context
-                                                        .read<PriceFormCubit>()
-                                                        .activate(file.id),
-                                                    icon: const Icon(
-                                                        Icons
-                                                            .remove_circle_outline,
-                                                        color: Colors.red))
+                                                    onPressed: () => context.read<PriceFormCubit>().deactivate(file.id),
+                                                    icon: const Icon(Icons.check_circle_rounded, color: Colors.green)
+                                                )
+                                              else IconButton(
+                                                  onPressed: () => context.read<PriceFormCubit>().activate(file.id),
+                                                  icon: const Icon(Icons.remove_circle_outline, color: Colors.red)
+                                                )
                                             ],
                                           );
                                         }).toList(),
@@ -301,28 +268,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       ),
                                     ],
                                   );
-                                }, listener: (context, state) {
-                                  if (state.error != null) {
-                                    showErrorSnackBar(
-                                        context, state.error!.messages[0]);
+                                  },
+                                  listener: (context, state) {
+                                    if (state.error != null) {
+                                      showErrorSnackBar(
+                                          context, state.error!.messages[0]);
+                                    }
                                   }
-                                }),
-                                // SubTitleApp(LocaleKeys.Price_lists.tr(), textAlign: TextAlign.start,),
-                                // SizedBox(height: 10,),
-                                // if(state.isUpdatePrice) ...[
-                                //   PriceMultiPicker(controller: _priceController, files: store.prices!,),
-                                //   ElevatedButtonApp(
-                                //     text: 'Сохранить',
-                                //     onPressed: context.read<ProfileScreenCubit>().hoverChangePrice,
-                                //   ),
-                                // ] else ...[
-                                //   if(store.prices!.isNotEmpty) FileDownloadList(files: store.prices!)
-                                //   else Text('Прайс-лист пустой'),
-                                //   ElevatedButtonApp(
-                                //     text: 'Изменить',
-                                //     onPressed: context.read<ProfileScreenCubit>().hoverChangePrice,
-                                //   ),
-                                // ],
+                                ),
 
                                 const SizedBox(
                                   height: 20,
