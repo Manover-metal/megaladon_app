@@ -10,7 +10,6 @@ abstract class  LocaleKeys {
   static const update = 'update';
   static const add_title = 'add_title';
   static const create_title = 'create_title';
-  static const update_title = 'update_title';
   static const name_field = 'name_field';
   static const description_field = 'description_field';
   static const type = 'type';
@@ -73,7 +72,6 @@ abstract class  LocaleKeys {
   static const No_attached_files = 'No_attached_files';
   static const Attached_files = 'Attached_files';
   static const Price_up_to = 'Price_up_to';
-  static const Change = 'Change';
   static const Call = 'Call';
   static const Ask_a_question_in_the_chat = 'Ask_a_question_in_the_chat';
   static const My_announcement = 'My_announcement';
@@ -108,7 +106,6 @@ abstract class  LocaleKeys {
   static const Header = 'Header';
   static const Change_order = 'Change_order';
   static const Artists_suggestion = 'Artists_suggestion';
-  static const Relevant_until = 'Relevant_until';
   static const Price2 = 'Price2';
   static const Terms = 'Terms';
   static const Location2 = 'Location2';
@@ -140,5 +137,30 @@ abstract class  LocaleKeys {
   static const Settings = 'Settings';
   static const Language = 'Language';
   static const About_the_application = 'About_the_application';
+  static const Change_artist_details = 'Change_artist_details';
+  static const Rating2 = 'Rating2';
+  static const filter = 'filter';
+  static const price_from = 'price_from';
+  static const price_to = 'price_to';
+  static const last_period = 'last_period';
+  static const Apply = 'Apply';
+  static const Order2 = 'Order2';
+  static const to_create_an_ad_or_order = 'to_create_an_ad_or_order';
+  static const more_details = 'more_details';
+  static const offers = 'offers';
+  static const exit = 'exit';
+  static const change_executor = 'change_executor';
+  static const change_store = 'change_store';
+  static const add_contact = 'add_contact';
+  static const add_image = 'add_image';
+  static const add_service = 'add_service';
+  static const service = 'service';
+  static const select = 'select';
+  static const contact_name = 'contact_name';
+  static const executor = 'executor';
+  static const posted_projects = 'posted_projects';
+  static const customer2 = 'customer2';
+  static const No_description = 'No_description';
+  static const customer = 'customer';
 
 }

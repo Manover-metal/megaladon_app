@@ -29,13 +29,13 @@ class OfferCard extends StatelessWidget {
       child: Column(
         children: [
           if(offer.executor != null) ExecutorTile(executor: offer.executor!),
-          DataTile(title: 'Description2'.tr(), data: offer.comment ?? 'Нет описания'),
+          DataTile(title: 'Description2'.tr(), data: offer.comment ?? 'No_description'.tr()),
           DataTile(title: 'Terms '.tr(), data: offer.date),
           DataTile(title: 'Price: '.tr(), data: offer.price),
           const SizedBox(
             height: 30,
           ),
-          ElevatedButtonApp(text: 'Подробнее', onPressed: _onTap(context),),
+          ElevatedButtonApp(text: 'more_details'.tr(), onPressed: _onTap(context),),
         ],
       ),
     );

@@ -19,7 +19,7 @@ Future<List<int>?> showContactTypePicker(BuildContext context) async {
     changeToFirst: false,
     hideHeader: false,
     cancelText: 'Cancel'.tr(),
-    confirmText: 'Выбрать',
+    confirmText: 'select'.tr(),
   ).showModal(context);
 }
 
@@ -147,8 +147,8 @@ class _ContactTypePickerState extends State<ContactTypePicker> {
             const SizedBox(height: 10),
             if(widget.controller._nameController != null) TextField(
               controller: widget.controller._nameController,
-              decoration: const InputDecoration(
-                  labelText: "Имя контакта",
+              decoration:  InputDecoration(
+                  labelText: "contact_name".tr(),
                   labelStyle: TextStyle(
                       fontSize: 18
                   ),

@@ -65,7 +65,7 @@ class _FilterMyOrderBottomSheetState extends State<FilterMyOrderBottomSheet> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const TitleApp('Фильтр'),
+           TitleApp('filter'.tr()),
           const Divider(thickness: 1,height: 20,),
           Row(
             children: [
@@ -77,20 +77,20 @@ class _FilterMyOrderBottomSheetState extends State<FilterMyOrderBottomSheet> {
           Row(
             children: [
               Expanded(
-                child: OrderCategoryPicker(label: 'Категория', controller: _orderCategoryPickerController,),
+                child: OrderCategoryPicker(label: 'category'.tr(), controller: _orderCategoryPickerController,),
               )
             ],
           ),
           Row(
             children: [
               Expanded(
-                child: IndexPeriodPicker(label: 'За последние период', controller: _indexPeriodPickerController,),
+                child: IndexPeriodPicker(label: 'last_period'.tr(), controller: _indexPeriodPickerController,),
               )
             ],
           ),
           const SizedBox(height: 30,),
           ElevatedButtonApp(
-              text: 'Применить',
+              text: 'Apply'.tr(),
               onPressed: _back
           ),
           const SizedBox(height: 30,),

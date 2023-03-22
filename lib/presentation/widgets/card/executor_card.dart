@@ -39,7 +39,7 @@ class ExecutorCard extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                  child: ElevatedButtonApp(text: 'Подробнее', onPressed: _onTapDetails(context))
+                  child: ElevatedButtonApp(text: 'more_details'.tr(), onPressed: _onTapDetails(context))
               ),
               const SizedBox(width: 10,),
               Expanded(

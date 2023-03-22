@@ -24,7 +24,7 @@ Future<ServiceTypeModel?> showServiceTypePicker(BuildContext context) async {
     changeToFirst: false,
     hideHeader: false,
     cancelText: 'Cancel'.tr(),
-    confirmText: 'Выбрать',
+    confirmText: 'select'.tr(),
   ).showModal(context);
 
   if(result == null) return null;

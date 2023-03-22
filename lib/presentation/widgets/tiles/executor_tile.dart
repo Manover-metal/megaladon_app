@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/data/models/executor_model.dart';
 
@@ -46,7 +47,7 @@ class ExecutorTile extends StatelessWidget {
                 if(executor.countOrders != null) Text.rich(
                     TextSpan(
                         children: [
-                          const TextSpan(text: 'Размещено проектов: '),
+                           TextSpan(text: 'posted_projects'.tr()),
                           TextSpan(text: executor.countOrders.toString())
                         ]
                     )
@@ -55,7 +56,7 @@ class ExecutorTile extends StatelessWidget {
                 Text.rich(
                     TextSpan(
                         children: [
-                          const TextSpan(text: 'Рейтинг: '),
+                           TextSpan(text: 'Rating2'.tr()),
                           TextSpan(text: executor.rating ?? '0')
                         ]
                     )

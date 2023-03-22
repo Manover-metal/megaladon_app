@@ -120,11 +120,11 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                HeaderAppBar(isBack: true, title: "Создание заказа".tr()),
+                HeaderAppBar(isBack: true, title: "Create_an_order".tr()),
                 const SizedBox(height: 30),
 
                 OrderCategoryPicker(label: "Select_a_category".tr(), controller: _orderCategoryController, ),
-                CityPicker(label: "Выберите город".tr(), controller: _cityController),
+                CityPicker(label: "Choose_city".tr(), controller: _cityController),
                 TextFieldApp(controller: _titleController, label: "Header".tr(), icon: Icon(IconPack.job_description_kwo7og605c2l),),
                 DescriptionFieldApp(label: "Description_of_work".tr(), controller: _descriptionController,icon: Icon(IconPack.description),),
                 NumberFieldApp(label:"Desired_budget".tr(), controller: _priceMaxController,icon: Icon(Icons.money_sharp),),
@@ -138,7 +138,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                       if(state.formState == EnumFormState.fetch) {
                         return ElevatedButtonApp(child: Loader(color: Theme.of(context).colorScheme.background), onPressed: () {},);
                       }
-                      return ElevatedButtonApp(text: "Создать".tr(), onPressed: _create,);
+                      return ElevatedButtonApp(text: "create".tr(), onPressed: _create,);
                     }
                 ),
                 OutlinedButtonApp(text: "Cancel".tr(), onPressed: _back,),

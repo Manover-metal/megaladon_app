@@ -20,7 +20,7 @@ class ResetPasswordScreen extends StatelessWidget {
                 TitleApp("Change_password".tr()),
                 const SizedBox(height: 20,),
                 const TextFieldApp(),
-                ElevatedButtonApp(text: "Изменить".tr()),
+                ElevatedButtonApp(text: "Edit".tr()),
                 OutlinedButtonApp(text: "Cancel".tr())
               ],
             ),

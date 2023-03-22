@@ -126,7 +126,7 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                 const SizedBox(height: 10,),
                               ]
                               else ...[
-                                SubTitleApp("Прикреплённые файлы".tr()),
+                                SubTitleApp("Attached_files".tr()),
                                 const SizedBox(height: 10,),
                                 FileDownloadList(files: order.files!),
                               ],

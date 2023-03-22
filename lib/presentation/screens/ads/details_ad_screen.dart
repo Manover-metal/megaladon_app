@@ -127,7 +127,7 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                                         children: [
                                           if(state.advert.user!.id == stateUser.auth.user.value!.id)...[
                                             ElevatedButtonApp(
-                                              text: "Изменить".tr(),
+                                              text: "Edit".tr(),
                                             ),
                                           ] else ...[
                                             ElevatedButtonApp(

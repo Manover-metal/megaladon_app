@@ -57,7 +57,7 @@ class _FilterStoreBottomSheetState extends State<FilterStoreBottomSheet> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const TitleApp('Фильтр'),
+           TitleApp('filter'.tr()),
           const Divider(thickness: 1,height: 20,),
           Row(
             children: [
@@ -69,13 +69,13 @@ class _FilterStoreBottomSheetState extends State<FilterStoreBottomSheet> {
           Row(
             children: [
               Expanded(
-                child: StoreTypePicker(label: 'Тип', controller: _storeTypePickerController,),
+                child: StoreTypePicker(label: 'type'.tr(), controller: _storeTypePickerController,),
               )
             ],
           ),
           const SizedBox(height: 30,),
           ElevatedButtonApp(
-              text: 'Применить',
+              text: 'Apply'.tr(),
               onPressed: _back
           ),
           const SizedBox(height: 30,),

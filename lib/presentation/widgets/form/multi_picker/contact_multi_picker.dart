@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/data/models/contact_model.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
@@ -88,7 +89,7 @@ class _ContactTypeMultiPickerState extends State<ContactTypeMultiPicker> {
             );
           },
         ),
-        OutlinedButtonApp(text: 'Добавить Контакт', onPressed: _addContact,)
+        OutlinedButtonApp(text: 'add_contact'.tr(), onPressed: _addContact,)
       ],
     );
   }

@@ -153,7 +153,7 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> with SingleTick
                                 }).toList(),
                                 if(state.status == OrderScreenMyStatus.loading) const Loader(padding: 10)
                                 else if(state.status == OrderScreenMyStatus.error)  ErrorMessage(error: state.error!)
-                                else if(state.stock)  StockMessage(name: "Заказы".tr())
+                                else if(state.stock)  StockMessage(name: "Orders".tr())
                               ],
                             );
                           },
@@ -182,7 +182,7 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> with SingleTick
                                 }).toList(),
                                 if(state.status == OrderScreenMyStatus.loading) const Loader(padding: 10)
                                 else if(state.status == OrderScreenMyStatus.error)  ErrorMessage(error: state.error!)
-                                else if(state.stockResponded)  StockMessage(name: "Заказы".tr())
+                                else if(state.stockResponded)  StockMessage(name: "Orders".tr())
                               ],
                             );
                           },

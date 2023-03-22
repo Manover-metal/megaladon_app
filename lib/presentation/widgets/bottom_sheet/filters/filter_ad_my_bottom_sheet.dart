@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/request/params/index/advert_index_request_params.dart';
@@ -59,7 +60,7 @@ class _FilterMyAdBottomSheetState extends State<FilterMyAdBottomSheet> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const TitleApp('Фильтр'),
+           TitleApp('filter'.tr()),
           const Divider(thickness: 1,height: 20,),
           IntrinsicHeight(
             child: Row(
@@ -67,7 +68,7 @@ class _FilterMyAdBottomSheetState extends State<FilterMyAdBottomSheet> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(right: 10.0),
-                  child: Text('Цена от:', style: TextStyle(
+                  child: Text('price_from'.tr(), style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
                       fontWeight: FontWeight.w700
                   )),
@@ -77,7 +78,7 @@ class _FilterMyAdBottomSheetState extends State<FilterMyAdBottomSheet> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Text('До:', style: TextStyle(
+                  child: Text('price_toДо'.tr(), style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
                       fontWeight: FontWeight.w700
                   )),
@@ -89,13 +90,13 @@ class _FilterMyAdBottomSheetState extends State<FilterMyAdBottomSheet> {
           Row(
             children: [
               Expanded(
-                child: IndexPeriodPicker(label: 'За последние период', controller: _indexPeriodPickerController,),
+                child: IndexPeriodPicker(label: 'last_period'.tr(), controller: _indexPeriodPickerController,),
               )
             ],
           ),
           const SizedBox(height: 30,),
           ElevatedButtonApp(
-              text: 'Применить',
+              text: 'Apply'.tr(),
               onPressed: _back
           ),
           const SizedBox(height: 30,),

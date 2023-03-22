@@ -25,7 +25,7 @@ Future<StoreTypeModel?> showStoreTypePicker(BuildContext context) async {
     changeToFirst: false,
     hideHeader: false,
     cancelText: 'Cancel'.tr(),
-    confirmText: 'Выбрать',
+    confirmText: 'select'.tr(),
   ).showModal(context);
 
 

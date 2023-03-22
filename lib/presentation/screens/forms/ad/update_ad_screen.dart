@@ -113,8 +113,8 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
               children: [
                 HeaderAppBar(isBack: true, title: "Edit_ad".tr()),
                 SizedBox(height: 30),
-                AdvertCategoryPicker(label: "Категория".tr(), controller: _advertCategoryController),
-                TextFieldApp(controller: _titleController, label: "Название {}*".tr(),),
+                AdvertCategoryPicker(label: "category".tr(), controller: _advertCategoryController),
+                TextFieldApp(controller: _titleController, label: "name_field".tr(),),
                 CityPicker(label: "City".tr(), controller: _cityController),
                 DescriptionFieldApp(label: "Store_data".tr(), controller: _descriptionController),
                 NumberFieldApp(label: "Price".tr(), controller: _priceController,),
@@ -127,7 +127,7 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
                       if(state.formState == EnumFormState.fetch) {
                         return ElevatedButtonApp(child: Loader(color: Theme.of(context).colorScheme.background), onPressed: () {},);
                       }
-                      return ElevatedButtonApp(text: "Изменить".tr(), onPressed: _create,);
+                      return ElevatedButtonApp(text: "Edit".tr(), onPressed: _create,);
                     }
                 ),
                 OutlinedButtonApp(text: "Cancel".tr(), onPressed: _back,),

@@ -124,10 +124,10 @@ class _ChangeExecutorScreenState extends State<ChangeExecutorScreen> {
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
-                  const TitleApp('Изменить данные исполнителя'),
+                   TitleApp('Change_artist_details'.tr()),
                   const SizedBox(height: 20,),
                   TextFieldApp(
-                    label: 'Имя',
+                    label: 'Name'.tr(),
                     icon: const Icon(Icons.person_add_alt_1),
                     controller: _nameController,
                   ),
@@ -163,7 +163,7 @@ class _ChangeExecutorScreenState extends State<ChangeExecutorScreen> {
                         );
                       }
                       return ElevatedButtonApp(
-                        text: 'Изменить',
+                        text: 'Edit'.tr(),
                         onPressed: _register,
                       );
                     },

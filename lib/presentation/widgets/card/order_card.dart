@@ -39,7 +39,7 @@ class OrderCard extends StatelessWidget {
                       children: [
                         const Icon(Icons.people),
                         const SizedBox(width: 10,),
-                        Text('Предложений: ${order.countOffers}')
+                        Text('offers'+'${order.countOffers}')
                       ],
                     ),
                     const SizedBox(height: 10,),

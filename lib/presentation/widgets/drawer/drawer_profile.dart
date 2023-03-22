@@ -23,7 +23,7 @@ class DrawerProfile extends StatelessWidget {
                    DrawerRouteTile(text: 'Change_password'.tr(), page: ChangePasswordRoute()),
                 ],
                 if(state.executor != null) ...[
-                  const DrawerRouteTile(text: 'Изменить исполнителя', page: InitialRouter(
+                  const DrawerRouteTile(text: 'change_executor', page: InitialRouter(
                       children: [
                         ProfileRouter(
                           children: [
@@ -35,7 +35,7 @@ class DrawerProfile extends StatelessWidget {
                   ),
                 ],
                 if(state.store != null) ...[
-                  const DrawerRouteTile(text: 'Изменить магазин', page: InitialRouter(
+                  const DrawerRouteTile(text: 'change_store', page: InitialRouter(
                       children: [
                         ProfileRouter(
                             children: [

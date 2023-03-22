@@ -189,7 +189,9 @@ class _ChangeStoreScreenState extends State<ChangeStoreScreen> {
                         );
                       }
                       return ElevatedButtonApp(
-                        text: 'Изменить',
+                        text: 'Edit'.tr(
+                          
+                        ),
                         onPressed: _register,
                       );
                     },

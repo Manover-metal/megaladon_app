@@ -121,9 +121,9 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
               children: [
                 HeaderAppBar(isBack: true, title: "Creating_an_ad".tr(),),
                 const SizedBox(height: 30),
-                TextFieldApp(controller: _titleController, label: "Название {}*".tr(), icon: const Icon(Icons.edit)),
+                TextFieldApp(controller: _titleController, label: "name_field".tr(), icon: const Icon(Icons.edit)),
                 AdvertCategoryPicker(label: "Select_a_category".tr(), controller: _advertCategoryController),
-                CityPicker(label: "Выберите город".tr(), controller: _cityController),
+                CityPicker(label: "Choose_city".tr(), controller: _cityController),
                 DescriptionFieldApp(label: "Description_of_your_offer".tr(), controller: _descriptionController, icon: const Icon(IconPack.description),),
                 NumberFieldApp(label: "Price".tr(), controller: _priceController, icon: const  Icon(Icons.money_sharp),),
                 TextFieldApp(controller: _phoneController, label: "Additional_Phone".tr(), icon: const Icon(Icons.phone),),

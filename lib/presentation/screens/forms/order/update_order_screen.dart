@@ -120,7 +120,7 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
               children: [
                 HeaderAppBar(isBack: true, title: "Change_order".tr(),),
                 SizedBox(height: 30),
-                OrderCategoryPicker(label: "Категория".tr(), controller: _orderCategoryController),
+                OrderCategoryPicker(label: "category".tr(), controller: _orderCategoryController),
                 TextFieldApp(controller: _titleController, label: "Header".tr(),),
                 CityPicker(label: "City".tr(), controller: _cityController),
                 DescriptionFieldApp(label: "Store_data".tr(), controller: _descriptionController),
@@ -132,7 +132,7 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
                     if(state.formState == EnumFormState.fetch) {
                       return ElevatedButtonApp(child: Loader(color: Theme.of(context).colorScheme.background), onPressed: () {},);
                     }
-                    return ElevatedButtonApp(text: "Изменить".tr(), onPressed: _create,);
+                    return ElevatedButtonApp(text: "Edit".tr(), onPressed: _create,);
                   }
                 ),
                 OutlinedButtonApp(text: "Cancel".tr(), onPressed: _back,),

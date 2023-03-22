@@ -109,7 +109,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       if(state.status == ChangePasswordStatus.loading) {
                         return ElevatedButtonApp(child: Loader(color: Theme.of(context).colorScheme.background), onPressed: (){});
                       }
-                      return ElevatedButtonApp(text: "Изменить".tr(), onPressed: _login);
+                      return ElevatedButtonApp(text: "Edit".tr(), onPressed: _login);
                     }
                 ),
                 const Spacer(flex: 3),

@@ -69,7 +69,7 @@ class _ServiceTypeMultiPickerState extends State<ServiceTypeMultiPicker> {
                     children: [
                       Expanded(
                         child: ServiceTypePicker(
-                          label: 'Сервис',
+                          label: 'service',
                           controller: widget.serviceTypeControllers.value[item],
                         ),
                       ),
@@ -85,7 +85,7 @@ class _ServiceTypeMultiPickerState extends State<ServiceTypeMultiPicker> {
             );
           },
         ),
-        OutlinedButtonApp(text: 'Добавить сервис', onPressed: _addService,)
+        OutlinedButtonApp(text: 'add_image', onPressed: _addService,)
       ],
     );
   }

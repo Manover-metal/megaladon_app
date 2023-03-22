@@ -122,7 +122,7 @@ class DrawerApp extends StatelessWidget {
             BlocBuilder<AuthBloc, AuthState>(
               builder: (context, state) {
                 if (state is AuthLoginState) {
-                  return DrawerTile(text: 'Выход', callback: _logout(context));
+                  return DrawerTile(text: 'exit'.tr(), callback: _logout(context));
                 } else {
                   return Container();
                 }

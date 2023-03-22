@@ -138,7 +138,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                 ),
                 CityPicker(
                   icon: const Icon(Icons.location_city),
-                  label: "Выберите город".tr(),
+                  label: "Choose_city".tr(),
                   controller: _cityController,
                 ),
                 BlocBuilder<RegisterUserBloc, RegisterUserState>(

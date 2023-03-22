@@ -238,7 +238,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     title:"Address".tr(),
                                     data: store.fullAddress),
                                 DataTile(
-                                    title: "Рейтинг ".tr(),
+                                    title: "Rating ".tr(),
                                     data: store.rating ?? '0'),
                                 if (store.bin != null)
                                   DataTile(
