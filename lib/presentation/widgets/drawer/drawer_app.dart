@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_intro/flutter_intro.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
@@ -46,49 +47,48 @@ class DrawerApp extends StatelessWidget {
               builder: (BuildContext context, state) {
                 return Column(
                   children: [
-                    if(state is! AuthLoginState)...[
-                      ElevatedButtonApp(
-                        text: 'Sign_in'.tr(),
-                        onPressed: _login(context),
-                      ),
-                      OutlinedButtonApp(
-                        text: 'Registration'.tr(),
-                        onPressed: _registerUser(context),
-                      ),
-                    ]
-                    else ...[
-                       DrawerRouteTile(
-                        text: 'My_orders'.tr(),
-                        page: InitialRouter(
+                    Visibility(
+                        visible: state is! AuthLoginState,
+                        child: Column(
                           children: [
-                            OrderRouter(children: [ListMyOrdersRoute()])
+                            ElevatedButtonApp(
+                              text: 'Sign_in'.tr(),
+                              onPressed: _login(context),
+                            ),
+                            OutlinedButtonApp(
+                              text: 'Registration'.tr(),
+                              onPressed: _registerUser(context),
+                            ),
                           ],
-                        ),
-                      ),
-                       DrawerRouteTile(
-                        text:"My_announcement".tr(),
-                        page: InitialRouter(
+                        )
+                    ),
+
+                    Visibility(
+                        visible: state is AuthLoginState,
+                        child: Column(
                           children: [
-                            AdRouter(children: [MyAdsRoute()])
+                            DrawerRouteTile(
+                              text: 'My_orders'.tr(),
+                              page: const InitialRouter(
+                                children: [
+                                  OrderRouter(children: [ListMyOrdersRoute()])
+                                ],
+                              ),
+                            ),
+                            DrawerRouteTile(
+                              text:"My_announcement".tr(),
+                              page: const  InitialRouter(
+                                children: [
+                                  AdRouter(children: [MyAdsRoute()])
+                                ],
+                              ),
+                            ),
                           ],
-                        ),
-                      ),
-                      // const DrawerRouteTile(
-                      //   text: 'Мои исполнители',
-                      //   page: InitialRouter(children: [
-                      //     ProfileRouter(children: [ListExecutorRoute()])]
-                      //   ),
-                      // ),
-                      // const DrawerRouteTile(
-                      //   text: 'Чат',
-                      //   page: InitialRouter(children: [
-                      //     ProfileRouter(children: [ListChatsRoute()])
-                      //   ]),
-                      // ),
-                      const Divider(
-                        thickness: 1,
-                      )
-                    ],
+                        )
+                    ),
+                    const Divider(
+                      thickness: 1,
+                    ),
                   ]
                 );
               }
