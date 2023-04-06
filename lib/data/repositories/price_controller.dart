@@ -8,6 +8,9 @@ class PriceController {
   Future deactivatePrice(int id) => ApiService.I
       .post('/store/price/$id/deactivate');
 
+  Future delete(int id) => ApiService.I
+      .delete('/store/price/$id/delete');
+
   Future activatePrice(int id) => ApiService.I
       .post('/store/price/$id/activate');
 }

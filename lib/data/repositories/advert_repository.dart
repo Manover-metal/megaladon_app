@@ -1,16 +1,20 @@
 import 'package:megaladon/core/dio/index.dart';
 import 'package:megaladon/data/models/advert_model.dart';
+import 'package:megaladon/data/models/dictionary/advert_type.dart';
 import 'package:megaladon/data/models/request/params/create/advert_create_request_params.dart';
 import 'package:megaladon/data/models/request/params/index/advert_index_request_params.dart';
 import 'package:megaladon/data/models/request/params/update/advert_update_request_params.dart';
 
 class AdvertRepository {
-  Future index(AdvertIndexRequestParams params) => ApiService.I
-      .get('/adverts', queryParameters: params.toData())
+  Future index(AdvertIndexRequestParams params, [AdvertType type = AdvertType.advert]) => ApiService.I
+      .get('/adverts',
+        queryParameters: params.copyWith(type: type).toData()
+      )
       .then((value) => AdvertModel.listFromJsonMini(value.data['list']));
 
-  Future indexMy(AdvertIndexRequestParams params) => ApiService.I
-      .get('/adverts/my', queryParameters: params.toData())
+
+  Future indexMy(AdvertIndexRequestParams params, [AdvertType type = AdvertType.advert]) => ApiService.I
+      .get('/adverts/my', queryParameters: params.copyWith(type: type).toData())
       .then((value) => AdvertModel.listFromJsonMini(value.data['list']));
 
   Future info(int id) => ApiService.I

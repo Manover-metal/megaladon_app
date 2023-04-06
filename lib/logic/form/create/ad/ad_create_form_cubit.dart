@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:formz/formz.dart';
 import 'package:megaladon/data/models/dictionary/advert_category_model.dart';
+import 'package:megaladon/data/models/dictionary/advert_type.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/enum_form_state.dart';
 import 'package:megaladon/data/models/form/description.dart';
@@ -29,6 +30,7 @@ class AdCreateFormCubit extends Cubit<AdCreateFormState> {
     required AdvertCategoryModel category,
     required String phone,
     required List<PlatformFile> media,
+    required AdvertType type,
   }) {
     TitleFormModel titleForm = TitleFormModel.dirty(title);
     PriceFormModel priceForm = PriceFormModel.dirty(price);
@@ -55,14 +57,16 @@ class AdCreateFormCubit extends Cubit<AdCreateFormState> {
         category: categoryForm,
         price: priceForm,
         phone: phoneForm,
-        media: media
+        media: media,
+        type: type
     );
+    print(type);
     emit(stateNew);
     return stateNew.status.isValid;
   }
 
   Future createFetch() async {
-    if(state.formState == EnumFormState.fetch) {
+    if(state.formState != EnumFormState.fetch) {
       emit(state.copyWith(formState: EnumFormState.fetch));
 
       List<MultipartFile> files = [];
@@ -81,9 +85,11 @@ class AdCreateFormCubit extends Cubit<AdCreateFormState> {
         cityId: state.city.value,
         additionalPhone: state.phone.value,
         media: files,
+        type: state.type
       )).then((value) {
         emit(state.copyWith(formState: EnumFormState.success));
       }).catchError((error) {
+        print(error);
         emit(state.copyWith(formState: EnumFormState.error));
       });
     }

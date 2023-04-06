@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/request/params/index/advert_index_request_params.dart';
 import 'package:megaladon/logic/screens/advert/main/advert_screen_main_cubit.dart';
 import 'package:megaladon/logic/screens/advert/my/advert_screen_my_cubit.dart';
+import 'package:megaladon/presentation/screens/orders/list_my_orders_screen.dart';
 import 'package:megaladon/presentation/widgets/bottom_sheet/filters/filter_ad_my_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/card/ad_card.dart';
 import 'package:megaladon/presentation/widgets/message/error_message.dart';
@@ -19,12 +20,17 @@ class MyAdsScreen extends StatefulWidget {
   State<MyAdsScreen> createState() => _MyAdsScreenState();
 }
 
-class _MyAdsScreenState extends State<MyAdsScreen> {
-late ScrollController _scrollController;
+class _MyAdsScreenState extends State<MyAdsScreen> with SingleTickerProviderStateMixin {
+  late ScrollController _scrollAdvertController;
+  late ScrollController _scrollServiceController;
+
+  late TabController _tabController;
+
 
 
   Future _onRefresh() async {
-    context.read<AdvertScreenMyCubit>().fetch();
+    await context.read<AdvertScreenMyCubit>().fetchService();
+    await context.read<AdvertScreenMyCubit>().fetchAdvert();
   }
 
   _showFilter() async {
@@ -34,18 +40,31 @@ late ScrollController _scrollController;
         useRootNavigator: true,
         context: context,
         elevation: 100,
-        builder: (_) => FilterMyAdBottomSheet()
+        builder: (_) => const FilterMyAdBottomSheet()
     );
     if(result != null) {
-      context.read<AdvertScreenMyCubit>().fetch();
+      context.read<AdvertScreenMyCubit>().fetchService();
+      context.read<AdvertScreenMyCubit>().fetchAdvert();
+
     }
   }
-_listenerScroll() {
-    if (_scrollController.position.maxScrollExtent < _scrollController.position.pixels) {
+
+  _listenerAdvertScroll() {
+    if (_scrollAdvertController.position.maxScrollExtent < _scrollAdvertController.position.pixels) {
       final cubit = context.read<AdvertScreenMyCubit>();
       if(cubit.state.status != AdverScreenMainStatus.loading) {
         AdvertIndexRequestParams params = cubit.state.params;
-        cubit.fetch(params: params.copyWith(startRow: params.startRow + params.rowsPerPage));
+        cubit.fetchAdvert(params: params.copyWith(startRow: params.startRow + params.rowsPerPage));
+      }
+    }
+  }
+
+  _listenerServiceScroll() {
+    if (_scrollServiceController.position.maxScrollExtent < _scrollServiceController.position.pixels) {
+      final cubit = context.read<AdvertScreenMyCubit>();
+      if(cubit.state.status != AdverScreenMainStatus.loading) {
+        AdvertIndexRequestParams params = cubit.state.params;
+        cubit.fetchService(params: params.copyWith(startRow: params.startRow + params.rowsPerPage));
       }
     }
   }
@@ -53,79 +72,144 @@ _listenerScroll() {
 
   @override
   void initState() {
-    _scrollController = ScrollController()..addListener(_listenerScroll);
+    _tabController = TabController(length: 2, vsync: this);
+
+    _scrollAdvertController = ScrollController()..addListener(_listenerAdvertScroll);
+    _scrollServiceController = ScrollController()..addListener(_listenerServiceScroll);
+
     _onRefresh();
     super.initState();
   }
 
   @override
   void dispose() {
-    _scrollController.removeListener(_listenerScroll);
-    _scrollController.dispose();
+    _scrollAdvertController.removeListener(_listenerAdvertScroll);
+    _scrollAdvertController.dispose();
+    _scrollServiceController.removeListener(_listenerServiceScroll);
+    _scrollServiceController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: NestedScrollView(
-          headerSliverBuilder: (context, isBool) {
-            return [
-              SliverToBoxAdapter(
-                child: Column(
-                  children: [
-                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: HeaderAppBar(isMenu: true, title: "My_announcement".tr()),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: InkWell(
-                          onTap: _showFilter,
-                          child: const Icon(Icons.filter_alt,  size: 30),
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        body: SafeArea(
+          child: NestedScrollView(
+            headerSliverBuilder: (context, isBool) {
+              return [
+                SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                       Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: HeaderAppBar(isMenu: true, title: "My_announcement".tr()),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: InkWell(
+                            onTap: _showFilter,
+                            child: const Icon(Icons.filter_alt,  size: 30),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ),
+                SliverPersistentHeader(
+                    delegate: TabBarDelegate(
+                      TabBar(
+                        controller: _tabController,
+                        labelColor: Theme.of(context).colorScheme.primary,
+                        labelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+                        unselectedLabelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
+                        unselectedLabelColor: Colors.grey,
+                        indicatorColor: Theme.of(context).colorScheme.primary,
+                        tabs: [
+                          Tab(text: "Services".tr()),
+                          Tab(text:"Ads".tr()),
+                        ],
+                      ),
+                    )
+                )
+
+              ];
+            },
+            body: TabBarView(
+              controller: _tabController,
+              children: [
+                RefreshIndicator(
+                  onRefresh: _onRefresh,
+                  child: CupertinoScrollbar(
+                    controller: _scrollServiceController,
+                    child: SingleChildScrollView(
+                      controller: _scrollServiceController,
+                      child: Container(
+                        constraints: BoxConstraints(
+                            minHeight: MediaQuery.of(context).size.height
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          children: [
+                            BlocBuilder<AdvertScreenMyCubit, AdvertScreenMyState>(
+                              builder: (context, state) {
+                                return Column(
+                                  children: [
+                                    ...state.services.map((advert) {
+                                      return AdCard(advert: advert);
+                                    }).toList(),
+                                    if(state.status == AdverScreenMyMainStatus.loading) const Loader(padding: 10)
+                                    else if(state.status == AdverScreenMyMainStatus.error) ErrorMessage(error: state.error!)
+                                    else if(state.stock)  StockMessage(name: "Ads".tr())
+
+                                  ],
+                                );
+                              },
+                            )
+                          ],
                         ),
                       ),
                     ),
-                  ],
-                )
-              ),
-            ];
-          },
-          body: RefreshIndicator(
-            onRefresh: _onRefresh,
-            child: CupertinoScrollbar(
-              controller: _scrollController,
-              child: SingleChildScrollView(
-                controller: _scrollController,
-                child: Container(
-                  constraints: BoxConstraints(
-                      minHeight: MediaQuery.of(context).size.height
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    children: [
-                      BlocBuilder<AdvertScreenMyCubit, AdvertScreenMyState>(
-                        builder: (context, state) {
-                             return Column(
-                            children: [
-                              ...state.advers.map((adver) {
-                                return AdCard(advert: adver);
-                              }).toList(),
-                              if(state.status == AdverScreenMyMainStatus.loading) const Loader(padding: 10)
-                              else if(state.status == AdverScreenMyMainStatus.error) ErrorMessage(error: state.error!)
-                              else if(state.stock)  StockMessage(name: "Ads".tr())
-
-                            ],
-                          );
-                        },
-                      )
-                    ],
                   ),
                 ),
-              ),
+                RefreshIndicator(
+                  onRefresh: _onRefresh,
+                  child: CupertinoScrollbar(
+                    controller: _scrollAdvertController,
+                    child: SingleChildScrollView(
+                      controller: _scrollAdvertController,
+                      child: Container(
+                        constraints: BoxConstraints(
+                            minHeight: MediaQuery.of(context).size.height
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          children: [
+                            BlocBuilder<AdvertScreenMyCubit, AdvertScreenMyState>(
+                              builder: (context, state) {
+                                   return Column(
+                                  children: [
+                                    ...state.adverts.map((advert) {
+                                      return AdCard(advert: advert);
+                                    }).toList(),
+                                    if(state.status == AdverScreenMyMainStatus.loading) const Loader(padding: 10)
+                                    else if(state.status == AdverScreenMyMainStatus.error) ErrorMessage(error: state.error!)
+                                    else if(state.stock)  StockMessage(name: "Ads".tr())
+
+                                  ],
+                                );
+                              },
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),

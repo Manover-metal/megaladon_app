@@ -62,6 +62,18 @@ class PriceFormCubit extends Cubit<PriceFormState> {
     });
   }
 
+  delete(int id) async {
+    _repository.delete(id).then((value) {
+      profileCubit.updateData(profileCubit.state.user!.id);
+    }).catchError((error) {
+      if(error is DioError) {
+        emit(state.copyWith(error: ErrorModel.parseDio(error)));
+      } else {
+        emit(state.copyWith(error: ErrorModel.nothing));
+      }
+    });
+  }
+
   activate(int id) async {
     _repository.activatePrice(id).then((value) {
       profileCubit.updateData(profileCubit.state.user!.id);

@@ -1,3 +1,4 @@
+import 'package:megaladon/data/models/dictionary/advert_type.dart';
 import 'package:megaladon/data/models/request/index_period_enum.dart';
 
 class AdvertIndexRequestParams {
@@ -7,6 +8,7 @@ class AdvertIndexRequestParams {
   final int? priceMin;
   final int? priceMax;
   final IndexPeriod last;
+  final AdvertType type;
 
   const AdvertIndexRequestParams({
     this.startRow = 0,
@@ -15,6 +17,7 @@ class AdvertIndexRequestParams {
     this.priceMin,
     this.priceMax,
     this.last = IndexPeriod.last3day,
+    this.type = AdvertType.advert
   });
 
   toData() {
@@ -24,7 +27,8 @@ class AdvertIndexRequestParams {
       'last': last.name,
       'desc': desc ? 1 : 0,
       'priceMin': priceMin,
-      'priceMax': priceMax
+      'priceMax': priceMax,
+      'type': type.name
     };
     return data;
   }
@@ -36,9 +40,8 @@ class AdvertIndexRequestParams {
     int? priceMin,
     int? priceMax,
     IndexPeriod? last,
-  }
-
-  ) {
+    AdvertType? type
+  }) {
     return AdvertIndexRequestParams(
       startRow: startRow ?? this.startRow,
       rowsPerPage: rowsPerPage ?? this.rowsPerPage,
@@ -46,6 +49,7 @@ class AdvertIndexRequestParams {
       priceMax: priceMin ?? this.priceMin,
       priceMin: priceMax ?? this.priceMax,
       last: last ?? this.last,
+      type: type ?? this.type
     );
   }
 }

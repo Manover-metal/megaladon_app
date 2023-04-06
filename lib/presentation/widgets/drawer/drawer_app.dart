@@ -49,17 +49,20 @@ class DrawerApp extends StatelessWidget {
                   children: [
                     Visibility(
                         visible: state is! AuthLoginState,
-                        child: Column(
-                          children: [
-                            ElevatedButtonApp(
-                              text: 'Sign_in'.tr(),
-                              onPressed: _login(context),
-                            ),
-                            OutlinedButtonApp(
-                              text: 'Registration'.tr(),
-                              onPressed: _registerUser(context),
-                            ),
-                          ],
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Column(
+                            children: [
+                              ElevatedButtonApp(
+                                text: 'Sign_in'.tr(),
+                                onPressed: _login(context),
+                              ),
+                              OutlinedButtonApp(
+                                text: 'Registration'.tr(),
+                                onPressed: _registerUser(context),
+                              ),
+                            ],
+                          ),
                         )
                     ),
 
@@ -131,20 +134,23 @@ class DrawerApp extends StatelessWidget {
             const Spacer(),
             BlocBuilder<AuthBloc, AuthState>(
               builder: (context, state) {
-                return Column(
-                  children: [
-                    if(state is AuthLoginState) ...[
+                return Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    children: [
+                      if(state is AuthLoginState) ...[
 
-                      if(state.auth.executor.value == null) ElevatedButtonApp(
-                        text: 'Artist_registration'.tr(),
-                        onPressed: _registerExecutor(context),
-                      ),
-                      if(state.auth.store.value == null)  OutlinedButtonApp(
-                        text: 'Shop_registration'.tr(),
-                        onPressed: _registerStore(context),
-                      ),
+                        if(state.auth.executor.value == null) ElevatedButtonApp(
+                          text: 'Artist_registration'.tr(),
+                          onPressed: _registerExecutor(context),
+                        ),
+                        if(state.auth.store.value == null)  OutlinedButtonApp(
+                          text: 'Shop_registration'.tr(),
+                          onPressed: _registerStore(context),
+                        ),
+                      ],
                     ],
-                  ],
+                  ),
                 );
               },
             ),

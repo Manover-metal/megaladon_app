@@ -38,8 +38,8 @@ class _SplashScreenState extends State<SplashScreen> {
       };
 
   _introStart(BuildContext context) => () async {
-    if(await IsFirstRun.isFirstCall()) return;
-    Intro.of(context).start();
+    if(await IsFirstRun.isFirstCall()) Intro.of(context).start();
+
   };
 
   @override
@@ -81,7 +81,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         },
                         order: 1,
                         overlayBuilder: (StepWidgetParams params) {
-                          return Text('Безусловно, внедрение современных методик предполагает независимые.');
+                          return Text('Список размещенных на платформе заказов для поиска лучшего предложения от исполнителей.');
                         },
                         onWidgetLoad: _introStart(context)
                       ),
@@ -98,7 +98,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         },
                         order: 2,
                         overlayBuilder: (StepWidgetParams params) {
-                          return Text('Безусловно, внедрение современных методик предполагает независимые.');
+                          return Text('Список компаний занимающихся продажей готовой продукции.');
                         },
                       ),
 
@@ -118,7 +118,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         },
                         order: 3,
                         overlayBuilder: (StepWidgetParams params) {
-                          return Text('Безусловно, внедрение современных методик предполагает независимые.');
+                          return Text('Список объявлений о продажи товара или оказании услуг машиностроения.');
                         },
                       ),
                       IntroStepBuilder(
@@ -135,11 +135,12 @@ class _SplashScreenState extends State<SplashScreen> {
                         },
                         order: 4,
                         overlayBuilder: (StepWidgetParams params) {
-                          return Text('Безусловно, внедрение современных методик предполагает независимые.');
+                          return Text('Профиль пользователя.');
                         },
                       ),
                     ],
-                  )),
+                  )
+              ),
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [

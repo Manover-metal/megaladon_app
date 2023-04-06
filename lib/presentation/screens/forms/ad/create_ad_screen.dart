@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:megaladon/core/icons/icons.dart';
+import 'package:megaladon/data/models/dictionary/advert_type.dart';
 import 'package:megaladon/data/models/enum_form_state.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:megaladon/generated/locale_keys.g.dart';
@@ -22,7 +23,9 @@ import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
 
 class CreateAdScreen extends StatefulWidget {
-  const CreateAdScreen({super.key});
+  const CreateAdScreen({super.key, required this.type});
+
+  final AdvertType type;
 
   @override
   State<CreateAdScreen> createState() => _CreateAdScreenState();
@@ -70,7 +73,8 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
       category: _advertCategoryController.value,
       city: _cityController.value,
       phone: _phoneController.value.text,
-      media: _imageController.value
+      media: _imageController.value,
+      type: widget.type
     );
   }
 
@@ -119,7 +123,8 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                HeaderAppBar(isBack: true, title: "Creating_an_ad".tr(),),
+                if(widget.type == AdvertType.advert) HeaderAppBar(isBack: true, title: "Creating_an_ad".tr(),)
+                else if(widget.type == AdvertType.service) HeaderAppBar(isBack: true, title: "Creating_an_service".tr()),
                 const SizedBox(height: 30),
                 TextFieldApp(controller: _titleController, label: "name_field".tr(), icon: const Icon(Icons.edit)),
                 AdvertCategoryPicker(label: "Select_a_category".tr(), controller: _advertCategoryController),
@@ -135,7 +140,12 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
                     if(state.formState == EnumFormState.fetch) {
                       return ElevatedButtonApp(child: Loader(color: Theme.of(context).colorScheme.background), onPressed: () {},);
                     }
-                    return ElevatedButtonApp(text: "Create_ad".tr(), onPressed: _create,);
+                    if(widget.type == AdvertType.advert) {
+                      return ElevatedButtonApp(text: "Create_ad".tr(), onPressed: _create,);
+                    } else if(widget.type == AdvertType.service) {
+                      return ElevatedButtonApp(text: "Create_service".tr(), onPressed: _create,);
+                    }
+                    return Container();
                   }
                 ),
                 OutlinedButtonApp(text: "Cancel".tr(), onPressed: _back,),

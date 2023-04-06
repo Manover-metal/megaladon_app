@@ -8,32 +8,36 @@ enum AdverScreenMyMainStatus {
 
 class AdvertScreenMyState extends Equatable {
   final AdverScreenMyMainStatus status;
-  final List<AdvertModel> advers;
+  final List<AdvertModel> adverts;
+  final List<AdvertModel> services;
   final ErrorModel? error;
   final AdvertIndexRequestParams params;
   final bool stock;
 
   const AdvertScreenMyState({
     this.status = AdverScreenMyMainStatus.success,
-    this.advers = const [],
+    this.adverts = const [],
+    this.services = const [],
     this.error,
     this.params = const AdvertIndexRequestParams(),
     this.stock = false
   });
 
   @override
-  List<Object?> get props => [status, advers, error, params, stock];
+  List<Object?> get props => [status, adverts, services, error, params, stock];
 
   AdvertScreenMyState copyWith({
     AdverScreenMyMainStatus? status,
-    List<AdvertModel>? advers,
+    List<AdvertModel>? adverts,
+    List<AdvertModel>? services,
     ErrorModel? error,
     AdvertIndexRequestParams? params,
     bool? stock,
   }) {
     return AdvertScreenMyState(
       status: status ?? this.status,
-      advers: advers ?? this.advers,
+      adverts: adverts ?? this.adverts,
+      services: services ?? this.services,
       error: error,
       params: params ?? this.params,
       stock: stock ?? this.stock

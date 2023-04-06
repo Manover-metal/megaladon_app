@@ -247,6 +247,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
                                               )),
+                                              IconButton(
+                                                  onPressed: () => context.read<PriceFormCubit>().delete(file.id),
+                                                  icon: const Icon(Icons.delete, color: Colors.red)
+                                              ),
                                               if (file.active)
                                                 IconButton(
                                                     onPressed: () => context.read<PriceFormCubit>().deactivate(file.id),

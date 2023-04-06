@@ -1,0 +1,3 @@
+enum AdvertType {
+  service, advert
+}

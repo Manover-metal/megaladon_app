@@ -84,9 +84,13 @@ class _$AppRouter extends RootStackRouter {
       );
     },
     CreateAdRoute.name: (routeData) {
+      final args = routeData.argsAs<CreateAdRouteArgs>();
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const CreateAdScreen(),
+        child: CreateAdScreen(
+          key: args.key,
+          type: args.type,
+        ),
       );
     },
     CreateOrderRoute.name: (routeData) {
@@ -645,14 +649,36 @@ class VerifyRouteArgs {
 
 /// generated route for
 /// [CreateAdScreen]
-class CreateAdRoute extends PageRouteInfo<void> {
-  const CreateAdRoute()
-      : super(
+class CreateAdRoute extends PageRouteInfo<CreateAdRouteArgs> {
+  CreateAdRoute({
+    Key? key,
+    required AdvertType type,
+  }) : super(
           CreateAdRoute.name,
           path: '/create-ad-screen',
+          args: CreateAdRouteArgs(
+            key: key,
+            type: type,
+          ),
         );
 
   static const String name = 'CreateAdRoute';
+}
+
+class CreateAdRouteArgs {
+  const CreateAdRouteArgs({
+    this.key,
+    required this.type,
+  });
+
+  final Key? key;
+
+  final AdvertType type;
+
+  @override
+  String toString() {
+    return 'CreateAdRouteArgs{key: $key, type: $type}';
+  }
 }
 
 /// generated route for
