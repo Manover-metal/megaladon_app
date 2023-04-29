@@ -2,6 +2,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:megaladon/core/fb_notification/index.dart';
 import 'package:megaladon/data/models/auth/auth_model.dart';
 import 'package:megaladon/data/models/error_model.dart';
 import 'package:megaladon/data/models/executor_model.dart';
@@ -38,6 +39,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if(auth != null) {
       print(auth.token);
       emit(AuthLoginState(auth));
+      _sendFbToken();
+    }
+  }
+
+  Future _sendFbToken() async {
+    String? token = await FbNotificationService.I.getToken();
+    if(token != null) {
+      print(token);
+      _authRepository.sendFB(token: token);
     }
   }
 
@@ -78,7 +88,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   _verify(AuthVerifyEvent event, Emitter emit) async {
     emit(AuthLoadingState());
 
-    await _verifyRepository.verifyRegister(code: event.code, phone: event.phone).then((value) {
+    await _verifyRepository.verifyRegister(code: event.code, phone: event.phone).then((value) async {
 
       final user = UserModel.fromJson(value.data['user']);
       final executor = value.data['user']['executor'] != null? ExecutorModel.fromJson(value.data['user']['executor']): null;
@@ -91,7 +101,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         ..store.value = store;
 
       _authRepository.write(auth, user, executor, store);
-
+      await _sendFbToken();
       emit(AuthLoginState(auth));
     }).catchError((error) {
       if(error is DioError) {

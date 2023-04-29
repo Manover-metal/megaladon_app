@@ -139,7 +139,7 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
                               }).toList(),
                               if(state.status == OrderScreenMainStatus.loading) const Loader(padding: 10)
                               else if(state.status == OrderScreenMainStatus.error) ErrorMessage(error: state.error!)
-                              else if(state.stock)  StockMessage(name: "Orders".tr())
+                              else if(state.stock) StockMessage(name: "Orders".tr())
 
                             ],
                           );

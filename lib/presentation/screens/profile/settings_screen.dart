@@ -21,6 +21,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(context.supportedLocales.map((e) => e.languageCode));
+    print(context.locale.languageCode);
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(

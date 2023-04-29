@@ -47,6 +47,7 @@
   "Organization": "Organization",
   "Address": "Address",
   "Services": "Services",
+  "Service": "Service",
   "Subscription": "Subscription",
   "Store_data": "Store data",
   "Description": "Description",
@@ -212,5 +213,6 @@
   "Artist2": "Artist: ",
   "Address2": "Address: ",
   "en":"English",
-  "ru":"Russian"
+  "ru":"Russian",
+  "kk": "Kazakh"
 }

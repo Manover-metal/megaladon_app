@@ -2,9 +2,11 @@ import 'dart:math';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/core/dio/index.dart';
+import 'package:megaladon/core/fb_notification/index.dart';
 import 'package:megaladon/core/isar/index.dart';
 import 'package:megaladon/core/themes/dark.dart';
 import 'package:megaladon/firebase_options.dart';
@@ -47,28 +49,43 @@ import 'package:megaladon/presentation/routing/guards/auth_guard.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'core/get.dart';
-import 'generated/codegen_loader.g.dart';
+// import 'generated/codegen_loader.g.dart';
 import 'logic/screens/advert/main/advert_screen_main_cubit.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await EasyLocalization.ensureInitialized();
-  await dotenv.load(fileName: '.env');
-  initializeGetIt();
-  await IsarService.initialize();
-  ApiService.initialize();
 
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  print("Handling a background message: ${message.messageId}");
+}
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await dotenv.load(fileName: '.env');
+  initializeGetIt();
+
+  await IsarService.initialize();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await FbNotificationService.initialize();
+  ApiService.initialize();
+
+
+
   runApp(
     EasyLocalization(
-      assetLoader: const CodegenLoader(),
+      // assetLoader: const CodegenLoader(),
       supportedLocales: const [
         Locale('en'),
-        Locale('ru')
+        Locale('ru'),
+        Locale('kk')
       ],
+
       path: 'assets/translations',
       startLocale: const Locale('ru'),
       child: App(),
@@ -249,6 +266,7 @@ class _AppStateState extends State<AppState> {
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
+
       darkTheme: themeDark,
       themeMode: ThemeMode.dark,
     );

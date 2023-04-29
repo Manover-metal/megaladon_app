@@ -218,5 +218,6 @@ abstract class  LocaleKeys {
   static const Address2 = 'Address2';
   static const en = 'en';
   static const ru = 'ru';
+  static const kk = 'kk';
 
 }

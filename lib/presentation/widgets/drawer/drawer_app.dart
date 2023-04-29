@@ -110,7 +110,6 @@ class DrawerApp extends StatelessWidget {
                 text: 'Marketplace'.tr(),
                 page: InitialRouter(children: [AdRouter()]),
               ),
-              //Create_ratkum
                DrawerRouteTile(
                 text: 'Settings'.tr(),
                 page: InitialRouter(children: [

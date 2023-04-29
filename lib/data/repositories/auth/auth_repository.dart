@@ -21,6 +21,16 @@ class AuthRepository {
     });
   }
 
+  Future sendFB({
+    required String token,
+  }) async {
+    return ApiService.I.post('/user/change-token', data: {
+      "token": token
+    }).then((value) {
+      return value;
+    });
+  }
+
 
 
   Future confirmRegister({

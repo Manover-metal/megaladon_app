@@ -24,30 +24,45 @@ class DictionaryCubit extends Cubit<DictionaryState> {
   fetchCities()  async {
     await _repository.getCities().then((value) {
       emit(state.copyWith(cities: value));
+    }).catchError((err) {
+      emit(state.copyWith(cities: []));
+
     });
   }
 
   fetchOrderCategories()  async {
     await _repository.getOrderCategories().then((value) {
       emit(state.copyWith(orderCategories: value));
+    }).catchError((err) {
+      emit(state.copyWith(orderCategories: []));
+
     });
   }
 
   fetchAdvertCategories()  async {
     await _repository.getAdvertCategories().then((value) {
       emit(state.copyWith(advertCategories: value));
+    }).catchError((err) {
+      emit(state.copyWith(advertCategories: []));
+
     });
   }
 
   fetchStoreTypes()  async {
     await _repository.getCompanyTypes().then((value) {
       emit(state.copyWith(storeTypes: value));
+    }).catchError((err) {
+      emit(state.copyWith(storeTypes: []));
+
     });
   }
 
   fetchServiceTypes()  async {
     await _repository.getServiceTypes().then((value) {
       emit(state.copyWith(serviceTypes: value));
+    }).catchError((err) {
+      emit(state.copyWith(serviceTypes: []));
+
     });
   }
 }

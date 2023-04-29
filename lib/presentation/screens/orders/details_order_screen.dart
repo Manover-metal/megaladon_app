@@ -148,11 +148,11 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                               BlocBuilder<AuthBloc, AuthState>(
                                 builder: (context, stateUser) {
                                   if(stateUser is AuthLoginState) {
-                                    UserModel user = stateUser.auth.user.value!;
+                                    UserModel? user = stateUser.auth.user.value;
                                     return Column(
                                       children: [
-                                        if(order.user?.id != user.id
-                                            && order.executor != null
+                                        if(order.user?.id != user?.id
+                                            && stateUser.auth.executor.value != null
                                             && order.status == OrderStatus.active
                                         )...[
                                           ElevatedButtonApp(

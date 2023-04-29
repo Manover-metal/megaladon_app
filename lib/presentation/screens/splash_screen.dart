@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_intro/flutter_intro.dart';
 import 'package:is_first_run/is_first_run.dart';
@@ -34,13 +35,42 @@ class _SplashScreenState extends State<SplashScreen> {
             useSafeArea: true,
             context: context,
             elevation: 100,
-            builder: (_) => AddAnythingBottomSheet());
+            builder: (_) => const AddAnythingBottomSheet());
       };
 
   _introStart(BuildContext context) => () async {
     if(await IsFirstRun.isFirstCall()) Intro.of(context).start();
 
   };
+
+  listenFB() {
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('Got a message whilst in the foreground!');
+      print('Message data: ${message.data}');
+
+      if (message.notification != null) {
+        print('Message also contained a notification: ${message.notification}');
+      }
+      context.router.navigate(InitialRouter( children: [
+        OrderRouter(
+          children: [
+            DetailsOrderRoute(orderId: message.data['order_id'])
+          ]
+        )
+      ]));
+    });
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('Got a message whilst in the foreground!');
+      print('Message data: ${message.data}');
+
+      if (message.notification != null) {
+        print('Message also contained a notification: ${message.notification}');
+      }
+    });
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
