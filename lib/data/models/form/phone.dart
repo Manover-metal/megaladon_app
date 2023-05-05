@@ -15,12 +15,13 @@ enum PhoneValidationError {
 }
 
 class PhoneFormModel extends FormzInput<String, PhoneValidationError> {
-  const PhoneFormModel.pure() : super.pure('');
-  const PhoneFormModel.dirty([super.value = '']) : super.dirty();
+  final bool isRequired;
+  const PhoneFormModel.pure([this.isRequired = true]) : super.pure('');
+  const PhoneFormModel.dirty([super.value = '', this.isRequired = true]) : super.dirty();
 
   @override
   PhoneValidationError? validator(String value) {
-    if (value.isEmpty) {
+    if (value.isEmpty && isRequired) {
       return PhoneValidationError.empty;
     }
     return null;

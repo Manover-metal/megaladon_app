@@ -33,11 +33,11 @@ class AdCreateFormCubit extends Cubit<AdCreateFormState> {
     required AdvertType type,
   }) {
     TitleFormModel titleForm = TitleFormModel.dirty(title);
-    PriceFormModel priceForm = PriceFormModel.dirty(price);
+    PriceFormModel priceForm = PriceFormModel.dirty(price, false);
     DescriptionFormModel descriptionForm = DescriptionFormModel.dirty(description);
     CityFormModel cityForm = CityFormModel.dirty(city.id);
     AdvertCategoryFormModel categoryForm = AdvertCategoryFormModel.dirty(category.id);
-    PhoneFormModel phoneForm = PhoneFormModel.dirty(phone);
+    PhoneFormModel phoneForm = PhoneFormModel.dirty(phone, false);
 
     FormzStatus status = Formz.validate([
       titleForm,

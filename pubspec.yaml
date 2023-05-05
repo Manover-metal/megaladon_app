@@ -1,5 +1,11 @@
 name: megaladon
-description: New flutter project
+description: '"Заказы" - список размещенных на платформе заказов для поиска лучшего предложения от исполнителей.
+  "Металлопрокат" - список компаний занимаеющихся продажей готовой продукции.
+  "+" (Заказ) - создание заказа для поиска исполнителей.
+  "+" (Объявление) - создание объявления для продажи товаров или оказание услуг машиностроения.
+  "Торговая площадка" - список объявлений о продажи товара или оказании услуг машиностроения.
+  "Профиль" - профиль пользователя.'
+
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev

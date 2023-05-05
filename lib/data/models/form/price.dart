@@ -15,12 +15,13 @@ enum PriceValidationError {
 }
 
 class PriceFormModel extends FormzInput<String, PriceValidationError> {
-  const PriceFormModel.pure() : super.pure('');
-  const PriceFormModel.dirty([super.value = '']) : super.dirty();
+  final bool isRequired;
+  const PriceFormModel.pure([this.isRequired = true]) : super.pure('');
+  const PriceFormModel.dirty([super.value = '', this.isRequired = true]) : super.dirty();
 
   @override
   PriceValidationError? validator(String value) {
-    if (value.isEmpty) return PriceValidationError.empty;
+    if (value.isEmpty && isRequired) return PriceValidationError.empty;
     return null;
   }
 }
