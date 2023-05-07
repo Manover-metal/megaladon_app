@@ -3,8 +3,8 @@ import 'package:dio/dio.dart';
 class OrderCreateRequestParams {
   final String title;
   final String description;
-  final int priceRecommended;
-  final int priceMax;
+  final int? priceRecommended;
+  final int? priceMax;
   final int categoryId;
   final int cityId;
   final List<MultipartFile> files;
@@ -12,8 +12,8 @@ class OrderCreateRequestParams {
   OrderCreateRequestParams({
     required this.title,
     required this.description,
-    required this.priceRecommended,
-    required this.priceMax,
+    this.priceRecommended,
+    this.priceMax,
     required this.categoryId,
     required this.cityId,
     required this.files

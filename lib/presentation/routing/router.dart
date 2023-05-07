@@ -47,7 +47,6 @@ const List<AutoRoute> profile = [
   AutoRoute(page: ChangeExecutorScreen, guards: [AuthGuard]),
   AutoRoute(page: ChangeStoreScreen, guards: [AuthGuard]),
   AutoRoute(page: ListChatsScreen, guards: [AuthGuard]),
-  AutoRoute(page: ListExecutorScreen, guards: [AuthGuard]),
 ];
 
 const List<AutoRoute> ad = [
@@ -65,9 +64,10 @@ const List<AutoRoute> order = [
   AutoRoute(page: ListOrdersScreen, path: ''),
   AutoRoute(page: ListMyOrdersScreen, guards: [AuthGuard]),
   AutoRoute(page: DetailsOrderScreen),
+  AutoRoute(page: ListMyExecutorsScreen, guards: [AuthGuard]),
   AutoRoute(page: ListExecutorsScreen),
   AutoRoute(page: DetailsOfferScreen),
-  AutoRoute(page: ReviewScreen)
+  AutoRoute(page: ReviewScreen),
 ];
 
 const List<AutoRoute> auth = [

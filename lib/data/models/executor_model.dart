@@ -51,6 +51,7 @@ class ExecutorModel {
   }
 
   static List<ExecutorModel> fromJsonList(data) {
+    print(data);
     return data.map<ExecutorModel>((executor) {
       return ExecutorModel.fromJson(executor);
     }).toList();

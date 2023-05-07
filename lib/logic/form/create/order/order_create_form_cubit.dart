@@ -31,8 +31,8 @@ class OrderCreateFormCubit extends Cubit<OrderCreateFormState> {
   }) {
     TitleFormModel titleForm = TitleFormModel.dirty(title);
     DescriptionFormModel descriptionForm = DescriptionFormModel.dirty(description);
-    PriceFormModel priceMaxFormModel = PriceFormModel.dirty(priceMax);
-    PriceFormModel priceRecommendedFormModel = PriceFormModel.dirty(priceRecommended);
+    PriceFormModel priceMaxFormModel = PriceFormModel.dirty(priceMax, false);
+    PriceFormModel priceRecommendedFormModel = PriceFormModel.dirty(priceRecommended, false);
     CityFormModel cityForm = CityFormModel.dirty(city.id);
     OrderCategoryFormModel categoryForm = OrderCategoryFormModel.dirty(category.id);
 
@@ -75,14 +75,15 @@ class OrderCreateFormCubit extends Cubit<OrderCreateFormState> {
       return _repository.create(OrderCreateRequestParams(
           title: state.title.value,
           description: state.description.value,
-          priceMax: int.parse(state.priceMax.value),
-          priceRecommended: int.parse(state.priceRecommended.value),
+          priceMax: int.tryParse(state.priceMax.value),
+          priceRecommended: int.tryParse(state.priceRecommended.value),
           categoryId: state.category.value,
           cityId: state.city.value,
           files: files
       )).then((value) {
         emit(state.copyWith(formState: EnumFormState.success));
       }).catchError((error) {
+        print(error);
         emit(state.copyWith(formState: EnumFormState.error));
       });
     }

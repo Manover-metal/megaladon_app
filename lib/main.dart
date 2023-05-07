@@ -138,19 +138,19 @@ class App extends StatelessWidget {
                 create: (context) => AdvertScreenMainCubit()
             ),
             BlocProvider<AdvertScreenMyCubit>(
-                create: (context) => AdvertScreenMyCubit()
+                create: (context) => AdvertScreenMyCubit(authBloc)
             ),
             BlocProvider<OrderScreenMainCubit>(
                 create: (context) => OrderScreenMainCubit()
             ),
             BlocProvider<ExecutorScreenMyCubit>(
-                create: (context) => ExecutorScreenMyCubit()
+                create: (context) => ExecutorScreenMyCubit(authBloc)
             ),
             BlocProvider<ProfileScreenCubit>(
                 create: (context) => profileCubit,
             ),
             BlocProvider<OrderScreenMyCubit>(
-                create: (context) => OrderScreenMyCubit()
+                create: (context) => OrderScreenMyCubit(authBloc)
             ),
             BlocProvider<OrderScreenDetailsCubit>(
                 create: (context) => OrderScreenDetailsCubit()

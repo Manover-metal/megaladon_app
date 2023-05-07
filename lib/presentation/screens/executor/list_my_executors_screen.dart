@@ -8,14 +8,14 @@ import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 
-class ListExecutorScreen extends StatefulWidget {
-  const ListExecutorScreen({super.key});
+class ListMyExecutorsScreen extends StatefulWidget {
+  const ListMyExecutorsScreen({super.key});
 
   @override
-  State<ListExecutorScreen> createState() => _ListExecutorScreenState();
+  State<ListMyExecutorsScreen> createState() => _ListMyExecutorsScreenState();
 }
 
-class _ListExecutorScreenState extends State<ListExecutorScreen> {
+class _ListMyExecutorsScreenState extends State<ListMyExecutorsScreen> {
   late ScrollController _scrollController;
 
 
@@ -45,7 +45,7 @@ class _ListExecutorScreenState extends State<ListExecutorScreen> {
             return [
                SliverToBoxAdapter(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: HeaderAppBar(
                     isMenu: true,
                     title: "Executor".tr(),
@@ -62,6 +62,9 @@ class _ListExecutorScreenState extends State<ListExecutorScreen> {
                 controller: _scrollController,
                 scrollDirection: Axis.vertical,
                 child: Container(
+                    constraints: BoxConstraints(
+                      minHeight: MediaQuery.of(context).size.height
+                    ),
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: Column(
                       children: [
@@ -74,14 +77,10 @@ class _ListExecutorScreenState extends State<ListExecutorScreen> {
                                 }).toList(),
                                 if(state.status == ExecutorScreenMyStatus.loading) const Loader(padding: 10,)
                                 else if(state.status == ExecutorScreenMyStatus.error) ErrorMessage(error: state.error!)
-
                               ],
                             );
                           },
                         ),
-                        // Column(
-                        //   children: List.generate(6, (index) => ExecutorCard(executor: ,)),
-                        // )
                       ],
                     ),
                 ),

@@ -193,6 +193,12 @@ class _$AppRouter extends RootStackRouter {
         ),
       );
     },
+    ListMyExecutorsRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const ListMyExecutorsScreen(),
+      );
+    },
     ListExecutorsRoute.name: (routeData) {
       final args = routeData.argsAs<ListExecutorsRouteArgs>();
       return MaterialPageX<dynamic>(
@@ -292,12 +298,6 @@ class _$AppRouter extends RootStackRouter {
         child: const ListChatsScreen(),
       );
     },
-    ListExecutorRoute.name: (routeData) {
-      return MaterialPageX<dynamic>(
-        routeData: routeData,
-        child: const ListExecutorScreen(),
-      );
-    },
   };
 
   @override
@@ -333,6 +333,12 @@ class _$AppRouter extends RootStackRouter {
                   DetailsOrderRoute.name,
                   path: 'details-order-screen',
                   parent: OrderRouter.name,
+                ),
+                RouteConfig(
+                  ListMyExecutorsRoute.name,
+                  path: 'list-my-executors-screen',
+                  parent: OrderRouter.name,
+                  guards: [authGuard],
                 ),
                 RouteConfig(
                   ListExecutorsRoute.name,
@@ -421,12 +427,6 @@ class _$AppRouter extends RootStackRouter {
                 RouteConfig(
                   ListChatsRoute.name,
                   path: 'list-chats-screen',
-                  parent: ProfileRouter.name,
-                  guards: [authGuard],
-                ),
-                RouteConfig(
-                  ListExecutorRoute.name,
-                  path: 'list-executor-screen',
                   parent: ProfileRouter.name,
                   guards: [authGuard],
                 ),
@@ -942,6 +942,18 @@ class DetailsOrderRouteArgs {
 }
 
 /// generated route for
+/// [ListMyExecutorsScreen]
+class ListMyExecutorsRoute extends PageRouteInfo<void> {
+  const ListMyExecutorsRoute()
+      : super(
+          ListMyExecutorsRoute.name,
+          path: 'list-my-executors-screen',
+        );
+
+  static const String name = 'ListMyExecutorsRoute';
+}
+
+/// generated route for
 /// [ListExecutorsScreen]
 class ListExecutorsRoute extends PageRouteInfo<ListExecutorsRouteArgs> {
   ListExecutorsRoute({
@@ -1210,16 +1222,4 @@ class ListChatsRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'ListChatsRoute';
-}
-
-/// generated route for
-/// [ListExecutorScreen]
-class ListExecutorRoute extends PageRouteInfo<void> {
-  const ListExecutorRoute()
-      : super(
-          ListExecutorRoute.name,
-          path: 'list-executor-screen',
-        );
-
-  static const String name = 'ListExecutorRoute';
 }

@@ -95,7 +95,7 @@
   "Send_code_again": "Send code again",
   "Chat": "Chat",
   "Chats": "Chats",
-  "Executor": "Executors",
+  "Executor": "My Executors",
   "Additional_Phone": "Additional phone",
   "Edit_ad": "Edit ad",
   "Response_to_order": "Response to order №",
@@ -214,5 +214,7 @@
   "Address2": "Address: ",
   "en":"English",
   "ru":"Russian",
-  "kk": "Kazakh"
+  "kk": "Kazakh",
+  "Add_to_Favorite": "Add to favorite"
+
 }

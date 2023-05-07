@@ -2,6 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:megaladon/data/models/executor_model.dart';
+import 'package:megaladon/logic/screens/executors/my/executor_screen_my_cubit.dart';
 import 'package:megaladon/logic/screens/offers/details/offer_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/orders/details/order_screen_details_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
@@ -51,6 +53,10 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
       showErrorSnackBar(context, state.errorMessage!.messages[0]);
     }
   }
+
+  _addToFavorite(ExecutorModel executor) => () async {
+    await context.read<ExecutorScreenMyCubit>().add(orderId: widget.orderId, executorId: executor.id);
+  };
   
   @override
   Widget build(BuildContext context) {
@@ -82,7 +88,16 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
                             if(state is OfferScreenDetailsSuccess) {
                               return Column(
                                 children: [
-                                  if(state.offer.executor != null) ExecutorTile(executor: state.offer.executor!,),
+                                  if(state.offer.executor != null) ...[
+                                    ExecutorTile(executor: state.offer.executor!,),
+                                    Align(
+                                      child: TextButton(
+                                        onPressed: _addToFavorite(state.offer.executor!),
+                                        child: Text('Add_to_Favorite'.tr()),
+                                      ),
+                                    ),
+                                  ],
+
                                   const SizedBox(height: 20,),
                                   DataTile(title: "Actual_until:".tr(), data: state.offer.expiredAt,),
                                   DataTile(title: "Price:".tr(), data: '${state.offer.price} ₸',),

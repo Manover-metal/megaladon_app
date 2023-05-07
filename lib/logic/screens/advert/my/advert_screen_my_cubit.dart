@@ -6,13 +6,28 @@ import 'package:megaladon/data/models/dictionary/advert_type.dart';
 import 'package:megaladon/data/models/error_model.dart';
 import 'package:megaladon/data/models/request/params/index/advert_index_request_params.dart';
 import 'package:megaladon/data/repositories/advert_repository.dart';
+import 'package:megaladon/logic/auth/auth_bloc.dart';
 
 part 'advert_screen_my_state.dart';
 
 
 class AdvertScreenMyCubit extends Cubit<AdvertScreenMyState> {
   final AdvertRepository _repository = AdvertRepository();
-  AdvertScreenMyCubit() : super(const AdvertScreenMyState());
+  final AuthBloc authBloc;
+  AdvertScreenMyCubit(this.authBloc) : super(const AdvertScreenMyState()) {
+    _listenAuth(authBloc.state);
+    authBloc.stream.listen(_listenAuth);
+  }
+
+
+  _listenAuth(stateAuth) {
+    if(stateAuth is AuthLoginState) {
+      fetchAdvert();
+      fetchService();
+    } else {
+      emit(const AdvertScreenMyState());
+    }
+  }
 
   Future fetchAdvert({AdvertIndexRequestParams? params}) async {
     if(state.status == AdverScreenMyMainStatus.loading
@@ -79,8 +94,6 @@ class AdvertScreenMyCubit extends Cubit<AdvertScreenMyState> {
       }
     });
   }
-
-
 
   changeParams(AdvertIndexRequestParams params) {
     emit(state.copyWith(

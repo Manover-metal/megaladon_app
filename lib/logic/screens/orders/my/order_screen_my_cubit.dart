@@ -5,12 +5,26 @@ import 'package:megaladon/data/models/error_model.dart';
 import 'package:megaladon/data/models/order_model.dart';
 import 'package:megaladon/data/models/request/params/index/order_index_request_params.dart';
 import 'package:megaladon/data/repositories/order_repository.dart';
+import 'package:megaladon/logic/auth/auth_bloc.dart';
 
 part 'order_screen_my_state.dart';
 
 class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
   final OrderRepository _repository = OrderRepository();
-  OrderScreenMyCubit() : super(const OrderScreenMyState());
+  final AuthBloc authBloc;
+
+  OrderScreenMyCubit(this.authBloc) : super(const OrderScreenMyState()) {
+    _listenAuth(authBloc.state);
+    authBloc.stream.listen(_listenAuth);
+  }
+
+  _listenAuth(stateAuth) {
+    if(stateAuth is AuthLoginState) {
+      fetch();
+    } else {
+      emit(const OrderScreenMyState());
+    }
+  }
 
   Future fetch({OrderIndexRequestParams? params}) async {
     if(state.status == OrderScreenMyStatus.loading

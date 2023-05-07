@@ -86,6 +86,14 @@ class DrawerApp extends StatelessWidget {
                                 ],
                               ),
                             ),
+                            DrawerRouteTile(
+                              text: "Executor".tr(),
+                              page: const InitialRouter(
+                                children: [
+                                  OrderRouter(children: [ListMyExecutorsRoute()])
+                                ],
+                              ),
+                            ),
                           ],
                         )
                     ),
