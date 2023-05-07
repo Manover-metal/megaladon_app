@@ -1,15 +1,20 @@
+
+
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_intro/flutter_intro.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/tiles/drawer_route_tile.dart';
 import 'package:megaladon/presentation/widgets/tiles/drawer_tile.dart';
+import 'package:megaladon/generated/locale_keys.g.dart';
 
 class DrawerApp extends StatelessWidget {
+  const DrawerApp({super.key});
 
   _login(BuildContext context) => () {
     context.router.push(const LoginRoute());
@@ -27,82 +32,139 @@ class DrawerApp extends StatelessWidget {
     context.router.push(const RegisterStoreRoute());
   };
 
-  _logout (BuildContext context) => () {
+  _logout(BuildContext context) => () {
     context.read<AuthBloc>().add(AuthLogoutEvent());
   };
 
   @override
   Widget build(BuildContext context) {
-
     return Drawer(
-      child: Container(
-        padding: EdgeInsets.all(20),
+      child: SafeArea(
         child: Column(
           children: [
+            const SizedBox(height: 20,),
             BlocBuilder<AuthBloc, AuthState>(
               builder: (BuildContext context, state) {
                 return Column(
                   children: [
-                    if(state is! AuthLoginState)...[
-                      ElevatedButtonApp(
-                        text: 'Войти',
-                        onPressed: _login(context),
-                      ),
-                      OutlinedButtonApp(
-                        text: 'Регистрация',
-                        onPressed: _registerUser(context),
-                      ),
-                    ],
-                    if(state is AuthLoginState) ...[
-                      DrawerRouteTile(text: 'Мои заказы', page: InitialRouter(
-                        children: [
-                          OrderRouter(children: [ListMyOrdersRoute()])
-                        ],
-                      ),
-                      ),
-                      DrawerRouteTile(text: 'Мои объявления', page: InitialRouter(
-                        children: [
-                          AdRouter(children: [MyAdsRoute()])
-                        ],
-                      ),
-                      ),
-                      Divider(thickness: 1,)
-                    ],
-                  ],
+                    Visibility(
+                        visible: state is! AuthLoginState,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Column(
+                            children: [
+                              ElevatedButtonApp(
+                                text: 'Sign_in'.tr(),
+                                onPressed: _login(context),
+                              ),
+                              OutlinedButtonApp(
+                                text: 'Registration'.tr(),
+                                onPressed: _registerUser(context),
+                              ),
+                            ],
+                          ),
+                        )
+                    ),
+
+                    Visibility(
+                        visible: state is AuthLoginState,
+                        child: Column(
+                          children: [
+                            DrawerRouteTile(
+                              text: 'My_orders'.tr(),
+                              page: const InitialRouter(
+                                children: [
+                                  OrderRouter(children: [ListMyOrdersRoute()])
+                                ],
+                              ),
+                            ),
+                            DrawerRouteTile(
+                              text:"My_announcement".tr(),
+                              page: const  InitialRouter(
+                                children: [
+                                  AdRouter(children: [MyAdsRoute()])
+                                ],
+                              ),
+                            ),
+                            DrawerRouteTile(
+                              text: "Executor".tr(),
+                              page: const InitialRouter(
+                                children: [
+                                  OrderRouter(children: [ListMyExecutorsRoute()])
+                                ],
+                              ),
+                            ),
+                          ],
+                        )
+                    ),
+                    const Divider(
+                      thickness: 1,
+                    ),
+                  ]
                 );
               }
             ),
-
             ...[
-              DrawerRouteTile(text: 'Заказы', page: InitialRouter(children: [OrderRouter()]),),
-              DrawerRouteTile(text: 'Магазины', page: InitialRouter(children: [StoreRouter()]),),
-              DrawerRouteTile(text: 'Торговая площадка', page: InitialRouter(children: [AdRouter()]),),
-              Divider(thickness: 1,)
+              DrawerRouteTile(
+
+                text: "Orders".tr(),
+                page: const InitialRouter(children: [OrderRouter()]),
+              ),
+              DrawerRouteTile(
+                text: "Theshops".tr(),
+                page: const InitialRouter(children: [StoreRouter()]),
+              ),
+               DrawerRouteTile(
+                text: 'Marketplace'.tr(),
+                page: InitialRouter(children: [AdRouter()]),
+              ),
+               DrawerRouteTile(
+                text: 'Settings'.tr(),
+                page: InitialRouter(children: [
+                  ProfileRouter(children: [SettingsRoute()])
+                ]),
+              ),
+
+              const Divider(
+                thickness: 1,
+              )
             ],
             BlocBuilder<AuthBloc, AuthState>(
               builder: (context, state) {
-                if(state is AuthLoginState) {
-                  return DrawerTile(text: 'Выход', callback: _logout(context));
+                if (state is AuthLoginState) {
+                  return DrawerTile(text: 'exit'.tr(), callback: _logout(context));
                 } else {
                   return Container();
                 }
               },
             ),
-            Spacer(),
-            ...[
-              ElevatedButtonApp(
-                text: 'Регистрация исполнителя',
-                onPressed: _registerExecutor(context),
-              ),
-              OutlinedButtonApp(
-                text: 'Регистрация магазина',
-                onPressed: _registerStore(context),
-              ),
-            ],
+            const Spacer(),
+            BlocBuilder<AuthBloc, AuthState>(
+              builder: (context, state) {
+                return Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    children: [
+                      if(state is AuthLoginState) ...[
+
+                        if(state.auth.executor.value == null) ElevatedButtonApp(
+                          text: 'Artist_registration'.tr(),
+                          onPressed: _registerExecutor(context),
+                        ),
+                        if(state.auth.store.value == null)  OutlinedButtonApp(
+                          text: 'Shop_registration'.tr(),
+                          onPressed: _registerStore(context),
+                        ),
+                      ],
+                    ],
+                  ),
+                );
+              },
+            ),
+
           ],
         ),
       ),
     );
   }
-
 }

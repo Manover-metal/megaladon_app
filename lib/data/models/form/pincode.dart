@@ -1,4 +1,5 @@
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:formz/formz.dart';
 
 enum PincodeValidationError {
@@ -8,9 +9,9 @@ enum PincodeValidationError {
   String toString() {
     switch(this) {
       case PincodeValidationError.empty:
-        return 'Код пустой';
+        return 'Code_is_empty'.tr();
       case PincodeValidationError.min:
-        return 'Код из 6 символов';
+        return 'Code_is_6_characters'.tr();
     }
   }
 }
@@ -21,8 +22,12 @@ class PincodeFormModel extends FormzInput<String, PincodeValidationError> {
 
   @override
   PincodeValidationError? validator(String value) {
-    if (value.isEmpty) return PincodeValidationError.empty;
-    else if (value.length < 6) return PincodeValidationError.min;
+    if (value.isEmpty) {
+      return PincodeValidationError.empty;
+    }
+    else if (value.length < 6) {
+      return PincodeValidationError.min;
+    }
     return null;
   }
 }

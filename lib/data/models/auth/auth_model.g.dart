@@ -29,7 +29,26 @@ const AuthModelSchema = CollectionSchema(
   deserializeProp: _authModelDeserializeProp,
   idName: r'id',
   indexes: {},
-  links: {},
+  links: {
+    r'user': LinkSchema(
+      id: -3715564120415013660,
+      name: r'user',
+      target: r'UserModel',
+      single: true,
+    ),
+    r'executor': LinkSchema(
+      id: -6959310802726252039,
+      name: r'executor',
+      target: r'ExecutorModel',
+      single: true,
+    ),
+    r'store': LinkSchema(
+      id: 5298585628070155870,
+      name: r'store',
+      target: r'StoreModel',
+      single: true,
+    )
+  },
   embeddedSchemas: {},
   getId: _authModelGetId,
   getLinks: _authModelGetLinks,
@@ -92,11 +111,15 @@ Id _authModelGetId(AuthModel object) {
 }
 
 List<IsarLinkBase<dynamic>> _authModelGetLinks(AuthModel object) {
-  return [];
+  return [object.user, object.executor, object.store];
 }
 
 void _authModelAttach(IsarCollection<dynamic> col, Id id, AuthModel object) {
   object.id = id;
+  object.user.attach(col, col.isar.collection<UserModel>(), r'user', id);
+  object.executor
+      .attach(col, col.isar.collection<ExecutorModel>(), r'executor', id);
+  object.store.attach(col, col.isar.collection<StoreModel>(), r'store', id);
 }
 
 extension AuthModelQueryWhereSort
@@ -382,7 +405,46 @@ extension AuthModelQueryObject
     on QueryBuilder<AuthModel, AuthModel, QFilterCondition> {}
 
 extension AuthModelQueryLinks
-    on QueryBuilder<AuthModel, AuthModel, QFilterCondition> {}
+    on QueryBuilder<AuthModel, AuthModel, QFilterCondition> {
+  QueryBuilder<AuthModel, AuthModel, QAfterFilterCondition> user(
+      FilterQuery<UserModel> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'user');
+    });
+  }
+
+  QueryBuilder<AuthModel, AuthModel, QAfterFilterCondition> userIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'user', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<AuthModel, AuthModel, QAfterFilterCondition> executor(
+      FilterQuery<ExecutorModel> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'executor');
+    });
+  }
+
+  QueryBuilder<AuthModel, AuthModel, QAfterFilterCondition> executorIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'executor', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<AuthModel, AuthModel, QAfterFilterCondition> store(
+      FilterQuery<StoreModel> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'store');
+    });
+  }
+
+  QueryBuilder<AuthModel, AuthModel, QAfterFilterCondition> storeIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'store', 0, true, 0, true);
+    });
+  }
+}
 
 extension AuthModelQuerySortBy on QueryBuilder<AuthModel, AuthModel, QSortBy> {
   QueryBuilder<AuthModel, AuthModel, QAfterSortBy> sortByToken() {

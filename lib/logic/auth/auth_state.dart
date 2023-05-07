@@ -1,7 +1,8 @@
 part of 'auth_bloc.dart';
 
 abstract class AuthState extends Equatable {
-  const AuthState();
+  final bool isAuth;
+  const AuthState({this.isAuth = false});
 }
 
 class AuthInitial extends AuthState {
@@ -12,7 +13,8 @@ class AuthInitial extends AuthState {
 class AuthLoginState extends AuthState {
   final AuthModel auth;
 
-  const AuthLoginState(this.auth);
+
+  const AuthLoginState(this.auth): super(isAuth: true);
 
   @override
   List<Object?> get props => [auth];
@@ -21,17 +23,16 @@ class AuthLoginState extends AuthState {
 class AuthTransitionVerify extends AuthState {
   final String phone;
 
-  AuthTransitionVerify(this.phone);
+  const AuthTransitionVerify(this.phone);
 
   @override
-  // TODO: implement props
-  List<Object?> get props => [this.phone];
+  List<Object?> get props => [phone];
 
 }
 
 
 class AuthErrorState extends AuthState {
-  final String error;
+  final ErrorModel error;
 
   const AuthErrorState(this.error);
 
@@ -45,7 +46,7 @@ class AuthLoadingState extends AuthState {
 }
 
 
-class AuthLogoutEventState extends AuthState {
+class AuthLogoutState extends AuthState {
   @override
   List<Object?> get props => [];
 }

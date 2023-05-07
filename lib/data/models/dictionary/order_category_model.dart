@@ -9,7 +9,7 @@ class OrderCategoryModel {
     try {
       return OrderCategoryModel(
         id: data['id'],
-        name: data['name'],
+        name: data['title'],
       );
     } catch(e) {
       return OrderCategoryModel.nothing;

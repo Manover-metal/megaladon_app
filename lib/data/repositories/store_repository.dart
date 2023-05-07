@@ -1,5 +1,5 @@
 import 'package:megaladon/core/dio/index.dart';
-import 'package:megaladon/data/models/request/params/store_index_request_params.dart';
+import 'package:megaladon/data/models/request/params/index/store_index_request_params.dart';
 import 'package:megaladon/data/models/store_model.dart';
 
 class StoreRepository {

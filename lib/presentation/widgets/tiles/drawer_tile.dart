@@ -1,5 +1,3 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DrawerTile extends StatelessWidget {
@@ -15,7 +13,7 @@ class DrawerTile extends StatelessWidget {
       onTap: callback,
       child: Container(
         alignment: Alignment.centerLeft,
-        padding: EdgeInsets.symmetric(vertical: 10),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         child: Text(text),
       ),
     );

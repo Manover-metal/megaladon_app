@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:megaladon/data/models/advert_model.dart';
+import 'package:megaladon/data/models/dictionary/advert_type.dart';
 import 'package:megaladon/data/models/order_model.dart';
+import 'package:megaladon/presentation/routing/guards/auth_guard.dart';
 import 'package:megaladon/presentation/screens/ads/details_ad_screen.dart';
 import 'package:megaladon/presentation/screens/ads/my_ads_screen.dart';
 import 'package:megaladon/presentation/screens/ads/trading_ads_screen.dart';
@@ -12,125 +14,134 @@ import 'package:megaladon/presentation/screens/auth/register/register_shop_scree
 import 'package:megaladon/presentation/screens/auth/register/register_user_screen.dart';
 import 'package:megaladon/presentation/screens/auth/reset_password_screen.dart';
 import 'package:megaladon/presentation/screens/auth/verify_screen.dart';
+import 'package:megaladon/presentation/screens/chat/details_chat_screen.dart';
+import 'package:megaladon/presentation/screens/chat/list_chats_screen.dart';
+import 'package:megaladon/presentation/screens/executor/list_my_executors_screen.dart';
 import 'package:megaladon/presentation/screens/forms/ad/create_ad_screen.dart';
 import 'package:megaladon/presentation/screens/forms/ad/update_ad_screen.dart';
+import 'package:megaladon/presentation/screens/forms/executor/change_executor_screen.dart';
 import 'package:megaladon/presentation/screens/forms/offer/create_offer_screen.dart';
 import 'package:megaladon/presentation/screens/forms/order/create_order_screen.dart';
 import 'package:megaladon/presentation/screens/forms/order/update_order_screen.dart';
+import 'package:megaladon/presentation/screens/forms/store/change_shop_screen.dart';
 import 'package:megaladon/presentation/screens/orders/details_offer_screen.dart';
 import 'package:megaladon/presentation/screens/orders/details_order_screen.dart';
 import 'package:megaladon/presentation/screens/orders/list_executors_screen.dart';
 import 'package:megaladon/presentation/screens/orders/list_my_orders_screen.dart';
 import 'package:megaladon/presentation/screens/orders/list_orders_screen.dart';
 import 'package:megaladon/presentation/screens/orders/review_screen.dart';
+import 'package:megaladon/presentation/screens/profile/change_password_screen.dart';
+import 'package:megaladon/presentation/screens/profile/change_phone_end_screen.dart';
+import 'package:megaladon/presentation/screens/profile/change_phone_start_screen.dart';
 import 'package:megaladon/presentation/screens/profile/profile_screen.dart';
+import 'package:megaladon/presentation/screens/profile/settings_screen.dart';
 import 'package:megaladon/presentation/screens/store/details_store_screen.dart';
 import 'package:megaladon/presentation/screens/store/list_stores_screen.dart';
 import 'package:megaladon/presentation/screens/splash_screen.dart';
 
 part 'router.gr.dart';
 
-
 const List<AutoRoute> profile = [
-  AutoRoute(
-      page: ProfileScreen,
-      path: ''
-  )
+  AutoRoute(page: ProfileScreen, path: ''),
+  AutoRoute(page: SettingsScreen),
+  AutoRoute(page: ChangeExecutorScreen, guards: [AuthGuard]),
+  AutoRoute(page: ChangeStoreScreen, guards: [AuthGuard]),
+  AutoRoute(page: ListChatsScreen, guards: [AuthGuard]),
 ];
 
-
 const List<AutoRoute> ad = [
-  AutoRoute(
-      page: TradingAdsScreen,
-      path: ''
-  ),
+  AutoRoute(page: TradingAdsScreen, path: ''),
   AutoRoute(page: DetailsAdScreen),
-  AutoRoute(page: MyAdsScreen),
+  AutoRoute(page: MyAdsScreen, guards: [AuthGuard]),
 ];
 
 const List<AutoRoute> store = [
-  AutoRoute(
-      page: ListStoresScreen,
-      path: ''
-  ),
+  AutoRoute(page: ListStoresScreen, path: ''),
   AutoRoute(page: DetailsStoreScreen),
 ];
 
 const List<AutoRoute> order = [
-  AutoRoute(
-    page: ListOrdersScreen,
-    path: ''
-  ),
-  AutoRoute(page: ListMyOrdersScreen),
+  AutoRoute(page: ListOrdersScreen, path: ''),
+  AutoRoute(page: ListMyOrdersScreen, guards: [AuthGuard]),
   AutoRoute(page: DetailsOrderScreen),
+  AutoRoute(page: ListMyExecutorsScreen, guards: [AuthGuard]),
   AutoRoute(page: ListExecutorsScreen),
   AutoRoute(page: DetailsOfferScreen),
-  AutoRoute(page: ReviewScreen)
+  AutoRoute(page: ReviewScreen),
 ];
 
 const List<AutoRoute> auth = [
-  AutoRoute(page: LoginScreen),
-
-  AutoRoute(page: ForgotPasswordScreen),
-  AutoRoute(page: ResetPasswordScreen),
-
-  AutoRoute(page: RegisterUserScreen),
-  AutoRoute(page: RegisterExecutorScreen),
-  AutoRoute(page: RegisterStoreScreen),
-  AutoRoute(page: VerifyScreen),
+  AutoRoute(page: LoginScreen, guards: [NotAuthGuard]),
+  AutoRoute(page: ForgotPasswordScreen, guards: [NotAuthGuard]),
+  AutoRoute(page: ResetPasswordScreen, guards: [NotAuthGuard]),
+  AutoRoute(page: RegisterUserScreen, guards: [NotAuthGuard]),
+  AutoRoute(page: RegisterExecutorScreen, guards: [NotAuthGuard]),
+  AutoRoute(page: RegisterStoreScreen, guards: [NotAuthGuard]),
+  AutoRoute(page: VerifyScreen, guards: [NotAuthGuard]),
 ];
 
 const List<AutoRoute> form = [
-  AutoRoute(page: CreateAdScreen),
-  AutoRoute(page: CreateOrderScreen),
-  AutoRoute(page: UpdateAdScreen),
-  AutoRoute(page: UpdateOrderScreen),
-  AutoRoute(page: CreateOfferScreen)
-
+  AutoRoute(page: CreateAdScreen, guards: [AuthGuard]),
+  AutoRoute(page: CreateOrderScreen, guards: [AuthGuard]),
+  AutoRoute(page: UpdateAdScreen, guards: [AuthGuard]),
+  AutoRoute(page: UpdateOrderScreen, guards: [AuthGuard]),
+  AutoRoute(page: CreateOfferScreen, guards: [AuthGuard]),
+  AutoRoute(
+    page: ChangePasswordScreen,
+    guards: [AuthGuard]
+  ),
+  AutoRoute(
+    page: ChangePhoneStartScreen,
+    guards: [AuthGuard]
+  ),
+  AutoRoute(
+    page: ChangePhoneEndScreen,
+    guards: [AuthGuard]
+  ),
 ];
-
-
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Screen,Route',
   routes: <AutoRoute>[
-    AutoRoute(page: SplashScreen,
-      name: 'InitialRouter',
-      path: '/',
-      children: [
-        AutoRoute(
+    AutoRoute(page: SplashScreen, name: 'InitialRouter', path: '/', children: [
+      AutoRoute(
           page: _EmptyRouteWidget,
           name: 'OrderRouter',
           path: 'order',
           children: order,
           initial: true
-        ),
-        AutoRoute(
-            page: _EmptyRouteWidget,
-            name: 'StoreRouter',
-            path: 'store',
-            children: store
-        ),
-        AutoRoute(
-            page: _EmptyRouteWidget,
-            name: 'AdRouter',
-            path: 'ad',
-            children: ad
-        ),
-        AutoRoute(
-            page: _EmptyRouteWidget,
-            name: 'ProfileRouter',
-            path: 'profile',
-            children: profile
-        )
-      ]
+      ),
+      AutoRoute(
+          page: _EmptyRouteWidget,
+          name: 'StoreRouter',
+          path: 'store',
+          children: store
+      ),
+      AutoRoute(
+          page:_EmptyRouteWidget,
+          name: 'AdRouter',
+          path: 'ad',
+          children: ad
+      ),
+      AutoRoute(
+          page: _EmptyRouteWidget,
+          name: 'ProfileRouter',
+          path: 'profile',
+          children: profile
+      ),
+    ]),
+    AutoRoute(
+      page: DetailsChatScreen,
+      name: 'DetailsChatRouter',
     ),
+
     ...auth,
     ...form
   ],
 )
-
-class AppRouter extends _$AppRouter {}
+class AppRouter extends _$AppRouter {
+  AppRouter({required super.notAuthGuard, required super.authGuard});
+}
 
 class _EmptyRouteWidget extends StatelessWidget {
   @override

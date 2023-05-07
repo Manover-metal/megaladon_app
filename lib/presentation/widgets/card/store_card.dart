@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/data/models/store_model.dart';
 import 'package:megaladon/presentation/routing/router.dart';
@@ -7,7 +7,6 @@ import 'package:megaladon/presentation/widgets/tiles/data_tile.dart';
 import 'package:megaladon/presentation/widgets/tiles/store_tile.dart';
 
 class StoreCard extends StatelessWidget {
-
   final StoreModel store;
 
   const StoreCard({super.key, required this.store});
@@ -19,30 +18,30 @@ class StoreCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
+      margin: const EdgeInsets.symmetric(vertical: 10),
       child: InkWell(
         onTap: _onTap(context),
         child: Container(
-
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: Theme.of(context).colorScheme.tertiary,
           ),
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           child: Column(
             children: [
               StoreTile(store: store),
-              SizedBox(height: 5,),
-              DataTile(title: 'Деятельность: ', data: store.type?.name ?? ''),
-              DataTile(title: 'Рейтинг: ', data: store.rating!),
-              DataTile(title: 'Местоположение: ', data: store.fullAddress),
-              SizedBox(height: 5,),
-
+              const SizedBox(
+                height: 5,
+              ),
+              DataTile(title: 'Rating2'.tr(), data: store.rating ?? '0'),
+              DataTile(title: 'Location2'.tr(), data: store.fullAddress),
+              const SizedBox(
+                height: 5,
+              ),
             ],
           ),
         ),
       ),
     );
   }
-
 }

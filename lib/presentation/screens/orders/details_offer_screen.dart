@@ -1,39 +1,130 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:megaladon/data/models/executor_model.dart';
+import 'package:megaladon/logic/screens/executors/my/executor_screen_my_cubit.dart';
+import 'package:megaladon/logic/screens/offers/details/offer_screen_details_cubit.dart';
+import 'package:megaladon/logic/screens/orders/details/order_screen_details_cubit.dart';
+import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
+import 'package:megaladon/presentation/widgets/message/error_message.dart';
+import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
-import 'package:megaladon/presentation/widgets/text/title.dart';
+import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
+import 'package:megaladon/presentation/widgets/snackbars/success_snackbar.dart';
 import 'package:megaladon/presentation/widgets/tiles/data_tile.dart';
 import 'package:megaladon/presentation/widgets/tiles/executor_tile.dart';
 
-class DetailsOfferScreen extends StatelessWidget {
+class DetailsOfferScreen extends StatefulWidget {
+  
+  final int orderId;
+  final int offerId;
+
+  const DetailsOfferScreen({super.key, required this.orderId, required this.offerId});
+  
+  @override
+  State<DetailsOfferScreen> createState() => _DetailsOfferScreenState();
+}
+
+class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
+  
+  @override
+  void initState() {
+    context.read<OfferScreenDetailsCubit>().fetch(orderId: widget.orderId, offerId: widget.offerId);
+    super.initState();
+  }
+
+  _acceptOffer() {
+    context.read<OrderScreenDetailsCubit>().acceptOffer(orderId: widget.orderId, offerId: widget.offerId).then((value) {
+      context.router.navigate(
+        InitialRouter(children: [
+          OrderRouter(
+            children: [
+              DetailsOrderRoute(orderId: widget.orderId)
+            ]
+          )
+        ])
+      );
+    });
+  }
+  
+  _listenOrder(BuildContext context, OrderScreenDetailsState state) {
+    if(state.status == OrderScreenDetailsStateStatus.errorMessage) {
+      showErrorSnackBar(context, state.errorMessage!.messages[0]);
+    }
+  }
+
+  _addToFavorite(ExecutorModel executor) => () async {
+    await context.read<ExecutorScreenMyCubit>().add(orderId: widget.orderId, executorId: executor.id).then((value) {
+      showSuccessSnackBar(context, 'Исполнитель добавлен в избранное');
+    });
+  };
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                HeaderAppBar(
-                  isBack: true,
-                ),
-                TitleApp('Предложение исполнителя'),
-                SizedBox(height: 20,),
+      body: BlocListener<OrderScreenDetailsCubit, OrderScreenDetailsState>(
+        listener: _listenOrder,
+        child: SafeArea(
+              child: NestedScrollView(
+                headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                  return [
+                     SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: HeaderAppBar(isBack: true, title: "Artists_suggestion".tr()),
+                      ),
+                    )
+                  ];
+                },
+                body: SingleChildScrollView(
+                  child: Container(
+                    constraints: BoxConstraints(
+                        minHeight: MediaQuery.of(context).size.height
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      children: [
+                        BlocBuilder<OfferScreenDetailsCubit, OfferScreenDetailsState>(
+                          builder: (context, state) {
+                            if(state is OfferScreenDetailsSuccess) {
+                              return Column(
+                                children: [
+                                  if(state.offer.executor != null) ...[
+                                    ExecutorTile(executor: state.offer.executor!,),
+                                    Align(
+                                      child: TextButton(
+                                        onPressed: _addToFavorite(state.offer.executor!),
+                                        child: Text('Add_to_Favorite'.tr()),
+                                      ),
+                                    ),
+                                  ],
 
-                ExecutorTile(),
-                SizedBox(height: 20,),
-                DataTile(title: 'Актуален до: ', data: '31-10-2022',),
-                DataTile(title: 'Цена: ', data: '25 000 ₸',),
-                DataTile(title: 'Сроки: ', data: '2 недели',),
-                DataTile(title: 'Местоположение: ', data: 'г. Караганда',),
-                DataTile(title: 'Описание:  ', data: 'Как принято считать, непосредственные участники технического прогресса объединены в целые кластеры',),
-                SizedBox(height: 20,),
-                ElevatedButtonApp(text: 'Назначить исполнителем')
-              ],
+                                  const SizedBox(height: 20,),
+                                  DataTile(title: "Actual_until:".tr(), data: state.offer.expiredAt,),
+                                  DataTile(title: "Price:".tr(), data: '${state.offer.price} ₸',),
+                                  DataTile(title: "Terms".tr(), data: state.offer.date,),
+                                  DataTile(title: "Location:".tr(), data: 'г. ${state.offer.city?.name }',),
+                                  if(state.offer.comment != null) DataTile(title: "Description2".tr(), data: state.offer.comment!,),
+                                  const SizedBox(height: 20,),
+                                  ElevatedButtonApp(text: "Set_as_executor".tr(), onPressed: _acceptOffer,)
+                                ],
+                              );
+                            } else if(state is OfferScreenDetailsLoader) {
+                              return const Loader();
+                            } else if(state is OfferScreenDetailsError) {
+                              return ErrorMessage(error: state.error);
+                            }
+                            return Container();
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
       ),
     );
   }

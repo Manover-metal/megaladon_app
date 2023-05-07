@@ -20,9 +20,9 @@ class RegisterUserLoading extends RegisterUserState {
 }
 
 class RegisterUserError extends RegisterUserState {
-  final String error;
+  final ErrorModel error;
 
-  RegisterUserError(this.error);
+  const RegisterUserError(this.error);
 
   @override
   List<Object> get props => [error];

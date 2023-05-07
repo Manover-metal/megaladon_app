@@ -1,0 +1,36 @@
+import 'package:dio/dio.dart';
+
+class OrderCreateRequestParams {
+  final String title;
+  final String description;
+  final int? priceRecommended;
+  final int? priceMax;
+  final int categoryId;
+  final int cityId;
+  final List<MultipartFile> files;
+
+  OrderCreateRequestParams({
+    required this.title,
+    required this.description,
+    this.priceRecommended,
+    this.priceMax,
+    required this.categoryId,
+    required this.cityId,
+    required this.files
+  });
+
+  FormData toData() {
+    FormData data = FormData.fromMap({
+      'title': title,
+      'description': description,
+      'price_recommended': priceRecommended,
+      'price_max': priceMax,
+      'category_id': categoryId,
+      'city_id': cityId,
+    });
+    for (var element in files) {
+      data.files.add(MapEntry('files[]', element));
+    }
+    return data;
+  }
+}

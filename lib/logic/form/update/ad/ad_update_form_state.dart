@@ -14,7 +14,9 @@ class AdUpdateFormState extends Equatable {
   final PriceFormModel price;
   final AdvertCategoryFormModel category ;
   final CityFormModel city;
+  final PhoneFormModel phone;
   final int countTry;
+  final EnumFormState formState;
 
 
   const AdUpdateFormState({
@@ -25,11 +27,13 @@ class AdUpdateFormState extends Equatable {
     this.city = const CityFormModel.pure(),
     this.countTry = 0,
     this.price = const PriceFormModel.pure(),
+    this.phone = const PhoneFormModel.pure(),
+    this.formState = EnumFormState.filled
   });
 
 
   @override
-  List<Object?> get props => [status, description, price, title, category, city, countTry];
+  List<Object?> get props => [status, description, price, title, category, city, phone, countTry];
 
   AdUpdateFormState copyWith({
     FormzStatus? status,
@@ -39,7 +43,9 @@ class AdUpdateFormState extends Equatable {
     CityFormModel? city,
     int? countTry,
     AdUpdateForm? state,
-    PriceFormModel? price
+    PriceFormModel? price,
+    PhoneFormModel? phone,
+    EnumFormState? formState
   }) {
     return AdUpdateFormState(
       status: status ?? this.status,
@@ -48,7 +54,9 @@ class AdUpdateFormState extends Equatable {
       category: category ?? this.category,
       city: city ?? this.city,
       price: price ?? this.price,
+      phone: phone ?? this.phone,
       countTry: countTry ?? this.countTry,
+      formState: formState ?? this.formState
     );
   }
 }

@@ -1,5 +1,6 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:megaladon/core/icons/icons.dart';
 import 'package:megaladon/data/models/store_model.dart';
 
 class StoreTile extends StatelessWidget {
@@ -10,31 +11,30 @@ class StoreTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: IntrinsicHeight(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-
-            Container(
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Container(
               width: MediaQuery.of(context).size.height /10,
               height: MediaQuery.of(context).size.height /10,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.grey,
-              ),
-              child: (store.photo != null) ? Image.network(
-                store.photo!,
+              color: Theme.of(context).colorScheme.secondary,
+              child: CachedNetworkImage(
+                imageUrl: store.photo ?? '',
+                progressIndicatorBuilder: (context, url, downloadProgress) => Icon(IconPack.market, size: MediaQuery.of(context).size.width / 10),
+                errorWidget:  (context, url, error) => Icon(IconPack.market, size: MediaQuery.of(context).size.width / 10),
                 fit: BoxFit.cover,
-              ): null,
+              ),
             ),
-            SizedBox(width: 10,),
-            Expanded(
-              flex: 8,
-              child: Text(store.name!)
-            )
-          ],
-        ),
+          ),
+          const SizedBox(width: 10,),
+          Expanded(
+            flex: 8,
+            child: Text('${store.type?.name ?? ''} "${store.name}"')
+          )
+        ],
       ),
     );
   }

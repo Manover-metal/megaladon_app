@@ -1,4 +1,5 @@
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:formz/formz.dart';
 
 enum PhoneValidationError {
@@ -8,18 +9,19 @@ enum PhoneValidationError {
   String toString() {
     switch(this) {
       case PhoneValidationError.empty:
-        return 'Телефон пустой';
+        return 'Phone_number_is_empty'.tr();
     }
   }
 }
 
 class PhoneFormModel extends FormzInput<String, PhoneValidationError> {
-  const PhoneFormModel.pure() : super.pure('');
-  const PhoneFormModel.dirty([super.value = '']) : super.dirty();
+  final bool isRequired;
+  const PhoneFormModel.pure([this.isRequired = true]) : super.pure('');
+  const PhoneFormModel.dirty([super.value = '', this.isRequired = true]) : super.dirty();
 
   @override
   PhoneValidationError? validator(String value) {
-    if (value.isEmpty) {
+    if (value.isEmpty && isRequired) {
       return PhoneValidationError.empty;
     }
     return null;

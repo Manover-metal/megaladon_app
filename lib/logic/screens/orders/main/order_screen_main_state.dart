@@ -1,47 +1,43 @@
 part of 'order_screen_main_cubit.dart';
 
-abstract class OrderScreenMainState extends Equatable {
-  final OrderIndexRequestParams params;
-
-  OrderScreenMainState({required this.params});
+enum OrderScreenMainStatus {
+  loading,
+  error,
+  success
 }
 
-class OrderScreenMainInitial extends OrderScreenMainState {
-  OrderScreenMainInitial() : super(params: OrderIndexRequestParams());
-
-  @override
-  List<Object> get props => [params];
-}
-
-class OrderScreenMainLoader extends OrderScreenMainState {
-  OrderScreenMainLoader() : super(params: OrderIndexRequestParams());
-
-  @override
-  List<Object> get props => [params];
-}
-
-class OrderScreenMainError extends OrderScreenMainState {
-  OrderScreenMainError() : super(params: OrderIndexRequestParams());
-
-  @override
-  List<Object> get props => [params];
-}
-
-class OrderScreenMainSuccess extends  OrderScreenMainState {
+class OrderScreenMainState extends Equatable {
+  final OrderScreenMainStatus status;
   final List<OrderModel> orders;
+  final ErrorModel? error;
+  final OrderIndexRequestParams params;
+  final bool stock;
 
-  OrderScreenMainSuccess({required this.orders, required params}): super(params: params);
+  const OrderScreenMainState({
+    this.status = OrderScreenMainStatus.success,
+    this.orders = const [],
+    this.error,
+    this.params =  const OrderIndexRequestParams(),
+    this.stock = false,
+  });
 
   @override
-  List<Object?> get props => [params, orders];
+  List<Object?> get props => [status, orders, error, params, stock];
 
-  OrderScreenMainSuccess copyWith({
+  OrderScreenMainState copyWith({
+    OrderScreenMainStatus? status,
+    List<OrderModel>? orders,
+    ErrorModel? error,
     OrderIndexRequestParams? params,
-    List<OrderModel>? orders
+    bool? stock,
   }) {
-    return OrderScreenMainSuccess(
-        params: params ?? this.params,
-        orders: orders ?? this.orders
+    return OrderScreenMainState(
+      status: status ?? this.status,
+      orders: orders ?? this.orders,
+      error: error,
+      params: params ?? this.params,
+      stock: stock ?? this.stock
     );
   }
+
 }

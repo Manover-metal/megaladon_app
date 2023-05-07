@@ -1,9 +1,10 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:megaladon/data/models/advert_model.dart';
-import 'package:megaladon/logic/form/create/ad/ad_create_form_cubit.dart';
+import 'package:megaladon/data/models/enum_form_state.dart';
 import 'package:megaladon/logic/form/update/ad/ad_update_form_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
@@ -11,12 +12,11 @@ import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/description_field.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/advert_category_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
-import 'package:megaladon/presentation/widgets/form/picker/dictionary/advert_category_picker.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
-import 'package:megaladon/presentation/widgets/form/field/text_number_field.dart';
+import 'package:megaladon/presentation/widgets/form/field/number_field.dart';
+import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
-import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class UpdateAdScreen extends StatefulWidget {
   final AdvertModel advert;
@@ -31,7 +31,7 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
   late AdvertCategoryPickerController _advertCategoryController;
   late TextEditingController _titleController;
   late TextEditingController _descriptionController;
-
+  late TextEditingController _phoneController;
   late CityPickerController _cityController;
   late TextEditingController _priceController;
 
@@ -41,6 +41,7 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
 
   _create() {
     if(_checkForm()) {
+      context.router.popUntil((route) => route.settings.name == InitialRouter.name);
       context.read<AdUpdateFormCubit>().updateFetch(widget.advert.id).then((value) {
         context.router.navigate(InitialRouter(
             children: [
@@ -60,22 +61,19 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
     return form.checkUpdate(
         title: _titleController.value.text,
         description: _descriptionController.value.text,
-        price: int.tryParse(_priceController.value.text),
+        price: _priceController.value.text,
         category: _advertCategoryController.value,
-        city: _cityController.value
+        city: _cityController.value,
+        phone: _phoneController.value.text
     );
   }
 
   _listenerForm(BuildContext context, AdUpdateFormState state) {
     if(state.status.isInvalid) {
-      if(state.title.invalid) {
-        showErrorSnackBar(context, state.title.error.toString());
-      } else if(state.description.invalid) {
-        showErrorSnackBar(context, state.description.error.toString());
-      } else if(state.category.invalid) {
-        showErrorSnackBar(context, state.category.error.toString());
-      } else if(state.city.invalid) {
-        showErrorSnackBar(context, state.city.error.toString());
+      for (var element in state.props) {
+        if(element is FormzInput && element.invalid) {
+          return showErrorSnackBar(context, element.error.toString());
+        }
       }
     }
   }
@@ -87,6 +85,7 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
     _cityController = CityPickerController(city: widget.advert.city);
     _priceController = TextEditingController(text: widget.advert.price.toString());
     _descriptionController = TextEditingController(text: widget.advert.description);
+    _phoneController = TextEditingController(text: widget.advert.additionalPhone);
     super.initState();
   }
 
@@ -99,6 +98,7 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
     _cityController.dispose();
     _priceController.dispose();
     _descriptionController.dispose();
+    _phoneController.dispose();
     super.dispose();
   }
 
@@ -111,20 +111,26 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                HeaderAppBar(isBack: true, ),
-                TitleApp('Изменить объявление'),
+                HeaderAppBar(isBack: true, title: "Edit_ad".tr()),
                 SizedBox(height: 30),
-                AdvertCategoryPicker(label: 'Категория', controller: _advertCategoryController),
-                TextFieldApp(controller: _titleController, label: 'Название',),
-                CityPicker(label: 'Город', controller: _cityController),
-                DescriptionFieldApp(label: 'Описание', controller: _descriptionController),
-                TextNumberFieldApp(label: 'Цена', controller: _priceController,),
+                AdvertCategoryPicker(label: "category".tr(), controller: _advertCategoryController),
+                TextFieldApp(controller: _titleController, label: "name_field".tr(),),
+                CityPicker(label: "City".tr(), controller: _cityController),
+                DescriptionFieldApp(label: "Store_data".tr(), controller: _descriptionController),
+                NumberFieldApp(label: "Price".tr(), controller: _priceController,),
+                TextFieldApp(controller: _phoneController, label: "Additional_Phone".tr()),
+
                 // BlocConsumer(builder: builder, listener: listener)
-                BlocListener<AdUpdateFormCubit, AdUpdateFormState>(
-                  listener: _listenerForm,
-                  child: ElevatedButtonApp(text: 'Изменить', onPressed: _create,),
+                BlocConsumer<AdUpdateFormCubit, AdUpdateFormState>(
+                    listener: _listenerForm,
+                    builder: (context, state) {
+                      if(state.formState == EnumFormState.fetch) {
+                        return ElevatedButtonApp(child: Loader(color: Theme.of(context).colorScheme.background), onPressed: () {},);
+                      }
+                      return ElevatedButtonApp(text: "Edit".tr(), onPressed: _create,);
+                    }
                 ),
-                OutlinedButtonApp(text: 'Отменить', onPressed: _back,),
+                OutlinedButtonApp(text: "Cancel".tr(), onPressed: _back,),
               ],
             ),
           ),

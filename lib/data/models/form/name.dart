@@ -1,4 +1,5 @@
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:formz/formz.dart';
 
 enum NameValidationError {
@@ -8,7 +9,7 @@ enum NameValidationError {
   String toString() {
     switch(this) {
       case NameValidationError.empty:
-        return 'Имя пустое';
+        return 'Name_is_empty'.tr();
     }
   }
 }

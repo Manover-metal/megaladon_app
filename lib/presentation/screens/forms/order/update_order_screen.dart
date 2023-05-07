@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:megaladon/data/models/enum_form_state.dart';
 import 'package:megaladon/data/models/order_model.dart';
 import 'package:megaladon/logic/form/create/ad/ad_create_form_cubit.dart';
 import 'package:megaladon/logic/form/create/order/order_create_form_cubit.dart';
@@ -14,7 +16,8 @@ import 'package:megaladon/presentation/widgets/form/picker/dictionary/order_cate
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/order_category_picker.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
-import 'package:megaladon/presentation/widgets/form/field/text_number_field.dart';
+import 'package:megaladon/presentation/widgets/form/field/number_field.dart';
+import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
@@ -43,6 +46,7 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
 
   _create() {
     if(_checkForm()) {
+      context.router.popUntil((route) => route.settings.name == InitialRouter.name);
       context.read<OrderUpdateFormCubit>().updateFetch(widget.order.id).then((value) {
         context.router.navigate(InitialRouter(
             children: [
@@ -66,21 +70,17 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
         description: _descriptionController.value.text,
         category: _orderCategoryController.value,
         city: _cityController.value,
-        priceMax: int.tryParse(_priceMaxController.value.text),
-        priceRecommended: int.tryParse(_priceRecommendedController.value.text)
+        priceMax: _priceMaxController.value.text,
+        priceRecommended: _priceRecommendedController.value.text
     );
   }
 
   _listenerForm(BuildContext context, OrderUpdateFormState state) {
     if(state.status.isInvalid) {
-      if(state.title.invalid) {
-        showErrorSnackBar(context, state.title.error.toString());
-      } else if(state.description.invalid) {
-        showErrorSnackBar(context, state.description.error.toString());
-      } else if(state.category.invalid) {
-        showErrorSnackBar(context, state.category.error.toString());
-      } else if(state.city.invalid) {
-        showErrorSnackBar(context, state.city.error.toString());
+      for (var element in state.props) {
+        if(element is FormzInput && element.invalid) {
+          return showErrorSnackBar(context, element.error.toString());
+        }
       }
     }
   }
@@ -118,20 +118,24 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                HeaderAppBar(isBack: true, ),
-                TitleApp('Изменить заказ'),
+                HeaderAppBar(isBack: true, title: "Change_order".tr(),),
                 SizedBox(height: 30),
-                OrderCategoryPicker(label: 'Категория', controller: _orderCategoryController),
-                TextFieldApp(controller: _titleController, label: 'Заголовок',),
-                CityPicker(label: 'Город', controller: _cityController),
-                DescriptionFieldApp(label: 'Описание', controller: _descriptionController),
-                TextNumberFieldApp(label: 'Желаемый бюджет (не обязательно)', controller: _priceMaxController,),
-                TextNumberFieldApp(label: 'Допустимый бюджет (не обязательно)', controller: _priceRecommendedController,),
-                BlocListener<OrderUpdateFormCubit, OrderUpdateFormState>(
+                OrderCategoryPicker(label: "category".tr(), controller: _orderCategoryController),
+                TextFieldApp(controller: _titleController, label: "Header".tr(),),
+                CityPicker(label: "City".tr(), controller: _cityController),
+                DescriptionFieldApp(label: "Store_data".tr(), controller: _descriptionController),
+                NumberFieldApp(label: "Desired_budget".tr(), controller: _priceMaxController,),
+                NumberFieldApp(label: "Allowed_budget".tr(), controller: _priceRecommendedController,),
+                BlocConsumer<OrderUpdateFormCubit, OrderUpdateFormState>(
                   listener: _listenerForm,
-                  child: ElevatedButtonApp(text: 'Изменить', onPressed: _create,),
+                  builder: (context, state) {
+                    if(state.formState == EnumFormState.fetch) {
+                      return ElevatedButtonApp(child: Loader(color: Theme.of(context).colorScheme.background), onPressed: () {},);
+                    }
+                    return ElevatedButtonApp(text: "Edit".tr(), onPressed: _create,);
+                  }
                 ),
-                OutlinedButtonApp(text: 'Отменить', onPressed: _back,),
+                OutlinedButtonApp(text: "Cancel".tr(), onPressed: _back,),
               ],
             ),
           ),

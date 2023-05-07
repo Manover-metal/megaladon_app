@@ -1,17 +1,19 @@
 
+import 'package:easy_localization/easy_localization.dart';
+
 enum OrderIndexSort {
   id,
-  created_at,
+  createdAt,
   status,
-  category_id;
+  categoryId;
 
   @override
   String toString() {
     switch(this) {
-      case OrderIndexSort.id: return 'По созданию';
-      case OrderIndexSort.created_at: return 'По дате';
-      case OrderIndexSort.status: return 'По статусу';
-      case OrderIndexSort.category_id: return 'По категории';
+      case OrderIndexSort.id: return 'By_creation'.tr();
+      case OrderIndexSort.createdAt: return 'By_date'.tr();
+      case OrderIndexSort.status: return 'By_status'.tr();
+      case OrderIndexSort.categoryId: return 'By_category'.tr();
     }
   }
 }

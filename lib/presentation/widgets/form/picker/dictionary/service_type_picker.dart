@@ -1,16 +1,20 @@
 
-import 'package:flutter/cupertino.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_picker/Picker.dart';
 import 'package:megaladon/data/models/dictionary/service_type_model.dart';
 import 'package:megaladon/logic/dictionary/dictionary_cubit.dart';
 
-Future<List<int>?> showServiceTypePicker(BuildContext context, List<ServiceTypeModel> cities) async {
-  return await Picker(
+Future<ServiceTypeModel?> showServiceTypePicker(BuildContext context) async {
+  List<ServiceTypeModel> serviceTypes = context.read<DictionaryCubit>().state.serviceTypes;
+
+  final result = await Picker(
+    itemExtent: 30,
+    height: MediaQuery.of(context).size.height / 3.5,
     backgroundColor: Theme.of(context).colorScheme.background,
     adapter: PickerDataAdapter<ServiceTypeModel>(
-        data: cities.map((serviceType) {
+        data: serviceTypes.map((serviceType) {
           return PickerItem<ServiceTypeModel>(
               text: Text(serviceType.name),
               value: serviceType
@@ -19,22 +23,35 @@ Future<List<int>?> showServiceTypePicker(BuildContext context, List<ServiceTypeM
     ),
     changeToFirst: false,
     hideHeader: false,
-    cancelText: 'Отмена',
-    confirmText: 'Выбрать',
+    cancelText: 'Cancel'.tr(),
+    confirmText: 'select'.tr(),
   ).showModal(context);
+
+  if(result == null) return null;
+  return serviceTypes[result[0]];
 }
 
 
 class ServiceTypePickerController extends ValueNotifier<ServiceTypeModel> {
+  static int lastId = 0;
+  late int id;
 
+  ServiceTypePickerController({ServiceTypeModel? period}) : super(period ?? ServiceTypeModel.nothing) {
+    id = ++lastId;
+  }
 
-  ServiceTypePickerController({ServiceTypeModel? period}) : super(period ?? ServiceTypeModel.nothing);
 
 
 
   void _changeServiceType(ServiceTypeModel period) {
     value = period;
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    value = ServiceTypeModel.nothing;
+    super.dispose();
   }
 }
 
@@ -49,51 +66,51 @@ class ServiceTypePicker extends StatefulWidget {
 }
 
 class _ServiceTypePickerState extends State<ServiceTypePicker> {
-  late TextEditingController _textController;
 
-  _handleClick(BuildContext context) => () async {
-    List<ServiceTypeModel> serviceTypes = context.read<DictionaryCubit>().state.serviceTypes;
+  _handleClick() async {
+    ServiceTypeModel? serviceType = await showServiceTypePicker(context);
 
-    List<int>? result = await showServiceTypePicker(context, serviceTypes);
-    try {
-      if (result != null) {
-        ServiceTypeModel serviceType = serviceTypes[result[0]];
-        widget.controller._changeServiceType(serviceType);
-        _textController.value = TextEditingValue(text: serviceType.name);
-      }
-    }catch (e) {}
-
-    FocusManager.instance.primaryFocus?.unfocus();
-  };
-
-  @override
-  void initState() {
-    _textController = TextEditingController(text: widget.controller.value.name);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _textController.dispose();
-    super.dispose();
+    if (serviceType != null) {
+      widget.controller._changeServiceType(serviceType);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 60,
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
       child: ValueListenableBuilder(
         builder: (BuildContext context, ServiceTypeModel serviceType, Widget? child) {
-          return TextField(
-            controller: _textController,
-            onTap: _handleClick(context),
-            decoration: InputDecoration(
-                labelText: widget.label,
-                labelStyle: TextStyle(
-                    fontSize: 18
+          return GestureDetector(
+            onTap: _handleClick,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(widget.label,
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.secondary
+                  ),
                 ),
-                contentPadding: EdgeInsets.symmetric(horizontal: 10)
-
+                const SizedBox(height: 5),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(13),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.tertiary,
+                      border: Border.all(
+                          color: Theme.of(context).colorScheme.primary,
+                          width: 0.5
+                      ),
+                      borderRadius: BorderRadius.circular(10)
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(child: Text(serviceType.name)),
+                      const Icon(Icons.keyboard_arrow_down_outlined)
+                    ],
+                  ),
+                )
+              ],
             ),
           );
         },

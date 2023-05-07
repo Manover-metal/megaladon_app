@@ -1,15 +1,19 @@
-import 'package:flutter/cupertino.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_picker/Picker.dart';
 import 'package:megaladon/data/models/dictionary/advert_category_model.dart';
 import 'package:megaladon/logic/dictionary/dictionary_cubit.dart';
 
-Future<List<int>?> showAdvertCategoryPicker(BuildContext context, List<AdvertCategoryModel> cities) async {
-  return await Picker(
+Future<AdvertCategoryModel?> showAdvertCategoryPicker(BuildContext context) async {
+  List<AdvertCategoryModel> advertCategories = context.read<DictionaryCubit>().state.advertCategories;
+
+  final result = await Picker(
+    itemExtent: 30,
+    height: MediaQuery.of(context).size.height / 3.5,
     backgroundColor: Theme.of(context).colorScheme.background,
     adapter: PickerDataAdapter<AdvertCategoryModel>(
-        data: cities.map((advertCategory) {
+        data: advertCategories.map((advertCategory) {
           return PickerItem<AdvertCategoryModel>(
               text: Text(advertCategory.name),
               value: advertCategory
@@ -18,9 +22,12 @@ Future<List<int>?> showAdvertCategoryPicker(BuildContext context, List<AdvertCat
     ),
     changeToFirst: false,
     hideHeader: false,
-    cancelText: 'Отмена',
-    confirmText: 'Выбрать',
+    cancelText: 'Cancel'.tr(),
+    confirmText: 'select'.tr(),
   ).showModal(context);
+
+  if(result == null) return null;
+  return advertCategories[result[0]];
 }
 
 
@@ -48,50 +55,52 @@ class AdvertCategoryPicker extends StatefulWidget {
 }
 
 class _AdvertCategoryPickerState extends State<AdvertCategoryPicker> {
-  late TextEditingController _textController;
 
-  _handleClick(BuildContext context) => () async {
-    List<AdvertCategoryModel> advertCategories = context.read<DictionaryCubit>().state.advertCategories;
+  _handleClick () async {
 
-    List<int>? result = await showAdvertCategoryPicker(context, advertCategories);
-    try{
-      if (result != null) {
-        AdvertCategoryModel advertCategory = advertCategories[result[0]];
-        widget.controller._changeAdvertCategory(advertCategory);
-        _textController.value = TextEditingValue(text: advertCategory.name);
-      }
-    }catch (e) {}
-    FocusManager.instance.primaryFocus?.unfocus();
-  };
-
-  @override
-  void initState() {
-    _textController = TextEditingController(text: widget.controller.value.name);
-    super.initState();
+    AdvertCategoryModel? advertCategory = await showAdvertCategoryPicker(context);
+    if (advertCategory != null) {
+      widget.controller._changeAdvertCategory(advertCategory);
+    }
   }
 
-  @override
-  void dispose() {
-    _textController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 60,
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
       child: ValueListenableBuilder(
         builder: (BuildContext context, AdvertCategoryModel advertCategory, Widget? child) {
-          return TextField(
-            controller: _textController,
-            onTap: _handleClick(context),
-            decoration: InputDecoration(
-                labelText: widget.label,
-                labelStyle: TextStyle(
-                    fontSize: 18
+          return GestureDetector(
+            onTap: _handleClick,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(widget.label,
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.secondary
+                  ),
                 ),
-                contentPadding: EdgeInsets.symmetric(horizontal: 10)
-
+                const SizedBox(height: 5),
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(13),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.tertiary,
+                      border: Border.all(
+                          color: Theme.of(context).colorScheme.primary,
+                          width: 0.5
+                      ),
+                      borderRadius: BorderRadius.circular(10)
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(child: Text(advertCategory.name)),
+                      const Icon(Icons.keyboard_arrow_down_outlined)
+                    ],
+                  ),
+                )
+              ],
             ),
           );
         },

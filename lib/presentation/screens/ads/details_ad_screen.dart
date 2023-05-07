@@ -1,12 +1,16 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:megaladon/core/icons/icons.dart';
+import 'package:megaladon/generated/locale_keys.g.dart';
+import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/screens/advert/details/advert_screen_details_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
-import 'package:megaladon/presentation/screens/forms/offer/create_offer_screen.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
-import 'package:megaladon/presentation/widgets/list/file_download_list.dart';
+import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
@@ -39,6 +43,10 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
     launchUrl(uri);
   };
 
+  _toChat() {
+    context.router.navigate(const DetailsChatRouter());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,16 +56,11 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
             return [
               SliverToBoxAdapter(
                   child: Column(
-                    children: [
+                    children:  [
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Column(
-                          children: [
-                            HeaderAppBar(isBack: true,),
-                            TitleApp('Объявление'),
-                            SizedBox(height: 20,),
-                          ],
-                        ),
+                        padding:  EdgeInsets.symmetric(horizontal: 20.0),
+                      
+                        child: HeaderAppBar(isBack: true, title: "Ad".tr()),
                       ),
                     ],
                   )
@@ -80,49 +83,78 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                               children: [
                                 Text(state.advert.title),
                                 Text(state.advert.description),
-                                SizedBox(height: 20,),
-                                if(state.advert.media.isEmpty) SubTitleApp('Нет прикреплённых файлов')
+                                const SizedBox(height: 20,),
+                                if(state.advert.media.isEmpty) SubTitleApp("No_attached_files".tr())
                                 else ...[
-                                  SubTitleApp('Прикреплённые файлы'),
-                                  SizedBox(height: 10,),
-                                  FileDownloadList(),
+                                  SubTitleApp("Attached_files".tr()),
+                                  const SizedBox(height: 10,),
+                                  ...state.advert.media.map((e) {
+                                    return ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Container(
+                                        width: double.infinity,
+                                        constraints: const BoxConstraints(
+                                            minHeight: 100
+                                        ),
+                                        color: Theme.of(context).colorScheme.secondary,
+                                        child: CachedNetworkImage(
+                                          imageUrl: e.url,
+                                          progressIndicatorBuilder: (context, url, downloadProgress) => Icon(IconPack.chat, size: MediaQuery.of(context).size.width / 10),
+                                          errorWidget:  (context, url, error) => Icon(IconPack.chat, size: MediaQuery.of(context).size.width / 10),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    );
+                                  }).toList()
                                 ],
-
                               ],
                             ),
                           ),
-                          Divider(thickness: 1),
+                          const Divider(thickness: 1),
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Цена: до ${state.advert.price} ₸'),
-                                SizedBox(height: 10,),
+                                Text( "Price_up_to".tr()+'${state.advert.price} ₸'),
+                                const SizedBox(height: 10,),
                                 UserTile(user: state.advert.user!),
-                                SizedBox(height: 20),
-                                ...[
-                                  ElevatedButtonApp(
-                                    text: 'Позвонить',
-                                    onPressed: _call(state.advert.additionalPhone!),
-                                  ),
-                                  OutlinedButtonApp(
-                                      text: 'Задать вопрос в чате'),
-                                ],
-                                ...[
-                                  ElevatedButtonApp(
-                                    text: 'Изменить',
-                                  ),
-                                ]
+                                const SizedBox(height: 20),
+                                BlocBuilder<AuthBloc, AuthState>(
+                                  builder: (context, stateUser) {
+                                    if(stateUser is AuthLoginState) {
+                                      return Column(
+                                        children: [
+                                          if(state.advert.user!.id == stateUser.auth.user.value!.id)...[
+                                            ElevatedButtonApp(
+                                              text: "Edit".tr(),
+                                            ),
+                                          ] else ...[
+                                            ElevatedButtonApp(
+                                              text: "Call".tr(),
+                                              onPressed: _call(state.advert.additionalPhone!),
+                                            ),
+                                            OutlinedButtonApp(
+                                                onPressed: _toChat,
+                                                text: "Ask_a_question_in_the_chat".tr()
+                                            ),
+                                          ]
+                                        ],
+                                      );
+                                    } else {
+                                      return Container();
+                                    }
+                                  },
+                                ),
                               ],
                             ),
                           )
                         ],
                       );
                     } else if(state is AdvertScreenDetailsLoader) {
-                      return Loader(padding: 10,);
+                      return const Loader(padding: 10,);
                     } else if(state is AdvertScreenDetailsError) {
-                      return Text('error');
+                      return ErrorMessage(error: state.error);
                     }
                     return Container();
                   },

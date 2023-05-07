@@ -1,36 +1,81 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:megaladon/data/models/error_model.dart';
 import 'package:megaladon/data/models/order_model.dart';
-import 'package:megaladon/data/models/request/params/order_index_request_params.dart';
+import 'package:megaladon/data/models/request/params/index/order_index_request_params.dart';
 import 'package:megaladon/data/repositories/order_repository.dart';
+import 'package:megaladon/logic/auth/auth_bloc.dart';
 
 part 'order_screen_my_state.dart';
 
 class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
   final OrderRepository _repository = OrderRepository();
-  OrderScreenMyCubit() : super(OrderScreenMyInitial());
+  final AuthBloc authBloc;
 
-  Future fetch({ OrderIndexRequestParams? params }) async {
+  OrderScreenMyCubit(this.authBloc) : super(const OrderScreenMyState()) {
+    _listenAuth(authBloc.state);
+    authBloc.stream.listen(_listenAuth);
+  }
+
+  _listenAuth(stateAuth) {
+    if(stateAuth is AuthLoginState) {
+      fetch();
+    } else {
+      emit(const OrderScreenMyState());
+    }
+  }
+
+  Future fetch({OrderIndexRequestParams? params}) async {
+    if(state.status == OrderScreenMyStatus.loading
+        && state.error == null
+    ) return;
+
     OrderIndexRequestParams mainParams = params ?? state.params;
-    emit(OrderScreenMyLoader());
-    await _repository.indexMy(mainParams).then((value) {
+    emit(state.copyWith(
+        status: OrderScreenMyStatus.loading,
+        error: null,
+      )
+    );
+    return await Future.wait([
+      _repository.indexMy(mainParams),
+      _repository.indexMyResponded(mainParams)
+    ]).then((value) {
+      final my = value[0];
+      final myResponded = value[1];
+
       if(mainParams.startRow == 0) {
-        emit(OrderScreenMySuccess(orders: value, params: mainParams));
+        emit(state.copyWith(
+            orders: my,
+            ordersResponded: myResponded,
+            params: mainParams,
+            status: OrderScreenMyStatus.success,
+            stock: my.length < mainParams.rowsPerPage,
+            stockResponded: myResponded.length < mainParams.rowsPerPage
+        ));
       } else {
-        emit(OrderScreenMySuccess(
-          orders: [...(state as OrderScreenMySuccess).orders, value],
-          params: mainParams
+        emit(state.copyWith(
+          status: OrderScreenMyStatus.success,
+          orders: [...state.orders, ...my],
+          ordersResponded: [...state.ordersResponded, ...myResponded],
+          params: mainParams,
+          stock: my.length < mainParams.rowsPerPage,
+          stockResponded: myResponded.length < mainParams.rowsPerPage
         ));
       }
-    }).catchError((error) {
-      emit(OrderScreenMyError());
+    }).catchError(( error) {
+      if(error is DioError) {
+        emit(state.copyWith(error: ErrorModel.parseDio(error)));
+      } else {
+        emit(state.copyWith(error: ErrorModel.nothing));
+      }
     });
   }
 
+
   changeParams(OrderIndexRequestParams params) {
-    if(state is OrderScreenMySuccess) {
-      params.startRow = 0;
-      emit((state as OrderScreenMySuccess).copyWith(params: params));
-    }
+    emit(state.copyWith(
+        params: params.copyWith(startRow: 0)
+    ));
   }
 }

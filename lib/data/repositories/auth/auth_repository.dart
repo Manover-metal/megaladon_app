@@ -1,8 +1,10 @@
-import 'package:dio/dio.dart';
 import 'package:megaladon/core/dio/index.dart';
 import 'package:megaladon/core/dio/interceptors/auth_interceptors.dart';
 import 'package:megaladon/core/isar/index.dart';
 import 'package:megaladon/data/models/auth/auth_model.dart';
+import 'package:megaladon/data/models/executor_model.dart';
+import 'package:megaladon/data/models/store_model.dart';
+import 'package:megaladon/data/models/user_model.dart';
 
 class AuthRepository {
   AuthInterceptor? interceptor;
@@ -14,6 +16,16 @@ class AuthRepository {
     return ApiService.I.post('/auth/login', data:{
       "phone": phone,
       "password": password
+    }).then((value) {
+      return value;
+    });
+  }
+
+  Future sendFB({
+    required String token,
+  }) async {
+    return ApiService.I.post('/user/change-token', data: {
+      "token": token
     }).then((value) {
       return value;
     });
@@ -54,17 +66,53 @@ class AuthRepository {
 
   Future<AuthModel?> read() async {
     AuthModel? auth = await IsarService.I.authModels.get(1);
-    print(auth);
     if(auth != null) {
       _addInterceptor(auth);
     }
     return auth;
   }
 
-  write(AuthModel auth) async {
+  write(AuthModel auth, UserModel user, ExecutorModel? executor, StoreModel? store) async {
     _addInterceptor(auth);
     await IsarService.I.writeTxn(() async {
-      IsarService.I.authModels.put(auth);
+      await IsarService.I.authModels.put(auth);
+      await IsarService.I.userModels.put(user);
+      await auth.user.save();
+
+      if(executor != null) {
+        await IsarService.I.executorModels.put(executor);
+        await auth.executor.save();
+      }
+      if(store != null) {
+        await IsarService.I.storeModels.put(store);
+        await auth.store.save();
+      }
+    });
+
+
+  }
+
+  addUser(AuthModel auth, UserModel user) async {
+    await IsarService.I.writeTxn(() async {
+      await IsarService.I.authModels.put(auth);
+      await IsarService.I.userModels.put(user);
+      await auth.user.save();
+    });
+  }
+
+  addExecutor(AuthModel auth, ExecutorModel executor) async {
+    await IsarService.I.writeTxn(() async {
+      await IsarService.I.authModels.put(auth);
+      await IsarService.I.executorModels.put(executor);
+      await auth.executor.save();
+    });
+  }
+
+  addStore(AuthModel auth, StoreModel store) async {
+    await IsarService.I.writeTxn(() async {
+      await IsarService.I.authModels.put(auth);
+      await IsarService.I.storeModels.put(store);
+      await auth.store.save();
     });
   }
 

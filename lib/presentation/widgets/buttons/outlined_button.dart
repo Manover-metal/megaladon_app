@@ -5,7 +5,7 @@ class OutlinedButtonApp extends StatelessWidget {
   final Widget? child;
   final String? text;
 
-  OutlinedButtonApp({this.onPressed, this.child, this.text});
+  const OutlinedButtonApp({super.key, this.onPressed, this.child, this.text});
 
   Widget? _getText() {
     if(text != null) {
@@ -14,13 +14,14 @@ class OutlinedButtonApp extends StatelessWidget {
     return null;
   }
 
+  @override
   Widget build(BuildContext context) {
     return OutlinedButton(
         onPressed: onPressed,
         child: Container(
           width: double.infinity,
           alignment: Alignment.center,
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           child: (child != null) ? child
               : _getText()
         )

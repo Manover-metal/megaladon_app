@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
-import 'package:megaladon/data/models/form/email.dart';
 import 'package:megaladon/data/models/form/password.dart';
 import 'package:megaladon/data/models/form/phone.dart';
 

@@ -1,0 +1,35 @@
+import 'package:file_picker/file_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+class ImageService {
+  static Future<FilePickerResult?> getImages() async {
+    bool hasPermission = await _requestWritePermission();
+    if (!hasPermission) return null;
+
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+        allowMultiple: true,
+        withData: true,
+        type: FileType.image
+    );
+
+    return result;
+  }
+
+  static Future<FilePickerResult?> getImage() async {
+    bool hasPermission = await _requestWritePermission();
+    if (!hasPermission) return null;
+
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+        withData: true,
+        type: FileType.image
+    );
+
+    return result;
+  }
+
+
+  static Future<bool> _requestWritePermission() async {
+    await Permission.photos.request();
+    return await Permission.photos.request().isGranted;
+  }
+}

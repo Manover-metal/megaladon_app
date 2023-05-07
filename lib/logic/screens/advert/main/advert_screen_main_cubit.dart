@@ -1,39 +1,120 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:megaladon/data/models/advert_model.dart';
-import 'package:megaladon/data/models/request/params/advert_index_request_params.dart';
+import 'package:megaladon/data/models/dictionary/advert_type.dart';
+import 'package:megaladon/data/models/error_model.dart';
+import 'package:megaladon/data/models/request/params/index/advert_index_request_params.dart';
 import 'package:megaladon/data/repositories/advert_repository.dart';
 
 part 'advert_screen_main_state.dart';
 
+
 class AdvertScreenMainCubit extends Cubit<AdvertScreenMainState> {
   final AdvertRepository _repository = AdvertRepository();
-  AdvertScreenMainCubit() : super(AdvertScreenMainInitial());
+  AdvertScreenMainCubit() : super(const AdvertScreenMainState());
 
-  Future fetch({AdvertIndexRequestParams? params}) async {
+  Future fetchAdvert({AdvertIndexRequestParams? params}) async {
+    if(state.status == AdverScreenMainStatus.loading
+        && state.error == null
+    ) return;
+
+
     AdvertIndexRequestParams mainParams = params ?? state.params;
+    emit(state.copyWith(
+        status: AdverScreenMainStatus.loading,
+        error: null,
+        adverts: state.adverts,
+        params: mainParams,
+      )
+    );
 
-    emit(AdvertScreenMainLoader());
     return await _repository.index(mainParams).then((value) {
-      print(value);
       if(mainParams.startRow == 0) {
-        emit(AdvertScreenMainSuccess(adverts: value, params: mainParams));
+        emit(state.copyWith(
+            adverts: value,
+            params: mainParams,
+            status: AdverScreenMainStatus.success,
+            stock: value.length < mainParams.rowsPerPage
+        ));
+
       } else {
-        emit(AdvertScreenMainSuccess(
-          adverts: [...(state as AdvertScreenMainSuccess).adverts, value],
-          params: mainParams
+        emit(state.copyWith(
+          status: AdverScreenMainStatus.success,
+          adverts: [...state.adverts, ...value],
+          params: mainParams,
+          stock: value.length < mainParams.rowsPerPage
         ));
       }
-    }).catchError((error) {
-      print(error);
-      emit(AdvertScreenMainError());
+
+    }).catchError(( error) {
+      if(error is DioError) {
+        emit(state.copyWith(
+            status: AdverScreenMainStatus.error,
+            error: ErrorModel.parseDio(error))
+        );
+      } else {
+        emit(state.copyWith(
+            status: AdverScreenMainStatus.error,
+            error: ErrorModel.nothing)
+        );
+      }
     });
   }
 
+  Future fetchService({AdvertIndexRequestParams? params}) async {
+    if(state.status == AdverScreenMainStatus.loading
+        && state.error == null
+    ) return;
+
+
+    AdvertIndexRequestParams mainParams = params ?? state.params;
+      emit(state.copyWith(
+        status: AdverScreenMainStatus.loading,
+        error: null,
+        services: state.services,
+        params: mainParams,
+      )
+    );
+
+    return await _repository.index(mainParams, AdvertType.service).then((value) {
+      if(mainParams.startRow == 0) {
+        emit(state.copyWith(
+            services: value,
+            params: mainParams,
+            status: AdverScreenMainStatus.success,
+            stock: value.length < mainParams.rowsPerPage
+        ));
+
+      } else {
+        emit(state.copyWith(
+            status: AdverScreenMainStatus.success,
+            services: [...state.services, ...value],
+            params: mainParams,
+            stock: value.length < mainParams.rowsPerPage
+        ));
+      }
+
+    }).catchError(( error) {
+      if(error is DioError) {
+        emit(state.copyWith(
+            status: AdverScreenMainStatus.error,
+            error: ErrorModel.parseDio(error))
+        );
+      } else {
+        emit(state.copyWith(
+            status: AdverScreenMainStatus.error,
+            error: ErrorModel.nothing)
+        );
+      }
+    });
+  }
+
+
+
   changeParams(AdvertIndexRequestParams params) {
-    if(state is AdvertScreenMainSuccess) {
-      params.startRow = 0;
-      emit((state as AdvertScreenMainSuccess).copyWith(params: params));
-    }
+    emit(state.copyWith(
+        params: params.copyWith(startRow: 0)
+    ));
   }
 }

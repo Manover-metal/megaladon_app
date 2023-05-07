@@ -5,14 +5,11 @@ abstract class RegisterUserEvent extends Equatable {
 }
 
 class RegisterUserFetchEvent extends RegisterUserEvent {
-  final String name;
-  final String phone;
-  final String password;
-  final String passwordConfirmation;
+  final RegisterUserRequestParams params;
 
-  RegisterUserFetchEvent(this.name, this.phone, this.password, this.passwordConfirmation);
+  const RegisterUserFetchEvent(this.params);
 
   @override
-  List<Object?> get props => [name, phone, password, passwordConfirmation];
+  List<Object?> get props => [params];
 
 }

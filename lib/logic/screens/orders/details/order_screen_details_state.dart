@@ -1,41 +1,37 @@
 part of 'order_screen_details_cubit.dart';
 
-abstract class OrderScreenDetailsState extends Equatable {}
-
-class OrderScreenDetailsInitial extends OrderScreenDetailsState {
-  OrderScreenDetailsInitial();
-
-  @override
-  List<Object> get props => [];
+enum OrderScreenDetailsStateStatus {
+  initial, loading, success, error, errorMessage
 }
 
-class OrderScreenDetailsLoader extends OrderScreenDetailsState {
-  OrderScreenDetailsLoader();
+class OrderScreenDetailsState extends Equatable {
+  final OrderScreenDetailsStateStatus status;
+  final OrderModel? order;
+  final ErrorModel? error;
+  final ErrorModel? errorMessage;
+
+  const OrderScreenDetailsState({
+    this.status = OrderScreenDetailsStateStatus.initial,
+    this.order,
+    this.error,
+    this.errorMessage
+  });
 
   @override
-  List<Object> get props => [];
-}
+  List<Object?> get props => [status, order, error, errorMessage];
 
-class OrderScreenDetailsError extends OrderScreenDetailsState {
-  OrderScreenDetailsError();
 
-  @override
-  List<Object> get props => [];
-}
-
-class OrderScreenDetailsSuccess extends  OrderScreenDetailsState {
-  final OrderModel order;
-
-  OrderScreenDetailsSuccess({required this.order});
-
-  @override
-  List<Object?> get props => [order];
-
-  OrderScreenDetailsSuccess copyWith({
-    OrderModel? order
+  OrderScreenDetailsState copyWith({
+    OrderScreenDetailsStateStatus? status,
+    OrderModel? order,
+    ErrorModel? error,
+    ErrorModel? errorMessage
   }) {
-    return OrderScreenDetailsSuccess(
-        order: order ?? this.order
+    return OrderScreenDetailsState(
+        status: status ?? this.status,
+        order: order ?? this.order,
+        error: error ?? this.error,
+        errorMessage: errorMessage ?? errorMessage,
     );
   }
 }

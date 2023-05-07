@@ -1,91 +1,197 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_intro/flutter_intro.dart';
+import 'package:is_first_run/is_first_run.dart';
 import 'package:megaladon/core/get.dart';
+import 'package:megaladon/core/icons/icons.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/bottom_sheet/add_anything_bottom_sheet.dart';
+import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/drawer/drawer_app.dart';
+import 'package:megaladon/presentation/widgets/text/title.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
 
   _doubleTap(BuildContext context, PageRouteInfo page) => () {
-    context.router.navigate(page);
-  };
+        context.router.navigate(page);
+    };
 
   _handleClick(TabsRouter tabsRouter, int index) => () {
-    tabsRouter.setActiveIndex(index);
-  };
+        tabsRouter.setActiveIndex(index);
+      };
 
   _add(BuildContext context) => () async {
-    bool? result = await showModalBottomSheet(
-        useRootNavigator: true,
-        context: context,
-        elevation: 100,
-        builder: (_) => AddAnythingBottomSheet()
-    );
+        await showModalBottomSheet(
+            useRootNavigator: true,
+            isScrollControlled: true,
+            useSafeArea: true,
+            context: context,
+            elevation: 100,
+            builder: (_) => const AddAnythingBottomSheet());
+      };
+
+  _introStart(BuildContext context) => () async {
+    if(await IsFirstRun.isFirstCall()) Intro.of(context).start();
+
   };
+
+  listenFB() {
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('Got a message whilst in the foreground!');
+      print('Message data: ${message.data}');
+
+      if (message.notification != null) {
+        print('Message also contained a notification: ${message.notification}');
+      }
+      context.router.navigate(InitialRouter( children: [
+        OrderRouter(
+          children: [
+            DetailsOrderRoute(orderId: message.data['order_id'])
+          ]
+        )
+      ]));
+    });
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('Got a message whilst in the foreground!');
+      print('Message data: ${message.data}');
+
+      if (message.notification != null) {
+        print('Message also contained a notification: ${message.notification}');
+      }
+    });
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    return AutoTabsScaffold(
-      scaffoldKey: getItApp.get<GlobalKey<ScaffoldState>>(),
-      drawer: DrawerApp(),
-      lazyLoad: true,
-      routes: [
-        OrderRouter(),
-        StoreRouter(),
-        AdRouter(),
-        ProfileRouter(),
-      ],
-      bottomNavigationBuilder: (_, tabsRouter) {
-        return Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            Container(
-              height: 75,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+    return Intro(
+      padding: const EdgeInsets.all(20),
+      borderRadius: BorderRadius.circular(100),
+      maskClosable: true,
+      maskColor: const Color.fromRGBO(19, 78, 74, 0.9),
+      child: AutoTabsScaffold(
+        scaffoldKey: getItApp.get<GlobalKey<ScaffoldState>>(),
+        lazyLoad: true,
+        drawer: const  DrawerApp(),
+        routes: const [
+          OrderRouter(),
+          StoreRouter(),
+          AdRouter(),
+          ProfileRouter(),
+        ],
+        bottomNavigationBuilder: (context, tabsRouter) {
+          return Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              SizedBox(
+                  height: 75,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      IntroStepBuilder(
+                        builder: (context, key) {
+                          return Tab(
+                            key: key,
+                            icon: IconPack.basket,
+                            isActive: 0 == tabsRouter.activeIndex,
+                            click: _handleClick(tabsRouter, 0),
+                            doubleClick: _doubleTap(context,
+                                const InitialRouter(children: [OrderRouter()])),
+                          );
+                        },
+                        order: 1,
+                        overlayBuilder: (StepWidgetParams params) {
+                          return Text('Список размещенных на платформе заказов для поиска лучшего предложения от исполнителей.');
+                        },
+                        onWidgetLoad: _introStart(context)
+                      ),
+                      IntroStepBuilder(
+                        builder: (context, key) {
+                          return Tab(
+                            key: key,
+                            icon: IconPack.market,
+                            isActive: 1 == tabsRouter.activeIndex,
+                            click: _handleClick(tabsRouter, 1),
+                            doubleClick: _doubleTap(context,
+                                const InitialRouter(children: [StoreRouter()])),
+                          );
+                        },
+                        order: 2,
+                        overlayBuilder: (StepWidgetParams params) {
+                          return Text('Список компаний занимающихся продажей готовой продукции.');
+                        },
+                      ),
+
+                      const SizedBox(
+                        width: 50,
+                      ),
+                      IntroStepBuilder(
+                        builder: (context, key) {
+                          return Tab(
+                            key: key,
+                            icon: IconPack.chat,
+                            isActive: 2 == tabsRouter.activeIndex,
+                            click: _handleClick(tabsRouter, 2),
+                            doubleClick: _doubleTap(
+                                context, const InitialRouter(children: [AdRouter()])),
+                          );
+                        },
+                        order: 3,
+                        overlayBuilder: (StepWidgetParams params) {
+                          return Text('Список объявлений о продажи товара или оказании услуг машиностроения.');
+                        },
+                      ),
+                      IntroStepBuilder(
+                        builder: (context, key) {
+                          return Tab(
+                            key: key,
+                            icon: IconPack.profile,
+                            isActive: 3 == tabsRouter.activeIndex,
+                            click: _handleClick(tabsRouter, 3),
+                            doubleClick: _doubleTap(context,
+                                const InitialRouter(children: [ProfileRouter()])
+                            ),
+                          );
+                        },
+                        order: 4,
+                        overlayBuilder: (StepWidgetParams params) {
+                          return Text('Профиль пользователя.');
+                        },
+                      ),
+                    ],
+                  )
+              ),
+              Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Tab(icon: Icons.add_shopping_cart_outlined,
-                    isActive: 0 == tabsRouter.activeIndex,
-                    click: _handleClick(tabsRouter, 0),
-                    doubleClick: _doubleTap(context, InitialRouter(children: [OrderRouter()])),
+                  FloatingActionButton(
+                    onPressed: _add(context),
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    child: Icon(
+                      Icons.add,
+                      color: Theme.of(context).colorScheme.background,
+                      size: 40,
+                    ),
                   ),
-                  Tab(icon: Icons.store,
-                    isActive: 1 == tabsRouter.activeIndex,
-                    click: _handleClick(tabsRouter, 1),
-                    doubleClick: _doubleTap(context, InitialRouter(children: [StoreRouter()])),
-
-                  ),
-                  SizedBox(width: 50,),
-                  Tab(icon: Icons.account_balance_wallet_sharp,
-                    isActive: 2 == tabsRouter.activeIndex,
-                    click: _handleClick(tabsRouter, 2),
-                    doubleClick: _doubleTap(context, InitialRouter(children: [AdRouter()])),
-
-                  ),
-                  Tab(icon: Icons.person,
-                    isActive: 3 == tabsRouter.activeIndex,
-                    click: _handleClick(tabsRouter, 3),
-                    doubleClick: _doubleTap(context, InitialRouter(children: [ProfileRouter()])),
-                  ),
+                  const SizedBox(
+                    height: 15,
+                  )
                 ],
               )
-            ),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                FloatingActionButton(
-                  onPressed: _add(context),
-                  child: Icon(Icons.add, color: Theme.of(context).colorScheme.background, size: 40,),
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                ),
-                SizedBox(height: 15,)
-              ],
-            )
-          ],
-        );
-      },
+            ],
+          );
+        },
+      )
     );
   }
 }
@@ -96,17 +202,25 @@ class Tab extends StatelessWidget {
   final VoidCallback click;
   final VoidCallback doubleClick;
 
-  const Tab({super.key, required this.icon, required this.isActive, required this.click, required this.doubleClick});
+  const Tab(
+      {super.key,
+      required this.icon,
+      required this.isActive,
+      required this.click,
+      required this.doubleClick});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      child: Icon(icon,
-        color: isActive? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSecondary,
-        size:  isActive? 30 : 25,
-      ),
       onTap: click,
       onDoubleTap: doubleClick,
+      child: Icon(
+        icon,
+        color: isActive
+            ? Theme.of(context).colorScheme.primary
+            : Theme.of(context).colorScheme.onSecondary,
+        size: isActive ? 30 : 25,
+      ),
     );
   }
 }

@@ -1,47 +1,46 @@
 part of 'advert_screen_my_cubit.dart';
 
-abstract class AdvertScreenMyState extends Equatable {
-  final AdvertIndexRequestParams params;
-
-  AdvertScreenMyState({required this.params});
+enum AdverScreenMyMainStatus {
+  loading,
+  error,
+  success
 }
 
-class AdvertScreenMyInitial extends AdvertScreenMyState {
-  AdvertScreenMyInitial() : super(params: AdvertIndexRequestParams());
-
-  @override
-  List<Object> get props => [params];
-}
-
-class AdvertScreenMyLoader extends AdvertScreenMyState {
-  AdvertScreenMyLoader() : super(params: AdvertIndexRequestParams());
-
-  @override
-  List<Object> get props => [params];
-}
-
-class AdvertScreenMyError extends AdvertScreenMyState {
-  AdvertScreenMyError() : super(params: AdvertIndexRequestParams());
-
-  @override
-  List<Object> get props => [params];
-}
-
-class AdvertScreenMySuccess extends  AdvertScreenMyState {
+class AdvertScreenMyState extends Equatable {
+  final AdverScreenMyMainStatus status;
   final List<AdvertModel> adverts;
+  final List<AdvertModel> services;
+  final ErrorModel? error;
+  final AdvertIndexRequestParams params;
+  final bool stock;
 
-  AdvertScreenMySuccess({required this.adverts, required params}): super(params: params);
+  const AdvertScreenMyState({
+    this.status = AdverScreenMyMainStatus.success,
+    this.adverts = const [],
+    this.services = const [],
+    this.error,
+    this.params = const AdvertIndexRequestParams(),
+    this.stock = false
+  });
 
   @override
-  List<Object?> get props => [params, adverts];
+  List<Object?> get props => [status, adverts, services, error, params, stock];
 
-  AdvertScreenMySuccess copyWith({
+  AdvertScreenMyState copyWith({
+    AdverScreenMyMainStatus? status,
+    List<AdvertModel>? adverts,
+    List<AdvertModel>? services,
+    ErrorModel? error,
     AdvertIndexRequestParams? params,
-    List<AdvertModel>? adverts
+    bool? stock,
   }) {
-    return AdvertScreenMySuccess(
-        params: params ?? this.params,
-        adverts: adverts ?? this.adverts
+    return AdvertScreenMyState(
+      status: status ?? this.status,
+      adverts: adverts ?? this.adverts,
+      services: services ?? this.services,
+      error: error,
+      params: params ?? this.params,
+      stock: stock ?? this.stock
     );
   }
 }

@@ -1,15 +1,20 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:megaladon/data/models/offer_model.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/tiles/data_tile.dart';
 import 'package:megaladon/presentation/widgets/tiles/executor_tile.dart';
 
 class OfferCard extends StatelessWidget {
+  final int orderId;
+  final OfferModel offer;
+
+  const OfferCard({super.key, required this.offer, required this.orderId});
 
   _onTap(BuildContext context) => () {
-    context.router.push(const DetailsOfferRoute());
+    context.router.push(DetailsOfferRoute(orderId: orderId, offerId: offer.id));
   };
 
   @override
@@ -19,18 +24,18 @@ class OfferCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         color: Theme.of(context).colorScheme.tertiary,
       ),
-      margin: EdgeInsets.symmetric(vertical: 10),
-      padding: EdgeInsets.all(10),
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.all(10),
       child: Column(
         children: [
-          ExecutorTile(),
-          DataTile(title: 'Описание: ', data: 'Как принято считать, непосредственные участники технического прогресса объединены в целые кластеры'),
-          DataTile(title: 'Сроки: ', data: '2 недели'),
-          DataTile(title: 'Цена: ', data: '25 000 ₸'),
-          SizedBox(
+          if(offer.executor != null) ExecutorTile(executor: offer.executor!),
+          DataTile(title: 'Description2'.tr(), data: offer.comment ?? 'No_description'.tr()),
+          DataTile(title: 'Terms '.tr(), data: offer.date),
+          DataTile(title: 'Price: '.tr(), data: offer.price),
+          const SizedBox(
             height: 30,
           ),
-          ElevatedButtonApp(text: 'Подробнее', onPressed: _onTap(context),),
+          ElevatedButtonApp(text: 'more_details'.tr(), onPressed: _onTap(context),),
         ],
       ),
     );

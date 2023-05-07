@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
@@ -57,13 +58,13 @@ class _VerifyScreenState extends State<VerifyScreen> {
 
   _listenerVerify(bool isListener) => (BuildContext context, AuthState state) {
     if(state is AuthLoginState) {
-      context.router.navigate(InitialRouter(
+      context.router.navigate(const InitialRouter(
         children: [
           ProfileRouter()
         ]
       ));
     } else if(state is AuthErrorState && isListener) {
-      showErrorSnackBar(context, state.error);
+      showErrorSnackBar(context, state.error.messages[0]);
     }
   };
 
@@ -81,12 +82,12 @@ class _VerifyScreenState extends State<VerifyScreen> {
         ],
         child: SafeArea(
           child: Container(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                Spacer(),
-                TitleApp('Регистрация'),
-                SizedBox(height: 20,),
+                const Spacer(),
+                TitleApp("Registration".tr()),
+                const SizedBox(height: 20,),
                 PinCodeTextField(
                     appContext: context,
                     length: 6,
@@ -105,17 +106,20 @@ class _VerifyScreenState extends State<VerifyScreen> {
                       inactiveFillColor: Theme.of(context).colorScheme.onBackground,
                     ), onChanged: (String value) {  },
                 ),
-                Text('Введите 6-ти значный код из смс'),
+                 Text("Enter_6digit_code_from_SMS".tr()),
                 BlocBuilder<AuthBloc,AuthState>(
                   builder: (context, state) {
                     if(state is AuthLoginState) {
-                      return ElevatedButtonApp(child: Loader(), onPressed: _verify,);
+                      return ElevatedButtonApp(
+                        onPressed: _verify,
+                        child: Loader(color: Theme.of(context).colorScheme.background)
+                      );
                     }
-                    return ElevatedButtonApp(text: 'Подтвердить', onPressed: _verify,);
+                    return ElevatedButtonApp(text: "Confirm".tr(), onPressed: _verify,);
                   }
                 ),
-                OutlinedButtonApp(text: 'Выслать код повторно'),
-                Spacer(flex: 3),
+                OutlinedButtonApp(text: "Send_code_again".tr()),
+                const Spacer(flex: 3),
               ],
             ),
           ),

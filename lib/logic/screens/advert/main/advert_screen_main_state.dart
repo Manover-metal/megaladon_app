@@ -1,48 +1,49 @@
 part of 'advert_screen_main_cubit.dart';
 
-abstract class AdvertScreenMainState extends Equatable {
-  final AdvertIndexRequestParams params;
 
-  AdvertScreenMainState({required this.params});
-
+enum AdverScreenMainStatus {
+  loading,
+  error,
+  success
 }
 
-class AdvertScreenMainInitial extends AdvertScreenMainState {
-  AdvertScreenMainInitial() : super(params: AdvertIndexRequestParams());
-
-  @override
-  List<Object> get props => [params];
-}
-
-class AdvertScreenMainLoader extends AdvertScreenMainState {
-  AdvertScreenMainLoader() : super(params: AdvertIndexRequestParams());
-
-  @override
-  List<Object> get props => [params];
-}
-
-class AdvertScreenMainError extends AdvertScreenMainState {
-  AdvertScreenMainError() : super(params: AdvertIndexRequestParams());
-
-  @override
-  List<Object> get props => [params];
-}
-
-class AdvertScreenMainSuccess extends  AdvertScreenMainState {
+class AdvertScreenMainState extends Equatable {
+  final AdverScreenMainStatus status;
   final List<AdvertModel> adverts;
+  final List<AdvertModel> services;
 
-  AdvertScreenMainSuccess({required this.adverts, required params}): super(params: params);
+  final ErrorModel? error;
+  final AdvertIndexRequestParams params;
+  final bool stock;
+
+  const AdvertScreenMainState({
+    this.status = AdverScreenMainStatus.success,
+    this.adverts = const [],
+    this.services = const [],
+    this.error,
+    this.params = const AdvertIndexRequestParams(),
+    this.stock = false
+  });
 
   @override
-  List<Object?> get props => [params, adverts];
+  List<Object?> get props => [status, adverts, services, error, params, stock];
 
-  AdvertScreenMainSuccess copyWith({
+  AdvertScreenMainState copyWith({
+    AdverScreenMainStatus? status,
+    List<AdvertModel>? adverts,
+    List<AdvertModel>? services,
+    ErrorModel? error,
     AdvertIndexRequestParams? params,
-    List<AdvertModel>? adverts
+    bool? stock
   }) {
-    return AdvertScreenMainSuccess(
-        params: params ?? this.params,
-        adverts: adverts ?? this.adverts
+    return AdvertScreenMainState(
+      status: status ?? this.status,
+      adverts: adverts ?? this.adverts,
+      services: services ?? this.services,
+      error: error,
+      params: params ?? this.params,
+      stock: stock ?? this.stock
     );
   }
+
 }

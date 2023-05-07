@@ -14,60 +14,55 @@ class DictionaryCubit extends Cubit<DictionaryState> {
   DictionaryCubit() : super(DictionaryState());
 
   initial() async {
-    print('1');
     await fetchCities();
-    print('2');
-
     await fetchAdvertCategories();
-    print('3');
-
     await fetchOrderCategories();
-    print('4');
-
     await fetchServiceTypes();
-    print('5');
-
     await fetchStoreTypes();
-    print('6');
-
-
   }
 
   fetchCities()  async {
     await _repository.getCities().then((value) {
-      print(value);
       emit(state.copyWith(cities: value));
+    }).catchError((err) {
+      emit(state.copyWith(cities: []));
+
     });
   }
 
   fetchOrderCategories()  async {
     await _repository.getOrderCategories().then((value) {
-      print(value);
-
       emit(state.copyWith(orderCategories: value));
+    }).catchError((err) {
+      emit(state.copyWith(orderCategories: []));
+
     });
   }
 
   fetchAdvertCategories()  async {
     await _repository.getAdvertCategories().then((value) {
-      print(value);
-
       emit(state.copyWith(advertCategories: value));
+    }).catchError((err) {
+      emit(state.copyWith(advertCategories: []));
+
     });
   }
 
   fetchStoreTypes()  async {
     await _repository.getCompanyTypes().then((value) {
-      print(value);
-
       emit(state.copyWith(storeTypes: value));
+    }).catchError((err) {
+      emit(state.copyWith(storeTypes: []));
+
     });
   }
 
   fetchServiceTypes()  async {
     await _repository.getServiceTypes().then((value) {
-      print(value);
       emit(state.copyWith(serviceTypes: value));
+    }).catchError((err) {
+      emit(state.copyWith(serviceTypes: []));
+
     });
   }
 }

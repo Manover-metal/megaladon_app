@@ -13,50 +13,64 @@
 part of 'router.dart';
 
 class _$AppRouter extends RootStackRouter {
-  _$AppRouter([GlobalKey<NavigatorState>? navigatorKey]) : super(navigatorKey);
+  _$AppRouter({
+    GlobalKey<NavigatorState>? navigatorKey,
+    required this.notAuthGuard,
+    required this.authGuard,
+  }) : super(navigatorKey);
+
+  final NotAuthGuard notAuthGuard;
+
+  final AuthGuard authGuard;
 
   @override
   final Map<String, PageFactory> pagesMap = {
     InitialRouter.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: SplashScreen(),
+        child: const SplashScreen(),
+      );
+    },
+    DetailsChatRouter.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const DetailsChatScreen(),
       );
     },
     LoginRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: LoginScreen(),
+        child: const LoginScreen(),
       );
     },
     ForgotPasswordRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: ForgotPasswordScreen(),
+        child: const ForgotPasswordScreen(),
       );
     },
     ResetPasswordRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: ResetPasswordScreen(),
+        child: const ResetPasswordScreen(),
       );
     },
     RegisterUserRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: RegisterUserScreen(),
+        child: const RegisterUserScreen(),
       );
     },
     RegisterExecutorRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: RegisterExecutorScreen(),
+        child: const RegisterExecutorScreen(),
       );
     },
     RegisterStoreRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: RegisterStoreScreen(),
+        child: const RegisterStoreScreen(),
       );
     },
     VerifyRoute.name: (routeData) {
@@ -70,15 +84,19 @@ class _$AppRouter extends RootStackRouter {
       );
     },
     CreateAdRoute.name: (routeData) {
+      final args = routeData.argsAs<CreateAdRouteArgs>();
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: CreateAdScreen(),
+        child: CreateAdScreen(
+          key: args.key,
+          type: args.type,
+        ),
       );
     },
     CreateOrderRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: CreateOrderScreen(),
+        child: const CreateOrderScreen(),
       );
     },
     UpdateAdRoute.name: (routeData) {
@@ -102,9 +120,31 @@ class _$AppRouter extends RootStackRouter {
       );
     },
     CreateOfferRoute.name: (routeData) {
+      final args = routeData.argsAs<CreateOfferRouteArgs>();
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: CreateOfferScreen(),
+        child: CreateOfferScreen(
+          key: args.key,
+          orderId: args.orderId,
+        ),
+      );
+    },
+    ChangePasswordRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const ChangePasswordScreen(),
+      );
+    },
+    ChangePhoneStartRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const ChangePhoneStartScreen(),
+      );
+    },
+    ChangePhoneEndRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const ChangePhoneEndScreen(),
       );
     },
     OrderRouter.name: (routeData) {
@@ -134,13 +174,13 @@ class _$AppRouter extends RootStackRouter {
     ListOrdersRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: ListOrdersScreen(),
+        child: const ListOrdersScreen(),
       );
     },
     ListMyOrdersRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: ListMyOrdersScreen(),
+        child: const ListMyOrdersScreen(),
       );
     },
     DetailsOrderRoute.name: (routeData) {
@@ -153,28 +193,47 @@ class _$AppRouter extends RootStackRouter {
         ),
       );
     },
-    ListExecutorsRoute.name: (routeData) {
+    ListMyExecutorsRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: ListExecutorsScreen(),
+        child: const ListMyExecutorsScreen(),
+      );
+    },
+    ListExecutorsRoute.name: (routeData) {
+      final args = routeData.argsAs<ListExecutorsRouteArgs>();
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: ListExecutorsScreen(
+          key: args.key,
+          orderId: args.orderId,
+        ),
       );
     },
     DetailsOfferRoute.name: (routeData) {
+      final args = routeData.argsAs<DetailsOfferRouteArgs>();
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: DetailsOfferScreen(),
+        child: DetailsOfferScreen(
+          key: args.key,
+          orderId: args.orderId,
+          offerId: args.offerId,
+        ),
       );
     },
     ReviewRoute.name: (routeData) {
+      final args = routeData.argsAs<ReviewRouteArgs>();
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: ReviewScreen(),
+        child: ReviewScreen(
+          key: args.key,
+          order: args.order,
+        ),
       );
     },
     ListStoresRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: ListStoresScreen(),
+        child: const ListStoresScreen(),
       );
     },
     DetailsStoreRoute.name: (routeData) {
@@ -190,7 +249,7 @@ class _$AppRouter extends RootStackRouter {
     TradingAdsRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: TradingAdsScreen(),
+        child: const TradingAdsScreen(),
       );
     },
     DetailsAdRoute.name: (routeData) {
@@ -206,13 +265,37 @@ class _$AppRouter extends RootStackRouter {
     MyAdsRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: MyAdsScreen(),
+        child: const MyAdsScreen(),
       );
     },
     ProfileRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: ProfileScreen(),
+        child: const ProfileScreen(),
+      );
+    },
+    SettingsRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const SettingsScreen(),
+      );
+    },
+    ChangeExecutorRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const ChangeExecutorScreen(),
+      );
+    },
+    ChangeStoreRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const ChangeStoreScreen(),
+      );
+    },
+    ListChatsRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const ListChatsScreen(),
       );
     },
   };
@@ -244,11 +327,18 @@ class _$AppRouter extends RootStackRouter {
                   ListMyOrdersRoute.name,
                   path: 'list-my-orders-screen',
                   parent: OrderRouter.name,
+                  guards: [authGuard],
                 ),
                 RouteConfig(
                   DetailsOrderRoute.name,
                   path: 'details-order-screen',
                   parent: OrderRouter.name,
+                ),
+                RouteConfig(
+                  ListMyExecutorsRoute.name,
+                  path: 'list-my-executors-screen',
+                  parent: OrderRouter.name,
+                  guards: [authGuard],
                 ),
                 RouteConfig(
                   ListExecutorsRoute.name,
@@ -303,6 +393,7 @@ class _$AppRouter extends RootStackRouter {
                   MyAdsRoute.name,
                   path: 'my-ads-screen',
                   parent: AdRouter.name,
+                  guards: [authGuard],
                 ),
               ],
             ),
@@ -315,58 +406,112 @@ class _$AppRouter extends RootStackRouter {
                   ProfileRoute.name,
                   path: '',
                   parent: ProfileRouter.name,
-                )
+                ),
+                RouteConfig(
+                  SettingsRoute.name,
+                  path: 'settings-screen',
+                  parent: ProfileRouter.name,
+                ),
+                RouteConfig(
+                  ChangeExecutorRoute.name,
+                  path: 'change-executor-screen',
+                  parent: ProfileRouter.name,
+                  guards: [authGuard],
+                ),
+                RouteConfig(
+                  ChangeStoreRoute.name,
+                  path: 'change-store-screen',
+                  parent: ProfileRouter.name,
+                  guards: [authGuard],
+                ),
+                RouteConfig(
+                  ListChatsRoute.name,
+                  path: 'list-chats-screen',
+                  parent: ProfileRouter.name,
+                  guards: [authGuard],
+                ),
               ],
             ),
           ],
         ),
         RouteConfig(
+          DetailsChatRouter.name,
+          path: '/details-chat-screen',
+        ),
+        RouteConfig(
           LoginRoute.name,
           path: '/login-screen',
+          guards: [notAuthGuard],
         ),
         RouteConfig(
           ForgotPasswordRoute.name,
           path: '/forgot-password-screen',
+          guards: [notAuthGuard],
         ),
         RouteConfig(
           ResetPasswordRoute.name,
           path: '/reset-password-screen',
+          guards: [notAuthGuard],
         ),
         RouteConfig(
           RegisterUserRoute.name,
           path: '/register-user-screen',
+          guards: [notAuthGuard],
         ),
         RouteConfig(
           RegisterExecutorRoute.name,
           path: '/register-executor-screen',
+          guards: [notAuthGuard],
         ),
         RouteConfig(
           RegisterStoreRoute.name,
           path: '/register-store-screen',
+          guards: [notAuthGuard],
         ),
         RouteConfig(
           VerifyRoute.name,
           path: '/verify-screen',
+          guards: [notAuthGuard],
         ),
         RouteConfig(
           CreateAdRoute.name,
           path: '/create-ad-screen',
+          guards: [authGuard],
         ),
         RouteConfig(
           CreateOrderRoute.name,
           path: '/create-order-screen',
+          guards: [authGuard],
         ),
         RouteConfig(
           UpdateAdRoute.name,
           path: '/update-ad-screen',
+          guards: [authGuard],
         ),
         RouteConfig(
           UpdateOrderRoute.name,
           path: '/update-order-screen',
+          guards: [authGuard],
         ),
         RouteConfig(
           CreateOfferRoute.name,
           path: '/create-offer-screen',
+          guards: [authGuard],
+        ),
+        RouteConfig(
+          ChangePasswordRoute.name,
+          path: '/change-password-screen',
+          guards: [authGuard],
+        ),
+        RouteConfig(
+          ChangePhoneStartRoute.name,
+          path: '/change-phone-start-screen',
+          guards: [authGuard],
+        ),
+        RouteConfig(
+          ChangePhoneEndRoute.name,
+          path: '/change-phone-end-screen',
+          guards: [authGuard],
         ),
       ];
 }
@@ -382,6 +527,18 @@ class InitialRouter extends PageRouteInfo<void> {
         );
 
   static const String name = 'InitialRouter';
+}
+
+/// generated route for
+/// [DetailsChatScreen]
+class DetailsChatRouter extends PageRouteInfo<void> {
+  const DetailsChatRouter()
+      : super(
+          DetailsChatRouter.name,
+          path: '/details-chat-screen',
+        );
+
+  static const String name = 'DetailsChatRouter';
 }
 
 /// generated route for
@@ -492,14 +649,36 @@ class VerifyRouteArgs {
 
 /// generated route for
 /// [CreateAdScreen]
-class CreateAdRoute extends PageRouteInfo<void> {
-  const CreateAdRoute()
-      : super(
+class CreateAdRoute extends PageRouteInfo<CreateAdRouteArgs> {
+  CreateAdRoute({
+    Key? key,
+    required AdvertType type,
+  }) : super(
           CreateAdRoute.name,
           path: '/create-ad-screen',
+          args: CreateAdRouteArgs(
+            key: key,
+            type: type,
+          ),
         );
 
   static const String name = 'CreateAdRoute';
+}
+
+class CreateAdRouteArgs {
+  const CreateAdRouteArgs({
+    this.key,
+    required this.type,
+  });
+
+  final Key? key;
+
+  final AdvertType type;
+
+  @override
+  String toString() {
+    return 'CreateAdRouteArgs{key: $key, type: $type}';
+  }
 }
 
 /// generated route for
@@ -584,14 +763,72 @@ class UpdateOrderRouteArgs {
 
 /// generated route for
 /// [CreateOfferScreen]
-class CreateOfferRoute extends PageRouteInfo<void> {
-  const CreateOfferRoute()
-      : super(
+class CreateOfferRoute extends PageRouteInfo<CreateOfferRouteArgs> {
+  CreateOfferRoute({
+    Key? key,
+    required int orderId,
+  }) : super(
           CreateOfferRoute.name,
           path: '/create-offer-screen',
+          args: CreateOfferRouteArgs(
+            key: key,
+            orderId: orderId,
+          ),
         );
 
   static const String name = 'CreateOfferRoute';
+}
+
+class CreateOfferRouteArgs {
+  const CreateOfferRouteArgs({
+    this.key,
+    required this.orderId,
+  });
+
+  final Key? key;
+
+  final int orderId;
+
+  @override
+  String toString() {
+    return 'CreateOfferRouteArgs{key: $key, orderId: $orderId}';
+  }
+}
+
+/// generated route for
+/// [ChangePasswordScreen]
+class ChangePasswordRoute extends PageRouteInfo<void> {
+  const ChangePasswordRoute()
+      : super(
+          ChangePasswordRoute.name,
+          path: '/change-password-screen',
+        );
+
+  static const String name = 'ChangePasswordRoute';
+}
+
+/// generated route for
+/// [ChangePhoneStartScreen]
+class ChangePhoneStartRoute extends PageRouteInfo<void> {
+  const ChangePhoneStartRoute()
+      : super(
+          ChangePhoneStartRoute.name,
+          path: '/change-phone-start-screen',
+        );
+
+  static const String name = 'ChangePhoneStartRoute';
+}
+
+/// generated route for
+/// [ChangePhoneEndScreen]
+class ChangePhoneEndRoute extends PageRouteInfo<void> {
+  const ChangePhoneEndRoute()
+      : super(
+          ChangePhoneEndRoute.name,
+          path: '/change-phone-end-screen',
+        );
+
+  static const String name = 'ChangePhoneEndRoute';
 }
 
 /// generated route for
@@ -705,39 +942,122 @@ class DetailsOrderRouteArgs {
 }
 
 /// generated route for
-/// [ListExecutorsScreen]
-class ListExecutorsRoute extends PageRouteInfo<void> {
-  const ListExecutorsRoute()
+/// [ListMyExecutorsScreen]
+class ListMyExecutorsRoute extends PageRouteInfo<void> {
+  const ListMyExecutorsRoute()
       : super(
+          ListMyExecutorsRoute.name,
+          path: 'list-my-executors-screen',
+        );
+
+  static const String name = 'ListMyExecutorsRoute';
+}
+
+/// generated route for
+/// [ListExecutorsScreen]
+class ListExecutorsRoute extends PageRouteInfo<ListExecutorsRouteArgs> {
+  ListExecutorsRoute({
+    Key? key,
+    required int orderId,
+  }) : super(
           ListExecutorsRoute.name,
           path: 'list-executors-screen',
+          args: ListExecutorsRouteArgs(
+            key: key,
+            orderId: orderId,
+          ),
         );
 
   static const String name = 'ListExecutorsRoute';
 }
 
+class ListExecutorsRouteArgs {
+  const ListExecutorsRouteArgs({
+    this.key,
+    required this.orderId,
+  });
+
+  final Key? key;
+
+  final int orderId;
+
+  @override
+  String toString() {
+    return 'ListExecutorsRouteArgs{key: $key, orderId: $orderId}';
+  }
+}
+
 /// generated route for
 /// [DetailsOfferScreen]
-class DetailsOfferRoute extends PageRouteInfo<void> {
-  const DetailsOfferRoute()
-      : super(
+class DetailsOfferRoute extends PageRouteInfo<DetailsOfferRouteArgs> {
+  DetailsOfferRoute({
+    Key? key,
+    required int orderId,
+    required int offerId,
+  }) : super(
           DetailsOfferRoute.name,
           path: 'details-offer-screen',
+          args: DetailsOfferRouteArgs(
+            key: key,
+            orderId: orderId,
+            offerId: offerId,
+          ),
         );
 
   static const String name = 'DetailsOfferRoute';
 }
 
+class DetailsOfferRouteArgs {
+  const DetailsOfferRouteArgs({
+    this.key,
+    required this.orderId,
+    required this.offerId,
+  });
+
+  final Key? key;
+
+  final int orderId;
+
+  final int offerId;
+
+  @override
+  String toString() {
+    return 'DetailsOfferRouteArgs{key: $key, orderId: $orderId, offerId: $offerId}';
+  }
+}
+
 /// generated route for
 /// [ReviewScreen]
-class ReviewRoute extends PageRouteInfo<void> {
-  const ReviewRoute()
-      : super(
+class ReviewRoute extends PageRouteInfo<ReviewRouteArgs> {
+  ReviewRoute({
+    Key? key,
+    required OrderModel order,
+  }) : super(
           ReviewRoute.name,
           path: 'review-screen',
+          args: ReviewRouteArgs(
+            key: key,
+            order: order,
+          ),
         );
 
   static const String name = 'ReviewRoute';
+}
+
+class ReviewRouteArgs {
+  const ReviewRouteArgs({
+    this.key,
+    required this.order,
+  });
+
+  final Key? key;
+
+  final OrderModel order;
+
+  @override
+  String toString() {
+    return 'ReviewRouteArgs{key: $key, order: $order}';
+  }
 }
 
 /// generated route for
@@ -854,4 +1174,52 @@ class ProfileRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'ProfileRoute';
+}
+
+/// generated route for
+/// [SettingsScreen]
+class SettingsRoute extends PageRouteInfo<void> {
+  const SettingsRoute()
+      : super(
+          SettingsRoute.name,
+          path: 'settings-screen',
+        );
+
+  static const String name = 'SettingsRoute';
+}
+
+/// generated route for
+/// [ChangeExecutorScreen]
+class ChangeExecutorRoute extends PageRouteInfo<void> {
+  const ChangeExecutorRoute()
+      : super(
+          ChangeExecutorRoute.name,
+          path: 'change-executor-screen',
+        );
+
+  static const String name = 'ChangeExecutorRoute';
+}
+
+/// generated route for
+/// [ChangeStoreScreen]
+class ChangeStoreRoute extends PageRouteInfo<void> {
+  const ChangeStoreRoute()
+      : super(
+          ChangeStoreRoute.name,
+          path: 'change-store-screen',
+        );
+
+  static const String name = 'ChangeStoreRoute';
+}
+
+/// generated route for
+/// [ListChatsScreen]
+class ListChatsRoute extends PageRouteInfo<void> {
+  const ListChatsRoute()
+      : super(
+          ListChatsRoute.name,
+          path: 'list-chats-screen',
+        );
+
+  static const String name = 'ListChatsRoute';
 }

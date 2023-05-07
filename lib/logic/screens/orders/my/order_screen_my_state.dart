@@ -1,47 +1,54 @@
 part of 'order_screen_my_cubit.dart';
 
-abstract class OrderScreenMyState extends Equatable {
-  final OrderIndexRequestParams params;
-
-  OrderScreenMyState({required this.params});
+enum OrderScreenMyStatus {
+  loading,
+  error,
+  success
 }
 
-class OrderScreenMyInitial extends OrderScreenMyState {
-  OrderScreenMyInitial() : super(params: OrderIndexRequestParams());
-
-  @override
-  List<Object> get props => [params];
-}
-
-class OrderScreenMyLoader extends OrderScreenMyState {
-  OrderScreenMyLoader() : super(params: OrderIndexRequestParams());
-
-  @override
-  List<Object> get props => [params];
-}
-
-class OrderScreenMyError extends OrderScreenMyState {
-  OrderScreenMyError() : super(params: OrderIndexRequestParams());
-
-  @override
-  List<Object> get props => [params];
-}
-
-class OrderScreenMySuccess extends  OrderScreenMyState {
+class OrderScreenMyState extends Equatable {
+  final OrderScreenMyStatus status;
   final List<OrderModel> orders;
+  final List<OrderModel> ordersResponded;
 
-  OrderScreenMySuccess({required this.orders, required params}): super(params: params);
+  final ErrorModel? error;
+  final OrderIndexRequestParams params;
+  final bool stock;
+  final bool stockResponded;
+
+  const OrderScreenMyState({
+    this.status = OrderScreenMyStatus.success,
+    this.orders = const [],
+    this.ordersResponded = const [],
+    this.error,
+    this.params =  const OrderIndexRequestParams(),
+    this.stock = false,
+    this.stockResponded = false
+
+  });
 
   @override
-  List<Object?> get props => [params, orders];
+  List<Object?> get props => [status, orders, error, params, stock];
 
-  OrderScreenMySuccess copyWith({
+  OrderScreenMyState copyWith({
+    OrderScreenMyStatus? status,
+    List<OrderModel>? orders,
+    List<OrderModel>? ordersResponded,
+
+    ErrorModel? error,
     OrderIndexRequestParams? params,
-    List<OrderModel>? orders
+    bool? stock,
+    bool? stockResponded,
   }) {
-    return OrderScreenMySuccess(
-        params: params ?? this.params,
-        orders: orders ?? this.orders
+    return OrderScreenMyState(
+      status: status ?? this.status,
+      orders: orders ?? this.orders,
+      ordersResponded: ordersResponded ?? this.ordersResponded,
+      error: error,
+      params: params ?? this.params,
+      stock: stock ?? this.stock,
+      stockResponded: stockResponded ?? this.stockResponded
     );
   }
+
 }

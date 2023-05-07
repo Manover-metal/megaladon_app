@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:megaladon/generated/locale_keys.g.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/form/auth/auth_form_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
@@ -13,6 +15,8 @@ import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
@@ -22,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
   late TextEditingController _phone;
 
   _register() {
-    context.router.popAndPush(RegisterUserRoute());
+    context.router.popAndPush(const RegisterUserRoute());
   }
 
   _login() {
@@ -59,13 +63,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   _listenerAuth(BuildContext context, AuthState state) {
     if(state is AuthLoginState) {
-      context.router.navigate(InitialRouter(
+      context.router.navigate(const InitialRouter(
           children: [
             ProfileRouter()
           ]
       ));
     } else if(state is AuthErrorState) {
-      showErrorSnackBar(context, state.error);
+      showErrorSnackBar(context, state.error.messages[0]);
     } else if(state is AuthTransitionVerify) {
       context.router.replace(VerifyRoute(phone: _phone.value.text));
     }
@@ -73,10 +77,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   _listenerForm(BuildContext context, AuthFormState state) {
     if(state.status.isInvalid) {
-      if(state.phone.invalid) {
-        showErrorSnackBar(context, state.phone.error.toString());
-      } else if(state.password.invalid) {
-        showErrorSnackBar(context, state.password.error.toString());
+      for (var element in state.props) {
+        if(element is FormzInput && element.invalid) {
+          return showErrorSnackBar(context, element.error.toString());
+        }
       }
     }
   }
@@ -86,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child: MultiBlocListener(
             listeners: [
               BlocListener<AuthBloc, AuthState>(listener: _listenerAuth),
@@ -94,37 +98,37 @@ class _LoginScreenState extends State<LoginScreen> {
             ],
             child: Column(
               children: [
-                Spacer(),
-                TitleApp('Авторизация'),
+                const Spacer(),
+                TitleApp("Authorization".tr()),
                 // Spacer(),
-                SizedBox(height: 20,),
+                const SizedBox(height: 20,),
                 TextFieldApp(
-                  icon: Icon(Icons.person),
-                  label: 'Телефон',
+                  icon: const Icon(Icons.person),
+                  label: "Your_phone_number".tr(),
                   controller: _phone,
                 ),
                 TextFieldApp(
-                  icon: Icon(Icons.lock),
-                  label: 'Пароль',
+                  icon: const Icon(Icons.lock),
+                  label: "Your_password".tr(),
                   controller: _password,
                 ),
                 Align(
                   alignment: Alignment.centerRight,
-                  child: Text('забыли пароль?',
+                  child: Text("Forgot_your_password".tr(),
                     style: Theme.of(context).textTheme.bodySmall
                   ),
                 ),
-                SizedBox(height: 25,),
+                const SizedBox(height: 25,),
                 BlocBuilder<AuthBloc, AuthState>(
                   builder: (context, state) {
                     if(state is AuthLoadingState) {
-                      return ElevatedButtonApp(child: Loader(), onPressed: (){});
+                      return ElevatedButtonApp(child: Loader(color: Theme.of(context).colorScheme.background), onPressed: (){});
                     }
-                    return ElevatedButtonApp(text: 'Войти', onPressed: _login);
+                    return ElevatedButtonApp(text: "Sign_in".tr(), onPressed: _login);
                   }
                 ),
-                OutlinedButtonApp(text: 'Регистрация', onPressed: _register),
-                Spacer(flex: 3),
+                OutlinedButtonApp(text:"Registration".tr(), onPressed: _register),
+                const Spacer(flex: 3),
               ],
             ),
           ),
