@@ -12,6 +12,7 @@ import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
+import 'package:megaladon/presentation/widgets/snackbars/success_snackbar.dart';
 import 'package:megaladon/presentation/widgets/tiles/data_tile.dart';
 import 'package:megaladon/presentation/widgets/tiles/executor_tile.dart';
 
@@ -55,7 +56,9 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
   }
 
   _addToFavorite(ExecutorModel executor) => () async {
-    await context.read<ExecutorScreenMyCubit>().add(orderId: widget.orderId, executorId: executor.id);
+    await context.read<ExecutorScreenMyCubit>().add(orderId: widget.orderId, executorId: executor.id).then((value) {
+      showSuccessSnackBar(context, 'Исполнитель добавлен в избранное');
+    });
   };
   
   @override

@@ -232,7 +232,8 @@ class CodegenLoader extends AssetLoader{
   "Address2": "Мекен-жайы: ",
   "en": "Ағылшын",
   "ru": "Орыс",
-  "kk": "Қазақ"
+  "kk": "Қазақ",
+  "Add_to_Favorite": "Добавить в избранное"
 };
 static const Map<String,dynamic> ru = {
   "main_screen": "Главная",
@@ -452,7 +453,8 @@ static const Map<String,dynamic> ru = {
   "Address2": "Адрес: ",
   "en": "Английский",
   "ru": "Русский",
-  "kk": "Казахский"
+  "kk": "Казахский",
+  "Add_to_Favorite": "Добавить в избранное"
 };
 static const Map<String,dynamic> en = {
   "main_screen": "Main",
@@ -670,7 +672,8 @@ static const Map<String,dynamic> en = {
   "Address2": "Address: ",
   "en": "English",
   "ru": "Russian",
-  "kk": "Kazakh"
+  "kk": "Kazakh",
+  "Add_to_Favorite": "Add to favorite"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"kk": kk, "ru": ru, "en": en};
 }
