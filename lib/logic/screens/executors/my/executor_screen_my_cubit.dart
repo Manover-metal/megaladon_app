@@ -40,10 +40,9 @@ class ExecutorScreenMyCubit extends Cubit<ExecutorScreenMyState> {
     return await _repository.my().then((value) {
       emit(state.copyWith(
           status: ExecutorScreenMyStatus.success,
-          executors: [...state.executors, ...value],
+          executors: value,
       ));
     }).catchError((error) {
-      print(error);
       if(error is DioError) {
         emit(state.copyWith(error: ErrorModel.parseDio(error)));
       } else {

@@ -13,12 +13,18 @@ Future<AdvertCategoryModel?> showAdvertCategoryPicker(BuildContext context) asyn
     height: MediaQuery.of(context).size.height / 3.5,
     backgroundColor: Theme.of(context).colorScheme.background,
     adapter: PickerDataAdapter<AdvertCategoryModel>(
-        data: advertCategories.map((advertCategory) {
-          return PickerItem<AdvertCategoryModel>(
-              text: Text(advertCategory.name),
-              value: advertCategory
-          );
-        }).toList()
+        data: [
+          PickerItem<AdvertCategoryModel>(
+            text: Text(AdvertCategoryModel.nothing.name),
+              value: AdvertCategoryModel.nothing
+          ),
+          ...advertCategories.map((advertCategory) {
+            return PickerItem<AdvertCategoryModel>(
+                text: Text(advertCategory.name),
+                value: advertCategory
+            );
+          }).toList()
+        ]
     ),
     changeToFirst: false,
     hideHeader: false,
@@ -27,7 +33,8 @@ Future<AdvertCategoryModel?> showAdvertCategoryPicker(BuildContext context) asyn
   ).showModal(context);
 
   if(result == null) return null;
-  return advertCategories[result[0]];
+  if(result[0] == 0) return AdvertCategoryModel.nothing;
+  return advertCategories[result[0] - 1];
 }
 
 
@@ -60,6 +67,7 @@ class _AdvertCategoryPickerState extends State<AdvertCategoryPicker> {
 
     AdvertCategoryModel? advertCategory = await showAdvertCategoryPicker(context);
     if (advertCategory != null) {
+
       widget.controller._changeAdvertCategory(advertCategory);
     }
   }

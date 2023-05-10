@@ -32,8 +32,8 @@ class _FilterMyOrderBottomSheetState extends State<FilterMyOrderBottomSheet> {
     context.read<OrderScreenMyCubit>().changeParams(params.copyWith(
         startRow: 0,
         last: _indexPeriodPickerController.value,
-        city: city.id == CityModel.nothing.id ? null : city,
-        category: category.id == OrderCategoryModel.nothing.id ? null : category
+        city: city,
+        category: category
     ));
     context.router.pop(true);
   }

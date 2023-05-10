@@ -17,7 +17,6 @@ import 'package:megaladon/presentation/widgets/tiles/data_tile.dart';
 import 'package:megaladon/presentation/widgets/tiles/executor_tile.dart';
 
 class DetailsOfferScreen extends StatefulWidget {
-  
   final int orderId;
   final int offerId;
 
@@ -67,64 +66,63 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
       body: BlocListener<OrderScreenDetailsCubit, OrderScreenDetailsState>(
         listener: _listenOrder,
         child: SafeArea(
-              child: NestedScrollView(
-                headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-                  return [
-                     SliverToBoxAdapter(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: HeaderAppBar(isBack: true, title: "Artists_suggestion".tr()),
-                      ),
-                    )
-                  ];
-                },
-                body: SingleChildScrollView(
-                  child: Container(
-                    constraints: BoxConstraints(
-                        minHeight: MediaQuery.of(context).size.height
-                    ),
+          child: NestedScrollView(
+            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+              return [
+                 SliverToBoxAdapter(
+                  child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      children: [
-                        BlocBuilder<OfferScreenDetailsCubit, OfferScreenDetailsState>(
-                          builder: (context, state) {
-                            if(state is OfferScreenDetailsSuccess) {
-                              return Column(
-                                children: [
-                                  if(state.offer.executor != null) ...[
-                                    ExecutorTile(executor: state.offer.executor!,),
-                                    Align(
-                                      child: TextButton(
-                                        onPressed: _addToFavorite(state.offer.executor!),
-                                        child: Text('Add_to_Favorite'.tr()),
-                                      ),
-                                    ),
-                                  ],
-
-                                  const SizedBox(height: 20,),
-                                  DataTile(title: "Actual_until:".tr(), data: state.offer.expiredAt,),
-                                  DataTile(title: "Price:".tr(), data: '${state.offer.price} ₸',),
-                                  DataTile(title: "Terms".tr(), data: state.offer.date,),
-                                  DataTile(title: "Location:".tr(), data: 'г. ${state.offer.city?.name }',),
-                                  if(state.offer.comment != null) DataTile(title: "Description2".tr(), data: state.offer.comment!,),
-                                  const SizedBox(height: 20,),
-                                  ElevatedButtonApp(text: "Set_as_executor".tr(), onPressed: _acceptOffer,)
-                                ],
-                              );
-                            } else if(state is OfferScreenDetailsLoader) {
-                              return const Loader();
-                            } else if(state is OfferScreenDetailsError) {
-                              return ErrorMessage(error: state.error);
-                            }
-                            return Container();
-                          },
-                        ),
-                      ],
-                    ),
+                    child: HeaderAppBar(isBack: true, title: "Artists_suggestion".tr()),
                   ),
+                )
+              ];
+            },
+            body: SingleChildScrollView(
+              child: Container(
+                constraints: BoxConstraints(
+                    minHeight: MediaQuery.of(context).size.height
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: [
+                    BlocBuilder<OfferScreenDetailsCubit, OfferScreenDetailsState>(
+                      builder: (context, state) {
+                        if(state is OfferScreenDetailsSuccess) {
+                          return Column(
+                            children: [
+                              if(state.offer.executor != null) ...[
+                                ExecutorTile(executor: state.offer.executor!,),
+                                Align(
+                                  child: TextButton(
+                                    onPressed: _addToFavorite(state.offer.executor!),
+                                    child: Text('Add_to_Favorite'.tr()),
+                                  ),
+                                ),
+                              ],
+                              const SizedBox(height: 20,),
+                              DataTile(title: "Actual_until:".tr(), data: state.offer.expiredAt,),
+                              DataTile(title: "Price:".tr(), data: '${state.offer.price} ₸',),
+                              DataTile(title: "Terms".tr(), data: state.offer.date,),
+                              DataTile(title: "Location:".tr(), data: 'г. ${state.offer.city?.name }',),
+                              if(state.offer.comment != null) DataTile(title: "Description2".tr(), data: state.offer.comment!,),
+                              const SizedBox(height: 20,),
+                              ElevatedButtonApp(text: "Set_as_executor".tr(), onPressed: _acceptOffer,)
+                            ],
+                          );
+                        } else if(state is OfferScreenDetailsLoader) {
+                          return const Loader();
+                        } else if(state is OfferScreenDetailsError) {
+                          return ErrorMessage(error: state.error);
+                        }
+                        return Container();
+                      },
+                    ),
+                  ],
                 ),
               ),
             ),
+          ),
+        ),
       ),
     );
   }

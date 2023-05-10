@@ -1,4 +1,5 @@
 
+import 'package:megaladon/data/models/category_model.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/dictionary/store_type_model.dart';
 import 'package:megaladon/data/models/request/index_period_enum.dart';
@@ -29,8 +30,8 @@ class StoreIndexRequestParams {
       'last': last.name,
       'desc': desc? 1: 0,
       // 'sort': sort.name,
-      'city_id': city?.id,
-      'category_id': category?.id
+      'city_id': city?.id == CityModel.nothing.id ? null : city?.id,
+      'category_id': category?.id == StoreTypeModel.nothing.id ? null :  category?.id
     };
     return data;
   }

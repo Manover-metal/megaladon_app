@@ -44,15 +44,17 @@ class ExecutorTile extends StatelessWidget {
                     )
                 ),
                 const SizedBox(height: 5,),
-                if(executor.countOrders != null) Text.rich(
-                    TextSpan(
-                        children: [
-                           TextSpan(text: 'posted_projects'.tr()),
-                          TextSpan(text: executor.countOrders.toString())
-                        ]
-                    )
-                ),
-                const SizedBox(height: 5,),
+                if(executor.countOrders != null) ...[
+                  Text.rich(
+                      TextSpan(
+                          children: [
+                            TextSpan(text: 'posted_projects'.tr()),
+                            TextSpan(text: executor.countOrders.toString())
+                          ]
+                      )
+                  ),
+                  const SizedBox(height: 5,),
+                ],
                 Text.rich(
                     TextSpan(
                         children: [

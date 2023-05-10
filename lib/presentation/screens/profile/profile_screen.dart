@@ -5,7 +5,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:megaladon/data/models/executor_model.dart';
 import 'package:megaladon/data/models/store_model.dart';
 import 'package:megaladon/data/models/user_model.dart';
-import 'package:megaladon/generated/locale_keys.g.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/form/price/price_form_cubit.dart';
 import 'package:megaladon/logic/screens/profile/change_photo/change_photo_cubit.dart';
@@ -288,14 +287,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ]
                             ],
                           );
-                        } else if (state.status ==
-                            ProfileScreenStatus.notAuth) {
+                        }
+                        else if (state.status == ProfileScreenStatus.notAuth) {
                           return const AuthMessage();
-                        } else if (state.status ==
-                            ProfileScreenStatus.loading) {
+                        } else if (state.status == ProfileScreenStatus.loading) {
                           return const Loader();
-                        } else if (state.status ==
-                            ProfileScreenStatus.notAuth) {
+                        } else if (state.status == ProfileScreenStatus.notAuth) {
                           return ErrorMessage(error: state.error!);
                         } else {
                           return Container();

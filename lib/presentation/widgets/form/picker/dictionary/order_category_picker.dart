@@ -15,12 +15,18 @@ Future<OrderCategoryModel?> showOrderCategoryPicker(BuildContext context) async 
     height: MediaQuery.of(context).size.height / 3.5,
     backgroundColor: Theme.of(context).colorScheme.background,
     adapter: PickerDataAdapter<OrderCategoryModel>(
-        data: orderCategories.map((orderCategory) {
-          return PickerItem<OrderCategoryModel>(
-              text: Text(orderCategory.name),
-              value: orderCategory
-          );
-        }).toList()
+        data: [
+          PickerItem<OrderCategoryModel>(
+              text: Text(OrderCategoryModel.nothing.name),
+              value: OrderCategoryModel.nothing
+          ),
+          ...orderCategories.map((orderCategory) {
+            return PickerItem<OrderCategoryModel>(
+                text: Text(orderCategory.name),
+                value: orderCategory
+            );
+          }).toList()
+        ]
     ),
     changeToFirst: false,
     hideHeader: false,
@@ -29,7 +35,8 @@ Future<OrderCategoryModel?> showOrderCategoryPicker(BuildContext context) async 
   ).showModal(context);
 
   if(result == null) return null;
-  return orderCategories[result[0]];
+  if(result[0] == 0) return OrderCategoryModel.nothing;
+  return orderCategories[result[0] - 1];
 }
 
 

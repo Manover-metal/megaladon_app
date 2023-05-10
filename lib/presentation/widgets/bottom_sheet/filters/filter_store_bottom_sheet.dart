@@ -30,8 +30,8 @@ class _FilterStoreBottomSheetState extends State<FilterStoreBottomSheet> {
     final category = _storeTypePickerController.value;
     context.read<StoreScreenMainCubit>().changeParams(params.copyWith(
       startRow: 0,
-      city: city.id == CityModel.nothing.id ? null : city,
-      category: category.id == StoreTypeModel.nothing.id ? null : category
+      city: city,
+      category: category
     ));
     context.router.pop(true);
   }

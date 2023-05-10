@@ -71,12 +71,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       emit(AuthLoginState(auth));
     }).catchError((error) {
-
+      print(error);
       if(error is DioError) {
         if(error.response?.statusCode == 406) {
           emit(AuthTransitionVerify(event.phone));
         } else {
-          emit(ErrorModel.parseDio(error));
+          emit(AuthErrorState(ErrorModel.parseDio(error)));
         }
       } else {
         emit(AuthErrorState(ErrorModel.nothing));

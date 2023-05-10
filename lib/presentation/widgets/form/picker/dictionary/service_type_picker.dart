@@ -14,12 +14,18 @@ Future<ServiceTypeModel?> showServiceTypePicker(BuildContext context) async {
     height: MediaQuery.of(context).size.height / 3.5,
     backgroundColor: Theme.of(context).colorScheme.background,
     adapter: PickerDataAdapter<ServiceTypeModel>(
-        data: serviceTypes.map((serviceType) {
-          return PickerItem<ServiceTypeModel>(
-              text: Text(serviceType.name),
-              value: serviceType
-          );
-        }).toList()
+        data: [
+          PickerItem<ServiceTypeModel>(
+              text: Text(ServiceTypeModel.nothing.name),
+              value: ServiceTypeModel.nothing
+          ),
+          ...serviceTypes.map((serviceType) {
+            return PickerItem<ServiceTypeModel>(
+                text: Text(serviceType.name),
+                value: serviceType
+            );
+          }).toList()
+        ]
     ),
     changeToFirst: false,
     hideHeader: false,
@@ -28,7 +34,8 @@ Future<ServiceTypeModel?> showServiceTypePicker(BuildContext context) async {
   ).showModal(context);
 
   if(result == null) return null;
-  return serviceTypes[result[0]];
+  if(result[0] == 0) return ServiceTypeModel.nothing;
+  return serviceTypes[result[0] - 1];
 }
 
 

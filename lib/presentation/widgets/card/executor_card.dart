@@ -14,7 +14,15 @@ class ExecutorCard extends StatelessWidget {
   const ExecutorCard({super.key, required this.executor});
 
   _onTapDetails(BuildContext context) => () {
-    // context.router.push(DetailsOfferRoute(orderId: 1));
+    context.router.navigate(InitialRouter(
+      children: [
+        OrderRouter(
+          children: [
+            DetailsExecutorRoute(executorId: executor.id)
+          ]
+        )
+      ]
+    ));
   };
 
   _onTapChat(BuildContext context) => () {
@@ -41,13 +49,13 @@ class ExecutorCard extends StatelessWidget {
               Expanded(
                   child: ElevatedButtonApp(text: 'more_details'.tr(), onPressed: _onTapDetails(context))
               ),
-              const SizedBox(width: 10,),
-              Expanded(
-                  child: OutlinedButtonApp(
-                      text: 'Chat'.tr(),
-                      onPressed: _onTapChat(context)
-                  )
-              )
+              // const SizedBox(width: 10,),
+              // Expanded(
+              //     child: OutlinedButtonApp(
+              //         text: 'Chat'.tr(),
+              //         onPressed: _onTapChat(context)
+              //     )
+              // )
             ],
           )
         ],

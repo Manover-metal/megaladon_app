@@ -14,12 +14,18 @@ Future<CityModel?> showCityPicker(BuildContext context) async {
     height: MediaQuery.of(context).size.height / 3.5,
     backgroundColor: Theme.of(context).colorScheme.background,
     adapter: PickerDataAdapter<CityModel>(
-        data: cities.map((city) {
-          return PickerItem<CityModel>(
-              text: Text(city.name),
-              value: city
-          );
-        }).toList()
+        data: [
+          PickerItem<CityModel>(
+              text: Text(CityModel.nothing.name),
+              value: CityModel.nothing
+          ),
+          ...cities.map((city) {
+            return PickerItem<CityModel>(
+                text: Text(city.name),
+                value: city
+            );
+          }).toList()
+        ]
     ),
     changeToFirst: false,
     hideHeader: false,
@@ -28,7 +34,8 @@ Future<CityModel?> showCityPicker(BuildContext context) async {
   ).showModal(context);
 
   if(result == null) return null;
-  return cities[result[0]];
+  if(result[0] == 0) return CityModel.nothing;
+  return cities[result[0] - 1];
 }
 
 

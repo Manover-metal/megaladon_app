@@ -199,6 +199,16 @@ class _$AppRouter extends RootStackRouter {
         child: const ListMyExecutorsScreen(),
       );
     },
+    DetailsExecutorRoute.name: (routeData) {
+      final args = routeData.argsAs<DetailsExecutorRouteArgs>();
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: DetailsExecutorScreen(
+          key: args.key,
+          executorId: args.executorId,
+        ),
+      );
+    },
     ListExecutorsRoute.name: (routeData) {
       final args = routeData.argsAs<ListExecutorsRouteArgs>();
       return MaterialPageX<dynamic>(
@@ -337,6 +347,12 @@ class _$AppRouter extends RootStackRouter {
                 RouteConfig(
                   ListMyExecutorsRoute.name,
                   path: 'list-my-executors-screen',
+                  parent: OrderRouter.name,
+                  guards: [authGuard],
+                ),
+                RouteConfig(
+                  DetailsExecutorRoute.name,
+                  path: 'details-executor-screen',
                   parent: OrderRouter.name,
                   guards: [authGuard],
                 ),
@@ -951,6 +967,40 @@ class ListMyExecutorsRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'ListMyExecutorsRoute';
+}
+
+/// generated route for
+/// [DetailsExecutorScreen]
+class DetailsExecutorRoute extends PageRouteInfo<DetailsExecutorRouteArgs> {
+  DetailsExecutorRoute({
+    Key? key,
+    required int executorId,
+  }) : super(
+          DetailsExecutorRoute.name,
+          path: 'details-executor-screen',
+          args: DetailsExecutorRouteArgs(
+            key: key,
+            executorId: executorId,
+          ),
+        );
+
+  static const String name = 'DetailsExecutorRoute';
+}
+
+class DetailsExecutorRouteArgs {
+  const DetailsExecutorRouteArgs({
+    this.key,
+    required this.executorId,
+  });
+
+  final Key? key;
+
+  final int executorId;
+
+  @override
+  String toString() {
+    return 'DetailsExecutorRouteArgs{key: $key, executorId: $executorId}';
+  }
 }
 
 /// generated route for

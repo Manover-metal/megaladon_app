@@ -29,8 +29,8 @@ class OrderIndexRequestParams {
       'last': last.name,
       'desc': desc? 1: 0,
       'sortBy': sort.name,
-      'city_id': city?.id,
-      'category_id': category?.id
+      'city_id': city?.id == CityModel.nothing.id ? null : city?.id,
+      'category_id': category?.id == OrderCategoryModel.nothing.id ? null : category?.id
     };
     return data;
   }

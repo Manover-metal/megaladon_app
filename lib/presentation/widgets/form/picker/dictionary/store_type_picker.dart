@@ -15,12 +15,18 @@ Future<StoreTypeModel?> showStoreTypePicker(BuildContext context) async {
     height: MediaQuery.of(context).size.height / 3.5,
     backgroundColor: Theme.of(context).colorScheme.background,
     adapter: PickerDataAdapter<StoreTypeModel>(
-        data: storeTypes.map((storeType) {
-          return PickerItem<StoreTypeModel>(
-              text: Text(storeType.name),
-              value: storeType
-          );
-        }).toList()
+        data: [
+          PickerItem<StoreTypeModel>(
+              text: Text(StoreTypeModel.nothing.name),
+              value: StoreTypeModel.nothing
+          ),
+          ...storeTypes.map((storeType) {
+            return PickerItem<StoreTypeModel>(
+                text: Text(storeType.name),
+                value: storeType
+            );
+          }).toList()
+        ]
     ),
     changeToFirst: false,
     hideHeader: false,
@@ -30,7 +36,8 @@ Future<StoreTypeModel?> showStoreTypePicker(BuildContext context) async {
 
 
   if(result == null) return null;
-  return storeTypes[result[0]];
+  if(result[0] == 0) return StoreTypeModel.nothing;
+  return storeTypes[result[0] - 1];
 }
 
 

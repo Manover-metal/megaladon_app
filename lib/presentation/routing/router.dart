@@ -16,6 +16,7 @@ import 'package:megaladon/presentation/screens/auth/reset_password_screen.dart';
 import 'package:megaladon/presentation/screens/auth/verify_screen.dart';
 import 'package:megaladon/presentation/screens/chat/details_chat_screen.dart';
 import 'package:megaladon/presentation/screens/chat/list_chats_screen.dart';
+import 'package:megaladon/presentation/screens/executor/executor_details_screen.dart';
 import 'package:megaladon/presentation/screens/executor/list_my_executors_screen.dart';
 import 'package:megaladon/presentation/screens/forms/ad/create_ad_screen.dart';
 import 'package:megaladon/presentation/screens/forms/ad/update_ad_screen.dart';
@@ -65,6 +66,7 @@ const List<AutoRoute> order = [
   AutoRoute(page: ListMyOrdersScreen, guards: [AuthGuard]),
   AutoRoute(page: DetailsOrderScreen),
   AutoRoute(page: ListMyExecutorsScreen, guards: [AuthGuard]),
+  AutoRoute(page: DetailsExecutorScreen, guards: [AuthGuard]),
   AutoRoute(page: ListExecutorsScreen),
   AutoRoute(page: DetailsOfferScreen),
   AutoRoute(page: ReviewScreen),
