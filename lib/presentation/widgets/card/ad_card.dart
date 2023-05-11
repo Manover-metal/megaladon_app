@@ -43,8 +43,8 @@ class AdCard extends StatelessWidget {
                   color: Theme.of(context).colorScheme.secondary,
                   child: CachedNetworkImage(
                     imageUrl: advert.media[0].url,
-                    progressIndicatorBuilder: (context, url, downloadProgress) => Icon(IconPack.chat, size: MediaQuery.of(context).size.width / 10),
-                    errorWidget:  (context, url, error) => Icon(IconPack.chat, size: MediaQuery.of(context).size.width / 10),
+                    progressIndicatorBuilder: (context, url, downloadProgress) => Icon(Icons.image_outlined, size: MediaQuery.of(context).size.width / 10),
+                    errorWidget:  (context, url, error) => Icon(Icons.error_outline, size: MediaQuery.of(context).size.width / 10),
                     fit: BoxFit.cover,
                   ),
                 ),

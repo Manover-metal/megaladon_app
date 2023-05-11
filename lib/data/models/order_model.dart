@@ -29,8 +29,10 @@ class OrderModel extends Equatable {
   final OrderCategoryModel? category;
   final ExecutorModel? executor;
   final CityModel? city;
-  final List<FileModel>? files;
-  final OrderStatus? status;
+  final List<FileModel> files;
+  final List<FileModel> images;
+
+  final OrderStatus status;
 
   const OrderModel({
     required this.id,
@@ -43,10 +45,11 @@ class OrderModel extends Equatable {
     this.priceMax,
     this.user,
     this.executor,
-    this.files,
+    this.files = const [],
+    this.images = const [],
     this.category,
     this.city,
-    this.status
+    this.status = OrderStatus.nothing
   });
 
   static OrderModel fromJsonMini(data) {
@@ -64,6 +67,15 @@ class OrderModel extends Equatable {
   }
 
   static OrderModel fromJsonFull(data) {
+    List<FileModel>? files = data['files'] != null? FileModel.listFromJson(data['files']): null;
+    List<FileModel> imageFiles = [];
+    List<FileModel> otherFiles = [];
+
+    if(files != null) {
+      imageFiles = files.where((file) => file.url.endsWith('.jpg') || file.url.endsWith('.jpeg') || file.url.endsWith('.png')).toList();
+      otherFiles = files.where((file) => !file.url.endsWith('.jpg') && !file.url.endsWith('.jpeg') && !file.url.endsWith('.png')).toList();
+    }
+
     return OrderModel(
       id: data['id'],
       title: data['title'],
@@ -73,17 +85,17 @@ class OrderModel extends Equatable {
       statusName: data['status'],
       createdAt: data['created_at'],
       countOffers: data['count_offers'],
-      files: data['files'] != null? FileModel.listFromJson(data['files']): null,
+      files: otherFiles,
+      images: imageFiles,
       user: data['user'] != null? UserModel.fromJson(data['user']): null,
       executor: data['executor'] != null? ExecutorModel.fromJson(data['executor']): null,
       category: data['category'] != null? OrderCategoryModel.fromJson(data['category']): null,
       city: data['city'] != null ? CityModel.fromJson(data['city']): null,
-      status: data['status_code'] != null? OrderStatus.values[Parser.toInt(data['status_code'])]: null,
+      status: data['status_code'] != null? OrderStatus.values[Parser.toInt(data['status_code'])]: OrderStatus.nothing,
     );
   }
 
   static List<OrderModel> listFromJsonMini(List data) {
-    print(data);
     return data.map<OrderModel>((advert) {
       return OrderModel.fromJsonMini(advert);
     }).toList();

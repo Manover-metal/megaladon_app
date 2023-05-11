@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:formz/formz.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/dictionary/order_category_model.dart';
@@ -25,13 +27,12 @@ class OrderUpdateFormCubit extends Cubit<OrderUpdateFormState> {
     required String priceRecommended,
     required CityModel city,
     required OrderCategoryModel category,
-    
+    required List<PlatformFile> files
   }) {
     TitleFormModel titleForm = TitleFormModel.dirty(title);
     DescriptionFormModel descriptionForm = DescriptionFormModel.dirty(description);
-    PriceFormModel priceMaxFormModel = PriceFormModel.dirty(priceMax);
-    PriceFormModel priceRecommendedFormModel = PriceFormModel.dirty(priceRecommended);
-
+    PriceFormModel priceMaxFormModel = PriceFormModel.dirty(priceMax, false);
+    PriceFormModel priceRecommendedFormModel = PriceFormModel.dirty(priceRecommended, false);
     CityFormModel cityForm = CityFormModel.dirty(city.id);
     OrderCategoryFormModel categoryForm = OrderCategoryFormModel.dirty(category.id);
 
@@ -52,7 +53,9 @@ class OrderUpdateFormCubit extends Cubit<OrderUpdateFormState> {
         city: cityForm,
         category: categoryForm,
         priceMax: priceMaxFormModel,
-        priceRecommended: priceRecommendedFormModel
+        priceRecommended: priceRecommendedFormModel,
+        files: files
+
     );
     emit(stateNew);
     return stateNew.status.isValid;
@@ -60,13 +63,23 @@ class OrderUpdateFormCubit extends Cubit<OrderUpdateFormState> {
 
   Future updateFetch(int id) async {
     emit(state.copyWith(formState: EnumFormState.fetch));
+
+    List<MultipartFile> files = [];
+    for (var file in state.files) {
+      if (file.path != null) {
+        files.add(
+            await MultipartFile.fromFile(file.path!, filename: file.name));
+      }
+    }
+
     return _repository.update(id, OrderUpdateRequestParams(
         title: state.title.value,
         description: state.title.value,
-        priceMax: int.parse(state.priceMax.value),
-        priceRecommended: int.parse(state.priceRecommended.value),
+        priceMax: int.tryParse(state.priceMax.value),
+        priceRecommended: int.tryParse(state.priceRecommended.value),
         categoryId: state.category.value,
         cityId: state.city.value,
+        files: files
     )).then((value) {
       emit(state.copyWith(formState: EnumFormState.success));
     }).catchError((error) {

@@ -95,7 +95,7 @@ class _SplashScreenState extends State<SplashScreen> {
               alignment: Alignment.bottomCenter,
               children: [
                 SizedBox(
-                    // height: 75,
+                    height: 50,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
@@ -112,7 +112,7 @@ class _SplashScreenState extends State<SplashScreen> {
                           },
                           order: 1,
                           overlayBuilder: (StepWidgetParams params) {
-                            return Text('Список размещенных на платформе заказов для поиска лучшего предложения от исполнителей.');
+                            return const Text('Список размещенных на платформе заказов для поиска лучшего предложения от исполнителей.');
                           },
                           onWidgetLoad: _introStart(context)
                         ),
@@ -129,7 +129,7 @@ class _SplashScreenState extends State<SplashScreen> {
                           },
                           order: 2,
                           overlayBuilder: (StepWidgetParams params) {
-                            return Text('Список компаний занимающихся продажей готовой продукции.');
+                            return const Text('Список компаний занимающихся продажей готовой продукции.');
                           },
                         ),
                         const SizedBox(
@@ -148,7 +148,7 @@ class _SplashScreenState extends State<SplashScreen> {
                           },
                           order: 3,
                           overlayBuilder: (StepWidgetParams params) {
-                            return Text('Список объявлений о продажи товара или оказании услуг машиностроения.');
+                            return const Text('Список объявлений о продажи товара или оказании услуг машиностроения.');
                           },
                         ),
                         IntroStepBuilder(
@@ -165,20 +165,23 @@ class _SplashScreenState extends State<SplashScreen> {
                           },
                           order: 4,
                           overlayBuilder: (StepWidgetParams params) {
-                            return Text('Профиль пользователя.');
+                            return const Text('Профиль пользователя.');
                           },
                         ),
                       ],
                     )
                 ),
                 Positioned(
-                  child: FloatingActionButton(
-                    onPressed: _add(context),
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    child: Icon(
-                      Icons.add,
-                      color: Theme.of(context).colorScheme.background,
-                      size: 40,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 10.0),
+                    child: FloatingActionButton(
+                      onPressed: _add(context),
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      child: Icon(
+                        Icons.add,
+                        color: Theme.of(context).colorScheme.background,
+                        size: 40,
+                      ),
                     ),
                   ),
                 )

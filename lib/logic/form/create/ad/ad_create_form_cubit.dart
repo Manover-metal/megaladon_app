@@ -60,7 +60,6 @@ class AdCreateFormCubit extends Cubit<AdCreateFormState> {
         media: media,
         type: type
     );
-    print(type);
     emit(stateNew);
     return stateNew.status.isValid;
   }
@@ -80,7 +79,7 @@ class AdCreateFormCubit extends Cubit<AdCreateFormState> {
       return _repository.create(AdvertCreateRequestParams(
         title: state.title.value,
         description: state.title.value,
-        price: int.parse(state.price.value),
+        price: int.tryParse(state.price.value),
         categoryId: state.category.value,
         cityId: state.city.value,
         additionalPhone: state.phone.value,

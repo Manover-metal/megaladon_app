@@ -47,11 +47,11 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
       context.read<OrderCreateFormCubit>().createFetch().then((value) {
         context.router.popUntil((route) => route.settings.name == InitialRouter.name);
         context.router.navigate(const InitialRouter(
-            children: [
-              OrderRouter(
-                  children: [ListMyOrdersRoute()]
-              )
-            ]
+          children: [
+            OrderRouter(
+                children: [ListMyOrdersRoute()]
+            )
+          ]
         ));
       }).catchError((error) {
         if(error is DioError) {

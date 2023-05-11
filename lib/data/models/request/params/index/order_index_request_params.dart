@@ -30,8 +30,9 @@ class OrderIndexRequestParams {
       'desc': desc? 1: 0,
       'sortBy': sort.name,
       'city_id': city?.id == CityModel.nothing.id ? null : city?.id,
-      'category_id': category?.id == OrderCategoryModel.nothing.id ? null : category?.id
+      'category': category?.id == OrderCategoryModel.nothing.id ? null : category?.id
     };
+    print(data);
     return data;
   }
 

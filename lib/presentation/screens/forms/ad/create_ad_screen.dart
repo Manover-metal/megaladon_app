@@ -7,8 +7,8 @@ import 'package:megaladon/core/icons/icons.dart';
 import 'package:megaladon/data/models/dictionary/advert_type.dart';
 import 'package:megaladon/data/models/enum_form_state.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:megaladon/generated/locale_keys.g.dart';
 import 'package:megaladon/logic/form/create/ad/ad_create_form_cubit.dart';
+import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
@@ -47,6 +47,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
   _create() {
     if(_checkForm()) {
       context.read<AdCreateFormCubit>().createFetch().then((value) {
+        context.read<OrderScreenMyCubit>().refresh();
         context.router.popUntil((route) => route.settings.name == InitialRouter.name);
         context.router.navigate( const InitialRouter(
           children: [
@@ -55,8 +56,8 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
             )
           ]
         ));
-
       }).catchError((error) {
+        print(error);
         if(error is DioError) {
           showErrorSnackBar(context, error.response?.data['message']);
         }

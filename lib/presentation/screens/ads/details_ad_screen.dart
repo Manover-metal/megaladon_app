@@ -4,7 +4,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/core/icons/icons.dart';
-import 'package:megaladon/generated/locale_keys.g.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/screens/advert/details/advert_screen_details_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
@@ -58,7 +57,7 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                   child: Column(
                     children:  [
                       Padding(
-                        padding:  EdgeInsets.symmetric(horizontal: 20.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       
                         child: HeaderAppBar(isBack: true, title: "Ad".tr()),
                       ),
@@ -99,8 +98,8 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                                         color: Theme.of(context).colorScheme.secondary,
                                         child: CachedNetworkImage(
                                           imageUrl: e.url,
-                                          progressIndicatorBuilder: (context, url, downloadProgress) => Icon(IconPack.chat, size: MediaQuery.of(context).size.width / 10),
-                                          errorWidget:  (context, url, error) => Icon(IconPack.chat, size: MediaQuery.of(context).size.width / 10),
+                                          progressIndicatorBuilder: (context, url, downloadProgress) => Icon(Icons.image_outlined, size: MediaQuery.of(context).size.width / 10),
+                                          errorWidget:  (context, url, error) => Icon(Icons.error_outline, size: MediaQuery.of(context).size.width / 10),
                                           fit: BoxFit.cover,
                                         ),
                                       ),
@@ -116,7 +115,7 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text( "Price_up_to".tr()+'${state.advert.price} ₸'),
+                                Text( '${"Price_up_to".tr()}${state.advert.price} ₸'),
                                 const SizedBox(height: 10,),
                                 UserTile(user: state.advert.user!),
                                 const SizedBox(height: 20),

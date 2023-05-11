@@ -3,18 +3,20 @@ import 'package:dio/dio.dart';
 class OrderUpdateRequestParams {
   final String title;
   final String description;
-  final int priceRecommended;
-  final int priceMax;
+  final int? priceRecommended;
+  final int? priceMax;
   final int categoryId;
   final int cityId;
+  final List<MultipartFile> files;
 
   OrderUpdateRequestParams({
     required this.title,
     required this.description,
-    required this.priceRecommended,
-    required this.priceMax,
+    this.priceRecommended,
+    this.priceMax,
     required this.categoryId,
     required this.cityId,
+    this.files = const []
   });
 
   toData() {
@@ -26,6 +28,11 @@ class OrderUpdateRequestParams {
       'category_id': categoryId,
       'city_id': cityId,
     });
+
+    for (var element in files) {
+      data.files.add(MapEntry('files[]', element));
+    }
+
     return data;
   }
 }

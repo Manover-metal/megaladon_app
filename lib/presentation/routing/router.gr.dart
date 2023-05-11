@@ -106,6 +106,7 @@ class _$AppRouter extends RootStackRouter {
         child: UpdateAdScreen(
           key: args.key,
           advert: args.advert,
+          type: args.type,
         ),
       );
     },
@@ -715,12 +716,14 @@ class UpdateAdRoute extends PageRouteInfo<UpdateAdRouteArgs> {
   UpdateAdRoute({
     Key? key,
     required AdvertModel advert,
+    required AdvertType type,
   }) : super(
           UpdateAdRoute.name,
           path: '/update-ad-screen',
           args: UpdateAdRouteArgs(
             key: key,
             advert: advert,
+            type: type,
           ),
         );
 
@@ -731,15 +734,18 @@ class UpdateAdRouteArgs {
   const UpdateAdRouteArgs({
     this.key,
     required this.advert,
+    required this.type,
   });
 
   final Key? key;
 
   final AdvertModel advert;
 
+  final AdvertType type;
+
   @override
   String toString() {
-    return 'UpdateAdRouteArgs{key: $key, advert: $advert}';
+    return 'UpdateAdRouteArgs{key: $key, advert: $advert, type: $type}';
   }
 }
 

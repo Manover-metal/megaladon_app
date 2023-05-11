@@ -72,6 +72,31 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
     });
   }
 
+  Future refresh() async {
+    if(state.status == OrderScreenMyStatus.loading
+        && state.error == null
+    ) return;
+
+    OrderIndexRequestParams mainParams = state.params.copyWith(startRow: 0);
+    return await Future.wait([
+      _repository.indexMy(mainParams),
+    ]).then((value) {
+      final my = value[0];
+
+      emit(state.copyWith(
+          orders: my,
+          params: mainParams,
+          status: OrderScreenMyStatus.success,
+          stock: my.length < mainParams.rowsPerPage,
+      ));
+    }).catchError(( error) {
+      if(error is DioError) {
+        emit(state.copyWith(error: ErrorModel.parseDio(error)));
+      } else {
+        emit(state.copyWith(error: ErrorModel.nothing));
+      }
+    });
+  }
 
   changeParams(OrderIndexRequestParams params) {
     emit(state.copyWith(
