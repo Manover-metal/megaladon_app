@@ -7,6 +7,7 @@ import 'package:megaladon/data/models/dictionary/advert_category_model.dart';
 import 'package:megaladon/data/models/dictionary/advert_type.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/enum_form_state.dart';
+import 'package:megaladon/data/models/error_model.dart';
 import 'package:megaladon/data/models/form/description.dart';
 import 'package:megaladon/data/models/form/dictionary/advert_category.dart';
 import 'package:megaladon/data/models/form/dictionary/city.dart';
@@ -88,8 +89,17 @@ class AdCreateFormCubit extends Cubit<AdCreateFormState> {
       )).then((value) {
         emit(state.copyWith(formState: EnumFormState.success));
       }).catchError((error) {
-        print(error);
-        emit(state.copyWith(formState: EnumFormState.error));
+        if(error is DioError) {
+          emit(state.copyWith(
+              formState: EnumFormState.error,
+              error: ErrorModel.parseDio(error)
+          ));
+        } else {
+          emit(state.copyWith(
+              formState: EnumFormState.error,
+              error: ErrorModel.nothing
+          ));
+        }
       });
     }
   }

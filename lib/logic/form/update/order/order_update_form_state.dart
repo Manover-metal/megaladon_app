@@ -11,6 +11,7 @@ class OrderUpdateFormState extends Equatable {
   final int countTry;
   final EnumFormState formState;
   final List<PlatformFile> files;
+  final ErrorModel? error;
 
 
   const OrderUpdateFormState({
@@ -23,12 +24,13 @@ class OrderUpdateFormState extends Equatable {
     this.priceRecommended = const PriceFormModel.pure(),
     this.countTry = 0,
     this.formState = EnumFormState.filled,
-    this.files = const []
+    this.files = const [],
+    this.error
   });
 
 
   @override
-  List<Object?> get props => [status, description, title, category, priceMax, priceRecommended, city, countTry, files];
+  List<Object?> get props => [status, description, title, category, priceMax, priceRecommended, city, countTry, files, error];
 
   OrderUpdateFormState copyWith({
     FormzStatus? status,
@@ -40,7 +42,8 @@ class OrderUpdateFormState extends Equatable {
     CityFormModel? city,
     int? countTry,
     List<PlatformFile>? files,
-    EnumFormState? formState
+    EnumFormState? formState,
+    ErrorModel? error
   }) {
     return OrderUpdateFormState(
       status: status ?? this.status,
@@ -52,7 +55,8 @@ class OrderUpdateFormState extends Equatable {
       city: city ?? this.city,
       countTry: countTry ?? this.countTry,
       formState: formState ?? this.formState,
-      files: files ?? this.files
+      files: files ?? this.files,
+      error: error ?? this.error
     );
   }
 }

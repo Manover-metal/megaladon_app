@@ -42,22 +42,9 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
     context.router.pop();
   }
 
-  _create() {
+  _create() async {
     if(_checkForm()) {
-      context.read<OrderCreateFormCubit>().createFetch().then((value) {
-        context.router.popUntil((route) => route.settings.name == InitialRouter.name);
-        context.router.navigate(const InitialRouter(
-          children: [
-            OrderRouter(
-                children: [ListMyOrdersRoute()]
-            )
-          ]
-        ));
-      }).catchError((error) {
-        if(error is DioError) {
-          showErrorSnackBar(context, error.response?.data['message']);
-        }
-      });
+      await context.read<OrderCreateFormCubit>().createFetch();
     }
   }
 
@@ -80,6 +67,20 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
         if(element is FormzInput && element.invalid) {
           return showErrorSnackBar(context, element.error.toString());
         }
+      }
+    }
+    if(state.formState == EnumFormState.success) {
+      context.router.popUntil((route) => route.settings.name == InitialRouter.name);
+      context.router.navigate(const InitialRouter(
+          children: [
+            OrderRouter(
+                children: [ListMyOrdersRoute()]
+            )
+          ]
+      ));
+    } else if(state.formState == EnumFormState.error) {
+      if(state.error != null) {
+        showErrorSnackBar(context, state.error!.messages[0]);
       }
     }
   }

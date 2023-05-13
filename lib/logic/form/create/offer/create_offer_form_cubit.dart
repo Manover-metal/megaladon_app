@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/enum_form_state.dart';
+import 'package:megaladon/data/models/error_model.dart';
 import 'package:megaladon/data/models/form/date_offer.dart';
 import 'package:megaladon/data/models/form/description.dart';
 import 'package:megaladon/data/models/form/dictionary/city.dart';
@@ -61,7 +62,11 @@ class CreateOfferFormCubit extends Cubit<CreateOfferFormState> {
         date: state.date.value,
         expiredAt: state.expiredAt.value,
       )).then((value) {
-        emit(state.copyWith(formState: EnumFormState.success));
+
+        emit(state.copyWith(
+            formState: EnumFormState.success,
+            offerId: value.id
+        ));
       }).catchError((error) {
         emit(state.copyWith(formState: EnumFormState.error));
       });

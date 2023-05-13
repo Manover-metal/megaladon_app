@@ -46,27 +46,9 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
     context.router.pop();
   }
 
-  _create() {
+  _create() async {
     if(_checkForm()) {
-      context.read<OrderUpdateFormCubit>().updateFetch(widget.order.id).then((value) {
-        context.read<OrderScreenDetailsCubit>().fetch(id: widget.order.id);
-        context.read<OrderScreenMyCubit>().fetch();
-        context.router.popUntil((route) => route.settings.name == InitialRouter.name);
-        context.router.navigate(InitialRouter(
-          children: [
-            OrderRouter(
-                children: [
-                  DetailsOrderRoute(orderId: value.id)
-                ]
-            )
-          ]
-        ));
-      }).catchError((error) {
-        print(error);
-        if(error is DioError) {
-          showErrorSnackBar(context, error.response?.data['message']);
-        }
-      });
+      await context.read<OrderUpdateFormCubit>().updateFetch(widget.order.id);
     }
   }
 
@@ -90,6 +72,24 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
         if(element is FormzInput && element.invalid) {
           return showErrorSnackBar(context, element.error.toString());
         }
+      }
+    }
+    if(state.formState == EnumFormState.success) {
+      context.read<OrderScreenDetailsCubit>().fetch(id: widget.order.id);
+      context.read<OrderScreenMyCubit>().fetch();
+      context.router.popUntil((route) => route.settings.name == InitialRouter.name);
+      context.router.navigate(InitialRouter(
+          children: [
+            OrderRouter(
+                children: [
+                  DetailsOrderRoute(orderId: widget.order.id)
+                ]
+            )
+          ]
+      ));
+    } else if(state.formState == EnumFormState.error) {
+      if(state.error != null) {
+        showErrorSnackBar(context, state.error!.messages[0]);
       }
     }
   }

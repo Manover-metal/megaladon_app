@@ -44,24 +44,9 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
     context.router.pop();
   }
   
-  _create() {
+  _create() async {
     if(_checkForm()) {
-      context.read<AdCreateFormCubit>().createFetch().then((value) {
-        context.read<OrderScreenMyCubit>().refresh();
-        context.router.popUntil((route) => route.settings.name == InitialRouter.name);
-        context.router.navigate( const InitialRouter(
-          children: [
-            AdRouter(
-              children: [MyAdsRoute()]
-            )
-          ]
-        ));
-      }).catchError((error) {
-        print(error);
-        if(error is DioError) {
-          showErrorSnackBar(context, error.response?.data['message']);
-        }
-      });
+      await context.read<AdCreateFormCubit>().createFetch();
     }
   }
 
@@ -85,6 +70,21 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
         if(element is FormzInput && element.invalid) {
           return showErrorSnackBar(context, element.error.toString());
         }
+      }
+    }
+    if(state.formState == EnumFormState.success) {
+      context.read<OrderScreenMyCubit>().refresh();
+      context.router.popUntil((route) => route.settings.name == InitialRouter.name);
+      context.router.navigate( const InitialRouter(
+          children: [
+            AdRouter(
+                children: [MyAdsRoute()]
+            )
+          ]
+      ));
+    } else if(state.formState == EnumFormState.error) {
+      if(state.error != null) {
+        showErrorSnackBar(context, state.error!.messages[0]);
       }
     }
   }

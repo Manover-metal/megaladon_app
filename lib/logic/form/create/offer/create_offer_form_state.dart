@@ -9,6 +9,8 @@ class CreateOfferFormState extends Equatable {
   final DateOfferFormModel date;
   final int countTry;
   final EnumFormState formState;
+  final ErrorModel? error;
+  final int? offerId;
 
   const CreateOfferFormState({
     this.status = FormzStatus.pure,
@@ -18,11 +20,13 @@ class CreateOfferFormState extends Equatable {
     this.expiredAt = const ExpiredAtFormModel.pure(),
     this.date = const DateOfferFormModel.pure(),
     this.countTry = 1,
-    this.formState = EnumFormState.filled
+    this.formState = EnumFormState.filled,
+    this.error,
+    this.offerId
   });
 
   @override
-  List<Object?> get props => [status, price, description, city, countTry];
+  List<Object?> get props => [status, price, description, city, countTry, error, offerId];
 
   CreateOfferFormState copyWith({
     FormzStatus? status,
@@ -32,7 +36,9 @@ class CreateOfferFormState extends Equatable {
     int? countTry,
     ExpiredAtFormModel? expiredAt,
     DateOfferFormModel? date,
-    EnumFormState? formState
+    EnumFormState? formState,
+    ErrorModel? error,
+    int? offerId
   }) {
     return CreateOfferFormState(
         status: status ?? this.status,
@@ -42,7 +48,9 @@ class CreateOfferFormState extends Equatable {
         countTry: countTry ?? this.countTry,
         expiredAt: expiredAt ?? this.expiredAt,
         date: date ?? this.date,
-        formState: formState ?? this.formState
+        formState: formState ?? this.formState,
+        error: error ?? this.error,
+        offerId: offerId ?? this.offerId
     );
   }
 }

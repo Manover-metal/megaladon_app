@@ -38,22 +38,10 @@ class _CreateOfferScreenState extends State<CreateOfferScreen> {
     context.router.pop();
   }
 
-  _create() {
+  _create() async {
     if(_checkForm()) {
-      context.read<CreateOfferFormCubit>().createFetch(widget.orderId).then((value) {
-        context.router.popUntil((route) => route.settings.name == InitialRouter.name);
-        context.router.navigate(InitialRouter(
-            children: [
-              OrderRouter(
-                  children: [DetailsOfferRoute(orderId: widget.orderId, offerId: value.id)]
-              )
-            ]
-        ));
-      }).catchError((error) {
-        if(error is DioError) {
-          showErrorSnackBar(context, error.response?.data['message']);
-        }
-      });
+      await context.read<CreateOfferFormCubit>().createFetch(widget.orderId);
+
     }
   }
 
@@ -74,6 +62,20 @@ class _CreateOfferScreenState extends State<CreateOfferScreen> {
         if(element is FormzInput && element.invalid) {
           return showErrorSnackBar(context, element.error.toString());
         }
+      }
+    }
+    if(state.formState == EnumFormState.success) {
+      context.router.popUntil((route) => route.settings.name == InitialRouter.name);
+      context.router.navigate(InitialRouter(
+          children: [
+            OrderRouter(
+                children: [DetailsOfferRoute(orderId: widget.orderId, offerId: state.offerId!)]
+            )
+          ]
+      ));
+    } else if(state.formState == EnumFormState.error) {
+      if(state.error != null) {
+        showErrorSnackBar(context, state.error!.messages[0]);
       }
     }
   }
