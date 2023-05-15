@@ -1,5 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 
@@ -17,6 +19,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if(newValue != null) {
       context.setLocale(newValue);
     }
+  }
+
+  _toAbout() {
+    context.router.navigate(InitialRouter(
+      children: [
+        ProfileRouter(
+          children: [
+            AboutRoute()
+          ]
+        )
+      ]
+    ));
   }
 
   @override
@@ -69,7 +83,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 // ),
                 OutlinedButtonApp(
                   text: 'About_the_application'.tr(),
-                  onPressed: () {},
+                  onPressed: _toAbout,
                 ),
                 // OutlinedButtonApp(
                 //   text: 'Сменить номер телефона',

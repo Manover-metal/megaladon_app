@@ -45,14 +45,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   _context(context) => () {
-        Scaffold.of(context).openEndDrawer();
-      };
+    Scaffold.of(context).openEndDrawer();
+  };
 
   _changePhoto() {
     context.read<ChangePhotoCubit>().changePhoto();

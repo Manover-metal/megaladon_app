@@ -309,6 +309,12 @@ class _$AppRouter extends RootStackRouter {
         child: const ListChatsScreen(),
       );
     },
+    AboutRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: AboutScreen(),
+      );
+    },
   };
 
   @override
@@ -446,6 +452,11 @@ class _$AppRouter extends RootStackRouter {
                   path: 'list-chats-screen',
                   parent: ProfileRouter.name,
                   guards: [authGuard],
+                ),
+                RouteConfig(
+                  AboutRoute.name,
+                  path: 'about-screen',
+                  parent: ProfileRouter.name,
                 ),
               ],
             ),
@@ -1278,4 +1289,16 @@ class ListChatsRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'ListChatsRoute';
+}
+
+/// generated route for
+/// [AboutScreen]
+class AboutRoute extends PageRouteInfo<void> {
+  const AboutRoute()
+      : super(
+          AboutRoute.name,
+          path: 'about-screen',
+        );
+
+  static const String name = 'AboutRoute';
 }

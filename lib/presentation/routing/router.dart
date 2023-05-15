@@ -31,6 +31,7 @@ import 'package:megaladon/presentation/screens/orders/list_executors_screen.dart
 import 'package:megaladon/presentation/screens/orders/list_my_orders_screen.dart';
 import 'package:megaladon/presentation/screens/orders/list_orders_screen.dart';
 import 'package:megaladon/presentation/screens/orders/review_screen.dart';
+import 'package:megaladon/presentation/screens/profile/about_screen.dart';
 import 'package:megaladon/presentation/screens/profile/change_password_screen.dart';
 import 'package:megaladon/presentation/screens/profile/change_phone_end_screen.dart';
 import 'package:megaladon/presentation/screens/profile/change_phone_start_screen.dart';
@@ -48,6 +49,7 @@ const List<AutoRoute> profile = [
   AutoRoute(page: ChangeExecutorScreen, guards: [AuthGuard]),
   AutoRoute(page: ChangeStoreScreen, guards: [AuthGuard]),
   AutoRoute(page: ListChatsScreen, guards: [AuthGuard]),
+  AutoRoute(page: AboutScreen ),
 ];
 
 const List<AutoRoute> ad = [
