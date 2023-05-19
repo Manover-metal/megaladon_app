@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:megaladon/core/dio/index.dart';
 import 'package:megaladon/core/dio/interceptors/auth_interceptors.dart';
 import 'package:megaladon/core/isar/index.dart';
@@ -28,6 +29,18 @@ class AuthRepository {
       "token": token
     }).then((value) {
       return value;
+    }).catchError(( error) {
+      if(error is DioError) {
+        if(error.response?.statusCode == 403) {
+          logout();
+        }
+      }
+      // if(error.statusCode == 403) {
+      //
+      // }
+
+      // logout();
+      // return error;
     });
   }
 

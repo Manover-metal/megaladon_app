@@ -15,13 +15,16 @@ class ProfileScreenCubit extends Cubit<ProfileScreenState> {
   final AuthBloc authBloc;
   
   ProfileScreenCubit(this.authBloc) : super(const ProfileScreenState()) {
-    authBloc.stream.listen((state) {
-      if(state is AuthLoginState) {
-        fetch(id: state.auth.user.value!.id);
-      } else if(state is AuthInitial || state is AuthLogoutState) {
-        emit(const ProfileScreenState(status: ProfileScreenStatus.notAuth));
-      }
-    });
+    _listen(authBloc.state);
+    authBloc.stream.listen(_listen);
+  }
+
+  _listen(state) {
+    if(state is AuthLoginState) {
+      fetch(id: state.auth.user.value!.id);
+    } else if(state is AuthInitial || state is AuthLogoutState) {
+      emit(const ProfileScreenState(status: ProfileScreenStatus.notAuth));
+    }
   }
 
   Future fetch({required int id}) async {

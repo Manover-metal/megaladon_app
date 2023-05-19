@@ -122,6 +122,7 @@ class _ContactTypePickerState extends State<ContactTypePicker> {
       builder: (BuildContext context, ContactType contactType, Widget? child) {
         return Column(
           children: [
+
             TextField(
               controller: _textController,
               onTap: _handleClickType(context),

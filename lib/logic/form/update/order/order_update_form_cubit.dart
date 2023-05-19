@@ -14,12 +14,14 @@ import 'package:megaladon/data/models/form/price.dart';
 import 'package:megaladon/data/models/form/title.dart';
 import 'package:megaladon/data/models/request/params/update/order_update_request_params.dart';
 import 'package:megaladon/data/repositories/order_repository.dart';
+import 'package:megaladon/logic/auth/auth_bloc.dart';
 
 part 'order_update_form_state.dart';
 
 class OrderUpdateFormCubit extends Cubit<OrderUpdateFormState> {
   final OrderRepository _repository = OrderRepository();
-  OrderUpdateFormCubit() : super(const OrderUpdateFormState());
+  final AuthBloc authBloc;
+  OrderUpdateFormCubit(this.authBloc) : super(const OrderUpdateFormState());
 
   checkUpdate({
     required String title,
@@ -85,6 +87,9 @@ class OrderUpdateFormCubit extends Cubit<OrderUpdateFormState> {
       emit(state.copyWith(formState: EnumFormState.success));
     }).catchError((error) {
       if(error is DioError) {
+        if(error.response?.statusCode == 403) {
+          authBloc.add(AuthLogoutEvent());
+        }
         emit(state.copyWith(
             formState: EnumFormState.error,
             error: ErrorModel.parseDio(error)

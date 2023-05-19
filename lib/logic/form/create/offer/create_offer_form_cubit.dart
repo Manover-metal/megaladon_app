@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
@@ -11,12 +12,14 @@ import 'package:megaladon/data/models/form/expired_at.dart';
 import 'package:megaladon/data/models/form/price.dart';
 import 'package:megaladon/data/models/request/params/create/offer_create_request_params.dart';
 import 'package:megaladon/data/repositories/offer_repository.dart';
+import 'package:megaladon/logic/auth/auth_bloc.dart';
 
 part 'create_offer_form_state.dart';
 
 class CreateOfferFormCubit extends Cubit<CreateOfferFormState> {
   final OfferRepository _repository = OfferRepository();
-  CreateOfferFormCubit() : super(CreateOfferFormState());
+  final AuthBloc authBloc;
+  CreateOfferFormCubit(this.authBloc) : super(const CreateOfferFormState());
 
   checkCreate({
     required String description,
@@ -68,7 +71,20 @@ class CreateOfferFormCubit extends Cubit<CreateOfferFormState> {
             offerId: value.id
         ));
       }).catchError((error) {
-        emit(state.copyWith(formState: EnumFormState.error));
+        if(error is DioError) {
+          if(error.response?.statusCode == 403) {
+            authBloc.add(AuthLogoutEvent());
+          }
+          emit(state.copyWith(
+              formState: EnumFormState.error,
+              error: ErrorModel.parseDio(error)
+          ));
+        } else {
+          emit(state.copyWith(
+              formState: EnumFormState.error,
+              error: ErrorModel.nothing
+          ));
+        }
       });
     }
   }

@@ -16,12 +16,14 @@ import 'package:megaladon/data/models/form/price.dart';
 import 'package:megaladon/data/models/form/title.dart';
 import 'package:megaladon/data/models/request/params/update/advert_update_request_params.dart';
 import 'package:megaladon/data/repositories/advert_repository.dart';
+import 'package:megaladon/logic/auth/auth_bloc.dart';
 
 part 'ad_update_form_state.dart';
 
 class AdUpdateFormCubit extends Cubit<AdUpdateFormState> {
   final AdvertRepository _repository = AdvertRepository();
-  AdUpdateFormCubit() : super(const AdUpdateFormState());
+  final AuthBloc authBloc;
+  AdUpdateFormCubit(this.authBloc) : super(const AdUpdateFormState());
 
   checkUpdate({
     required String title,
@@ -89,6 +91,9 @@ class AdUpdateFormCubit extends Cubit<AdUpdateFormState> {
       emit(state.copyWith(formState: EnumFormState.success));
     }).catchError((error) {
       if(error is DioError) {
+        if(error.response?.statusCode == 403) {
+          authBloc.add(AuthLogoutEvent());
+        }
         emit(state.copyWith(
             formState: EnumFormState.error,
             error: ErrorModel.parseDio(error)

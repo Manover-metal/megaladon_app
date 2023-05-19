@@ -46,7 +46,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future _sendFbToken() async {
     String? token = await FbNotificationService.I.getToken();
     if(token != null) {
-      print(token);
       _authRepository.sendFB(token: token);
     }
   }
@@ -129,7 +128,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       add(AuthAddStoreEvent(stateRegister.store));
     }
   }
-
 
   _addExecutor(AuthAddExecutorEvent event,  Emitter emit) async {
     final AuthLoginState currentState = state as AuthLoginState;

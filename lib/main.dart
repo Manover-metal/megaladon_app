@@ -179,19 +179,19 @@ class App extends StatelessWidget {
                 create: (context) => DictionaryCubit()..initial()
             ),
             BlocProvider<AdCreateFormCubit>(
-                create: (context) => AdCreateFormCubit()
+                create: (context) => AdCreateFormCubit(authBloc)
             ),
             BlocProvider<OrderCreateFormCubit>(
-                create: (context) => OrderCreateFormCubit()
+                create: (context) => OrderCreateFormCubit(authBloc)
             ),
             BlocProvider<CreateOfferFormCubit>(
-                create: (context) => CreateOfferFormCubit()
+                create: (context) => CreateOfferFormCubit(authBloc)
             ),
             BlocProvider<AdUpdateFormCubit>(
-                create: (context) => AdUpdateFormCubit()
+                create: (context) => AdUpdateFormCubit(authBloc)
             ),
             BlocProvider<OrderUpdateFormCubit>(
-                create: (context) => OrderUpdateFormCubit()
+                create: (context) => OrderUpdateFormCubit(authBloc)
             ),
             BlocProvider<ChatScreenMainCubit>(
                 create: (context) => ChatScreenMainCubit()
@@ -200,7 +200,7 @@ class App extends StatelessWidget {
           child: MultiBlocProvider(
             providers: [
               BlocProvider<PriceFormCubit>(
-                  create: (context) => PriceFormCubit(profileCubit),
+                  create: (context) => PriceFormCubit(profileCubit, authBloc),
               ),
               BlocProvider<ChangePhotoCubit>(
                 create: (context) => ChangePhotoCubit(profileCubit),

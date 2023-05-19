@@ -16,12 +16,14 @@ import 'package:megaladon/data/models/form/price.dart';
 import 'package:megaladon/data/models/form/title.dart';
 import 'package:megaladon/data/models/request/params/create/advert_create_request_params.dart';
 import 'package:megaladon/data/repositories/advert_repository.dart';
+import 'package:megaladon/logic/auth/auth_bloc.dart';
 
 part 'ad_create_form_state.dart';
 
 class AdCreateFormCubit extends Cubit<AdCreateFormState> {
   final AdvertRepository _repository = AdvertRepository();
-  AdCreateFormCubit() : super(const AdCreateFormState());
+  final AuthBloc authBloc;
+  AdCreateFormCubit(this.authBloc) : super(const AdCreateFormState());
 
   checkCreate({
     required String title,
@@ -90,6 +92,9 @@ class AdCreateFormCubit extends Cubit<AdCreateFormState> {
         emit(state.copyWith(formState: EnumFormState.success));
       }).catchError((error) {
         if(error is DioError) {
+          if(error.response?.statusCode == 403) {
+            authBloc.add(AuthLogoutEvent());
+          }
           emit(state.copyWith(
               formState: EnumFormState.error,
               error: ErrorModel.parseDio(error)

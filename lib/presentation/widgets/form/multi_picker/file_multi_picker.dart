@@ -33,7 +33,10 @@ class FileMultiPicker extends StatefulWidget {
 
 class _FileMultiPickerState extends State<FileMultiPicker> {
   _addFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true);
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+        allowMultiple: true,
+        allowedExtensions: ['jpg', 'png', 'jpeg' ,'pdf', 'doc', 'docx'],
+    );
 
     if (result != null) {
       final List<PlatformFile> files = result.files;

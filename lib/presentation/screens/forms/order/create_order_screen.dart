@@ -8,6 +8,7 @@ import 'package:megaladon/data/models/dictionary/advert_type.dart';
 import 'package:megaladon/data/models/enum_form_state.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:megaladon/logic/form/create/order/order_create_form_cubit.dart';
+import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
@@ -69,7 +70,10 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
         }
       }
     }
+    print(state.formState);
     if(state.formState == EnumFormState.success) {
+      print('success callback');
+      context.read<OrderScreenMyCubit>().fetch();
       context.router.popUntil((route) => route.settings.name == InitialRouter.name);
       context.router.navigate(const InitialRouter(
           children: [
@@ -79,6 +83,8 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
           ]
       ));
     } else if(state.formState == EnumFormState.error) {
+      print('error callback');
+
       if(state.error != null) {
         showErrorSnackBar(context, state.error!.messages[0]);
       }
@@ -137,6 +143,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                 BlocConsumer<OrderCreateFormCubit, OrderCreateFormState>(
                     listener: _listenerForm,
                     builder: (context, state) {
+                      print(state.formState);
                       if(state.formState == EnumFormState.fetch) {
                         return ElevatedButtonApp(child: Loader(color: Theme.of(context).colorScheme.background), onPressed: () {},);
                       }

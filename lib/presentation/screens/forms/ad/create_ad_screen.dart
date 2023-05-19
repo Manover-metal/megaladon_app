@@ -13,6 +13,7 @@ import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/description_field.dart';
+import 'package:megaladon/presentation/widgets/form/field/phone_field.dart';
 import 'package:megaladon/presentation/widgets/form/multi_picker/media_multi_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/advert_category_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
@@ -96,7 +97,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
     _cityController = CityPickerController();
     _priceController = TextEditingController();
     _descriptionController = TextEditingController();
-    _phoneController = TextEditingController();
+    _phoneController = TextEditingController(text: '+7');
     _imageController = ImageMultiPickerController();
     super.initState();
   }
@@ -132,7 +133,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
                 CityPicker(label: "Choose_city".tr(), controller: _cityController),
                 DescriptionFieldApp(label: "Description_of_your_offer".tr(), controller: _descriptionController, icon: const Icon(IconPack.description),),
                 NumberFieldApp(label: "Price".tr(), controller: _priceController, icon: const  Icon(Icons.money_sharp),),
-                TextFieldApp(controller: _phoneController, label: "Additional_Phone".tr(), icon: const Icon(Icons.phone),),
+                PhoneField(controller: _phoneController, label: "Additional_Phone".tr(), icon: const Icon(Icons.phone),),
                 ImageMultiPicker(controller: _imageController),
                 const SizedBox(height: 20),
                 BlocConsumer<AdCreateFormCubit, AdCreateFormState>(

@@ -151,7 +151,7 @@ class DrawerApp extends StatelessWidget {
                           text: 'Artist_registration'.tr(),
                           onPressed: _registerExecutor(context),
                         ),
-                        if(state.auth.store.value == null)  OutlinedButtonApp(
+                        if(state.auth.store.value == null)  ElevatedButtonApp(
                           text: 'Shop_registration'.tr(),
                           onPressed: _registerStore(context),
                         ),

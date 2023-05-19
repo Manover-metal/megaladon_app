@@ -14,12 +14,14 @@ import 'package:megaladon/data/models/form/price.dart';
 import 'package:megaladon/data/models/form/title.dart';
 import 'package:megaladon/data/models/request/params/create/order_create_request_params.dart';
 import 'package:megaladon/data/repositories/order_repository.dart';
+import 'package:megaladon/logic/auth/auth_bloc.dart';
 
 part 'order_create_form_state.dart';
 
 class OrderCreateFormCubit extends Cubit<OrderCreateFormState> {
   final OrderRepository _repository = OrderRepository();
-  OrderCreateFormCubit() : super(const OrderCreateFormState());
+  final AuthBloc authBloc;
+  OrderCreateFormCubit(this.authBloc) : super(const OrderCreateFormState());
 
   checkCreate({
     required String title,
@@ -62,7 +64,9 @@ class OrderCreateFormCubit extends Cubit<OrderCreateFormState> {
   }
 
   Future createFetch() async {
+    print('a');
     if (state.formState != EnumFormState.fetch) {
+      print('b');
       emit(state.copyWith(formState: EnumFormState.fetch));
 
       List<MultipartFile> files = [];
@@ -73,7 +77,7 @@ class OrderCreateFormCubit extends Cubit<OrderCreateFormState> {
         }
       }
 
-      return _repository.create(OrderCreateRequestParams(
+      return await _repository.create(OrderCreateRequestParams(
           title: state.title.value,
           description: state.description.value,
           priceMax: int.tryParse(state.priceMax.value),
@@ -81,10 +85,15 @@ class OrderCreateFormCubit extends Cubit<OrderCreateFormState> {
           categoryId: state.category.value,
           cityId: state.city.value,
           files: files
-      )).then((value) {
+      )).then((value) async {
+        print('s');
         emit(state.copyWith(formState: EnumFormState.success));
-      }).catchError((error) {
+      }).catchError((error) async {
+        print('e');
         if(error is DioError) {
+          if(error.response?.statusCode == 403) {
+            authBloc.add(AuthLogoutEvent());
+          }
           emit(state.copyWith(
               formState: EnumFormState.error,
               error: ErrorModel.parseDio(error)
