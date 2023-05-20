@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/core/icons/icons.dart';
+import 'package:megaladon/data/models/advert_model.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/screens/advert/details/advert_screen_details_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
@@ -45,6 +46,10 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
   _toChat() {
     context.router.navigate(const DetailsChatRouter());
   }
+
+  _edit(AdvertModel advert) => () {
+    context.router.navigate(UpdateAdRoute(advert: advert, type: advert.type));
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -126,6 +131,7 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                                         children: [
                                           if(state.advert.user!.id == stateUser.auth.user.value!.id)...[
                                             ElevatedButtonApp(
+                                              onPressed: _edit(state.advert),
                                               text: "Edit".tr(),
                                             ),
                                           ] else ...[

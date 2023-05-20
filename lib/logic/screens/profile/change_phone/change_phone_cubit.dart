@@ -7,14 +7,16 @@ import 'package:megaladon/data/models/form/password.dart';
 import 'package:megaladon/data/models/form/phone.dart';
 import 'package:megaladon/data/models/form/pincode.dart';
 import 'package:megaladon/data/repositories/user_repository.dart';
+import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 
 part 'change_phone_state.dart';
 
 class ChangePhoneCubit extends Cubit<ChangePhoneState> {
   final ProfileScreenCubit profileCubit;
+  final AuthBloc authBloc;
   final UserRepository _repository = UserRepository();
-  ChangePhoneCubit(this.profileCubit) : super(const ChangePhoneState());
+  ChangePhoneCubit(this.profileCubit, this.authBloc) : super(const ChangePhoneState());
 
 
   bool checkStep1({
@@ -70,6 +72,9 @@ class ChangePhoneCubit extends Cubit<ChangePhoneState> {
       emit(const ChangePhoneState(status: ChangePhoneStatus.success));
     }).catchError((error) {
       if(error is DioError) {
+        if(error.response?.statusCode == 403) {
+          authBloc.add(AuthLogoutEvent());
+        }
         emit(ChangePhoneState(error: ErrorModel.parseDio(error), status: ChangePhoneStatus.error));
       } else {
         emit(ChangePhoneState(error: ErrorModel.nothing, status: ChangePhoneStatus.error));
@@ -92,6 +97,9 @@ class ChangePhoneCubit extends Cubit<ChangePhoneState> {
       emit(const ChangePhoneState(status: ChangePhoneStatus.success2));
     }).catchError((error) {
       if(error is DioError) {
+        if(error.response?.statusCode == 403) {
+          authBloc.add(AuthLogoutEvent());
+        }
         emit(ChangePhoneState(error: ErrorModel.parseDio(error), status: ChangePhoneStatus.error2));
       } else {
         emit(ChangePhoneState(error: ErrorModel.nothing, status: ChangePhoneStatus.error2));

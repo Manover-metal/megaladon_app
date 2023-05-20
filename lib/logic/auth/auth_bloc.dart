@@ -144,4 +144,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     await _authRepository.addStore(auth, event.store);
     emit(AuthLoginState(auth));
   }
+
+  bool hasExecutor() {
+    if(state is AuthLoginState) {
+      return (state as AuthLoginState).auth.executor.value != null;
+    } else {
+      return false;
+    }
+  }
 }

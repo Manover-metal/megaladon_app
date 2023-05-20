@@ -203,25 +203,25 @@ class App extends StatelessWidget {
                   create: (context) => PriceFormCubit(profileCubit, authBloc),
               ),
               BlocProvider<ChangePhotoCubit>(
-                create: (context) => ChangePhotoCubit(profileCubit),
+                create: (context) => ChangePhotoCubit(profileCubit, authBloc),
               ),
               BlocProvider<ChangeExecutorBloc>(
-                create: (context) => ChangeExecutorBloc(profileCubit),
+                create: (context) => ChangeExecutorBloc(profileCubit, authBloc),
               ),
               BlocProvider<ChangeExecutorFormCubit>(
                 create: (context) => ChangeExecutorFormCubit(),
               ),
               BlocProvider<ChangeStoreBloc>(
-                create: (context) => ChangeStoreBloc(profileCubit),
+                create: (context) => ChangeStoreBloc(profileCubit, authBloc),
               ),
               BlocProvider<ChangeStoreFormCubit>(
                 create: (context) => ChangeStoreFormCubit(),
               ),
               BlocProvider<ChangePasswordCubit>(
-                create: (context) => ChangePasswordCubit(),
+                create: (context) => ChangePasswordCubit(authBloc),
               ),
               BlocProvider<ChangePhoneCubit>(
-                create: (context) => ChangePhoneCubit(profileCubit),
+                create: (context) => ChangePhoneCubit(profileCubit, authBloc),
               ),
             ],
             child: const AppState(),

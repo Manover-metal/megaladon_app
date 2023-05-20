@@ -73,7 +73,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
     print(state.formState);
     if(state.formState == EnumFormState.success) {
       print('success callback');
-      context.read<OrderScreenMyCubit>().fetch();
+      context.read<OrderScreenMyCubit>().fetchMy();
       context.router.popUntil((route) => route.settings.name == InitialRouter.name);
       context.router.navigate(const InitialRouter(
           children: [

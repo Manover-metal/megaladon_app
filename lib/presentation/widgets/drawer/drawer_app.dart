@@ -25,11 +25,14 @@ class DrawerApp extends StatelessWidget {
   };
 
   _registerExecutor(BuildContext context) => () {
-    context.router.push(const RegisterExecutorRoute());
+    print('executor');
+
+    context.router.navigate(const RegisterExecutorRoute());
   };
 
   _registerStore(BuildContext context) => () {
-    context.router.push(const RegisterStoreRoute());
+    print('store');
+    context.router.navigate(const RegisterStoreRoute());
   };
 
   _logout(BuildContext context) => () {

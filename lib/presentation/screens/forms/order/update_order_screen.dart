@@ -76,7 +76,7 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
     }
     if(state.formState == EnumFormState.success) {
       context.read<OrderScreenDetailsCubit>().fetch(id: widget.order.id);
-      context.read<OrderScreenMyCubit>().fetch();
+      context.read<OrderScreenMyCubit>().fetchMy();
       context.router.popUntil((route) => route.settings.name == InitialRouter.name);
       context.router.navigate(InitialRouter(
           children: [

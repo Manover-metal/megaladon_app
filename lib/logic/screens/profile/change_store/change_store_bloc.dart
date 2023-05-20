@@ -8,6 +8,7 @@ import 'package:megaladon/data/models/request/params/update/change_store_request
 import 'package:megaladon/data/models/store_model.dart';
 import 'package:megaladon/data/repositories/auth/register_repository.dart';
 import 'package:megaladon/data/repositories/user_repository.dart';
+import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 
 part 'change_store_event.dart';
@@ -15,9 +16,9 @@ part 'change_store_state.dart';
 
 class ChangeStoreBloc extends Bloc<ChangeStoreEvent, ChangeStoreState> {
   final ProfileScreenCubit profileCubit;
-
+  final AuthBloc authBloc;
   final UserRepository _repository = UserRepository();
-  ChangeStoreBloc(this.profileCubit) : super(ChangeStoreInitial()) {
+  ChangeStoreBloc(this.profileCubit, this.authBloc) : super(ChangeStoreInitial()) {
     on<ChangeStoreFetchEvent>(_register);
   }
 
@@ -32,8 +33,10 @@ class ChangeStoreBloc extends Bloc<ChangeStoreEvent, ChangeStoreState> {
       profileCubit.updateData(profileCubit.state.user!.id);
       emit(const ChangeStoreSuccess());
     }).catchError((error) {
-      print(error.response);
       if(error is DioError) {
+        if(error.response?.statusCode == 403) {
+          authBloc.add(AuthLogoutEvent());
+        }
         emit(ChangeStoreError(ErrorModel.parseDio(error)));
       } else {
         emit(ChangeStoreError(ErrorModel.nothing));

@@ -114,7 +114,7 @@ class _CreateOfferScreenState extends State<CreateOfferScreen> {
                 ExpiredAtFieldApp(label: "Actual_until".tr(), icon: const Icon(Icons.calendar_month), controller: _expiredAtController,),
                 TextFieldApp(label: "Time_to_work".tr(), icon: const Icon(Icons.watch_later_outlined), controller: _dateController,),
                 NumberFieldApp(label: "Price".tr(), icon: const Icon(Icons.credit_card), controller: _priceController,),
-                TextFieldApp(label: "Store_data".tr(), icon: const Icon(Icons.message), controller: _descriptionController,),
+                TextFieldApp(label: "description_field".tr(), icon: const Icon(Icons.message), controller: _descriptionController,),
                 CityPicker(label: "City".tr(), icon: const Icon(Icons.place) , controller: _cityController),
                 BlocConsumer<CreateOfferFormCubit, CreateOfferFormState>(
                   listener: _listenerForm,

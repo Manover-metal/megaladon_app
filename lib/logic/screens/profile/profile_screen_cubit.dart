@@ -53,6 +53,7 @@ class ProfileScreenCubit extends Cubit<ProfileScreenState> {
     }).catchError(( error) {
       if(error is DioError) {
         if(error.response?.statusCode == 403) {
+          authBloc.add(AuthLogoutEvent());
           emit(const ProfileScreenState(status: ProfileScreenStatus.notAuth));
         } else {
           emit(ProfileScreenState(status: ProfileScreenStatus.error, error: ErrorModel.parseDio(error)));

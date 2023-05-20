@@ -489,12 +489,10 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig(
           RegisterExecutorRoute.name,
           path: '/register-executor-screen',
-          guards: [notAuthGuard],
         ),
         RouteConfig(
           RegisterStoreRoute.name,
           path: '/register-store-screen',
-          guards: [notAuthGuard],
         ),
         RouteConfig(
           VerifyRoute.name,

@@ -79,8 +79,8 @@ const List<AutoRoute> auth = [
   AutoRoute(page: ForgotPasswordScreen, guards: [NotAuthGuard]),
   AutoRoute(page: ResetPasswordScreen, guards: [NotAuthGuard]),
   AutoRoute(page: RegisterUserScreen, guards: [NotAuthGuard]),
-  AutoRoute(page: RegisterExecutorScreen, guards: [NotAuthGuard]),
-  AutoRoute(page: RegisterStoreScreen, guards: [NotAuthGuard]),
+  AutoRoute(page: RegisterExecutorScreen),
+  AutoRoute(page: RegisterStoreScreen),
   AutoRoute(page: VerifyScreen, guards: [NotAuthGuard]),
 ];
 
