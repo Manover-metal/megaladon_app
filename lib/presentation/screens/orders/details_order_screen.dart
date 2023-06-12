@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +11,7 @@ import 'package:megaladon/data/models/order_model.dart';
 import 'package:megaladon/data/models/user_model.dart';
 import 'package:megaladon/data/repositories/order_repository.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
+import 'package:megaladon/logic/screens/chats/chat_cubit.dart';
 import 'package:megaladon/logic/screens/orders/details/order_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/orders/main/order_screen_main_cubit.dart';
 import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
@@ -49,9 +51,9 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
     });
   };
 
-  _toChat() {
-   context.router.navigate(const DetailsChatRouter());
-  }
+  // _toChat() {
+  //  context.read<ChatCubit>().createChat(widget.orderId, executorId);
+  // }
 
   _download(FileModel file) => () async {
     await DownloadService.download(url: file.url, callback: (prog, gres) {
@@ -68,16 +70,15 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
       context.router.pop();
       context.read<OrderScreenMainCubit>().fetch();
       context.read<OrderScreenMyCubit>().refresh();
+    }).catchError((error) {
+      context.router.pop();
+      if(error is DioError) {
+        showErrorSnackBar(context, error.response?.data['message'] ?? 'Неизвестная ошибка');
+      } else {
+        showErrorSnackBar(context, 'Неизвестная ошибка');
+      }
     });
   };
-  
-  _toChats() {
-    context.router.navigate(const InitialRouter(
-      children: [ProfileRouter(
-        children: [ListChatsRoute()]
-      )]
-    ));
-  }
 
 
   @override
@@ -92,6 +93,63 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
       showErrorSnackBar(context, state.errorMessage!.messages[0]);
     }
   }
+
+  _onTrailing(OrderModel order) => () {
+    showModalBottomSheet(
+        useRootNavigator: true,
+        useSafeArea: true,
+        context: context,
+        builder: (context) {
+          return Container(
+            color: Theme.of(context).colorScheme.background,
+            padding: EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                OutlinedButtonApp(
+                  child: Text('Изменить'),
+                  onPressed: _toUpdate(order),
+                ),
+                SizedBox(height: 5),
+                ElevatedButtonApp(
+                  child: Text('Удалить'),
+                  onPressed: _toDelete(order),
+
+                )
+              ],
+            ),
+          );
+        }
+    );
+  };
+
+  _toUpdate(OrderModel order) => () {
+    context.router.navigate(
+      UpdateOrderRoute(order: order)
+    );
+  };
+
+  _toDelete(OrderModel order) => () {
+    OrderRepository().delete(order.id).then((value) {
+      context.router.popUntil((route) => false);
+      context.router.navigate(const InitialRouter(
+        children: [
+          OrderRouter(
+            children: [
+              ListMyOrdersRoute()
+            ]
+          )
+        ]
+      ));
+    }).catchError((error) {
+      context.router.pop();
+      if(error is DioError) {
+        showErrorSnackBar(context, error.response?.data['message'] ?? 'Неизвестная ошибка');
+      } else {
+        showErrorSnackBar(context, 'Неизвестная ошибка');
+      }
+    });
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +166,15 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                     return SliverToBoxAdapter(
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: HeaderAppBar(isBack: true, title: "Order".tr()+'${state.order!.id}'),
+                          child: BlocBuilder<AuthBloc, AuthState>(
+                            builder: (context, authState) {
+                              return HeaderAppBar(
+                                  isBack: true,
+                                  title: '${"Order".tr()}${state.order!.id}',
+                                  onTrailing: (authState is AuthLoginState) && authState.auth.user.value?.id == state.order?.user?.id ? _onTrailing(state.order!) : null
+                              );
+                            },
+                          ),
                         )
                     );
                   } else {

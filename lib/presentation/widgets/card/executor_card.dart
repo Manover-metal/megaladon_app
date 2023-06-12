@@ -25,10 +25,6 @@ class ExecutorCard extends StatelessWidget {
     ));
   };
 
-  _onTapChat(BuildContext context) => () {
-    context.router.push(const DetailsChatRouter());
-  };
-
   @override
   Widget build(BuildContext context) {
     return Container(

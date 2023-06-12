@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:megaladon/logic/screens/chats/chat_screen_main_cubit.dart';
+import 'package:megaladon/logic/screens/chats/chat_cubit.dart';
 import 'package:megaladon/presentation/widgets/card/chat_card.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/message/error_message.dart';
@@ -19,7 +19,7 @@ class _ListChatsScreenState extends State<ListChatsScreen> {
   late ScrollController _scrollController;
 
   Future _refresh() async {
-    return context.read<ChatScreenMainCubit>().fetch();
+    return context.read<ChatCubit>().fetch();
   }
 
   @override
@@ -65,12 +65,12 @@ class _ListChatsScreenState extends State<ListChatsScreen> {
                     minHeight: MediaQuery.of(context).size.height
                   ),
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: BlocBuilder<ChatScreenMainCubit, ChatScreenMainState>(
+                  child: BlocBuilder<ChatCubit, ChatState>(
                     builder: (context, state) {
                       return Column(
                         children: [
                           ...state.chats.map((chat) {
-                            return const ChatCard();
+                            return ChatCard(chat: chat);
                           }).toList(),
                           if(state.status == ChatScreenMainStatus.loading) const Loader(padding: 10)
                           else if(state.status == ChatScreenMainStatus.error)  ErrorMessage(error: state.error!)

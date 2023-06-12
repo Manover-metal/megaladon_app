@@ -7,9 +7,7 @@ import 'package:megaladon/core/get.dart';
 import 'package:megaladon/core/icons/icons.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/bottom_sheet/add_anything_bottom_sheet.dart';
-import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/drawer/drawer_app.dart';
-import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -22,11 +20,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
   _doubleTap(BuildContext context, PageRouteInfo page) => () {
         context.router.navigate(page);
-    };
+  };
 
   _handleClick(TabsRouter tabsRouter, int index) => () {
         tabsRouter.setActiveIndex(index);
-      };
+  };
 
   _add(BuildContext context) => () async {
         await showModalBottomSheet(
@@ -35,12 +33,12 @@ class _SplashScreenState extends State<SplashScreen> {
             useSafeArea: true,
             context: context,
             elevation: 100,
-            builder: (_) => const AddAnythingBottomSheet());
-      };
+            builder: (_) => const AddAnythingBottomSheet()
+        );
+  };
 
   _introStart(BuildContext context) => () async {
     if(await IsFirstRun.isFirstCall()) Intro.of(context).start();
-
   };
 
   listenFB() {

@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:megaladon/data/models/advert_model.dart';
+import 'package:megaladon/data/models/chat/chat_model.dart';
 import 'package:megaladon/data/models/dictionary/advert_type.dart';
 import 'package:megaladon/data/models/order_model.dart';
 import 'package:megaladon/presentation/routing/guards/auth_guard.dart';
@@ -40,6 +41,7 @@ import 'package:megaladon/presentation/screens/profile/settings_screen.dart';
 import 'package:megaladon/presentation/screens/store/details_store_screen.dart';
 import 'package:megaladon/presentation/screens/store/list_stores_screen.dart';
 import 'package:megaladon/presentation/screens/splash_screen.dart';
+import 'package:megaladon/presentation/screens/subscribe/subscribe_screen.dart';
 
 part 'router.gr.dart';
 
@@ -72,6 +74,10 @@ const List<AutoRoute> order = [
   AutoRoute(page: ListExecutorsScreen),
   AutoRoute(page: DetailsOfferScreen),
   AutoRoute(page: ReviewScreen),
+  AutoRoute(
+      page: SubscribeScreen,
+      guards: [AuthGuard]
+  ),
 ];
 
 const List<AutoRoute> auth = [

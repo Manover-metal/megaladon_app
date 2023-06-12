@@ -152,4 +152,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       return false;
     }
   }
+
+  bool hasStore() {
+    if(state is AuthLoginState) {
+      return (state as AuthLoginState).auth.store.value != null;
+    } else {
+      return false;
+    }
+  }
 }

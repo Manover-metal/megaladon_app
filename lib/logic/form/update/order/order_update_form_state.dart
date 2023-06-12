@@ -30,7 +30,7 @@ class OrderUpdateFormState extends Equatable {
 
 
   @override
-  List<Object?> get props => [status, description, title, category, priceMax, priceRecommended, city, countTry, files, error];
+  List<Object?> get props => [status, description, title, category, priceMax, priceRecommended, city, countTry, files, error, formState];
 
   OrderUpdateFormState copyWith({
     FormzStatus? status,

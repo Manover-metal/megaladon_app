@@ -31,10 +31,6 @@ class DetailsStoreScreen extends StatefulWidget {
 
 class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
 
-  _toChat() {
-    context.router.navigate(const DetailsChatRouter());
-  }
-
   _call(StoreModel store) => () {
     String? phone;
 
@@ -130,10 +126,6 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
                         if(state.store.hasPhone) ElevatedButtonApp(
                           text: 'Call'.tr(),
                           onPressed: _call(state.store),
-                        ),
-                        OutlinedButtonApp(
-                          text: 'Write'.tr(),
-                          onPressed: _toChat,
                         ),
                       ],
                     );

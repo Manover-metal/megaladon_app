@@ -97,6 +97,22 @@ class DrawerApp extends StatelessWidget {
                                 ],
                               ),
                             ),
+                            DrawerRouteTile(
+                              text: "Chats".tr(),
+                              page: const InitialRouter(
+                                children: [
+                                  ProfileRouter(children: [ListChatsRoute()])
+                                ],
+                              ),
+                            ),
+                            DrawerRouteTile(
+                              text: "Подписки".tr(),
+                              page: const InitialRouter(
+                                children: [
+                                  OrderRouter(children: [SubscribeRoute()])
+                                ],
+                              ),
+                            ),
                           ],
                         )
                     ),

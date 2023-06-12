@@ -26,7 +26,7 @@ class CreateOfferFormState extends Equatable {
   });
 
   @override
-  List<Object?> get props => [status, price, description, city, countTry, error, offerId];
+  List<Object?> get props => [status, price, description, city, countTry, error, offerId, formState];
 
   CreateOfferFormState copyWith({
     FormzStatus? status,

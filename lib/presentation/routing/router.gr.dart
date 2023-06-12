@@ -32,9 +32,13 @@ class _$AppRouter extends RootStackRouter {
       );
     },
     DetailsChatRouter.name: (routeData) {
+      final args = routeData.argsAs<DetailsChatRouterArgs>();
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const DetailsChatScreen(),
+        child: DetailsChatScreen(
+          key: args.key,
+          chat: args.chat,
+        ),
       );
     },
     LoginRoute.name: (routeData) {
@@ -241,6 +245,12 @@ class _$AppRouter extends RootStackRouter {
         ),
       );
     },
+    SubscribeRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const SubscribeScreen(),
+      );
+    },
     ListStoresRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
@@ -377,6 +387,12 @@ class _$AppRouter extends RootStackRouter {
                   ReviewRoute.name,
                   path: 'review-screen',
                   parent: OrderRouter.name,
+                ),
+                RouteConfig(
+                  SubscribeRoute.name,
+                  path: 'subscribe-screen',
+                  parent: OrderRouter.name,
+                  guards: [authGuard],
                 ),
               ],
             ),
@@ -557,14 +573,36 @@ class InitialRouter extends PageRouteInfo<void> {
 
 /// generated route for
 /// [DetailsChatScreen]
-class DetailsChatRouter extends PageRouteInfo<void> {
-  const DetailsChatRouter()
-      : super(
+class DetailsChatRouter extends PageRouteInfo<DetailsChatRouterArgs> {
+  DetailsChatRouter({
+    Key? key,
+    required ChatModel chat,
+  }) : super(
           DetailsChatRouter.name,
           path: '/details-chat-screen',
+          args: DetailsChatRouterArgs(
+            key: key,
+            chat: chat,
+          ),
         );
 
   static const String name = 'DetailsChatRouter';
+}
+
+class DetailsChatRouterArgs {
+  const DetailsChatRouterArgs({
+    this.key,
+    required this.chat,
+  });
+
+  final Key? key;
+
+  final ChatModel chat;
+
+  @override
+  String toString() {
+    return 'DetailsChatRouterArgs{key: $key, chat: $chat}';
+  }
 }
 
 /// generated route for
@@ -1123,6 +1161,18 @@ class ReviewRouteArgs {
   String toString() {
     return 'ReviewRouteArgs{key: $key, order: $order}';
   }
+}
+
+/// generated route for
+/// [SubscribeScreen]
+class SubscribeRoute extends PageRouteInfo<void> {
+  const SubscribeRoute()
+      : super(
+          SubscribeRoute.name,
+          path: 'subscribe-screen',
+        );
+
+  static const String name = 'SubscribeRoute';
 }
 
 /// generated route for

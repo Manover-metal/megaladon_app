@@ -65,12 +65,12 @@ class CreateOfferFormCubit extends Cubit<CreateOfferFormState> {
         date: state.date.value,
         expiredAt: state.expiredAt.value,
       )).then((value) {
-
+        print(value);
         emit(state.copyWith(
             formState: EnumFormState.success,
-            offerId: value.id
         ));
       }).catchError((error) {
+        print(error);
         if(error is DioError) {
           if(error.response?.statusCode == 403) {
             authBloc.add(AuthLogoutEvent());

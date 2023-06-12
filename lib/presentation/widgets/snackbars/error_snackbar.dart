@@ -7,6 +7,7 @@ showErrorSnackBar(BuildContext context, String error) {
       elevation: 40,
       backgroundColor: Theme.of(context).colorScheme.background,
       duration: const Duration(seconds: 20),
+
       content: Row(
         children: [
           Icon(

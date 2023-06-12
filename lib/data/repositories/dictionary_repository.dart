@@ -4,6 +4,7 @@ import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/dictionary/order_category_model.dart';
 import 'package:megaladon/data/models/dictionary/service_type_model.dart';
 import 'package:megaladon/data/models/dictionary/store_type_model.dart';
+import 'package:megaladon/data/models/dictionary/subscribe_model.dart';
 
 class DictionaryRepository {
   Future getCities() => ApiService.I
@@ -25,4 +26,12 @@ class DictionaryRepository {
   Future getCompanyTypes() => ApiService.I
       .get('/company-types')
       .then((value) => StoreTypeModel.listFromJson(value.data['list']));
+
+  Future getSubscribeStore() => ApiService.I
+      .get('/subscriptions', queryParameters: {'type': 'store'})
+      .then((value) => SubscribeModel.listFromJson(value.data['list']));
+
+  Future getSubscribeExecutor() => ApiService.I
+      .get('/subscriptions', queryParameters: {'type': 'executor'})
+      .then((value) => SubscribeModel.listFromJson(value.data['list']));
 }

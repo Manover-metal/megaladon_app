@@ -57,25 +57,23 @@ class _CreateOfferScreenState extends State<CreateOfferScreen> {
   }
 
   _listenerForm(BuildContext context, CreateOfferFormState state) {
+
+    if(state.formState == EnumFormState.success) {
+      print('success');
+      context.router.pop();
+    } else if(state.formState == EnumFormState.error) {
+      print('error');
+
+      if(state.error != null) {
+        showErrorSnackBar(context, state.error!.messages[0]);
+      }
+    }
     if(state.status.isInvalid) {
+      print('invalid');
       for (var element in state.props) {
         if(element is FormzInput && element.invalid) {
           return showErrorSnackBar(context, element.error.toString());
         }
-      }
-    }
-    if(state.formState == EnumFormState.success) {
-      context.router.popUntil((route) => route.settings.name == InitialRouter.name);
-      context.router.navigate(InitialRouter(
-          children: [
-            OrderRouter(
-                children: [DetailsOfferRoute(orderId: widget.orderId, offerId: state.offerId!)]
-            )
-          ]
-      ));
-    } else if(state.formState == EnumFormState.error) {
-      if(state.error != null) {
-        showErrorSnackBar(context, state.error!.messages[0]);
       }
     }
   }

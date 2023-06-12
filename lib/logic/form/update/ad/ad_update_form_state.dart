@@ -39,7 +39,7 @@ class AdUpdateFormState extends Equatable {
 
 
   @override
-  List<Object?> get props => [status, description, price, title, category, city, phone, countTry, media, error];
+  List<Object?> get props => [status, description, price, title, category, city, phone, countTry, media, error, formState];
 
   AdUpdateFormState copyWith({
     FormzStatus? status,

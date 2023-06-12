@@ -6,13 +6,17 @@ class DictionaryState extends Equatable {
   final List<AdvertCategoryModel> advertCategories;
   final List<StoreTypeModel> storeTypes;
   final List<ServiceTypeModel> serviceTypes;
+  final List<SubscribeModel> subscribesStore;
+  final List<SubscribeModel> subscribesExecutor;
 
-  DictionaryState({
-      this.cities = const [],
-      this.orderCategories = const [],
-      this.advertCategories = const [],
-      this.storeTypes = const [],
-      this.serviceTypes = const []
+  const DictionaryState({
+    this.cities = const [],
+    this.orderCategories = const [],
+    this.advertCategories = const [],
+    this.storeTypes = const [],
+    this.serviceTypes = const [],
+    this.subscribesStore = const [],
+    this.subscribesExecutor = const []
   });
 
   DictionaryState copyWith({
@@ -20,18 +24,22 @@ class DictionaryState extends Equatable {
     List<OrderCategoryModel>? orderCategories,
     List<AdvertCategoryModel>? advertCategories,
     List<StoreTypeModel>? storeTypes,
-    List<ServiceTypeModel>? serviceTypes
+    List<ServiceTypeModel>? serviceTypes,
+    List<SubscribeModel>? subscribesStore,
+    List<SubscribeModel>? subscribesExecutor
   }) {
     return DictionaryState(
       cities: cities ?? this.cities,
       orderCategories: orderCategories ?? this.orderCategories,
       advertCategories: advertCategories ?? this.advertCategories,
       storeTypes: storeTypes ?? this.storeTypes,
-      serviceTypes: serviceTypes ?? this.serviceTypes
+      serviceTypes: serviceTypes ?? this.serviceTypes,
+      subscribesExecutor: subscribesExecutor ?? this.subscribesExecutor,
+      subscribesStore: subscribesStore ?? this.subscribesStore
     );
   }
 
   @override
-  List<Object?> get props => [cities, orderCategories, advertCategories, storeTypes, serviceTypes];
+  List<Object?> get props => [cities, orderCategories, advertCategories, storeTypes, serviceTypes, subscribesExecutor, subscribesStore];
 }
 

@@ -3,9 +3,9 @@ import 'package:megaladon/data/models/offer_model.dart';
 import 'package:megaladon/data/models/request/params/create/offer_create_request_params.dart';
 
 class OfferRepository {
-  Future<OfferModel> create(int orderId, OfferCreateRequestParams params) => ApiService.I
+  Future create(int orderId, OfferCreateRequestParams params) => ApiService.I
       .post('/order/$orderId/offer', data: params.toData())
-      .then((value) => OfferModel.fromJsonMini(value.data['offer']));
+      .then((value) => value.data);
 
   Future getAll(int orderId) => ApiService.I
       .get('/order/$orderId/offer')

@@ -129,7 +129,10 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                HeaderAppBar(isBack: true, title: "Change_order".tr(),),
+                HeaderAppBar(
+                  isBack: true,
+                  title: "Change_order".tr(),
+                ),
                 const SizedBox(height: 30),
                 OrderCategoryPicker(label: "category".tr(), controller: _orderCategoryController),
                 TextFieldApp(controller: _titleController, label: "Header".tr(),),
