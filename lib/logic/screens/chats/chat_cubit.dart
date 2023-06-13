@@ -55,22 +55,19 @@ class ChatCubit extends Cubit<ChatState> {
       ));
 
       ChatModel chat = state.chats.singleWhere((element) => element.id == chatId);
-      MessageIndexRequestParams stateParams = state.params[chatId] ?? MessageIndexRequestParams(0);
+      // MessageIndexRequestParams stateParams = state.params[chatId] ?? MessageIndexRequestParams(0);
 
       MessageIndexRequestParams params = MessageIndexRequestParams(chat.messages.length);
 
       return _repository.getMessages(chatId, params).then((value) {
-        print(value);
-
         Map<int, MessageIndexRequestParams> allParams = state.params;
         allParams[chatId] = params;
         isLoadingMessages[chatId] = false;
 
-        print('aa');
         emit(state.copyWith(
             chats: state.chats.map((e) {
               if(chat.id == e.id) {
-                return chat.addMessage(value);
+                return chat.addMessage(value.reversed.toList());
               } return e;
             }).toList(),
             isLoadingMessages: isLoadingMessages,
@@ -208,6 +205,7 @@ class ChatCubit extends Cubit<ChatState> {
         ]);
       });
     }
+    return;
   }
 
   _changeLoadingMessages(int chatId, List<MessageModel> loadings) {

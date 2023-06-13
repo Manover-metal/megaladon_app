@@ -21,7 +21,7 @@ class ChatRepository {
       .post('/chat/send-message', data: params.toData())
       .then((value) => value.data);
   
-  Future getMessages(int chatId, MessageIndexRequestParams params) => ApiService.I
+  Future<List<MessageModel>> getMessages(int chatId, MessageIndexRequestParams params) => ApiService.I
       .get('/chat/$chatId', queryParameters: params.toData())
       .then((value) => MessageModel.fromJsonList(value.data['list']));
 }

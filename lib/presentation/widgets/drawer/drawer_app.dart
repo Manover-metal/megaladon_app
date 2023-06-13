@@ -105,14 +105,14 @@ class DrawerApp extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            DrawerRouteTile(
-                              text: "Подписки".tr(),
-                              page: const InitialRouter(
-                                children: [
-                                  OrderRouter(children: [SubscribeRoute()])
-                                ],
-                              ),
-                            ),
+                            // DrawerRouteTile(
+                            //   text: "Подписки".tr(),
+                            //   page: const InitialRouter(
+                            //     children: [
+                            //       OrderRouter(children: [SubscribeRoute()])
+                            //     ],
+                            //   ),
+                            // ),
                           ],
                         )
                     ),

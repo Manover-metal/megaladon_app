@@ -67,22 +67,23 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Stack(
-            children: [
-              CupertinoScrollbar(
+        child: Stack(
+          children: [
+            CupertinoScrollbar(
+              controller: _scrollController,
+              child: SingleChildScrollView(
                 controller: _scrollController,
-                child: SingleChildScrollView(
-                  controller: _scrollController,
-                  scrollDirection: Axis.vertical,
-                  child: BlocBuilder<AuthBloc, AuthState>(
-                    builder: (context, authState) {
-                      return BlocBuilder<ChatCubit, ChatState>(
-                        builder: (context, state) {
-                          List<MessageModel> messages = state.chats.firstWhere((element) => element.id == widget.chat.id).messages;
-                          return Column(
+                scrollDirection: Axis.vertical,
+                child: BlocBuilder<AuthBloc, AuthState>(
+                  builder: (context, authState) {
+                    return BlocBuilder<ChatCubit, ChatState>(
+                      builder: (context, state) {
+                        List<MessageModel> messages = state.chats.firstWhere((element) => element.id == widget.chat.id).messages;
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Column(
                             children: [
+                              SizedBox(height: 120),
                               ...messages.map((e) {
                                 bool isMe = false;
                                 if(authState is AuthLoginState) {
@@ -99,21 +100,33 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
                                 return message(
                                     context, value, true, true
                                 );
-                              }).toList()
+                              }).toList(),
+                              SizedBox(height: 120)
                             ],
-                          );
-                        },
-                      );
-                    },
-                  ),
+                          ),
+                        );
+                      },
+                    );
+                  },
                 ),
               ),
-              Positioned(
-                  top: 0,
-                  child: HeaderAppBar(isBack: true, title: "Chat".tr())
-              ),
-              Positioned(
-                bottom: 0,
+            ),
+            Positioned(
+                top: 0,
+                child: Container(
+                    padding: EdgeInsets.only(top: 10, left: 20, right: 20),
+                    color: Theme.of(context).colorScheme.background,
+                    width: MediaQuery.of(context).size.width,
+                    child: HeaderAppBar(isBack: true, title: "Chat".tr())
+                )
+            ),
+            Positioned(
+              bottom: 0,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.all(20),
+                color: Theme.of(context).colorScheme.background,
+
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -137,12 +150,10 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
                       ),
                     ),
                   ],
-                )
+                ),
               )
-
-
-            ],
-          ),
+            )
+          ],
         ),
       ),
     );
