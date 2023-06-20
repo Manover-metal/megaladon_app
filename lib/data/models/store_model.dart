@@ -3,7 +3,6 @@ import 'package:megaladon/core/utils/parser.dart';
 import 'package:megaladon/data/models/contact_model.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/dictionary/file_model.dart';
-import 'package:megaladon/data/models/dictionary/store_type_model.dart';
 
 
 part 'store_model.g.dart';
@@ -29,9 +28,6 @@ class StoreModel {
   final CityModel? city;
 
   @ignore
-  final StoreTypeModel? type;
-
-  @ignore
   final List<ContactModel>? contacts;
 
 
@@ -47,7 +43,6 @@ class StoreModel {
     this.lat,
     this.lon,
     this.name,
-    this.type,
     this.city,
   });
 
@@ -60,7 +55,6 @@ class StoreModel {
         rating: data['rating'],
         fullAddress: data['full_address'],
         photo: data['photo_url'],
-        type: Parser.toStoreType(data['type']),
         city: data['city'] != null? CityModel.fromJson(data['city']): null
     );
   }
@@ -82,7 +76,6 @@ class StoreModel {
         hasPhone: (contacts != null)? contacts.any((element) {
           return element.type == ContactType.homePhone || element.type == ContactType.phone;
         }): false,
-        type: Parser.toStoreType(data['type']),
         city: data['city'] != null? CityModel.fromJson(data['city']): null
 
     );

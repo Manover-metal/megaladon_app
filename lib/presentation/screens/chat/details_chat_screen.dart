@@ -67,93 +67,104 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Stack(
-          children: [
-            CupertinoScrollbar(
-              controller: _scrollController,
-              child: SingleChildScrollView(
-                controller: _scrollController,
-                scrollDirection: Axis.vertical,
-                child: BlocBuilder<AuthBloc, AuthState>(
-                  builder: (context, authState) {
-                    return BlocBuilder<ChatCubit, ChatState>(
-                      builder: (context, state) {
-                        List<MessageModel> messages = state.chats.firstWhere((element) => element.id == widget.chat.id).messages;
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Column(
-                            children: [
-                              SizedBox(height: 120),
-                              ...messages.map((e) {
-                                bool isMe = false;
-                                if(authState is AuthLoginState) {
-                                  isMe = e.user?.id == authState.auth.user.value?.id || e.user?.id == null;
-                                }
-                                return message(context, e, isMe);
-                              }).toList(),
-                              if(state.loadingMessages[widget.chat.id] != null) ...state.loadingMessages[widget.chat.id]!.map((value) {
-                                return message(
-                                    context, value, true
-                                );
-                              }).toList(),
-                              if(state.errorMessages[widget.chat.id] != null) ...state.errorMessages[widget.chat.id]!.map((value) {
-                                return message(
-                                    context, value, true, true
-                                );
-                              }).toList(),
-                              SizedBox(height: 120)
-                            ],
-                          ),
+        child: Container(
+
+          child: Stack(
+            children: [
+
+              Container(
+                constraints: BoxConstraints(
+                    minWidth: MediaQuery.of(context).size.width,
+                    minHeight: MediaQuery.of(context).size.height
+                ),
+                child: CupertinoScrollbar(
+                  controller: _scrollController,
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
+                    scrollDirection: Axis.vertical,
+                    child: BlocBuilder<AuthBloc, AuthState>(
+                      builder: (context, authState) {
+                        return BlocBuilder<ChatCubit, ChatState>(
+                          builder: (context, state) {
+                            List<MessageModel> messages = state.chats.firstWhere((element) => element.id == widget.chat.id).messages;
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              child: Column(
+                                children: [
+                                  SizedBox(height: 120),
+                                  if(messages.isEmpty) Text('Пока что сообщений в этом чате нет'),
+                                  ...messages.map((e) {
+                                    bool isMe = false;
+                                  if(authState is AuthLoginState) {
+                                      isMe = e.user?.id == authState.auth.user.value?.id || e.user?.id == null;
+                                    }
+                                    return message(context, e, isMe);
+                                  }).toList(),
+                                  if(state.loadingMessages[widget.chat.id] != null) ...state.loadingMessages[widget.chat.id]!.map((value) {
+                                    return message(
+                                        context, value, true
+                                    );
+                                  }).toList(),
+                                  if(state.errorMessages[widget.chat.id] != null) ...state.errorMessages[widget.chat.id]!.map((value) {
+                                    return message(
+                                        context, value, true, true
+                                    );
+                                  }).toList(),
+                                  SizedBox(height: 120)
+                                ],
+                              ),
+                            );
+                          },
                         );
                       },
-                    );
-                  },
+                    ),
+                  ),
                 ),
               ),
-            ),
-            Positioned(
-                top: 0,
+              Positioned(
+                  top: 0,
+                  child: Container(
+                      padding: EdgeInsets.only(top: 10, left: 20, right: 20),
+                      color: Theme.of(context).colorScheme.background,
+                      width: MediaQuery.of(context).size.width,
+                      child: HeaderAppBar(isBack: true, title: "Chat".tr())
+                  )
+              ),
+              Positioned(
+                bottom: 0,
                 child: Container(
-                    padding: EdgeInsets.only(top: 10, left: 20, right: 20),
-                    color: Theme.of(context).colorScheme.background,
-                    width: MediaQuery.of(context).size.width,
-                    child: HeaderAppBar(isBack: true, title: "Chat".tr())
-                )
-            ),
-            Positioned(
-              bottom: 0,
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.all(20),
-                color: Theme.of(context).colorScheme.background,
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.all(20),
+                  color: Theme.of(context).colorScheme.background,
 
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Expanded(child: TextField(
-                      controller: _textController,
-                    )),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 5),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            color: Theme.of(context).colorScheme.primary),
-                        borderRadius: BorderRadius.circular(20),
-                        color: Theme.of(context).colorScheme.tertiary,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Expanded(child: TextField(
+                        controller: _textController,
+                      )),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 5),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Theme.of(context).colorScheme.primary),
+                          borderRadius: BorderRadius.circular(20),
+                          color: Theme.of(context).colorScheme.tertiary,
+                        ),
+                        child: IconButton(
+                            onPressed: _sendMessage,
+                            icon: Icon(
+                              Icons.near_me_outlined,
+                              color: Theme.of(context).colorScheme.primary,
+                            )
+                        ),
                       ),
-                      child: IconButton(
-                          onPressed: _sendMessage,
-                          icon: Icon(
-                            Icons.near_me_outlined,
-                            color: Theme.of(context).colorScheme.primary,
-                          )
-                      ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+                )
               )
-            )
-          ],
+            ],
+          ),
         ),
       ),
     );

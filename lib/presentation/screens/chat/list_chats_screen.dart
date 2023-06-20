@@ -6,6 +6,7 @@ import 'package:megaladon/logic/screens/chats/chat_cubit.dart';
 import 'package:megaladon/presentation/widgets/card/chat_card.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/message/error_message.dart';
+import 'package:megaladon/presentation/widgets/message/stock_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 
 class ListChatsScreen extends StatefulWidget {
@@ -69,6 +70,8 @@ class _ListChatsScreenState extends State<ListChatsScreen> {
                     builder: (context, state) {
                       return Column(
                         children: [
+                          if(state.chats.isEmpty) StockMessage(name: "Chats".tr()),
+
                           ...state.chats.map((chat) {
                             return ChatCard(chat: chat);
                           }).toList(),

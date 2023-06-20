@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:megaladon/data/models/request/params/register/register_executor_request_params.dart';
 import 'package:megaladon/generated/locale_keys.g.dart';
 import 'package:megaladon/logic/form/register/register_executor/register_executor_form_cubit.dart';
@@ -28,26 +29,28 @@ class RegisterExecutorScreen extends StatefulWidget {
 class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
   late TextEditingController _nameController;
   late TextEditingController _binController;
-  late TextEditingController _latController;
-  late TextEditingController _lonController;
   late TextEditingController _fullAddressController;
   late ServiceTypeMultiPickerController _serviceController;
 
 
 
-  _register() {
-    if(_checkForm()) {
-      context.read<RegisterExecutorBloc>().add(RegisterExecutorFetchEvent(
-        params: RegisterExecutorRequestParams(
-            name: _nameController.value.text,
-            bin: _binController.value.text,
-            lat: double.parse(_latController.value.text),
-            lon: double.parse(_lonController.value.text),
-            fullAddress: _fullAddressController.value.text,
-            services: _serviceController.value.map((e) => e.value).toList()
+  _register() async{
+    if(await _checkForm()) {
+      Position? position =  await getLocation();
+      if(position != null) {
+        context.read<RegisterExecutorBloc>().add(RegisterExecutorFetchEvent(
+          params: RegisterExecutorRequestParams(
+              name: _nameController.value.text,
+              bin: _binController.value.text,
+              lat: position.latitude,
+              lon: position.longitude,
+              fullAddress: _fullAddressController.value.text,
+              services: _serviceController.value.map((e) => e.value).toList()
           ),
         )
-      );
+        );
+      }
+
     }
   }
 
@@ -73,16 +76,58 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
     }
   };
 
-  _checkForm() {
-    RegisterExecutorFormCubit form = context.read<RegisterExecutorFormCubit>();
-    return form.checkRegisterForm(
-        name: _nameController.value.text,
-        fullAddress: _fullAddressController.value.text,
-        bin: _binController.value.text,
-        lat: _latController.value.text,
-        lon: _lonController.value.text,
-        services: _serviceController.value.map((e) => e.value).toList()
+  Future<bool> _checkForm() async{
+    Position? position =  await getLocation();
+
+    if(position != null) {
+      RegisterExecutorFormCubit form = context.read<RegisterExecutorFormCubit>();
+      return form.checkRegisterForm(
+          name: _nameController.value.text,
+          fullAddress: _fullAddressController.value.text,
+          bin: _binController.value.text,
+          lat: position.latitude.toString(),
+          lon: position.longitude.toString(),
+          services: _serviceController.value.map((e) => e.value).toList()
+      );
+    } else {
+      return false;
+    }
+
+  }
+
+  Future<Position?> getLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Check if location services are enabled
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are disabled
+      showErrorSnackBar(context, 'Отключенена геопозиция');
+      return null;
+    }
+
+    // Request location permission
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        showErrorSnackBar(context, 'Отключенено разрешение на получение геопозиция');
+        return null;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      showErrorSnackBar(context, 'Отключенено разрешение на получение геопозиция');
+      return null;
+    }
+
+    // Get the current position (latitude and longitude)
+    Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
     );
+
+    return position;
   }
 
   @override
@@ -90,8 +135,6 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
     _nameController = TextEditingController();
     _fullAddressController = TextEditingController();
     _binController = TextEditingController();
-    _latController = TextEditingController();
-    _lonController = TextEditingController();
     _serviceController = ServiceTypeMultiPickerController();
     super.initState();
   }
@@ -102,8 +145,6 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
     _nameController.dispose();
     _fullAddressController.dispose();
     _binController.dispose();
-    _latController.dispose();
-    _lonController.dispose();
     _serviceController.dispose();
     super.dispose();
   }
@@ -142,16 +183,6 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
                     label: "Full_address".tr(),
                     icon: const Icon(Icons.maps_home_work_outlined),
                     controller: _fullAddressController,
-                  ),
-                  DoubleFieldApp(
-                    label: "Latitude".tr(),
-                    icon: const Icon(Icons.place),
-                    controller: _latController,
-                  ),
-                  DoubleFieldApp(
-                    label: "Longitude".tr(),
-                    icon: const Icon(Icons.place_outlined),
-                    controller: _lonController,
                   ),
                   ServiceTypeMultiPicker(serviceTypeControllers: _serviceController),
 

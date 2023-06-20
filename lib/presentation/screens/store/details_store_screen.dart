@@ -64,7 +64,7 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
                     return SliverToBoxAdapter(
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: HeaderAppBar(isBack: true, title: '${state.store.type?.name} "${state.store.name}"'),
+                          child: HeaderAppBar(isBack: true, title: '${state.store.name}'),
                         )
                     );
                   } else {

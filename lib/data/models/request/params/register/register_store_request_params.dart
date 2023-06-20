@@ -1,7 +1,6 @@
 
 import 'package:megaladon/data/models/contact_model.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
-import 'package:megaladon/data/models/dictionary/store_type_model.dart';
 
 class RegisterStoreRequestParams {
   final String name;
@@ -10,7 +9,6 @@ class RegisterStoreRequestParams {
   final double lon;
   final double lat;
   final CityModel city;
-  final StoreTypeModel type;
   final List<ContactModel> contacts;
 
   const RegisterStoreRequestParams({
@@ -20,7 +18,6 @@ class RegisterStoreRequestParams {
     required this.lon,
     required this.lat,
     required this.city,
-    required this.type,
     required this.contacts
   });
 
@@ -32,7 +29,6 @@ class RegisterStoreRequestParams {
       'lon': lon,
       'lat': lat,
       'city_id': city.id,
-      'type_id': type.id,
       'contacts': contacts.map((e) {
         return {
           'type': e.type.name,
