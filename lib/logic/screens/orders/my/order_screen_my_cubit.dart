@@ -20,16 +20,16 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
 
   _listenAuth(stateAuth) {
     if(stateAuth is AuthLoginState) {
-      fetchMy();
+      refresh();
     } else {
       emit(const OrderScreenMyState());
     }
   }
 
   Future fetchMy({OrderIndexRequestParams? params}) async {
-    if(state.status == OrderScreenMyStatus.loading
-        && state.error == null
-    ) return;
+    // if(state.status == OrderScreenMyStatus.loading
+    //     && state.error == null
+    // ) return;
 
     OrderIndexRequestParams mainParams = params ?? state.params;
     emit(state.copyWith(
@@ -37,10 +37,8 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
         error: null,
       )
     );
-    return await Future.wait([
-      _repository.indexMy(mainParams),
-    ]).then((value) {
-      final my = value[0];
+    return await _repository.indexMy(mainParams).then((value) {
+      final my = value;
 
       if(mainParams.startRow == 0) {
         emit(state.copyWith(
@@ -59,7 +57,11 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
       }
     }).catchError(( error) {
       if(error is DioError) {
-        emit(state.copyWith(error: ErrorModel.parseDio(error)));
+        if(error.response?.statusCode == 403) {
+          authBloc.add(AuthLogoutEvent());
+        } else {
+          emit(state.copyWith(error: ErrorModel.parseDio(error)));
+        }
       } else {
         emit(state.copyWith(error: ErrorModel.nothing));
       }
@@ -67,20 +69,19 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
   }
 
   Future fetchResponded({OrderIndexRequestParams? params}) async {
-    if(state.status == OrderScreenMyStatus.loading
-        && state.error == null
-    ) return;
+    // if(state.status == OrderScreenMyStatus.loading
+    //     && state.error == null
+    // ) return;
 
     OrderIndexRequestParams mainParams = params ?? state.params;
     emit(state.copyWith(
       status: OrderScreenMyStatus.loading,
       error: null,
-    )
+      )
     );
-    return await Future.wait([
-      _repository.indexMyResponded(mainParams)
-    ]).then((value) {
-      final myResponded = value[0];
+    return await _repository.indexMyResponded(mainParams).then((value) {
+      final myResponded = value;
+      print(myResponded);
 
       if(mainParams.startRow == 0) {
         emit(state.copyWith(
@@ -98,8 +99,13 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
         ));
       }
     }).catchError(( error) {
+      print(error);
       if(error is DioError) {
-        emit(state.copyWith(error: ErrorModel.parseDio(error)));
+        if(error.response?.statusCode == 403) {
+          authBloc.add(AuthLogoutEvent());
+        } else {
+          emit(state.copyWith(error: ErrorModel.parseDio(error)));
+        }
       } else {
         emit(state.copyWith(error: ErrorModel.nothing));
       }
@@ -126,7 +132,11 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
       ));
     }).catchError(( error) {
       if(error is DioError) {
-        emit(state.copyWith(error: ErrorModel.parseDio(error)));
+        if(error.response?.statusCode == 403) {
+          authBloc.add(AuthLogoutEvent());
+        } else {
+          emit(state.copyWith(error: ErrorModel.parseDio(error)));
+        }
       } else {
         emit(state.copyWith(error: ErrorModel.nothing));
       }

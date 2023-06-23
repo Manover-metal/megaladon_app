@@ -131,6 +131,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   _addExecutor(AuthAddExecutorEvent event,  Emitter emit) async {
     final AuthLoginState currentState = state as AuthLoginState;
+    emit(AuthLoadingState());
     final AuthModel auth = currentState.auth;
     auth.executor.value = event.executor;
     await _authRepository.addExecutor(auth, event.executor);
@@ -139,6 +140,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   _addStore(AuthAddStoreEvent event,  Emitter emit) async {
     final AuthLoginState currentState = state as AuthLoginState;
+    emit(AuthLoadingState());
     final AuthModel auth = currentState.auth;
     auth.store.value = event.store;
     await _authRepository.addStore(auth, event.store);

@@ -72,10 +72,12 @@ class _MyAdsScreenState extends State<MyAdsScreen> with SingleTickerProviderStat
 
   @override
   void initState() {
-    _tabController = TabController(length: 2, vsync: this);
 
     _scrollAdvertController = ScrollController()..addListener(_listenerAdvertScroll);
     _scrollServiceController = ScrollController()..addListener(_listenerServiceScroll);
+
+    _tabController = TabController(length: 2, vsync: this);
+
 
     _onRefresh();
     super.initState();
@@ -197,7 +199,7 @@ class _MyAdsScreenState extends State<MyAdsScreen> with SingleTickerProviderStat
                                     }).toList(),
                                     if(state.status == AdverScreenMyMainStatus.loading) const Loader(padding: 10)
                                     else if(state.status == AdverScreenMyMainStatus.error) ErrorMessage(error: state.error!)
-                                    else if(state.stock)  StockMessage(name: "Ads".tr())
+                                    else if(state.stock) StockMessage(name: "Ads".tr())
 
                                   ],
                                 );

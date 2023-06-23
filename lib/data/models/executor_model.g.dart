@@ -27,33 +27,38 @@ const ExecutorModelSchema = CollectionSchema(
       name: r'countOrders',
       type: IsarType.long,
     ),
-    r'fullAddress': PropertySchema(
+    r'description': PropertySchema(
       id: 2,
+      name: r'description',
+      type: IsarType.string,
+    ),
+    r'fullAddress': PropertySchema(
+      id: 3,
       name: r'fullAddress',
       type: IsarType.string,
     ),
     r'lat': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'lat',
       type: IsarType.double,
     ),
     r'lon': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'lon',
       type: IsarType.double,
     ),
     r'name': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'name',
       type: IsarType.string,
     ),
     r'photo': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'photo',
       type: IsarType.string,
     ),
     r'rating': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'rating',
       type: IsarType.string,
     )
@@ -80,6 +85,12 @@ int _executorModelEstimateSize(
   var bytesCount = offsets.last;
   {
     final value = object.bin;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.description;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
@@ -114,12 +125,13 @@ void _executorModelSerialize(
 ) {
   writer.writeString(offsets[0], object.bin);
   writer.writeLong(offsets[1], object.countOrders);
-  writer.writeString(offsets[2], object.fullAddress);
-  writer.writeDouble(offsets[3], object.lat);
-  writer.writeDouble(offsets[4], object.lon);
-  writer.writeString(offsets[5], object.name);
-  writer.writeString(offsets[6], object.photo);
-  writer.writeString(offsets[7], object.rating);
+  writer.writeString(offsets[2], object.description);
+  writer.writeString(offsets[3], object.fullAddress);
+  writer.writeDouble(offsets[4], object.lat);
+  writer.writeDouble(offsets[5], object.lon);
+  writer.writeString(offsets[6], object.name);
+  writer.writeString(offsets[7], object.photo);
+  writer.writeString(offsets[8], object.rating);
 }
 
 ExecutorModel _executorModelDeserialize(
@@ -131,13 +143,14 @@ ExecutorModel _executorModelDeserialize(
   final object = ExecutorModel(
     bin: reader.readStringOrNull(offsets[0]),
     countOrders: reader.readLongOrNull(offsets[1]),
-    fullAddress: reader.readStringOrNull(offsets[2]),
+    description: reader.readStringOrNull(offsets[2]),
+    fullAddress: reader.readStringOrNull(offsets[3]),
     id: id,
-    lat: reader.readDoubleOrNull(offsets[3]),
-    lon: reader.readDoubleOrNull(offsets[4]),
-    name: reader.readString(offsets[5]),
-    photo: reader.readStringOrNull(offsets[6]),
-    rating: reader.readStringOrNull(offsets[7]),
+    lat: reader.readDoubleOrNull(offsets[4]),
+    lon: reader.readDoubleOrNull(offsets[5]),
+    name: reader.readString(offsets[6]),
+    photo: reader.readStringOrNull(offsets[7]),
+    rating: reader.readStringOrNull(offsets[8]),
   );
   return object;
 }
@@ -156,14 +169,16 @@ P _executorModelDeserializeProp<P>(
     case 2:
       return (reader.readStringOrNull(offset)) as P;
     case 3:
-      return (reader.readDoubleOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 4:
       return (reader.readDoubleOrNull(offset)) as P;
     case 5:
-      return (reader.readString(offset)) as P;
+      return (reader.readDoubleOrNull(offset)) as P;
     case 6:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 7:
+      return (reader.readStringOrNull(offset)) as P;
+    case 8:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -486,6 +501,160 @@ extension ExecutorModelQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<ExecutorModel, ExecutorModel, QAfterFilterCondition>
+      descriptionIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'description',
+      ));
+    });
+  }
+
+  QueryBuilder<ExecutorModel, ExecutorModel, QAfterFilterCondition>
+      descriptionIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'description',
+      ));
+    });
+  }
+
+  QueryBuilder<ExecutorModel, ExecutorModel, QAfterFilterCondition>
+      descriptionEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'description',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ExecutorModel, ExecutorModel, QAfterFilterCondition>
+      descriptionGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'description',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ExecutorModel, ExecutorModel, QAfterFilterCondition>
+      descriptionLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'description',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ExecutorModel, ExecutorModel, QAfterFilterCondition>
+      descriptionBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'description',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ExecutorModel, ExecutorModel, QAfterFilterCondition>
+      descriptionStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'description',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ExecutorModel, ExecutorModel, QAfterFilterCondition>
+      descriptionEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'description',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ExecutorModel, ExecutorModel, QAfterFilterCondition>
+      descriptionContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'description',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ExecutorModel, ExecutorModel, QAfterFilterCondition>
+      descriptionMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'description',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ExecutorModel, ExecutorModel, QAfterFilterCondition>
+      descriptionIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'description',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ExecutorModel, ExecutorModel, QAfterFilterCondition>
+      descriptionIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'description',
+        value: '',
       ));
     });
   }
@@ -1337,6 +1506,19 @@ extension ExecutorModelQuerySortBy
     });
   }
 
+  QueryBuilder<ExecutorModel, ExecutorModel, QAfterSortBy> sortByDescription() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'description', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ExecutorModel, ExecutorModel, QAfterSortBy>
+      sortByDescriptionDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'description', Sort.desc);
+    });
+  }
+
   QueryBuilder<ExecutorModel, ExecutorModel, QAfterSortBy> sortByFullAddress() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'fullAddress', Sort.asc);
@@ -1435,6 +1617,19 @@ extension ExecutorModelQuerySortThenBy
       thenByCountOrdersDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'countOrders', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ExecutorModel, ExecutorModel, QAfterSortBy> thenByDescription() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'description', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ExecutorModel, ExecutorModel, QAfterSortBy>
+      thenByDescriptionDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'description', Sort.desc);
     });
   }
 
@@ -1540,6 +1735,13 @@ extension ExecutorModelQueryWhereDistinct
     });
   }
 
+  QueryBuilder<ExecutorModel, ExecutorModel, QDistinct> distinctByDescription(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'description', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<ExecutorModel, ExecutorModel, QDistinct> distinctByFullAddress(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1598,6 +1800,12 @@ extension ExecutorModelQueryProperty
   QueryBuilder<ExecutorModel, int?, QQueryOperations> countOrdersProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'countOrders');
+    });
+  }
+
+  QueryBuilder<ExecutorModel, String?, QQueryOperations> descriptionProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'description');
     });
   }
 

@@ -201,7 +201,7 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
                     builder: (context, state) {
                       if (state is RegisterStoreLoading) {
                         return ElevatedButtonApp(
-                          child: const Loader(),
+                          child: const Loader(color: Colors.black),
                           onPressed: () {},
                         );
                       }

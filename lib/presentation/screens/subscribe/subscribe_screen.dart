@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/dictionary/dictionary_cubit.dart';
 import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
+import 'package:megaladon/presentation/widgets/card/subscribe_card.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 
 class SubscribeScreen extends StatefulWidget {
@@ -24,10 +25,10 @@ class _SubscribeScreenState extends State<SubscribeScreen> with SingleTickerProv
   @override
   void initState() {
     if(_isExecutor()) {
-      _scrollControllerStore = ScrollController();
+      _scrollControllerExecutor = ScrollController();
     }
     if(_isStore()) {
-      _scrollControllerExecutor = ScrollController();
+      _scrollControllerStore = ScrollController();
     }
     _tabController = TabController(length: _countFace(), vsync: this);
 
@@ -118,11 +119,10 @@ class _SubscribeScreenState extends State<SubscribeScreen> with SingleTickerProv
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: BlocBuilder<DictionaryCubit, DictionaryState>(
                             builder: (context, state) {
-
                               return Column(
                                 children: state.subscribesExecutor.map((e) {
-                                  return Container(
-                                    child: Text(e.price.toString()),
+                                  return SubscribeCard(
+                                    subscribe: e,
                                   );
                                 }).toList()
                               );
@@ -144,8 +144,8 @@ class _SubscribeScreenState extends State<SubscribeScreen> with SingleTickerProv
                             builder: (context, state) {
                               return Column(
                                 children: state.subscribesStore.map((e) {
-                                  return Container(
-                                    child: Text(e.price.toString()),
+                                  return SubscribeCard(
+                                    subscribe: e,
                                   );
                                 }).toList()
                               );

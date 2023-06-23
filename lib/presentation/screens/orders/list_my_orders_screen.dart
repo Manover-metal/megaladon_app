@@ -51,11 +51,9 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> with SingleTick
     if(_isExecutor()) {
       _tabController = TabController(length: 2, vsync: this);
       _scrollControllerResponded = ScrollController()..addListener(_listenerScrollResponded);
-
     } else {
       _tabController = TabController(length: 1, vsync: this);
     }
-
     _onRefresh();
     super.initState();
   }
@@ -75,8 +73,8 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> with SingleTick
   Future _onRefresh() async {
      if(_isExecutor()) {
        return Future.wait([
+         context.read<OrderScreenMyCubit>().fetchResponded(),
          context.read<OrderScreenMyCubit>().fetchMy(),
-         context.read<OrderScreenMyCubit>().fetchResponded()
        ]);
      }else {
        return context.read<OrderScreenMyCubit>().fetchMy();
@@ -98,7 +96,9 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> with SingleTick
   }
 
   bool _isExecutor() {
-    return context.read<AuthBloc>().hasExecutor();
+     final a = context.read<AuthBloc>().hasExecutor();
+     print(a);
+     return a;
   }
 
   @override

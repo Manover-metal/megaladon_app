@@ -4,6 +4,7 @@ class RegisterExecutorFormState extends Equatable {
   final FormzStatus status;
   final NameFormModel name;
   final CityFormModel city;
+  final DescriptionFormModel description;
   final BinFormModel bin;
   final LatFormModel lat;
   final LonFormModel lon;
@@ -14,6 +15,7 @@ class RegisterExecutorFormState extends Equatable {
     this.status = FormzStatus.pure,
     this.name = const NameFormModel.pure(),
     this.city = const CityFormModel.pure(),
+    this.description = const DescriptionFormModel.pure(),
     this.bin = const BinFormModel.pure(),
     this.lat = const LatFormModel.pure(),
     this.lon = const LonFormModel.pure(),
@@ -22,7 +24,7 @@ class RegisterExecutorFormState extends Equatable {
   });
 
   @override
-  List<Object?> get props => [status, name, city, bin, lat, lon, services, countTry];
+  List<Object?> get props => [status, name, city, bin, lat, lon, services, countTry, description];
 
   RegisterExecutorFormState copyWith ({
     FormzStatus? status,

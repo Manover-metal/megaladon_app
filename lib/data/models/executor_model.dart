@@ -1,6 +1,7 @@
 
 import 'package:isar/isar.dart';
 import 'package:megaladon/core/utils/parser.dart';
+import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/dictionary/service_type_model.dart';
 
 part 'executor_model.g.dart';
@@ -17,7 +18,12 @@ class ExecutorModel {
   final String? fullAddress;
   final int? countOrders;
   final String? photo;
-  
+  final String? description;
+
+
+  @ignore
+  final CityModel? city;
+
   @ignore
   final List<ServiceTypeModel> services;
 
@@ -32,7 +38,9 @@ class ExecutorModel {
     this.fullAddress,
     this.countOrders,
     this.photo,
-    this.services = const []
+    this.services = const [],
+    this.city,
+    this.description
   });
 
   static ExecutorModel fromJson(data) {
@@ -46,7 +54,9 @@ class ExecutorModel {
         lon: Parser.toDouble(data['lon']),
         fullAddress: data['full_address'],
         countOrders: data['count_orders'],
-        services: data['services'] != null? ServiceTypeModel.listFromJson(data['services']): []
+        services: data['services'] != null? ServiceTypeModel.listFromJson(data['services']): [],
+        city: data['city'] != null ? CityModel.fromJson(data['city']): null,
+        description: data['description']
     );
   }
 

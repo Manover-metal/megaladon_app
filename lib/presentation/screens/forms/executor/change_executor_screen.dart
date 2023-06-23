@@ -14,6 +14,7 @@ import 'package:megaladon/presentation/widgets/form/field/double_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/number_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/form/multi_picker/service_type_multi_picker.dart';
+import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
@@ -30,6 +31,8 @@ class _ChangeExecutorScreenState extends State<ChangeExecutorScreen> {
   late TextEditingController _binController;
   late TextEditingController _fullAddressController;
   late ServiceTypeMultiPickerController _serviceController;
+  late CityPickerController _cityController;
+  late TextEditingController _descriptionController;
 
   _register() async{
     if(await _checkForm()) {
@@ -42,7 +45,9 @@ class _ChangeExecutorScreenState extends State<ChangeExecutorScreen> {
               lat: position.latitude,
               lon: position.longitude,
               fullAddress: _fullAddressController.value.text,
-              services: _serviceController.value.map((e) => e.value).toList()
+              services: _serviceController.value.map((e) => e.value).toList(),
+              city: _cityController.value,
+              description: _descriptionController.value.text
             ),
           )
         );
@@ -83,7 +88,9 @@ class _ChangeExecutorScreenState extends State<ChangeExecutorScreen> {
           bin: _binController.value.text,
           lat: position.latitude.toString(),
           lon: position.longitude.toString(),
-          services: _serviceController.value.map((e) => e.value).toList()
+          services: _serviceController.value.map((e) => e.value).toList(),
+          city: _cityController.value,
+          description: _descriptionController.value.text
       );
     } else {
       return false;
@@ -134,6 +141,8 @@ class _ChangeExecutorScreenState extends State<ChangeExecutorScreen> {
     _fullAddressController = TextEditingController(text: state.executor?.fullAddress);
     _binController = TextEditingController(text: state.executor?.bin);
     _serviceController = ServiceTypeMultiPickerController(services: state.executor?.services);
+    _descriptionController = TextEditingController(text: state.executor?.description);
+    _cityController = CityPickerController(city: state.executor?.city);
     super.initState();
   }
 
@@ -144,6 +153,8 @@ class _ChangeExecutorScreenState extends State<ChangeExecutorScreen> {
     _fullAddressController.dispose();
     _binController.dispose();
     _serviceController.dispose();
+    _descriptionController.dispose();
+    _cityController.dispose();
     super.dispose();
   }
 
@@ -172,10 +183,20 @@ class _ChangeExecutorScreenState extends State<ChangeExecutorScreen> {
                     icon: const Icon(Icons.person_add_alt_1),
                     controller: _nameController,
                   ),
+                  TextFieldApp(
+                    label: "Description".tr(),
+                    icon: const Icon(Icons.description),
+                    controller: _descriptionController,
+                  ),
                   NumberFieldApp(
                     label: 'BIN'.tr(),
                     icon: const Icon(Icons.wallet),
                     controller: _binController,
+                  ),
+                  CityPicker(
+                      label: 'City'.tr(),
+                      controller: _cityController,
+                      icon: const Icon(Icons.location_city)
                   ),
                   TextFieldApp(
                     label: 'Full_address'.tr(),

@@ -106,13 +106,16 @@ class ChatCubit extends Cubit<ChatState> {
           chats: value,
           status: ChatScreenMainStatus.success,
       ));
-    }).catchError(( error) {
-      print(error);
+    }).catchError((error) {
       if(error is DioError) {
-        emit(state.copyWith(
-            status: ChatScreenMainStatus.error,
-            error: ErrorModel.parseDio(error))
-        );
+        if(error.response?.statusCode == 403) {
+          authBloc.add(AuthLogoutEvent());
+        } else {
+          emit(state.copyWith(
+              status: ChatScreenMainStatus.error,
+              error: ErrorModel.parseDio(error))
+          );
+        }
       } else {
         emit(state.copyWith(
             status: ChatScreenMainStatus.error,

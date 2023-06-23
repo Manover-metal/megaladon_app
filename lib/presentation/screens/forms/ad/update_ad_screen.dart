@@ -129,7 +129,7 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
             child: Column(
               children: [
                 if(widget.type == AdvertType.advert) HeaderAppBar(isBack: true, title: "Edit_ad".tr(),)
-                else if(widget.type == AdvertType.service) HeaderAppBar(isBack: true, title: "Edit_service".tr()),
+                else if(widget.type == AdvertType.service) HeaderAppBar(isBack: true, title: "Изменить сервис".tr()),
                 const SizedBox(height: 30),
                 TextFieldApp(controller: _titleController, label: "name_field".tr(), icon: const Icon(Icons.edit)),
                 AdvertCategoryPicker(label: "Select_a_category".tr(), controller: _advertCategoryController),

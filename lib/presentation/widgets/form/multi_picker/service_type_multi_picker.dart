@@ -86,7 +86,7 @@ class _ServiceTypeMultiPickerState extends State<ServiceTypeMultiPicker> {
             );
           },
         ),
-        OutlinedButtonApp(text: 'add_image'.tr(), onPressed: _addService,)
+        OutlinedButtonApp(text: 'Добавить сервис'.tr(), onPressed: _addService,)
       ],
     );
   }

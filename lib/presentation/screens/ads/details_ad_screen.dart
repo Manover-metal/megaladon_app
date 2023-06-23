@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/core/icons/icons.dart';
 import 'package:megaladon/data/models/advert_model.dart';
+import 'package:megaladon/data/models/dictionary/advert_type.dart';
 import 'package:megaladon/data/repositories/advert_repository.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/screens/advert/details/advert_screen_details_cubit.dart';
@@ -135,13 +136,13 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                                 if(state is AdvertScreenDetailsSuccess) {
                                   return HeaderAppBar(
                                     isBack: true,
-                                    title: "Ad".tr(),
+                                    title: state.advert.type == AdvertType.advert ? "Ad".tr(): "Service".tr(),
                                     onTrailing: (authState is AuthLoginState) && authState.auth.user.value?.id == state.advert.user?.id ? _onTrailing(state.advert) : null,
                                   );
                                 }
-                                return HeaderAppBar(
+                                return const HeaderAppBar(
                                   isBack: true,
-                                  title: "Ad".tr(),
+                                  title: '',
                                 );
                               },
                             );
@@ -211,12 +212,7 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                                     if(stateUser is AuthLoginState) {
                                       return Column(
                                         children: [
-                                          if(state.advert.user!.id == stateUser.auth.user.value!.id)...[
-                                            ElevatedButtonApp(
-                                              onPressed: _edit(state.advert),
-                                              text: "Edit".tr(),
-                                            ),
-                                          ] else ...[
+                                          if(state.advert.user!.id != stateUser.auth.user.value!.id)...[
                                             ElevatedButtonApp(
                                               text: "Call".tr(),
                                               onPressed: _call(state.advert.additionalPhone!),
