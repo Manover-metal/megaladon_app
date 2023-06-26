@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+
 class Parser {
   static int toInt(value) {
     switch(value.runtimeType) {
@@ -28,4 +30,18 @@ class Parser {
       default: return 0.0;
     }
   }
+
+  static String toPrice(value) {
+    try {
+      String cleanedInput = value.replaceAll(',', '').trim();
+      double number = double.parse(cleanedInput);
+      String formattedNumber = NumberFormat.decimalPattern().format(number);
+      return formattedNumber;
+    } catch(e) {
+      print(e);
+    }
+    return '';
+
+  }
+
 }

@@ -183,15 +183,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 DataTile(
                                     title: "Rating".tr(),
                                     data: executor.rating ?? '0'),
+                                if (executor.city != null)
+                                  DataTile(
+                                      title: "City".tr(),
+                                      data: executor.city!.name),
                                 if (executor.fullAddress != null)
                                   DataTile(
-                                    //
                                       title: "Address".tr(),
                                       data: executor.fullAddress!),
                                 if (executor.countOrders != null)
                                   DataTile(
                                       title: 'The_number_of_orders'.tr(),
                                       data: executor.countOrders.toString()),
+                                if (executor.description != null)
+                                  DataTile(
+                                      title: 'Description'.tr(),
+                                      data: executor.description ?? ''),
                                 const Divider(thickness: 1),
                               ],
                               if (store != null) ...[

@@ -53,11 +53,11 @@ class SubscribeCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          DataTile(title: 'Price'.tr(), data: subscribe.price.toString()),
+          DataTile(title: 'Price'.tr(), data: '${subscribe.price} ₸'),
           DataTile(title: 'Период'.tr(), data: '${subscribe.duration} дней'),
           SizedBox(height: 10),
           ElevatedButtonApp(
-              text: 'Купить',
+              text: subscribe.price == 0.0 ? 'Активировать бесплатно' :'Купить',
               onPressed: _onTap(context),
           ),
           // Row(

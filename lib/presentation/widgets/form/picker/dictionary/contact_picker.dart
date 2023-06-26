@@ -122,16 +122,36 @@ class _ContactTypePickerState extends State<ContactTypePicker> {
       builder: (BuildContext context, ContactType contactType, Widget? child) {
         return Column(
           children: [
-
-            TextField(
-              controller: _textController,
+            GestureDetector(
               onTap: _handleClickType(context),
-              decoration: InputDecoration(
-                labelText: widget.label,
-                labelStyle: const TextStyle(
-                    fontSize: 18
-                ),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 10)
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(widget.label,
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(13),
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.tertiary,
+                        border: Border.all(
+                            color: Theme.of(context).colorScheme.primary,
+                            width: 0.5
+                        ),
+                        borderRadius: BorderRadius.circular(10)
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(child: Text(contactType.name)),
+                        const Icon(Icons.keyboard_arrow_down_outlined)
+                      ],
+                    ),
+                  )
+                ],
               ),
             ),
             const SizedBox(height: 10),

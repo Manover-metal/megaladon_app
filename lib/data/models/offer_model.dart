@@ -1,3 +1,4 @@
+import 'package:megaladon/core/utils/parser.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/executor_model.dart';
 
@@ -23,7 +24,7 @@ class OfferModel {
   static OfferModel fromJsonMini(data) {
     return OfferModel(
       id: data['id'],
-      price: data['price'],
+      price: Parser.toPrice(data['price']),
       date: data['date'],
       comment: data['description'],
       expiredAt: data['expired_at'],
@@ -35,7 +36,7 @@ class OfferModel {
   static OfferModel fromJsonFull(data) {
     return OfferModel(
       id: data['id'],
-      price: data['price'],
+      price: Parser.toPrice(data['price']),
       date: data['date'],
       expiredAt: data['expired_at'],
       comment: data['comment'],

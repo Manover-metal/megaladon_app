@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:megaladon/core/utils/parser.dart';
 import 'package:megaladon/data/models/dictionary/advert_category_model.dart';
 import 'package:megaladon/data/models/dictionary/advert_type.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
@@ -35,7 +36,7 @@ class AdvertModel extends Equatable {
         id: data['id'],
         title: data['title'],
         description: data['description'],
-        price: data['price'],
+        price: Parser.toPrice(data['price']),
         media: data['media'] != null? FileModel.listFromJson(data['media']): [],
         type: AdvertType.parse(data['type'])
     );
@@ -52,7 +53,7 @@ class AdvertModel extends Equatable {
       id: data['id'],
       title: data['title'],
       description: data['description'],
-      price: data['price'],
+      price: Parser.toPrice(data['price']),
       media: data['media'] != null? FileModel.listFromJson(data['media']): [],
       category: data['category'] != null ? AdvertCategoryModel.fromJson(data['category']) : null,
       additionalPhone: data['additional_phone'],
