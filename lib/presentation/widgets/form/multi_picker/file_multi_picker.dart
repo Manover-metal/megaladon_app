@@ -35,6 +35,7 @@ class _FileMultiPickerState extends State<FileMultiPicker> {
   _addFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
         allowMultiple: true,
+        type: FileType.custom,
         allowedExtensions: ['jpg', 'png', 'jpeg' ,'pdf', 'doc', 'docx'],
     );
 

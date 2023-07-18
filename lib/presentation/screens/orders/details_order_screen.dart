@@ -24,6 +24,8 @@ import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
+import 'package:megaladon/presentation/widgets/tiles/data_tile.dart';
+import 'package:megaladon/presentation/widgets/tiles/executor_tile.dart';
 import 'package:megaladon/presentation/widgets/tiles/user_tile.dart';
 
 class DetailsOrderScreen extends StatefulWidget {
@@ -258,7 +260,6 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                     );
                                   }).toList()
                                 ]
-
                               ],
                             ],
                           ),
@@ -273,14 +274,22 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                               Text('${"Valid_to".tr()} ${order.priceRecommended} ₸'),
                               const SizedBox(height: 20,),
 
-                              UserTile(user: order.user!),
-                              const SizedBox(height: 20,),
+
                               BlocBuilder<AuthBloc, AuthState>(
                                 builder: (context, stateUser) {
                                   if(stateUser is AuthLoginState) {
                                     UserModel? user = stateUser.auth.user.value;
+                                    print(order.executor);
                                     return Column(
                                       children: [
+
+                                        if(order.user?.id != user?.id) ...[
+                                          UserTile(user: order.user!),
+                                          const SizedBox(height: 20,),
+                                        ] else if(order.executor != null && order.executor?.id != user?.id && order.status.index > OrderStatus.active.index ) ...[
+                                          ExecutorTile(executor: order.executor!),
+                                          const SizedBox(height: 20,),
+                                        ],
                                         if(order.user?.id != user?.id
                                             && stateUser.auth.executor.value != null
                                             && order.status == OrderStatus.active
@@ -294,7 +303,7 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                           //   onPressed: _toChat,
                                           // ),
                                         ]
-                                        else ...[
+                                        else if(order.user?.id == user?.id)...[
                                           if(order.status == OrderStatus.active) ...[
                                             ElevatedButtonApp(
                                               text: '${"Offers".tr()}(${order.countOffers} новых)',

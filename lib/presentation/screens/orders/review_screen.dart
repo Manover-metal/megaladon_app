@@ -41,7 +41,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
   }
 
   _review() {
-    ReviewRepository.review(widget.order.id, controller.value + 1).then((value) {
+    ReviewRepository.review(widget.order.id, controller.value ).then((value) {
       _back();
     }).catchError((error) {
       if(error is DioError) {

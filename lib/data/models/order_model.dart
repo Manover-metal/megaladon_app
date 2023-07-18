@@ -76,6 +76,8 @@ class OrderModel extends Equatable {
       otherFiles = files.where((file) => !file.url.endsWith('.jpg') && !file.url.endsWith('.jpeg') && !file.url.endsWith('.png')).toList();
     }
 
+    print('EEXECUTOR: ${data}');
+
     return OrderModel(
       id: data['id'],
       title: data['title'],
@@ -88,7 +90,7 @@ class OrderModel extends Equatable {
       files: otherFiles,
       images: imageFiles,
       user: data['user'] != null? UserModel.fromJson(data['user']): null,
-      executor: data['executor'] != null? ExecutorModel.fromJson(data['executor']): null,
+      executor: data['executor'] != null? ExecutorModel.fromJsonMini(data['executor']): null,
       category: data['category'] != null? OrderCategoryModel.fromJson(data['category']): null,
       city: data['city'] != null ? CityModel.fromJson(data['city']): null,
       status: data['status_code'] != null? OrderStatus.values[Parser.toInt(data['status_code'])]: OrderStatus.nothing,

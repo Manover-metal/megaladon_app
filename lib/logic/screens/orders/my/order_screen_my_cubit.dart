@@ -75,13 +75,13 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
 
     OrderIndexRequestParams mainParams = params ?? state.params;
     emit(state.copyWith(
-      status: OrderScreenMyStatus.loading,
-      error: null,
+        status: OrderScreenMyStatus.loading,
+        error: null,
       )
     );
     return await _repository.indexMyResponded(mainParams).then((value) {
       final myResponded = value;
-      print(myResponded);
+      print('fetch Responded');
 
       if(mainParams.startRow == 0) {
         emit(state.copyWith(
@@ -90,6 +90,8 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
             status: OrderScreenMyStatus.success,
             stockResponded: myResponded.length < mainParams.rowsPerPage
         ));
+        print('fetch startRow == 0 emit');
+
       } else {
         emit(state.copyWith(
             status: OrderScreenMyStatus.success,
@@ -97,9 +99,11 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
             params: mainParams,
             stockResponded: myResponded.length < mainParams.rowsPerPage
         ));
+        print('fetch startRow not 0 emit');
+
       }
     }).catchError(( error) {
-      print(error);
+      print('Error Responded: ${error}');
       if(error is DioError) {
         if(error.response?.statusCode == 403) {
           authBloc.add(AuthLogoutEvent());
@@ -121,14 +125,20 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
     OrderIndexRequestParams mainParams = state.params.copyWith(startRow: 0);
     return await Future.wait([
       _repository.indexMy(mainParams),
+      _repository.indexMyResponded(mainParams),
+
     ]).then((value) {
       final my = value[0];
+      final myResponded = value[1];
+
 
       emit(state.copyWith(
           orders: my,
           params: mainParams,
           status: OrderScreenMyStatus.success,
           stock: my.length < mainParams.rowsPerPage,
+          ordersResponded: myResponded,
+          stockResponded: myResponded.length < mainParams.rowsPerPage
       ));
     }).catchError(( error) {
       if(error is DioError) {

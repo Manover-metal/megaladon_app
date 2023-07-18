@@ -72,11 +72,14 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> with SingleTick
 
   Future _onRefresh() async {
      if(_isExecutor()) {
+       print('all');
        return Future.wait([
          context.read<OrderScreenMyCubit>().fetchResponded(),
          context.read<OrderScreenMyCubit>().fetchMy(),
        ]);
      }else {
+       print('one');
+
        return context.read<OrderScreenMyCubit>().fetchMy();
      }
   }
@@ -162,7 +165,7 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> with SingleTick
                           controller: _scrollController,
                           child: Container(
                             constraints: BoxConstraints(
-                                minHeight: MediaQuery.of(context).size.height
+                                minHeight: MediaQuery.of(context).size.height + 200
                             ),
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: BlocBuilder<OrderScreenMyCubit, OrderScreenMyState>(
@@ -192,11 +195,12 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> with SingleTick
                           controller: _scrollControllerResponded,
                           child: Container(
                             constraints: BoxConstraints(
-                                minHeight: MediaQuery.of(context).size.height
+                                minHeight: MediaQuery.of(context).size.height + 200
                             ),
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: BlocBuilder<OrderScreenMyCubit, OrderScreenMyState>(
                               builder: (context, state) {
+                                print('responded ${state.stockResponded} ${state.ordersResponded} ${state.status}');
                                 return Column(
                                   children: [
                                     ...state.ordersResponded.map((order) {
@@ -204,7 +208,7 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> with SingleTick
                                     }).toList(),
                                     if(state.status == OrderScreenMyStatus.loading) const Loader(padding: 10)
                                     else if(state.status == OrderScreenMyStatus.error)  ErrorMessage(error: state.error!)
-                                    else if(state.stockResponded)  StockMessage(name: "Orders".tr())
+                                    else if(state.stockResponded) StockMessage(name: "Orders".tr())
                                   ],
                                 );
                               },
@@ -212,6 +216,15 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> with SingleTick
                           ),
                         ),
                       ),
+                    )
+                    else SingleChildScrollView(
+                      child: Container(
+                        constraints: BoxConstraints(
+                            minHeight: MediaQuery.of(context).size.height
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Text('Зарегистрируйте как Исполнитель'),
+                      )
                     ),
                   ],
                 ),

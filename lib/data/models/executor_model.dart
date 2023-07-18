@@ -60,6 +60,16 @@ class ExecutorModel {
     );
   }
 
+  static ExecutorModel fromJsonMini(data) {
+    return ExecutorModel(
+        id: data['id'],
+        name: data['name'],
+        rating: data['rating'],
+        city: data['city'] != null ? CityModel.fromJson(data['city']): null,
+        description: data['description']
+    );
+  }
+
   static List<ExecutorModel> fromJsonList(data) {
     print(data);
     return data.map<ExecutorModel>((executor) {

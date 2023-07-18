@@ -56,13 +56,8 @@ class ExecutorScreenMyCubit extends Cubit<ExecutorScreenMyState> {
     required int executorId
   }) async {
     return await _repository.addFavorite(orderId, executorId).then((value) {
+      print(value);
       fetch();
-    }).catchError((error) {
-      if(error is DioError) {
-        emit(state.copyWith(error: ErrorModel.parseDio(error)));
-      } else {
-        emit(state.copyWith(error: ErrorModel.nothing));
-      }
     });
   }
 }

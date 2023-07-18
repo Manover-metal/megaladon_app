@@ -137,7 +137,7 @@ class _SplashScreenState extends State<SplashScreen> {
                           builder: (context, key) {
                             return Tab(
                               key: key,
-                              icon: IconPack.chat,
+                              icon: Icons.account_balance_wallet_outlined,
                               isActive: 2 == tabsRouter.activeIndex,
                               click: _handleClick(tabsRouter, 2),
                               doubleClick: _doubleTap(

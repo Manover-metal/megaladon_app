@@ -63,15 +63,23 @@ class _DetailsExecutorScreenState extends State<DetailsExecutorScreen> {
                             DataTile(
                                 title: "Rating".tr(),
                                 data: state.executor.rating ?? '0'),
+                            if (state.executor.city != null)
+                              DataTile(
+                                  title: "City".tr(),
+                                  data: state.executor.city!.name),
                             if (state.executor.fullAddress != null)
                               DataTile(
-                                //
                                   title: "Address".tr(),
                                   data: state.executor.fullAddress!),
                             if (state.executor.countOrders != null)
                               DataTile(
                                   title: 'The_number_of_orders'.tr(),
                                   data: state.executor.countOrders.toString()),
+                            if (state.executor.description != null)
+                              DataTile(
+                                  title: 'Description'.tr(),
+                                  data: state.executor.description ?? ''),
+                            const Divider(thickness: 1),
                           ],
                         );
                       } else if(state is ExecutorScreenDetailsLoader) {
