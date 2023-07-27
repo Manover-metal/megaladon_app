@@ -25,20 +25,17 @@ class CreateOfferFormCubit extends Cubit<CreateOfferFormState> {
     required String description,
     required String price,
     required CityModel city,
-    required String expiredAt,
     required String date,
   }) {
     DescriptionFormModel descriptionForm = DescriptionFormModel.dirty(description);
     PriceFormModel priceFormModel = PriceFormModel.dirty(price);
     CityFormModel cityForm = CityFormModel.dirty(city.id);
-    ExpiredAtFormModel expiredAtForm = ExpiredAtFormModel.dirty(expiredAt);
     DateOfferFormModel dateForm = DateOfferFormModel.dirty(date);
 
     FormzStatus status = Formz.validate([
       descriptionForm,
       cityForm,
       priceFormModel,
-      expiredAtForm,
       dateForm
     ]);
 
@@ -48,7 +45,6 @@ class CreateOfferFormCubit extends Cubit<CreateOfferFormState> {
         price: priceFormModel,
         countTry: state.countTry + 1,
         city: cityForm,
-        expiredAt: expiredAtForm,
         date: dateForm
     );
     emit(stateNew);
@@ -63,7 +59,6 @@ class CreateOfferFormCubit extends Cubit<CreateOfferFormState> {
         price: state.price.value,
         cityId: state.city.value,
         date: state.date.value,
-        expiredAt: state.expiredAt.value,
       )).then((value) {
         print(value);
         emit(state.copyWith(

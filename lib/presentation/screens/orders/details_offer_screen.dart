@@ -109,7 +109,6 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
                                 ),
                               ],
                               const SizedBox(height: 20,),
-                              DataTile(title: '${"Actual_until".tr()}:', data: state.offer.expiredAt,),
                               DataTile(title: 'Предложенная исполнителем ${"Price2".tr()}', data: '${state.offer.price} ₸',),
                               DataTile(title: "Дата исполнения: ".tr(), data: state.offer.date,),
                               DataTile(title: "Location2".tr(), data: 'г. ${state.offer.city?.name }',),

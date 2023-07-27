@@ -195,10 +195,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   DataTile(
                                       title: 'The_number_of_orders'.tr(),
                                       data: executor.countOrders.toString()),
-                                if (executor.description != null)
-                                  DataTile(
-                                      title: 'Description'.tr(),
-                                      data: executor.description ?? ''),
+                                if (executor.description != null) ...[
+                                  Text('Description'.tr(), style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700
+                                  )),
+                                  Text(executor.description ?? '', style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                      fontSize: 18
+                                  )),
+                                ],
+
+
+
                                 const Divider(thickness: 1),
                               ],
                               if (store != null) ...[

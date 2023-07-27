@@ -74,7 +74,7 @@ class StoreModel {
         lon: Parser.toDouble(data['lon']),
         contacts: contacts,
         hasPhone: (contacts != null)? contacts.any((element) {
-          return element.type == ContactType.homePhone || element.type == ContactType.phone;
+          return element.type == ContactType.home_phone || element.type == ContactType.phone;
         }): false,
         city: data['city'] != null? CityModel.fromJson(data['city']): null
 

@@ -104,7 +104,19 @@ class _TradingAdsScreenState extends State<TradingAdsScreen> with SingleTickerPr
                       children: [
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 20),
-                          child: HeaderAppBar(isMenu: true, title: "Marketplace".tr()),
+                          child: BlocBuilder<AdvertScreenMainCubit, AdvertScreenMainState>(
+                            builder: (context, state) {
+                              return HeaderAppBar(
+                                  isMenu: true,
+                                  title: "Marketplace".tr(),
+                                  onTrailing: _onRefresh,
+                                  trailing: state.status != AdverScreenMainStatus.loading ? const Icon(
+                                    Icons.refresh,
+                                    size: 30,
+                                  ) : CupertinoActivityIndicator(),
+                              );
+                            },
+                          ),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20.0),

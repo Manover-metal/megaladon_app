@@ -11,7 +11,6 @@ import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/message/stock_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
-import 'package:megaladon/generated/locale_keys.g.dart';
 
 class ListOrdersScreen extends StatefulWidget {
   const ListOrdersScreen({super.key});
@@ -25,6 +24,7 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
 
 
   Future _onRefresh() async {
+    print('refresh');
     await context.read<OrderScreenMainCubit>().fetch();
   }
 
@@ -93,7 +93,19 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: HeaderAppBar(isMenu: true, title: "Orders".tr()),
+                        child: BlocBuilder<OrderScreenMainCubit, OrderScreenMainState>(
+                          builder: (context, state) {
+                            return HeaderAppBar(
+                              isMenu: true,
+                              title: "Orders".tr(),
+                              onTrailing: _onRefresh,
+                              trailing: state.status != OrderScreenMainStatus.loading ? const Icon(
+                                Icons.refresh,
+                                size: 30,
+                              ) : CupertinoActivityIndicator(),
+                            );
+                          },
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),

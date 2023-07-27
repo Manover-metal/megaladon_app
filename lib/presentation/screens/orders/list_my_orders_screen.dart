@@ -120,7 +120,19 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> with SingleTick
                           children: [
                              Padding(
                               padding: EdgeInsets.symmetric(horizontal: 20),
-                              child: HeaderAppBar(isMenu: true, title: "My_orders".tr()),
+                              child: BlocBuilder<OrderScreenMyCubit, OrderScreenMyState>(
+                                builder: (context, state) {
+                                  return HeaderAppBar(
+                                    isMenu: true,
+                                    title: "My_orders".tr(),
+                                    onTrailing: _onRefresh,
+                                    trailing: state.status != OrderScreenMyStatus.loading? const Icon(
+                                      Icons.refresh,
+                                      size: 30,
+                                    ) : CupertinoActivityIndicator(),
+                                  );
+                                },
+                              ),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 20.0),

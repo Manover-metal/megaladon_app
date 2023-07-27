@@ -59,7 +59,7 @@ class ContactTypePickerController extends ValueNotifier<ContactType> {
   }
 
   bool _checkPhone() {
-    return value == ContactType.phone || value == ContactType.homePhone;
+    return value == ContactType.phone || value == ContactType.home_phone;
   }
 
   @override
@@ -146,7 +146,7 @@ class _ContactTypePickerState extends State<ContactTypePicker> {
                     ),
                     child: Row(
                       children: [
-                        Expanded(child: Text(contactType.name)),
+                        Expanded(child: Text(contactType.toString())),
                         const Icon(Icons.keyboard_arrow_down_outlined)
                       ],
                     ),

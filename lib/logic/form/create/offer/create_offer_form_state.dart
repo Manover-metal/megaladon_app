@@ -5,7 +5,6 @@ class CreateOfferFormState extends Equatable {
   final PriceFormModel price;
   final DescriptionFormModel description;
   final CityFormModel city;
-  final ExpiredAtFormModel expiredAt;
   final DateOfferFormModel date;
   final int countTry;
   final EnumFormState formState;
@@ -17,7 +16,6 @@ class CreateOfferFormState extends Equatable {
     this.price = const PriceFormModel.pure(),
     this.description = const DescriptionFormModel.pure(),
     this.city = const CityFormModel.pure(),
-    this.expiredAt = const ExpiredAtFormModel.pure(),
     this.date = const DateOfferFormModel.pure(),
     this.countTry = 1,
     this.formState = EnumFormState.filled,
@@ -34,7 +32,6 @@ class CreateOfferFormState extends Equatable {
     PriceFormModel? price,
     CityFormModel? city,
     int? countTry,
-    ExpiredAtFormModel? expiredAt,
     DateOfferFormModel? date,
     EnumFormState? formState,
     ErrorModel? error,
@@ -46,7 +43,6 @@ class CreateOfferFormState extends Equatable {
         price: price ?? this.price,
         city: city ?? this.city,
         countTry: countTry ?? this.countTry,
-        expiredAt: expiredAt ?? this.expiredAt,
         date: date ?? this.date,
         formState: formState ?? this.formState,
         error: error ?? this.error,

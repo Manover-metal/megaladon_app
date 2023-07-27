@@ -36,7 +36,7 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
 
   @override
   void initState() {
-    context.read<AdvertScreenDetailsCubit>().fetch(id: widget.id);
+    _refresh();
     super.initState();
   }
 
@@ -54,9 +54,9 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
     });
   }
 
-  _edit(AdvertModel advert) => () {
-    context.router.navigate(UpdateAdRoute(advert: advert, type: advert.type));
-  };
+  _refresh() {
+    context.read<AdvertScreenDetailsCubit>().fetch(id: widget.id);
+  }
 
 
   _onTrailing(AdvertModel advert) => () {
@@ -140,9 +140,10 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                                     onTrailing: (authState is AuthLoginState) && authState.auth.user.value?.id == state.advert.user?.id ? _onTrailing(state.advert) : null,
                                   );
                                 }
-                                return const HeaderAppBar(
+                                return  HeaderAppBar(
                                   isBack: true,
                                   title: '',
+                                  onTrailing: _refresh,
                                 );
                               },
                             );
@@ -203,7 +204,7 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text( '${"Price_up_to".tr()}${state.advert.price} ₸'),
+                                Text( '${"Price_up_to".tr()} ${state.advert.price} ₸'),
                                 const SizedBox(height: 10,),
                                 UserTile(user: state.advert.user!),
                                 const SizedBox(height: 20),

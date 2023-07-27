@@ -30,7 +30,7 @@ class ChangeStoreRequestParams {
       'lat': lat,
       'city_id': city.id,
       'contacts': contacts.map((e) {
-        if(e.type == ContactType.phone || e.type == ContactType.homePhone) {
+        if(e.type == ContactType.phone || e.type == ContactType.home_phone) {
           return {
             'type': e.type.name,
             'value': e.value,

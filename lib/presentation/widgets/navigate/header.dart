@@ -12,6 +12,7 @@ class HeaderAppBar extends StatelessWidget {
   final VoidCallback? onTrailing;
 
   final EdgeInsets padding;
+  final Widget? trailing;
 
   const HeaderAppBar({
     super.key,
@@ -19,7 +20,8 @@ class HeaderAppBar extends StatelessWidget {
     this.isMenu = false,
     this.isBack = false,
     this.onTrailing,
-    this.title
+    this.title,
+    this.trailing
   });
 
   _back(BuildContext context) => () {
@@ -57,10 +59,10 @@ class HeaderAppBar extends StatelessWidget {
           Expanded(child: TitleApp(title ?? '')),
           if(onTrailing != null) GestureDetector(
             onTap: onTrailing,
-            child: const Icon(
+            child: (trailing == null)? const Icon(
               Icons.more_horiz,
               size: 30,
-            ),
+            ) : trailing,
           ) else Container(width: 30)
         ],
       ),

@@ -5,14 +5,12 @@ class OfferCreateRequestParams {
   final String date;
   final String comment;
   final int cityId;
-  final String expiredAt;
 
   OfferCreateRequestParams({
     required this.price,
     required this.cityId,
     required this.comment,
     required this.date,
-    required this.expiredAt
   });
 
   toData() {
@@ -21,7 +19,7 @@ class OfferCreateRequestParams {
       'comment': comment,
       'date': date,
       'city_id': cityId,
-      'expired_at': expiredAt
+      'expired_at': '2021-12-12'
     });
     return data;
   }

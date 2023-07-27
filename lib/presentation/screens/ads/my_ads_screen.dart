@@ -106,7 +106,19 @@ class _MyAdsScreenState extends State<MyAdsScreen> with SingleTickerProviderStat
                     children: [
                        Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: HeaderAppBar(isMenu: true, title: "My_announcement".tr()),
+                        child: BlocBuilder<AdvertScreenMyCubit, AdvertScreenMyState>(
+                          builder: (context, state) {
+                            return HeaderAppBar(
+                                isMenu: true,
+                                title: "My_announcement".tr(),
+                                onTrailing: _onRefresh,
+                                trailing: state.status != AdverScreenMyMainStatus.loading ? const Icon(
+                                  Icons.refresh,
+                                  size: 30,
+                                ) : CupertinoActivityIndicator(),
+                            );
+                          },
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
