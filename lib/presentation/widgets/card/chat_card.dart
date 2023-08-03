@@ -56,7 +56,7 @@ class ChatCard extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   Text(
-                      chat.messages.isNotEmpty ? chat.messages[0].text! : 'Нет сообщений',
+                      chat.messages.isNotEmpty ? chat.messages[0].text! : chat.lastMessage ?? 'Нет сообщений',
                       softWrap: true,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis),

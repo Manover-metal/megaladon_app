@@ -4,18 +4,22 @@ class ChatModel {
   final String title;
   final int id;
   final List<MessageModel> messages;
+  final String? lastMessage;
 
   ChatModel({
     required this.title,
     required this.id,
-    this.messages = const []
+    this.messages = const [],
+    this.lastMessage
   });
 
   static ChatModel parse(data) {
+    print(data['lastMessage'].runtimeType);
     return ChatModel(
       title: data['title'],
       id: data['id'],
-      messages: []
+      messages: [],
+      lastMessage: data['lastMessage'] is List ? null : data['lastMessage']?['message']
     );
   }
 

@@ -30,6 +30,7 @@ class ChatCubit extends Cubit<ChatState> {
       AuthModel auth = (authBloc.state as AuthLoginState).auth;
       print(auth.token);
       await PusherService.init(auth.token!);
+      await _connectUser();
       await fetch();
     }
   }
@@ -55,7 +56,6 @@ class ChatCubit extends Cubit<ChatState> {
       ));
 
       ChatModel chat = state.chats.singleWhere((element) => element.id == chatId);
-      // MessageIndexRequestParams stateParams = state.params[chatId] ?? MessageIndexRequestParams(0);
 
       MessageIndexRequestParams params = MessageIndexRequestParams(chat.messages.length);
 
@@ -98,7 +98,6 @@ class ChatCubit extends Cubit<ChatState> {
     );
 
     return await _repository.index().then((value) {
-      print(value);
       for (var chat in value) {
         _connectChat(chat);
       }
@@ -107,6 +106,7 @@ class ChatCubit extends Cubit<ChatState> {
           status: ChatScreenMainStatus.success,
       ));
     }).catchError((error) {
+      print(error);
       if(error is DioError) {
         if(error.response?.statusCode == 403) {
           authBloc.add(AuthLogoutEvent());
@@ -142,6 +142,34 @@ class ChatCubit extends Cubit<ChatState> {
         }
     );
     await PusherService.instance.connect();
+  }
+
+  _connectUser() async {
+    print('connectUser');
+    if(authBloc.state is AuthLoginState) {
+      print('connectUser 2');
+
+      await PusherService.instance.subscribe(channelName: 'userChats.${(authBloc.state as AuthLoginState).auth.user.value!.id}',
+          onEvent: _eventUser,
+          onSubscriptionError: (e) {
+            print(e);
+          },
+          onSubscriptionSucceeded: (e) {
+            print(e);
+          },
+          onMemberAdded: (member) {
+            print("Member added: $member");
+          },
+          onMemberRemoved: (member) {
+            print("Member removed: $member");
+          }
+      );
+      await PusherService.instance.connect();
+    }
+  }
+
+  _eventUser(event) {
+    fetch();
   }
 
   _event(ChatModel chatOne) => (event) async {
@@ -180,6 +208,7 @@ class ChatCubit extends Cubit<ChatState> {
       for (var element in state.chats) {
         await PusherService.instance.unsubscribe(channelName: 'chat.${element.id}');
       }
+
       await PusherService.instance.disconnect();
     } catch (e) {
       print(e);
