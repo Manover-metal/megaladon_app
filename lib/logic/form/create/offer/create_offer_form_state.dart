@@ -1,7 +1,7 @@
 part of 'create_offer_form_cubit.dart';
 
 class CreateOfferFormState extends Equatable {
-  final FormzStatus status;
+  final bool status;
   final PriceFormModel price;
   final DescriptionFormModel description;
   final CityFormModel city;
@@ -12,7 +12,7 @@ class CreateOfferFormState extends Equatable {
   final int? offerId;
 
   const CreateOfferFormState({
-    this.status = FormzStatus.pure,
+    this.status = false,
     this.price = const PriceFormModel.pure(),
     this.description = const DescriptionFormModel.pure(),
     this.city = const CityFormModel.pure(),
@@ -27,7 +27,7 @@ class CreateOfferFormState extends Equatable {
   List<Object?> get props => [status, price, description, city, countTry, error, offerId, formState];
 
   CreateOfferFormState copyWith({
-    FormzStatus? status,
+    bool? status,
     DescriptionFormModel? description,
     PriceFormModel? price,
     CityFormModel? city,

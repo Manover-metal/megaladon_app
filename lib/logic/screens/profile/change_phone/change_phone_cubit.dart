@@ -26,16 +26,16 @@ class ChangePhoneCubit extends Cubit<ChangePhoneState> {
     PhoneFormModel phoneForm = PhoneFormModel.dirty(phone);
     PasswordFormModel passwordForm = PasswordFormModel.dirty(password);
 
-    FormzStatus status = Formz.validate([
+    final status = Formz.validate([
       passwordForm,
       phoneForm
     ]);
-    if(!status.isValid) {
-      if(passwordForm.invalid) emit(ChangePhoneState(error: ErrorModel([passwordForm.error.toString()]), status: ChangePhoneStatus.error));
-      if(phoneForm.invalid) emit(ChangePhoneState(error: ErrorModel([phoneForm.error.toString()]), status: ChangePhoneStatus.error));
+    if(!status) {
+      if(passwordForm.isNotValid) emit(ChangePhoneState(error: ErrorModel([passwordForm.error.toString()]), status: ChangePhoneStatus.error));
+      if(phoneForm.isNotValid) emit(ChangePhoneState(error: ErrorModel([phoneForm.error.toString()]), status: ChangePhoneStatus.error));
     }
 
-    return status.isValid;
+    return status;
   }
 
 
@@ -46,16 +46,16 @@ class ChangePhoneCubit extends Cubit<ChangePhoneState> {
     PhoneFormModel phoneForm = PhoneFormModel.dirty(phone);
     PincodeFormModel pincodeForm = PincodeFormModel.dirty(code);
 
-    FormzStatus status = Formz.validate([
+    final status = Formz.validate([
       pincodeForm,
       phoneForm
     ]);
-    if(!status.isValid) {
-      if(pincodeForm.invalid) emit(ChangePhoneState(error: ErrorModel([pincodeForm.error.toString()]), status: ChangePhoneStatus.error));
-      if(phoneForm.invalid) emit(ChangePhoneState(error: ErrorModel([phoneForm.error.toString()]), status: ChangePhoneStatus.error));
+    if(!status) {
+      if(pincodeForm.isNotValid) emit(ChangePhoneState(error: ErrorModel([pincodeForm.error.toString()]), status: ChangePhoneStatus.error));
+      if(phoneForm.isNotValid) emit(ChangePhoneState(error: ErrorModel([phoneForm.error.toString()]), status: ChangePhoneStatus.error));
     }
 
-    return status.isValid;
+    return status;
   }
 
   changePhoneStart({

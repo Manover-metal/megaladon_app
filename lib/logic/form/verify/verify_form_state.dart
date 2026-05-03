@@ -2,12 +2,12 @@ part of 'verify_form_cubit.dart';
 
 class VerifyFormState extends Equatable {
   final PincodeFormModel pincode;
-  final FormzStatus status;
+  final bool status;
   final int countTry;
 
   const VerifyFormState({
     this.pincode = const PincodeFormModel.pure(),
-    this.status = FormzStatus.pure,
+    this.status = false,
     this.countTry = 0
   });
 
@@ -15,7 +15,7 @@ class VerifyFormState extends Equatable {
   List<Object?> get props => [pincode, status, countTry];
 
   VerifyFormState copyWith ({
-    FormzStatus? status,
+    bool? status,
     PincodeFormModel? pincode,
     int? countTry
   }) {

@@ -260,7 +260,7 @@ class _AppStateState extends State<AppState> {
         final data = MediaQuery.of(context);
         return MediaQuery(
           data: data.copyWith(
-            textScaleFactor: min(maxPossibleTsf, data.textScaleFactor),
+            textScaleFactor: 1,
           ),
           child: child ?? const SizedBox.shrink(),
         );

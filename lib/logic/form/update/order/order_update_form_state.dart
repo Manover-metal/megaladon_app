@@ -1,7 +1,7 @@
 part of 'order_update_form_cubit.dart';
 
 class OrderUpdateFormState extends Equatable {
-  final FormzStatus status;
+  final bool status;
   final DescriptionFormModel description;
   final TitleFormModel title;
   final PriceFormModel priceMax;
@@ -15,7 +15,7 @@ class OrderUpdateFormState extends Equatable {
 
 
   const OrderUpdateFormState({
-    this.status = FormzStatus.pure,
+    this.status = false,
     this.description = const DescriptionFormModel.pure(),
     this.title = const TitleFormModel.pure(),
     this.category = const OrderCategoryFormModel.pure(),
@@ -33,7 +33,7 @@ class OrderUpdateFormState extends Equatable {
   List<Object?> get props => [status, description, title, category, priceMax, priceRecommended, city, countTry, files, error, formState];
 
   OrderUpdateFormState copyWith({
-    FormzStatus? status,
+    bool? status,
     DescriptionFormModel? description,
     TitleFormModel? title,
     PriceFormModel? priceMax,

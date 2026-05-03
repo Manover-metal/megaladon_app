@@ -23,7 +23,7 @@ part 'ad_update_form_state.dart';
 class AdUpdateFormCubit extends Cubit<AdUpdateFormState> {
   final AdvertRepository _repository = AdvertRepository();
   final AuthBloc authBloc;
-  AdUpdateFormCubit(this.authBloc) : super(const AdUpdateFormState());
+  AdUpdateFormCubit(this.authBloc) : super( AdUpdateFormState());
 
   checkUpdate({
     required String title,
@@ -42,7 +42,7 @@ class AdUpdateFormCubit extends Cubit<AdUpdateFormState> {
     AdvertCategoryFormModel categoryForm = AdvertCategoryFormModel.dirty(category.id);
     PhoneFormModel phoneForm = PhoneFormModel.dirty(phone, false);
 
-    FormzStatus status = Formz.validate([
+    bool status = Formz.validate([
       titleForm,
       descriptionForm,
       cityForm,
@@ -64,7 +64,7 @@ class AdUpdateFormCubit extends Cubit<AdUpdateFormState> {
         type: type
     );
     emit(stateNew);
-    return stateNew.status.isValid;
+    return stateNew.status;
   }
 
   Future updateFetch(int id) async {

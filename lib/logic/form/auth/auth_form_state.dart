@@ -1,13 +1,13 @@
 part of 'auth_form_cubit.dart';
 
 class AuthFormState extends Equatable {
-  final FormzStatus status;
+  final bool status;
   final PhoneFormModel phone;
   final PasswordFormModel password;
   final int countTry;
 
   const AuthFormState({
-    this.status = FormzStatus.pure,
+    this.status = false,
     this.phone = const PhoneFormModel.dirty(''),
     this.password = const PasswordFormModel.dirty(''),
     this.countTry = 0
@@ -17,7 +17,7 @@ class AuthFormState extends Equatable {
   List<Object?> get props => [status, phone, password];
 
   AuthFormState copyWith ({
-    FormzStatus? status,
+    bool? status,
     PhoneFormModel? phone,
     PasswordFormModel? password,
     int? countTry

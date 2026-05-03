@@ -3,6 +3,7 @@ import 'package:megaladon/data/models/auth/auth_model.dart';
 import 'package:megaladon/data/models/executor_model.dart';
 import 'package:megaladon/data/models/store_model.dart';
 import 'package:megaladon/data/models/user_model.dart';
+import 'package:path_provider/path_provider.dart';
 
 class IsarService {
   static late Isar _isar;
@@ -13,7 +14,10 @@ class IsarService {
       ExecutorModelSchema,
       StoreModelSchema,
       AuthModelSchema
-    ]);
+    ],
+      directory: (await getApplicationDocumentsDirectory()).path,
+      inspector: true
+    );
   }
 
   static Isar get I => _isar;

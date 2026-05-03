@@ -33,7 +33,7 @@ class ChangeStoreFormCubit extends Cubit<ChangeStoreFormState> {
     MultiContactFormModel contactsForm = MultiContactFormModel.dirty(contacts);
 
 
-    FormzStatus status = Formz.validate([
+    final status = Formz.validate([
       nameForm,
       binForm,
       latForm,
@@ -55,6 +55,6 @@ class ChangeStoreFormCubit extends Cubit<ChangeStoreFormState> {
 
     emit(stateNew);
 
-    return stateNew.status.isValid;
+    return stateNew.status;
   }
 }

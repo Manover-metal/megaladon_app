@@ -34,7 +34,7 @@ class ImageMultiPicker extends StatefulWidget {
 }
 
 class _ImageMultiPickerState extends State<ImageMultiPicker> {
-  late CarouselController _carouselController;
+  late CarouselSliderController _carouselController;
 
   _addImage() async {
     final result = await ImageService.getImages();
@@ -51,7 +51,7 @@ class _ImageMultiPickerState extends State<ImageMultiPicker> {
 
   @override
   void initState() {
-    _carouselController = CarouselController();
+    _carouselController = CarouselSliderController();
     super.initState();
   }
 

@@ -6,7 +6,7 @@ class ImageService {
     bool hasPermission = await _requestWritePermission();
     if (!hasPermission) return null;
 
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
+    FilePickerResult? result = await FilePicker.pickFiles(
         allowMultiple: true,
         withData: true,
         type: FileType.image
@@ -19,7 +19,7 @@ class ImageService {
     bool hasPermission = await _requestWritePermission();
     if (!hasPermission) return null;
 
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
+    FilePickerResult? result = await FilePicker.pickFiles(
         withData: true,
         type: FileType.image
     );

@@ -22,7 +22,7 @@ class RegisterUserFormCubit extends Cubit<RegisterUserFormState> {
     PasswordConfirmationFormModel passwordConfirmationForm = PasswordConfirmationFormModel.dirty(password, passwordConfirmation);
     PhoneFormModel phoneForm = PhoneFormModel.dirty(phone);
 
-    FormzStatus status = Formz.validate([
+    bool status = Formz.validate([
       passwordForm,
       phoneForm,
       passwordConfirmationForm,
@@ -38,6 +38,6 @@ class RegisterUserFormCubit extends Cubit<RegisterUserFormState> {
         countTry: state.countTry + 1
     );
     emit(stateNew);
-    return stateNew.status.isValid;
+    return stateNew.status;
   }
 }

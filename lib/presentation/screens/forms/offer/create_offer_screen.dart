@@ -65,10 +65,9 @@ class _CreateOfferScreenState extends State<CreateOfferScreen> {
         showErrorSnackBar(context, state.error!.messages[0]);
       }
     }
-    if(state.status.isInvalid) {
-      print('invalid');
+    if(state.status) {
       for (var element in state.props) {
-        if(element is FormzInput && element.invalid) {
+        if(element is FormzInput && element.isNotValid) {
           return showErrorSnackBar(context, element.error.toString());
         }
       }

@@ -1,7 +1,7 @@
 part of 'register_user_form_cubit.dart';
 
 class RegisterUserFormState extends Equatable {
-  final FormzStatus status;
+  final bool status;
   final NameFormModel name;
   final PhoneFormModel phone;
   final PasswordFormModel password;
@@ -9,7 +9,7 @@ class RegisterUserFormState extends Equatable {
   final int countTry;
 
   const RegisterUserFormState({
-    this.status = FormzStatus.pure,
+    this.status = false,
     this.name = const NameFormModel.pure(),
     this.phone = const PhoneFormModel.pure(),
     this.password = const PasswordFormModel.pure(),
@@ -21,7 +21,7 @@ class RegisterUserFormState extends Equatable {
   List<Object?> get props => [status, name, phone, password, passwordConfirmation, countTry];
 
   RegisterUserFormState copyWith ({
-    FormzStatus? status,
+    bool? status,
     NameFormModel? name,
     PhoneFormModel? phone,
     PasswordFormModel? password,

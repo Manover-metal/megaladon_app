@@ -30,7 +30,7 @@ class PriceFormCubit extends Cubit<PriceFormState> {
 
 
   addPrice() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
+    FilePickerResult? result = await FilePicker.pickFiles(
         type: FileType.custom,
         allowedExtensions: ['pdf']
     );

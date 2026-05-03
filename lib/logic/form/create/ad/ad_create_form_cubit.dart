@@ -42,7 +42,7 @@ class AdCreateFormCubit extends Cubit<AdCreateFormState> {
     AdvertCategoryFormModel categoryForm = AdvertCategoryFormModel.dirty(category.id);
     PhoneFormModel phoneForm = PhoneFormModel.dirty(phone, false);
 
-    FormzStatus status = Formz.validate([
+    final status = Formz.validate([
       titleForm,
       descriptionForm,
       cityForm,
@@ -64,7 +64,7 @@ class AdCreateFormCubit extends Cubit<AdCreateFormState> {
         type: type
     );
     emit(stateNew);
-    return stateNew.status.isValid;
+    return stateNew.status;
   }
 
   Future createFetch() async {

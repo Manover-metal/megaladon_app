@@ -1,7 +1,7 @@
 part of 'change_executor_form_cubit.dart';
 
 class ChangeExecutorFormState extends Equatable {
-  final FormzStatus status;
+  final bool status;
   final NameFormModel name;
   final CityFormModel city;
   final BinFormModel bin;
@@ -12,7 +12,7 @@ class ChangeExecutorFormState extends Equatable {
   final DescriptionFormModel description;
 
   const ChangeExecutorFormState( {
-    this.status = FormzStatus.pure,
+    this.status = false,
     this.name = const NameFormModel.pure(),
     this.city = const CityFormModel.pure(),
     this.bin = const BinFormModel.pure(),
@@ -27,7 +27,7 @@ class ChangeExecutorFormState extends Equatable {
   List<Object?> get props => [status, name, city, bin, lat, lon, services, description, countTry];
 
   ChangeExecutorFormState copyWith ({
-    FormzStatus? status,
+    bool? status,
     NameFormModel? name,
     CityFormModel? city,
     BinFormModel? bin,
