@@ -81,7 +81,19 @@ class _ListStoresScreenState extends State<ListStoresScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         //
-                        child: HeaderAppBar(isMenu: true, title: "Theshops".tr()),
+                        child: BlocBuilder<StoreScreenMainCubit, StoreScreenMainState>(
+                          builder: (context, state) {
+                            return HeaderAppBar(
+                              isMenu: true,
+                              title: "Theshops".tr(),
+                              onTrailing: _onRefresh,
+                              trailing: state.status != StoreScreenMainStatus.loading ? const Icon(
+                                Icons.refresh,
+                                size: 30,
+                              ) : CupertinoActivityIndicator(),
+                            );
+                          },
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),

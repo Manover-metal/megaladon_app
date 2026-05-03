@@ -1,26 +1,26 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:megaladon/data/models/enum_form_state.dart';
 import 'package:megaladon/data/models/order_model.dart';
-import 'package:megaladon/logic/form/create/ad/ad_create_form_cubit.dart';
-import 'package:megaladon/logic/form/create/order/order_create_form_cubit.dart';
 import 'package:megaladon/logic/form/update/order/order_update_form_cubit.dart';
+import 'package:megaladon/logic/screens/orders/details/order_screen_details_cubit.dart';
+import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/description_field.dart';
+import 'package:megaladon/presentation/widgets/form/multi_picker/file_multi_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/order_category_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
-import 'package:megaladon/presentation/widgets/form/picker/dictionary/order_category_picker.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/number_field.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
-import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class UpdateOrderScreen extends StatefulWidget {
   final OrderModel order;
@@ -39,27 +39,16 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
   late CityPickerController _cityController;
   late TextEditingController _priceMaxController;
   late TextEditingController _priceRecommendedController;
+  late FileMultiPickerController _fileController;
+
 
   _back() {
     context.router.pop();
   }
 
-  _create() {
+  _create() async {
     if(_checkForm()) {
-      context.router.popUntil((route) => route.settings.name == InitialRouter.name);
-      context.read<OrderUpdateFormCubit>().updateFetch(widget.order.id).then((value) {
-        context.router.navigate(InitialRouter(
-            children: [
-              OrderRouter(
-                  children: [
-                    DetailsOrderRoute(orderId: value.id)
-                  ]
-              )
-            ]
-        ));
-      }).catchError((error) {
-
-      });
+      await context.read<OrderUpdateFormCubit>().updateFetch(widget.order.id);
     }
   }
 
@@ -71,7 +60,9 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
         category: _orderCategoryController.value,
         city: _cityController.value,
         priceMax: _priceMaxController.value.text,
-        priceRecommended: _priceRecommendedController.value.text
+        priceRecommended: _priceRecommendedController.value.text,
+        files: _fileController.value
+
     );
   }
 
@@ -81,6 +72,24 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
         if(element is FormzInput && element.isNotValid) {
           return showErrorSnackBar(context, element.error.toString());
         }
+      }
+    }
+    if(state.formState == EnumFormState.success) {
+      context.read<OrderScreenDetailsCubit>().fetch(id: widget.order.id);
+      context.read<OrderScreenMyCubit>().fetchMy();
+      context.router.popUntil((route) => route.settings.name == InitialRouter.name);
+      context.router.navigate(InitialRouter(
+          children: [
+            OrderRouter(
+                children: [
+                  DetailsOrderRoute(orderId: widget.order.id)
+                ]
+            )
+          ]
+      ));
+    } else if(state.formState == EnumFormState.error) {
+      if(state.error != null) {
+        showErrorSnackBar(context, state.error!.messages[0]);
       }
     }
   }
@@ -93,6 +102,7 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
     _priceMaxController = TextEditingController(text: widget.order.priceMax.toString());
     _priceRecommendedController = TextEditingController(text: widget.order.priceRecommended.toString());
     _descriptionController = TextEditingController(text: widget.order.description);
+    _fileController = FileMultiPickerController();
     super.initState();
   }
 
@@ -106,6 +116,7 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
     _descriptionController.dispose();
     _priceMaxController.dispose();
     _priceRecommendedController.dispose();
+    _fileController.dispose();
     super.dispose();
   }
 
@@ -115,17 +126,23 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                HeaderAppBar(isBack: true, title: "Change_order".tr(),),
-                SizedBox(height: 30),
+                HeaderAppBar(
+                  isBack: true,
+                  title: "Change_order".tr(),
+                ),
+                const SizedBox(height: 30),
                 OrderCategoryPicker(label: "category".tr(), controller: _orderCategoryController),
                 TextFieldApp(controller: _titleController, label: "Header".tr(),),
                 CityPicker(label: "City".tr(), controller: _cityController),
                 DescriptionFieldApp(label: "Store_data".tr(), controller: _descriptionController),
                 NumberFieldApp(label: "Desired_budget".tr(), controller: _priceMaxController,),
                 NumberFieldApp(label: "Allowed_budget".tr(), controller: _priceRecommendedController,),
+                FileMultiPicker(controller: _fileController),
+                const SizedBox(height: 30),
+
                 BlocConsumer<OrderUpdateFormCubit, OrderUpdateFormState>(
                   listener: _listenerForm,
                   builder: (context, state) {

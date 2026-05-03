@@ -3,12 +3,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:megaladon/generated/locale_keys.g.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/form/auth/auth_form_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
+import 'package:megaladon/presentation/widgets/form/field/phone_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
@@ -42,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     _password = TextEditingController();
-    _phone = TextEditingController();
+    _phone = TextEditingController(text: '+7');
     super.initState();
   }
 
@@ -102,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 TitleApp("Authorization".tr()),
                 // Spacer(),
                 const SizedBox(height: 20,),
-                TextFieldApp(
+                PhoneField(
                   icon: const Icon(Icons.person),
                   label: "Your_phone_number".tr(),
                   controller: _phone,

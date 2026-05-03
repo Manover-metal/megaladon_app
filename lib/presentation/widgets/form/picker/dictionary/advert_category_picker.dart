@@ -59,6 +59,7 @@ class _AdvertCategoryPickerState extends State<AdvertCategoryPicker> {
 
     AdvertCategoryModel? advertCategory = null;
     if (advertCategory != null) {
+
       widget.controller._changeAdvertCategory(advertCategory);
     }
   }

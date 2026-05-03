@@ -2,19 +2,13 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:formz/formz.dart';
-import 'package:megaladon/generated/locale_keys.g.dart';
-import 'package:megaladon/logic/auth/auth_bloc.dart';
-import 'package:megaladon/logic/form/auth/auth_form_cubit.dart';
-import 'package:megaladon/logic/screens/profile/change_password/change_password_cubit.dart';
 import 'package:megaladon/logic/screens/profile/change_phone/change_phone_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
-import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
+import 'package:megaladon/presentation/widgets/form/field/phone_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
-import 'package:megaladon/presentation/widgets/snackbars/success_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class ChangePhoneStartScreen extends StatefulWidget {
@@ -40,7 +34,7 @@ class _ChangePhoneStartScreenState extends State<ChangePhoneStartScreen> {
   @override
   void initState() {
     _password = TextEditingController();
-    _newPhone = TextEditingController();
+    _newPhone = TextEditingController(text: '+7');
 
     super.initState();
   }
@@ -85,7 +79,7 @@ class _ChangePhoneStartScreenState extends State<ChangePhoneStartScreen> {
                 const Spacer(),
                  TitleApp("Change_phone_number".tr()),
                 const SizedBox(height: 20,),
-                TextFieldApp(
+                PhoneField(
                   icon: const Icon(Icons.phone),
                   label: "New_phone".tr(),
                   controller: _newPhone,

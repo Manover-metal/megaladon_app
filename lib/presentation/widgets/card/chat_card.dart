@@ -1,15 +1,19 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:megaladon/data/models/chat/chat_model.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 
 class ChatCard extends StatelessWidget {
 
+  final ChatModel chat;
+
   const ChatCard({
     super.key,
+    required this.chat,
   });
 
   _onTap(BuildContext context) => () {
-    context.router.navigate(const DetailsChatRouter());
+    context.router.navigate(DetailsChatRouter(chat: chat));
   };
 
   @override
@@ -43,22 +47,16 @@ class ChatCard extends StatelessWidget {
             ),
             Expanded(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: const [
-                      Expanded(
-                        child: Text(
-                          'Дональд Трамп',
-                          style: TextStyle(
-                              fontSize: 17, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Text('24:50'),
-                      Icon(Icons.check),
-                    ],
+                  Text(
+                    chat.title,
+                    style: TextStyle(
+                        fontSize: 17, fontWeight: FontWeight.bold),
                   ),
-                  const Text(
-                      'Видеохотинг, предоставляющий пользователям услуги хранения, доставки и показа видео. ',
+                  SizedBox(height: 10),
+                  Text(
+                      chat.messages.isNotEmpty ? chat.messages[0].text! : chat.lastMessage ?? 'Нет сообщений',
                       softWrap: true,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis),

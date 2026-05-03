@@ -4,7 +4,7 @@ import 'package:megaladon/data/models/dictionary/advert_category_model.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/dictionary/order_category_model.dart';
 import 'package:megaladon/data/models/dictionary/service_type_model.dart';
-import 'package:megaladon/data/models/dictionary/store_type_model.dart';
+import 'package:megaladon/data/models/dictionary/subscribe_model.dart';
 import 'package:megaladon/data/repositories/dictionary_repository.dart';
 
 part 'dictionary_state.dart';
@@ -18,7 +18,8 @@ class DictionaryCubit extends Cubit<DictionaryState> {
     await fetchAdvertCategories();
     await fetchOrderCategories();
     await fetchServiceTypes();
-    await fetchStoreTypes();
+    await fetchSubscribesStore();
+    await fetchSubscribesExecutor();
   }
 
   fetchCities()  async {
@@ -48,21 +49,34 @@ class DictionaryCubit extends Cubit<DictionaryState> {
     });
   }
 
-  fetchStoreTypes()  async {
-    await _repository.getCompanyTypes().then((value) {
-      emit(state.copyWith(storeTypes: value));
-    }).catchError((err) {
-      emit(state.copyWith(storeTypes: []));
-
-    });
-  }
-
   fetchServiceTypes()  async {
     await _repository.getServiceTypes().then((value) {
       emit(state.copyWith(serviceTypes: value));
     }).catchError((err) {
       emit(state.copyWith(serviceTypes: []));
+    });
+  }
 
+  fetchSubscribesStore()  async {
+    await _repository.getSubscribeStore().then((value) {
+      print(value);
+
+      emit(state.copyWith(subscribesStore: value));
+    }).catchError((err) {
+      print(err);
+
+      emit(state.copyWith(subscribesStore: []));
+    });
+  }
+
+  fetchSubscribesExecutor()  async {
+    await _repository.getSubscribeExecutor().then((value) {
+      print(value);
+      emit(state.copyWith(subscribesExecutor: value));
+    }).catchError((err) {
+      print(err);
+
+      emit(state.copyWith(subscribesExecutor: []));
     });
   }
 }

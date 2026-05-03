@@ -32,9 +32,13 @@ class _$AppRouter extends RootStackRouter {
       );
     },
     DetailsChatRouter.name: (routeData) {
+      final args = routeData.argsAs<DetailsChatRouterArgs>();
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const DetailsChatScreen(),
+        child: DetailsChatScreen(
+          key: args.key,
+          chat: args.chat,
+        ),
       );
     },
     LoginRoute.name: (routeData) {
@@ -106,6 +110,7 @@ class _$AppRouter extends RootStackRouter {
         child: UpdateAdScreen(
           key: args.key,
           advert: args.advert,
+          type: args.type,
         ),
       );
     },
@@ -199,6 +204,16 @@ class _$AppRouter extends RootStackRouter {
         child: const ListMyExecutorsScreen(),
       );
     },
+    DetailsExecutorRoute.name: (routeData) {
+      final args = routeData.argsAs<DetailsExecutorRouteArgs>();
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: DetailsExecutorScreen(
+          key: args.key,
+          executorId: args.executorId,
+        ),
+      );
+    },
     ListExecutorsRoute.name: (routeData) {
       final args = routeData.argsAs<ListExecutorsRouteArgs>();
       return MaterialPageX<dynamic>(
@@ -228,6 +243,12 @@ class _$AppRouter extends RootStackRouter {
           key: args.key,
           order: args.order,
         ),
+      );
+    },
+    SubscribeRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const SubscribeScreen(),
       );
     },
     ListStoresRoute.name: (routeData) {
@@ -298,6 +319,12 @@ class _$AppRouter extends RootStackRouter {
         child: const ListChatsScreen(),
       );
     },
+    AboutRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: AboutScreen(),
+      );
+    },
   };
 
   @override
@@ -341,6 +368,12 @@ class _$AppRouter extends RootStackRouter {
                   guards: [authGuard],
                 ),
                 RouteConfig(
+                  DetailsExecutorRoute.name,
+                  path: 'details-executor-screen',
+                  parent: OrderRouter.name,
+                  guards: [authGuard],
+                ),
+                RouteConfig(
                   ListExecutorsRoute.name,
                   path: 'list-executors-screen',
                   parent: OrderRouter.name,
@@ -354,6 +387,12 @@ class _$AppRouter extends RootStackRouter {
                   ReviewRoute.name,
                   path: 'review-screen',
                   parent: OrderRouter.name,
+                ),
+                RouteConfig(
+                  SubscribeRoute.name,
+                  path: 'subscribe-screen',
+                  parent: OrderRouter.name,
+                  guards: [authGuard],
                 ),
               ],
             ),
@@ -430,6 +469,11 @@ class _$AppRouter extends RootStackRouter {
                   parent: ProfileRouter.name,
                   guards: [authGuard],
                 ),
+                RouteConfig(
+                  AboutRoute.name,
+                  path: 'about-screen',
+                  parent: ProfileRouter.name,
+                ),
               ],
             ),
           ],
@@ -461,12 +505,10 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig(
           RegisterExecutorRoute.name,
           path: '/register-executor-screen',
-          guards: [notAuthGuard],
         ),
         RouteConfig(
           RegisterStoreRoute.name,
           path: '/register-store-screen',
-          guards: [notAuthGuard],
         ),
         RouteConfig(
           VerifyRoute.name,
@@ -531,14 +573,36 @@ class InitialRouter extends PageRouteInfo<void> {
 
 /// generated route for
 /// [DetailsChatScreen]
-class DetailsChatRouter extends PageRouteInfo<void> {
-  const DetailsChatRouter()
-      : super(
+class DetailsChatRouter extends PageRouteInfo<DetailsChatRouterArgs> {
+  DetailsChatRouter({
+    Key? key,
+    required ChatModel chat,
+  }) : super(
           DetailsChatRouter.name,
           path: '/details-chat-screen',
+          args: DetailsChatRouterArgs(
+            key: key,
+            chat: chat,
+          ),
         );
 
   static const String name = 'DetailsChatRouter';
+}
+
+class DetailsChatRouterArgs {
+  const DetailsChatRouterArgs({
+    this.key,
+    required this.chat,
+  });
+
+  final Key? key;
+
+  final ChatModel chat;
+
+  @override
+  String toString() {
+    return 'DetailsChatRouterArgs{key: $key, chat: $chat}';
+  }
 }
 
 /// generated route for
@@ -699,12 +763,14 @@ class UpdateAdRoute extends PageRouteInfo<UpdateAdRouteArgs> {
   UpdateAdRoute({
     Key? key,
     required AdvertModel advert,
+    required AdvertType type,
   }) : super(
           UpdateAdRoute.name,
           path: '/update-ad-screen',
           args: UpdateAdRouteArgs(
             key: key,
             advert: advert,
+            type: type,
           ),
         );
 
@@ -715,15 +781,18 @@ class UpdateAdRouteArgs {
   const UpdateAdRouteArgs({
     this.key,
     required this.advert,
+    required this.type,
   });
 
   final Key? key;
 
   final AdvertModel advert;
 
+  final AdvertType type;
+
   @override
   String toString() {
-    return 'UpdateAdRouteArgs{key: $key, advert: $advert}';
+    return 'UpdateAdRouteArgs{key: $key, advert: $advert, type: $type}';
   }
 }
 
@@ -954,6 +1023,40 @@ class ListMyExecutorsRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [DetailsExecutorScreen]
+class DetailsExecutorRoute extends PageRouteInfo<DetailsExecutorRouteArgs> {
+  DetailsExecutorRoute({
+    Key? key,
+    required int executorId,
+  }) : super(
+          DetailsExecutorRoute.name,
+          path: 'details-executor-screen',
+          args: DetailsExecutorRouteArgs(
+            key: key,
+            executorId: executorId,
+          ),
+        );
+
+  static const String name = 'DetailsExecutorRoute';
+}
+
+class DetailsExecutorRouteArgs {
+  const DetailsExecutorRouteArgs({
+    this.key,
+    required this.executorId,
+  });
+
+  final Key? key;
+
+  final int executorId;
+
+  @override
+  String toString() {
+    return 'DetailsExecutorRouteArgs{key: $key, executorId: $executorId}';
+  }
+}
+
+/// generated route for
 /// [ListExecutorsScreen]
 class ListExecutorsRoute extends PageRouteInfo<ListExecutorsRouteArgs> {
   ListExecutorsRoute({
@@ -1058,6 +1161,18 @@ class ReviewRouteArgs {
   String toString() {
     return 'ReviewRouteArgs{key: $key, order: $order}';
   }
+}
+
+/// generated route for
+/// [SubscribeScreen]
+class SubscribeRoute extends PageRouteInfo<void> {
+  const SubscribeRoute()
+      : super(
+          SubscribeRoute.name,
+          path: 'subscribe-screen',
+        );
+
+  static const String name = 'SubscribeRoute';
 }
 
 /// generated route for
@@ -1222,4 +1337,16 @@ class ListChatsRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'ListChatsRoute';
+}
+
+/// generated route for
+/// [AboutScreen]
+class AboutRoute extends PageRouteInfo<void> {
+  const AboutRoute()
+      : super(
+          AboutRoute.name,
+          path: 'about-screen',
+        );
+
+  static const String name = 'AboutRoute';
 }

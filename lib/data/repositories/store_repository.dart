@@ -26,4 +26,8 @@ class StoreRepository {
   Future deletePrice(int id) => ApiService.I
       .delete('/store/price/$id/delete',)
       .then((value) => value.data);
+
+  Future rate(int id, int rate) => ApiService.I
+      .post('/store/$id/rate', data: {'rate': rate})
+      .then((value) => value.data);
 }

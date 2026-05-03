@@ -5,7 +5,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:megaladon/data/models/executor_model.dart';
 import 'package:megaladon/data/models/store_model.dart';
 import 'package:megaladon/data/models/user_model.dart';
-import 'package:megaladon/generated/locale_keys.g.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/form/price/price_form_cubit.dart';
 import 'package:megaladon/logic/screens/profile/change_photo/change_photo_cubit.dart';
@@ -46,14 +45,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   _context(context) => () {
-        Scaffold.of(context).openEndDrawer();
-      };
+    Scaffold.of(context).openEndDrawer();
+  };
 
   _changePhoto() {
     context.read<ChangePhotoCubit>().changePhoto();
@@ -189,15 +183,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 DataTile(
                                     title: "Rating".tr(),
                                     data: executor.rating ?? '0'),
+                                if (executor.city != null)
+                                  DataTile(
+                                      title: "City".tr(),
+                                      data: executor.city!.name),
                                 if (executor.fullAddress != null)
                                   DataTile(
-                                    //
                                       title: "Address".tr(),
                                       data: executor.fullAddress!),
                                 if (executor.countOrders != null)
                                   DataTile(
                                       title: 'The_number_of_orders'.tr(),
                                       data: executor.countOrders.toString()),
+                                if (executor.description != null) ...[
+                                  Text('Description'.tr(), style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700
+                                  )),
+                                  Text(executor.description ?? '', style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                      fontSize: 18
+                                  )),
+                                ],
+
+
+
                                 const Divider(thickness: 1),
                               ],
                               if (store != null) ...[
@@ -205,11 +214,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 const SizedBox(
                                   height: 20,
                                 ),
-                                if (store.name != null)
-                                  DataTile(
-                                      title: "Organization".tr(),
-                                      data:
-                                          '${store.type?.name ?? ''} "${store.name!}"'),
                                 DataTile(
                                     title:"Address".tr(),
                                     data: store.fullAddress),
@@ -288,14 +292,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ]
                             ],
                           );
-                        } else if (state.status ==
-                            ProfileScreenStatus.notAuth) {
+                        }
+                        else if (state.status == ProfileScreenStatus.notAuth) {
                           return const AuthMessage();
-                        } else if (state.status ==
-                            ProfileScreenStatus.loading) {
+                        } else if (state.status == ProfileScreenStatus.loading) {
                           return const Loader();
-                        } else if (state.status ==
-                            ProfileScreenStatus.notAuth) {
+                        } else if (state.status == ProfileScreenStatus.notAuth) {
                           return ErrorMessage(error: state.error!);
                         } else {
                           return Container();

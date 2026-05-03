@@ -3,18 +3,16 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:megaladon/data/models/request/params/register/register_store_request_params.dart';
-import 'package:megaladon/generated/locale_keys.g.dart';
 import 'package:megaladon/logic/form/register/register_store/register_store_form_cubit.dart';
 import 'package:megaladon/logic/register/register_store/register_store_bloc.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
-import 'package:megaladon/presentation/widgets/form/field/double_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/number_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/form/multi_picker/contact_multi_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
-import 'package:megaladon/presentation/widgets/form/picker/dictionary/store_type_picker.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
@@ -29,31 +27,31 @@ class RegisterStoreScreen extends StatefulWidget {
 class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
   late TextEditingController _nameController;
   late TextEditingController _binController;
-  late StoreTypePickerController _storeTypeController;
   late CityPickerController _cityPickerController;
-  late TextEditingController _latController;
-  late TextEditingController _lonController;
   late TextEditingController _fullAddressController;
   late ContactTypeMultiPickerController _contactController;
 
-  _register() {
-    if(_checkForm()) {
-      context.read<RegisterStoreBloc>().add(
-        RegisterStoreFetchEvent(
-          params: RegisterStoreRequestParams(
-            name: _nameController.value.text,
-            bin: _binController.value.text,
-            lat: double.parse(_latController.value.text),
-            lon: double.parse(_lonController.value.text),
-            fullAddress: _fullAddressController.value.text,
-            city: _cityPickerController.value,
-            type: _storeTypeController.value,
-            contacts: _contactController.value.map((e) {
-              return e.getData();
-            }).toList()
-          ),
-        )
-      );
+  _register() async {
+
+    if(await _checkForm()) {
+      Position? position =  await getLocation();
+      if(position != null) {
+        context.read<RegisterStoreBloc>().add(
+          RegisterStoreFetchEvent(
+            params: RegisterStoreRequestParams(
+              name: _nameController.value.text,
+              bin: _binController.value.text,
+              lat: position.latitude,
+              lon: position.longitude,
+              fullAddress: _fullAddressController.value.text,
+              city: _cityPickerController.value,
+              contacts: _contactController.value.map((e) {
+                return e.getData();
+              }).toList()
+            ),
+          )
+        );
+      }
     }
   }
 
@@ -79,20 +77,60 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
     }
   };
 
-  _checkForm() {
-    RegisterStoreFormCubit form = context.read<RegisterStoreFormCubit>();
-    return form.checkRegisterForm(
-        name: _nameController.value.text,
-        fullAddress: _fullAddressController.value.text,
-        bin: _binController.value.text,
-        lat: _latController.value.text,
-        lon: _lonController.value.text,
-        type: _storeTypeController.value,
-        city: _cityPickerController.value,
-        contacts: _contactController.value.map((e) {
-          return e.getData();
-        }).toList()
+  Future<Position?> getLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Check if location services are enabled
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are disabled
+      showErrorSnackBar(context, 'Отключенена геопозиция');
+      return null;
+    }
+
+    // Request location permission
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        showErrorSnackBar(context, 'Отключенено разрешение на получение геопозиция');
+        return null;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      showErrorSnackBar(context, 'Отключенено разрешение на получение геопозиция');
+      return null;
+    }
+
+    // Get the current position (latitude and longitude)
+    Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
     );
+
+    return position;
+  }
+
+  Future<bool> _checkForm() async {
+    Position? position =  await getLocation();
+    if(position != null) {
+      RegisterStoreFormCubit form = context.read<RegisterStoreFormCubit>();
+      return form.checkRegisterForm(
+          name: _nameController.value.text,
+          fullAddress: _fullAddressController.value.text,
+          bin: _binController.value.text,
+          lat: position.latitude.toString(),
+          lon: position.longitude.toString(),
+          city: _cityPickerController.value,
+          contacts: _contactController.value.map((e) {
+            return e.getData();
+          }).toList()
+      );
+    }
+    else {
+      return false;
+    }
   }
 
   @override
@@ -100,10 +138,7 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
     _nameController = TextEditingController();
     _fullAddressController = TextEditingController();
     _binController = TextEditingController();
-    _latController = TextEditingController();
-    _lonController = TextEditingController();
     _cityPickerController = CityPickerController();
-    _storeTypeController = StoreTypePickerController();
     _contactController = ContactTypeMultiPickerController();
     super.initState();
   }
@@ -113,10 +148,7 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
     _nameController.dispose();
     _fullAddressController.dispose();
     _binController.dispose();
-    _latController.dispose();
-    _lonController.dispose();
     _cityPickerController.dispose();
-    _storeTypeController.dispose();
     _contactController.dispose();
     super.dispose();
   }
@@ -151,10 +183,6 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
                     icon: const Icon(Icons.wallet),
                     controller: _binController,
                   ),
-                  StoreTypePicker(
-                    label: "Type_of_business".tr(),
-                    controller: _storeTypeController,
-                  ),
                   TextFieldApp(
                     label: "Full_address".tr(),
                     icon: const Icon(Icons.maps_home_work_outlined),
@@ -163,16 +191,6 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
                   CityPicker(
                       label: "City".tr(),
                       controller: _cityPickerController
-                  ),
-                  DoubleFieldApp(
-                    label: "Latitude".tr(),
-                    icon: const Icon(Icons.place),
-                    controller: _latController,
-                  ),
-                  DoubleFieldApp(
-                    label: "Longitude".tr(),
-                    icon: const Icon(Icons.place_outlined),
-                    controller: _lonController,
                   ),
                   ContactTypeMultiPicker(
                     controller: _contactController,
@@ -183,7 +201,7 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
                     builder: (context, state) {
                       if (state is RegisterStoreLoading) {
                         return ElevatedButtonApp(
-                          child: const Loader(),
+                          child: const Loader(color: Colors.black),
                           onPressed: () {},
                         );
                       }

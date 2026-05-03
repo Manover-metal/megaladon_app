@@ -1,6 +1,5 @@
 
 import 'package:megaladon/data/models/dictionary/city_model.dart';
-import 'package:megaladon/data/models/dictionary/store_type_model.dart';
 import 'package:megaladon/data/models/request/index_period_enum.dart';
 
 
@@ -10,7 +9,6 @@ class StoreIndexRequestParams {
   final int rowsPerPage;
   final bool desc;
   final CityModel? city;
-  final StoreTypeModel? category;
   final IndexPeriod last;
 
   const StoreIndexRequestParams({
@@ -18,7 +16,6 @@ class StoreIndexRequestParams {
       this.rowsPerPage = 15,
       this.desc = false,
       this.city,
-      this.category,
       this.last = IndexPeriod.last3day,
   });
 
@@ -29,8 +26,7 @@ class StoreIndexRequestParams {
       'last': last.name,
       'desc': desc? 1: 0,
       // 'sort': sort.name,
-      'city_id': city?.id,
-      'category_id': category?.id
+      'city_id': city?.id == CityModel.nothing.id ? null : city?.id,
     };
     return data;
   }
@@ -40,7 +36,6 @@ class StoreIndexRequestParams {
     int? rowsPerPage,
     bool? desc,
     CityModel? city,
-    StoreTypeModel? category,
     IndexPeriod? last,
     // StoreIndexSort? sort
   }) {
@@ -49,7 +44,6 @@ class StoreIndexRequestParams {
       rowsPerPage: rowsPerPage ?? this.rowsPerPage,
       desc: desc ?? this.desc,
       city: city ?? this.city,
-      category: category ?? this.category,
       last: last ?? this.last,
       // sort: sort ?? this.sort
     );

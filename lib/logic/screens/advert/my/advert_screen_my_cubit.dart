@@ -68,12 +68,12 @@ class AdvertScreenMyCubit extends Cubit<AdvertScreenMyState> {
     ) return;
 
     AdvertIndexRequestParams mainParams = params ?? state.params;
-    emit(state.copyWith(status: AdverScreenMyMainStatus.loading, error: null, adverts: state.adverts));
+    emit(state.copyWith(status: AdverScreenMyMainStatus.loading, error: null, services: state.services));
 
     return await _repository.indexMy(mainParams, AdvertType.service).then((value) {
       if(mainParams.startRow == 0) {
         emit(state.copyWith(
-            adverts: value,
+            services: value,
             params: mainParams,
             status: AdverScreenMyMainStatus.success,
             stock: value.length < mainParams.rowsPerPage
@@ -81,7 +81,7 @@ class AdvertScreenMyCubit extends Cubit<AdvertScreenMyState> {
       } else {
         emit(state.copyWith(
             status: AdverScreenMyMainStatus.success,
-            adverts: [...state.adverts, ...value],
+            services: [...state.services, ...value],
             params: mainParams,
             stock: value.length < mainParams.rowsPerPage
         ));

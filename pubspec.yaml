@@ -67,6 +67,9 @@ dependencies:
   carousel_slider: ^5.1.2
   flutter_intro: ^3.4.0
   is_first_run: ^1.0.0
+  emoji_picker_flutter: ^1.6.1
+  pusher_channels_flutter: ^2.1.2
+  geolocator: ^9.0.2
   firebase_messaging: ^16.2.0
 
 dev_dependencies:

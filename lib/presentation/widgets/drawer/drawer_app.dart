@@ -25,11 +25,14 @@ class DrawerApp extends StatelessWidget {
   };
 
   _registerExecutor(BuildContext context) => () {
-    context.router.push(const RegisterExecutorRoute());
+    print('executor');
+
+    context.router.navigate(const RegisterExecutorRoute());
   };
 
   _registerStore(BuildContext context) => () {
-    context.router.push(const RegisterStoreRoute());
+    print('store');
+    context.router.navigate(const RegisterStoreRoute());
   };
 
   _logout(BuildContext context) => () {
@@ -94,6 +97,22 @@ class DrawerApp extends StatelessWidget {
                                 ],
                               ),
                             ),
+                            DrawerRouteTile(
+                              text: "Chats".tr(),
+                              page: const InitialRouter(
+                                children: [
+                                  ProfileRouter(children: [ListChatsRoute()])
+                                ],
+                              ),
+                            ),
+                            DrawerRouteTile(
+                              text: "Подписки".tr(),
+                              page: const InitialRouter(
+                                children: [
+                                  OrderRouter(children: [SubscribeRoute()])
+                                ],
+                              ),
+                            ),
                           ],
                         )
                     ),
@@ -151,7 +170,7 @@ class DrawerApp extends StatelessWidget {
                           text: 'Artist_registration'.tr(),
                           onPressed: _registerExecutor(context),
                         ),
-                        if(state.auth.store.value == null)  OutlinedButtonApp(
+                        if(state.auth.store.value == null)  ElevatedButtonApp(
                           text: 'Shop_registration'.tr(),
                           onPressed: _registerStore(context),
                         ),

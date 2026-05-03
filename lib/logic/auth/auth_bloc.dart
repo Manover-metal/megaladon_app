@@ -46,7 +46,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future _sendFbToken() async {
     String? token = await FbNotificationService.I.getToken();
     if(token != null) {
-      print(token);
       _authRepository.sendFB(token: token);
     }
   }
@@ -71,12 +70,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       emit(AuthLoginState(auth));
     }).catchError((error) {
-
+      print(error);
       if(error is DioError) {
         if(error.response?.statusCode == 406) {
           emit(AuthTransitionVerify(event.phone));
         } else {
-          emit(ErrorModel.parseDio(error));
+          emit(AuthErrorState(ErrorModel.parseDio(error)));
         }
       } else {
         emit(AuthErrorState(ErrorModel.nothing));
@@ -130,9 +129,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-
   _addExecutor(AuthAddExecutorEvent event,  Emitter emit) async {
     final AuthLoginState currentState = state as AuthLoginState;
+    emit(AuthLoadingState());
     final AuthModel auth = currentState.auth;
     auth.executor.value = event.executor;
     await _authRepository.addExecutor(auth, event.executor);
@@ -141,9 +140,26 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   _addStore(AuthAddStoreEvent event,  Emitter emit) async {
     final AuthLoginState currentState = state as AuthLoginState;
+    emit(AuthLoadingState());
     final AuthModel auth = currentState.auth;
     auth.store.value = event.store;
     await _authRepository.addStore(auth, event.store);
     emit(AuthLoginState(auth));
+  }
+
+  bool hasExecutor() {
+    if(state is AuthLoginState) {
+      return (state as AuthLoginState).auth.executor.value != null;
+    } else {
+      return false;
+    }
+  }
+
+  bool hasStore() {
+    if(state is AuthLoginState) {
+      return (state as AuthLoginState).auth.store.value != null;
+    } else {
+      return false;
+    }
   }
 }

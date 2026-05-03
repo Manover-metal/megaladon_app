@@ -1,15 +1,22 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:megaladon/core/icons/icons.dart';
 import 'package:megaladon/data/models/advert_model.dart';
+import 'package:megaladon/data/models/dictionary/advert_type.dart';
 import 'package:megaladon/data/models/enum_form_state.dart';
 import 'package:megaladon/logic/form/update/ad/ad_update_form_cubit.dart';
+import 'package:megaladon/logic/screens/orders/details/order_screen_details_cubit.dart';
+import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/description_field.dart';
+import 'package:megaladon/presentation/widgets/form/field/phone_field.dart';
+import 'package:megaladon/presentation/widgets/form/multi_picker/media_multi_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/advert_category_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
@@ -20,8 +27,9 @@ import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
 
 class UpdateAdScreen extends StatefulWidget {
   final AdvertModel advert;
+  final AdvertType type;
 
-  const UpdateAdScreen({super.key, required this.advert});
+  const UpdateAdScreen({super.key, required this.advert, required this.type});
 
   @override
   State<UpdateAdScreen> createState() => _UpdateAdScreenState();
@@ -34,37 +42,29 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
   late TextEditingController _phoneController;
   late CityPickerController _cityController;
   late TextEditingController _priceController;
+  late ImageMultiPickerController _imageController;
 
   _back() {
     context.router.pop();
   }
 
-  _create() {
+  _create() async {
     if(_checkForm()) {
-      context.router.popUntil((route) => route.settings.name == InitialRouter.name);
-      context.read<AdUpdateFormCubit>().updateFetch(widget.advert.id).then((value) {
-        context.router.navigate(InitialRouter(
-            children: [
-              AdRouter(
-                  children: [DetailsAdRoute(id: value.id)]
-              )
-            ]
-        ));
-      }).catchError((error) {
-
-      });
+      await context.read<AdUpdateFormCubit>().updateFetch(widget.advert.id);
     }
   }
 
   _checkForm() {
     AdUpdateFormCubit form = context.read<AdUpdateFormCubit>();
     return form.checkUpdate(
-        title: _titleController.value.text,
-        description: _descriptionController.value.text,
-        price: _priceController.value.text,
-        category: _advertCategoryController.value,
-        city: _cityController.value,
-        phone: _phoneController.value.text
+      title: _titleController.value.text,
+      description: _descriptionController.value.text,
+      price: _priceController.value.text,
+      category: _advertCategoryController.value,
+      city: _cityController.value,
+      phone: _phoneController.value.text,
+      media: _imageController.value,
+      type: widget.type
     );
   }
 
@@ -74,6 +74,22 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
         if(element is FormzInput && element.isNotValid) {
           return showErrorSnackBar(context, element.error.toString());
         }
+      }
+    }
+    if(state.formState == EnumFormState.success) {
+      context.read<OrderScreenMyCubit>().refresh();
+      context.read<OrderScreenDetailsCubit>().fetch(id: widget.advert.id);
+      context.router.popUntil((route) => route.settings.name == InitialRouter.name);
+      context.router.navigate(InitialRouter(
+          children: [
+            AdRouter(
+                children: [DetailsAdRoute(id: widget.advert.id)]
+            )
+          ]
+      ));
+    } else if(state.formState == EnumFormState.error) {
+      if(state.error != null) {
+        showErrorSnackBar(context, state.error!.messages[0]);
       }
     }
   }
@@ -86,6 +102,7 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
     _priceController = TextEditingController(text: widget.advert.price.toString());
     _descriptionController = TextEditingController(text: widget.advert.description);
     _phoneController = TextEditingController(text: widget.advert.additionalPhone);
+    _imageController = ImageMultiPickerController();
     super.initState();
   }
 
@@ -108,18 +125,19 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                HeaderAppBar(isBack: true, title: "Edit_ad".tr()),
-                SizedBox(height: 30),
-                AdvertCategoryPicker(label: "category".tr(), controller: _advertCategoryController),
-                TextFieldApp(controller: _titleController, label: "name_field".tr(),),
-                CityPicker(label: "City".tr(), controller: _cityController),
-                DescriptionFieldApp(label: "Store_data".tr(), controller: _descriptionController),
-                NumberFieldApp(label: "Price".tr(), controller: _priceController,),
-                TextFieldApp(controller: _phoneController, label: "Additional_Phone".tr()),
-
+                if(widget.type == AdvertType.advert) HeaderAppBar(isBack: true, title: "Edit_ad".tr(),)
+                else if(widget.type == AdvertType.service) HeaderAppBar(isBack: true, title: "Изменить сервис".tr()),
+                const SizedBox(height: 30),
+                TextFieldApp(controller: _titleController, label: "name_field".tr(), icon: const Icon(Icons.edit)),
+                AdvertCategoryPicker(label: "Select_a_category".tr(), controller: _advertCategoryController),
+                CityPicker(label: "Choose_city".tr(), controller: _cityController),
+                DescriptionFieldApp(label: "Description_of_your_offer".tr(), controller: _descriptionController, icon: const Icon(IconPack.description),),
+                NumberFieldApp(label: "Price".tr(), controller: _priceController, icon: const  Icon(Icons.money_sharp),),
+                PhoneField(controller: _phoneController, label: "Additional_Phone".tr(), icon: const Icon(Icons.phone),),
+                ImageMultiPicker(controller: _imageController),
                 // BlocConsumer(builder: builder, listener: listener)
                 BlocConsumer<AdUpdateFormCubit, AdUpdateFormState>(
                     listener: _listenerForm,
@@ -128,6 +146,7 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
                         return ElevatedButtonApp(child: Loader(color: Theme.of(context).colorScheme.background), onPressed: () {},);
                       }
                       return ElevatedButtonApp(text: "Edit".tr(), onPressed: _create,);
+
                     }
                 ),
                 OutlinedButtonApp(text: "Cancel".tr(), onPressed: _back,),

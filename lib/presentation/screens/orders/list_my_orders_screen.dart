@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/request/params/index/order_index_request_params.dart';
+import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
 import 'package:megaladon/presentation/widgets/bottom_sheet/filters/filter_order_my_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/card/order_card.dart';
@@ -28,7 +29,7 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> with SingleTick
       final cubit = context.read<OrderScreenMyCubit>();
       if(cubit.state.status != OrderScreenMyStatus.loading) {
         OrderIndexRequestParams params = cubit.state.params;
-        cubit.fetch(params: params.copyWith(startRow: params.startRow + params.rowsPerPage));
+        cubit.fetchMy(params: params.copyWith(startRow: params.startRow + params.rowsPerPage));
       }
     }
   }
@@ -38,7 +39,7 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> with SingleTick
        final cubit = context.read<OrderScreenMyCubit>();
        if(cubit.state.status != OrderScreenMyStatus.loading) {
          OrderIndexRequestParams params = cubit.state.params;
-         cubit.fetch(params: params.copyWith(startRow: params.startRow + params.rowsPerPage));
+         cubit.fetchResponded(params: params.copyWith(startRow: params.startRow + params.rowsPerPage));
        }
      }
    }
@@ -47,9 +48,12 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> with SingleTick
   @override
   void initState() {
     _scrollController = ScrollController()..addListener(_listenerScrollMy);
-    _scrollControllerResponded = ScrollController()..addListener(_listenerScrollResponded);
-
-    _tabController = TabController(length: 2, vsync: this);
+    if(_isExecutor()) {
+      _tabController = TabController(length: 2, vsync: this);
+      _scrollControllerResponded = ScrollController()..addListener(_listenerScrollResponded);
+    } else {
+      _tabController = TabController(length: 1, vsync: this);
+    }
     _onRefresh();
     super.initState();
   }
@@ -58,14 +62,26 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> with SingleTick
   void dispose() {
     _scrollController.removeListener(_listenerScrollMy);
     _scrollController.dispose();
-    _scrollControllerResponded.removeListener(_listenerScrollResponded);
-    _scrollControllerResponded.dispose();
+    if(_isExecutor()) {
+      _scrollControllerResponded.removeListener(_listenerScrollResponded);
+      _scrollControllerResponded.dispose();
+    }
     _tabController.dispose();
     super.dispose();
   }
 
   Future _onRefresh() async {
-    return context.read<OrderScreenMyCubit>().fetch();
+     if(_isExecutor()) {
+       print('all');
+       return Future.wait([
+         context.read<OrderScreenMyCubit>().fetchResponded(),
+         context.read<OrderScreenMyCubit>().fetchMy(),
+       ]);
+     }else {
+       print('one');
+
+       return context.read<OrderScreenMyCubit>().fetchMy();
+     }
   }
 
   _showFilter() async {
@@ -75,127 +91,160 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> with SingleTick
         useRootNavigator: true,
         context: context,
         elevation: 100,
-        builder: (_) => FilterMyOrderBottomSheet()
+        builder: (_) => const FilterMyOrderBottomSheet()
     );
     if(result != null) {
-      context.read<OrderScreenMyCubit>().fetch();
+      _onRefresh();
     }
+  }
+
+  bool _isExecutor() {
+     final a = context.read<AuthBloc>().hasExecutor();
+     print(a);
+     return a;
   }
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        body: SafeArea(
-          child: NestedScrollView(
-            headerSliverBuilder: (BuildContext context, bool isBool) {
-              return [
-                SliverToBoxAdapter(
-                    child: Column(
-                      children: [
-                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          child: HeaderAppBar(isMenu: true, title: "My_orders".tr()),
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, authState) {
+        return DefaultTabController(
+          length: _isExecutor()? 2 : 1,
+          child: Scaffold(
+            body: SafeArea(
+              child: NestedScrollView(
+                headerSliverBuilder: (BuildContext context, bool isBool) {
+                  return [
+                    SliverToBoxAdapter(
+                        child: Column(
+                          children: [
+                             Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              child: BlocBuilder<OrderScreenMyCubit, OrderScreenMyState>(
+                                builder: (context, state) {
+                                  return HeaderAppBar(
+                                    isMenu: true,
+                                    title: "My_orders".tr(),
+                                    onTrailing: _onRefresh,
+                                    trailing: state.status != OrderScreenMyStatus.loading? const Icon(
+                                      Icons.refresh,
+                                      size: 30,
+                                    ) : CupertinoActivityIndicator(),
+                                  );
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: InkWell(
+                                  onTap: _showFilter,
+                                  child: const Icon(Icons.filter_alt,  size: 30),
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                    ),
+                    SliverPersistentHeader(
+                      delegate: TabBarDelegate(
+                        TabBar(
+                          controller: _tabController,
+                          labelColor: Theme.of(context).colorScheme.primary,
+                          labelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+                          unselectedLabelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
+                          unselectedLabelColor: Colors.grey,
+                          indicatorColor: Theme.of(context).colorScheme.primary,
+                          tabs:  [
+
+                            Tab(text: "As_a_user".tr()),
+                            if(_isExecutor()) Tab(text:"As_a_executor".tr()),
+                          ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Align(
-                            alignment: Alignment.centerRight,
-                            child: InkWell(
-                              onTap: _showFilter,
-                              child: const Icon(Icons.filter_alt,  size: 30),
+                      )
+                    )
+                  ];
+                },
+                body: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    RefreshIndicator(
+                      onRefresh: _onRefresh,
+                      child: CupertinoScrollbar(
+                        controller: _scrollController,
+                        child: SingleChildScrollView(
+                          controller: _scrollController,
+                          child: Container(
+                            constraints: BoxConstraints(
+                                minHeight: MediaQuery.of(context).size.height + 200
+                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: BlocBuilder<OrderScreenMyCubit, OrderScreenMyState>(
+                              builder: (context, state) {
+
+                                return Column(
+                                  children: [
+                                    ...state.orders.map((order) {
+                                      return OrderCard(order: order);
+                                    }).toList(),
+                                    if(state.status == OrderScreenMyStatus.loading) const Loader(padding: 10)
+                                    else if(state.status == OrderScreenMyStatus.error)  ErrorMessage(error: state.error!)
+                                    else if(state.stock)  StockMessage(name: "Orders".tr())
+                                  ],
+                                );
+                              },
                             ),
                           ),
                         ),
-                      ],
+                      ),
+                    ),
+                    if(_isExecutor()) RefreshIndicator(
+                      onRefresh: _onRefresh,
+                      child: CupertinoScrollbar(
+                        controller: _scrollControllerResponded,
+                        child: SingleChildScrollView(
+                          controller: _scrollControllerResponded,
+                          child: Container(
+                            constraints: BoxConstraints(
+                                minHeight: MediaQuery.of(context).size.height + 200
+                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: BlocBuilder<OrderScreenMyCubit, OrderScreenMyState>(
+                              builder: (context, state) {
+                                print('responded ${state.stockResponded} ${state.ordersResponded} ${state.status}');
+                                return Column(
+                                  children: [
+                                    ...state.ordersResponded.map((order) {
+                                      return OrderCard(order: order);
+                                    }).toList(),
+                                    if(state.status == OrderScreenMyStatus.loading) const Loader(padding: 10)
+                                    else if(state.status == OrderScreenMyStatus.error)  ErrorMessage(error: state.error!)
+                                    else if(state.stockResponded) StockMessage(name: "Orders".tr())
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
                     )
-                ),
-                SliverPersistentHeader(
-                  delegate: TabBarDelegate(
-                    TabBar(
-                      controller: _tabController,
-                      labelColor: Theme.of(context).colorScheme.primary,
-                      labelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
-                      unselectedLabelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
-                      unselectedLabelColor: Colors.grey,
-                      indicatorColor: Theme.of(context).colorScheme.primary,
-                      tabs:  [
-                        Tab(text: "As_a_user".tr()),
-                        Tab(text:"As_a_executor".tr()),
-                      ],
-                    ),
-                  )
-                )
-              ];
-            },
-            body: TabBarView(
-              controller: _tabController,
-              children: [
-                RefreshIndicator(
-                  onRefresh: _onRefresh,
-                  child: CupertinoScrollbar(
-                    controller: _scrollController,
-                    child: SingleChildScrollView(
-                      controller: _scrollController,
+                    else SingleChildScrollView(
                       child: Container(
                         constraints: BoxConstraints(
                             minHeight: MediaQuery.of(context).size.height
                         ),
                         padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: BlocBuilder<OrderScreenMyCubit, OrderScreenMyState>(
-                          builder: (context, state) {
-
-                            return Column(
-                              children: [
-                                ...state.orders.map((order) {
-                                  return OrderCard(order: order);
-                                }).toList(),
-                                if(state.status == OrderScreenMyStatus.loading) const Loader(padding: 10)
-                                else if(state.status == OrderScreenMyStatus.error)  ErrorMessage(error: state.error!)
-                                else if(state.stock)  StockMessage(name: "Orders".tr())
-                              ],
-                            );
-                          },
-                        ),
-                      ),
+                        child: Text('Зарегистрируйте как Исполнитель'),
+                      )
                     ),
-                  ),
+                  ],
                 ),
-                RefreshIndicator(
-                  onRefresh: _onRefresh,
-                  child: CupertinoScrollbar(
-                    controller: _scrollControllerResponded,
-                    child: SingleChildScrollView(
-                      controller: _scrollControllerResponded,
-                      child: Container(
-                        constraints: BoxConstraints(
-                            minHeight: MediaQuery.of(context).size.height
-                        ),
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: BlocBuilder<OrderScreenMyCubit, OrderScreenMyState>(
-                          builder: (context, state) {
-                            return Column(
-                              children: [
-                                ...state.ordersResponded.map((order) {
-                                  return OrderCard(order: order);
-                                }).toList(),
-                                if(state.status == OrderScreenMyStatus.loading) const Loader(padding: 10)
-                                else if(state.status == OrderScreenMyStatus.error)  ErrorMessage(error: state.error!)
-                                else if(state.stockResponded)  StockMessage(name: "Orders".tr())
-                              ],
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

@@ -20,16 +20,16 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
 
   _listenAuth(stateAuth) {
     if(stateAuth is AuthLoginState) {
-      fetch();
+      refresh();
     } else {
       emit(const OrderScreenMyState());
     }
   }
 
-  Future fetch({OrderIndexRequestParams? params}) async {
-    if(state.status == OrderScreenMyStatus.loading
-        && state.error == null
-    ) return;
+  Future fetchMy({OrderIndexRequestParams? params}) async {
+    // if(state.status == OrderScreenMyStatus.loading
+    //     && state.error == null
+    // ) return;
 
     OrderIndexRequestParams mainParams = params ?? state.params;
     emit(state.copyWith(
@@ -37,41 +37,121 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
         error: null,
       )
     );
-    return await Future.wait([
-      _repository.indexMy(mainParams),
-      _repository.indexMyResponded(mainParams)
-    ]).then((value) {
-      final my = value[0];
-      final myResponded = value[1];
+    return await _repository.indexMy(mainParams).then((value) {
+      final my = value;
 
       if(mainParams.startRow == 0) {
         emit(state.copyWith(
             orders: my,
-            ordersResponded: myResponded,
             params: mainParams,
             status: OrderScreenMyStatus.success,
             stock: my.length < mainParams.rowsPerPage,
-            stockResponded: myResponded.length < mainParams.rowsPerPage
         ));
       } else {
         emit(state.copyWith(
           status: OrderScreenMyStatus.success,
           orders: [...state.orders, ...my],
-          ordersResponded: [...state.ordersResponded, ...myResponded],
           params: mainParams,
           stock: my.length < mainParams.rowsPerPage,
-          stockResponded: myResponded.length < mainParams.rowsPerPage
         ));
       }
     }).catchError(( error) {
       if(error is DioError) {
-        emit(state.copyWith(error: ErrorModel.parseDio(error)));
+        if(error.response?.statusCode == 403) {
+          authBloc.add(AuthLogoutEvent());
+        } else {
+          emit(state.copyWith(error: ErrorModel.parseDio(error)));
+        }
       } else {
         emit(state.copyWith(error: ErrorModel.nothing));
       }
     });
   }
 
+  Future fetchResponded({OrderIndexRequestParams? params}) async {
+    // if(state.status == OrderScreenMyStatus.loading
+    //     && state.error == null
+    // ) return;
+
+    OrderIndexRequestParams mainParams = params ?? state.params;
+    emit(state.copyWith(
+        status: OrderScreenMyStatus.loading,
+        error: null,
+      )
+    );
+    return await _repository.indexMyResponded(mainParams).then((value) {
+      final myResponded = value;
+      print('fetch Responded');
+
+      if(mainParams.startRow == 0) {
+        emit(state.copyWith(
+            ordersResponded: myResponded,
+            params: mainParams,
+            status: OrderScreenMyStatus.success,
+            stockResponded: myResponded.length < mainParams.rowsPerPage
+        ));
+        print('fetch startRow == 0 emit');
+
+      } else {
+        emit(state.copyWith(
+            status: OrderScreenMyStatus.success,
+            ordersResponded: [...state.ordersResponded, ...myResponded],
+            params: mainParams,
+            stockResponded: myResponded.length < mainParams.rowsPerPage
+        ));
+        print('fetch startRow not 0 emit');
+
+      }
+    }).catchError(( error) {
+      print('Error Responded: ${error}');
+      if(error is DioError) {
+        if(error.response?.statusCode == 403) {
+          authBloc.add(AuthLogoutEvent());
+        } else {
+          emit(state.copyWith(error: ErrorModel.parseDio(error)));
+        }
+      } else {
+        emit(state.copyWith(error: ErrorModel.nothing));
+      }
+    });
+  }
+
+
+  Future refresh() async {
+    if(state.status == OrderScreenMyStatus.loading
+        && state.error == null
+    ) return;
+
+    OrderIndexRequestParams mainParams = state.params.copyWith(startRow: 0);
+    return await Future.wait([
+      _repository.indexMy(mainParams),
+      _repository.indexMyResponded(mainParams),
+
+    ]).then((value) {
+      final my = value[0];
+      final myResponded = value[1];
+
+
+      emit(state.copyWith(
+          orders: my,
+          params: mainParams,
+          status: OrderScreenMyStatus.success,
+          stock: my.length < mainParams.rowsPerPage,
+          ordersResponded: myResponded,
+          stockResponded: myResponded.length < mainParams.rowsPerPage
+      ));
+    }).catchError(( error) {
+      if(error is DioError) {
+        if(error.response?.statusCode == 403) {
+          authBloc.add(AuthLogoutEvent());
+        } else {
+          emit(state.copyWith(error: ErrorModel.parseDio(error)));
+        }
+      } else {
+        emit(state.copyWith(error: ErrorModel.nothing));
+      }
+    });
+  }
 
   changeParams(OrderIndexRequestParams params) {
     emit(state.copyWith(

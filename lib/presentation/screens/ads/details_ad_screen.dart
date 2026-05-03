@@ -1,18 +1,23 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/core/icons/icons.dart';
-import 'package:megaladon/generated/locale_keys.g.dart';
+import 'package:megaladon/data/models/advert_model.dart';
+import 'package:megaladon/data/models/dictionary/advert_type.dart';
+import 'package:megaladon/data/repositories/advert_repository.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/screens/advert/details/advert_screen_details_cubit.dart';
+import 'package:megaladon/logic/screens/chats/chat_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
+import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 import 'package:megaladon/presentation/widgets/tiles/user_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -31,7 +36,7 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
 
   @override
   void initState() {
-    context.read<AdvertScreenDetailsCubit>().fetch(id: widget.id);
+    _refresh();
     super.initState();
   }
 
@@ -44,8 +49,73 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
   };
 
   _toChat() {
-    context.router.navigate(const DetailsChatRouter());
+    context.read<ChatCubit>().createChatAdvert(widget.id).then((value) {
+      context.router.navigate(const ListChatsRoute());
+    });
   }
+
+  _refresh() {
+    context.read<AdvertScreenDetailsCubit>().fetch(id: widget.id);
+  }
+
+
+  _onTrailing(AdvertModel advert) => () {
+    showModalBottomSheet(
+        useRootNavigator: true,
+        useSafeArea: true,
+        context: context,
+        builder: (context) {
+          return Container(
+            color: Theme.of(context).colorScheme.background,
+            padding: EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                OutlinedButtonApp(
+                  onPressed: _toUpdate(advert),
+                  child: Text('Изменить'),
+                ),
+                SizedBox(height: 5),
+                ElevatedButtonApp(
+                  onPressed: _toDelete(advert),
+                  child: Text('Удалить'),
+
+                )
+              ],
+            ),
+          );
+        }
+    );
+  };
+
+  _toUpdate(AdvertModel advert) => () {
+    context.router.navigate(
+        UpdateAdRoute(advert: advert, type: advert.type)
+    );
+  };
+
+  _toDelete(AdvertModel advert) => () {
+    AdvertRepository().delete(advert.id).then((value) {
+      context.router.pop();
+      context.router.popUntil((route) => false);
+      context.router.navigate(const InitialRouter(
+          children: [
+            OrderRouter(
+                children: [
+                  ListMyOrdersRoute()
+                ]
+            )
+          ]
+      ));
+    }).catchError((error) {
+      context.router.pop();
+      if(error is DioError) {
+        showErrorSnackBar(context, error.response?.data['message'] ?? 'Неизвестная ошибка');
+      } else {
+        showErrorSnackBar(context, 'Неизвестная ошибка');
+      }
+    });
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +128,27 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                   child: Column(
                     children:  [
                       Padding(
-                        padding:  EdgeInsets.symmetric(horizontal: 20.0),
-                      
-                        child: HeaderAppBar(isBack: true, title: "Ad".tr()),
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: BlocBuilder<AuthBloc, AuthState>(
+                          builder: (context, authState) {
+                            return BlocBuilder<AdvertScreenDetailsCubit, AdvertScreenDetailsState>(
+                              builder: (context, state) {
+                                if(state is AdvertScreenDetailsSuccess) {
+                                  return HeaderAppBar(
+                                    isBack: true,
+                                    title: state.advert.type == AdvertType.advert ? "Ad".tr(): "Service".tr(),
+                                    onTrailing: (authState is AuthLoginState) && authState.auth.user.value?.id == state.advert.user?.id ? _onTrailing(state.advert) : null,
+                                  );
+                                }
+                                return  HeaderAppBar(
+                                  isBack: true,
+                                  title: '',
+                                  onTrailing: _refresh,
+                                );
+                              },
+                            );
+                          },
+                        ),
                       ),
                     ],
                   )
@@ -99,8 +187,8 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                                         color: Theme.of(context).colorScheme.secondary,
                                         child: CachedNetworkImage(
                                           imageUrl: e.url,
-                                          progressIndicatorBuilder: (context, url, downloadProgress) => Icon(IconPack.chat, size: MediaQuery.of(context).size.width / 10),
-                                          errorWidget:  (context, url, error) => Icon(IconPack.chat, size: MediaQuery.of(context).size.width / 10),
+                                          progressIndicatorBuilder: (context, url, downloadProgress) => Icon(Icons.image_outlined, size: MediaQuery.of(context).size.width / 10),
+                                          errorWidget:  (context, url, error) => Icon(Icons.error_outline, size: MediaQuery.of(context).size.width / 10),
                                           fit: BoxFit.cover,
                                         ),
                                       ),
@@ -116,7 +204,7 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text( "Price_up_to".tr()+'${state.advert.price} ₸'),
+                                Text( '${"Price_up_to".tr()} ${state.advert.price} ₸'),
                                 const SizedBox(height: 10,),
                                 UserTile(user: state.advert.user!),
                                 const SizedBox(height: 20),
@@ -125,11 +213,7 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                                     if(stateUser is AuthLoginState) {
                                       return Column(
                                         children: [
-                                          if(state.advert.user!.id == stateUser.auth.user.value!.id)...[
-                                            ElevatedButtonApp(
-                                              text: "Edit".tr(),
-                                            ),
-                                          ] else ...[
+                                          if(state.advert.user!.id != stateUser.auth.user.value!.id)...[
                                             ElevatedButtonApp(
                                               text: "Call".tr(),
                                               onPressed: _call(state.advert.additionalPhone!),

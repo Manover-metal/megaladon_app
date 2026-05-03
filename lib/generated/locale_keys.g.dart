@@ -219,5 +219,6 @@ abstract class  LocaleKeys {
   static const en = 'en';
   static const ru = 'ru';
   static const kk = 'kk';
+  static const Add_to_Favorite = 'Add_to_Favorite';
 
 }

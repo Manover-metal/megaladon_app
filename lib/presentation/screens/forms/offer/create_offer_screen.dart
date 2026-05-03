@@ -16,6 +16,7 @@ import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picke
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
+import 'package:megaladon/presentation/widgets/snackbars/success_snackbar.dart';
 
 class CreateOfferScreen extends StatefulWidget {
 
@@ -29,7 +30,6 @@ class CreateOfferScreen extends StatefulWidget {
 
 class _CreateOfferScreenState extends State<CreateOfferScreen> {
   late CityPickerController _cityController;
-  late TextEditingController _expiredAtController;
   late TextEditingController _descriptionController;
   late TextEditingController _dateController;
   late TextEditingController _priceController;
@@ -38,22 +38,10 @@ class _CreateOfferScreenState extends State<CreateOfferScreen> {
     context.router.pop();
   }
 
-  _create() {
+  _create() async {
     if(_checkForm()) {
-      context.read<CreateOfferFormCubit>().createFetch(widget.orderId).then((value) {
-        context.router.popUntil((route) => route.settings.name == InitialRouter.name);
-        context.router.navigate(InitialRouter(
-            children: [
-              OrderRouter(
-                  children: [DetailsOfferRoute(orderId: widget.orderId, offerId: value.id)]
-              )
-            ]
-        ));
-      }).catchError((error) {
-        if(error is DioError) {
-          showErrorSnackBar(context, error.response?.data['message']);
-        }
-      });
+      await context.read<CreateOfferFormCubit>().createFetch(widget.orderId);
+
     }
   }
 
@@ -64,11 +52,19 @@ class _CreateOfferScreenState extends State<CreateOfferScreen> {
         price: _priceController.value.text,
         city: _cityController.value,
         date: _dateController.value.text,
-        expiredAt: _expiredAtController.value.text
     );
   }
 
   _listenerForm(BuildContext context, CreateOfferFormState state) {
+
+    if(state.formState == EnumFormState.success) {
+      showSuccessSnackBar(context, 'Отлик отправлен');
+      context.router.pop();
+    } else if(state.formState == EnumFormState.error) {
+      if(state.error != null) {
+        showErrorSnackBar(context, state.error!.messages[0]);
+      }
+    }
     if(state.status) {
       for (var element in state.props) {
         if(element is FormzInput && element.isNotValid) {
@@ -81,7 +77,6 @@ class _CreateOfferScreenState extends State<CreateOfferScreen> {
   @override
   initState() {
     _cityController = CityPickerController();
-    _expiredAtController = TextEditingController();
     _dateController = TextEditingController();
     _descriptionController = TextEditingController();
     _priceController = TextEditingController();
@@ -91,7 +86,6 @@ class _CreateOfferScreenState extends State<CreateOfferScreen> {
   @override
   void dispose() {
     _cityController.dispose();
-    _expiredAtController.dispose();
     _dateController.dispose();
     _descriptionController.dispose();
     _priceController.dispose();
@@ -109,10 +103,9 @@ class _CreateOfferScreenState extends State<CreateOfferScreen> {
               children: [
                 HeaderAppBar(isBack: true, title: "Response_to_order".tr()+'${widget.orderId}'),
                 const SizedBox(height: 20,),
-                ExpiredAtFieldApp(label: "Actual_until".tr(), icon: const Icon(Icons.calendar_month), controller: _expiredAtController,),
                 TextFieldApp(label: "Time_to_work".tr(), icon: const Icon(Icons.watch_later_outlined), controller: _dateController,),
                 NumberFieldApp(label: "Price".tr(), icon: const Icon(Icons.credit_card), controller: _priceController,),
-                TextFieldApp(label: "Store_data".tr(), icon: const Icon(Icons.message), controller: _descriptionController,),
+                TextFieldApp(label: "description_field".tr(), icon: const Icon(Icons.message), controller: _descriptionController,),
                 CityPicker(label: "City".tr(), icon: const Icon(Icons.place) , controller: _cityController),
                 BlocConsumer<CreateOfferFormCubit, CreateOfferFormState>(
                   listener: _listenerForm,

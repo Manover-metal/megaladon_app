@@ -30,7 +30,8 @@ import 'package:megaladon/logic/register/register_store/register_store_bloc.dart
 import 'package:megaladon/logic/register/register_user/register_user_bloc.dart';
 import 'package:megaladon/logic/screens/advert/details/advert_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/advert/my/advert_screen_my_cubit.dart';
-import 'package:megaladon/logic/screens/chats/chat_screen_main_cubit.dart';
+import 'package:megaladon/logic/screens/chats/chat_cubit.dart';
+import 'package:megaladon/logic/screens/executors/details/executor_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/executors/my/executor_screen_my_cubit.dart';
 import 'package:megaladon/logic/screens/offers/details/offer_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/offers/list/offer_screen_main_cubit.dart';
@@ -164,6 +165,9 @@ class App extends StatelessWidget {
             BlocProvider<StoreScreenDetailsCubit>(
                 create: (context) => StoreScreenDetailsCubit()
             ),
+            BlocProvider<ExecutorScreenDetailsCubit>(
+                create: (context) => ExecutorScreenDetailsCubit()
+            ),
             BlocProvider<OfferScreenMainCubit>(
                 create: (context) => OfferScreenMainCubit()
             ),
@@ -175,49 +179,50 @@ class App extends StatelessWidget {
                 create: (context) => DictionaryCubit()..initial()
             ),
             BlocProvider<AdCreateFormCubit>(
-                create: (context) => AdCreateFormCubit()
+                create: (context) => AdCreateFormCubit(authBloc)
             ),
             BlocProvider<OrderCreateFormCubit>(
-                create: (context) => OrderCreateFormCubit()
+                create: (context) => OrderCreateFormCubit(authBloc)
             ),
             BlocProvider<CreateOfferFormCubit>(
-                create: (context) => CreateOfferFormCubit()
+                create: (context) => CreateOfferFormCubit(authBloc)
             ),
             BlocProvider<AdUpdateFormCubit>(
-                create: (context) => AdUpdateFormCubit()
+                create: (context) => AdUpdateFormCubit(authBloc)
             ),
             BlocProvider<OrderUpdateFormCubit>(
-                create: (context) => OrderUpdateFormCubit()
+                create: (context) => OrderUpdateFormCubit(authBloc)
             ),
-            BlocProvider<ChatScreenMainCubit>(
-                create: (context) => ChatScreenMainCubit()
+            BlocProvider<ChatCubit>(
+                lazy: false,
+                create: (context) => ChatCubit(authBloc)
             )
           ],
           child: MultiBlocProvider(
             providers: [
               BlocProvider<PriceFormCubit>(
-                  create: (context) => PriceFormCubit(profileCubit),
+                  create: (context) => PriceFormCubit(profileCubit, authBloc),
               ),
               BlocProvider<ChangePhotoCubit>(
-                create: (context) => ChangePhotoCubit(profileCubit),
+                create: (context) => ChangePhotoCubit(profileCubit, authBloc),
               ),
               BlocProvider<ChangeExecutorBloc>(
-                create: (context) => ChangeExecutorBloc(profileCubit),
+                create: (context) => ChangeExecutorBloc(profileCubit, authBloc),
               ),
               BlocProvider<ChangeExecutorFormCubit>(
                 create: (context) => ChangeExecutorFormCubit(),
               ),
               BlocProvider<ChangeStoreBloc>(
-                create: (context) => ChangeStoreBloc(profileCubit),
+                create: (context) => ChangeStoreBloc(profileCubit, authBloc),
               ),
               BlocProvider<ChangeStoreFormCubit>(
                 create: (context) => ChangeStoreFormCubit(),
               ),
               BlocProvider<ChangePasswordCubit>(
-                create: (context) => ChangePasswordCubit(),
+                create: (context) => ChangePasswordCubit(authBloc),
               ),
               BlocProvider<ChangePhoneCubit>(
-                create: (context) => ChangePhoneCubit(profileCubit),
+                create: (context) => ChangePhoneCubit(profileCubit, authBloc),
               ),
             ],
             child: const AppState(),
@@ -255,7 +260,7 @@ class _AppStateState extends State<AppState> {
         final data = MediaQuery.of(context);
         return MediaQuery(
           data: data.copyWith(
-            textScaleFactor: min(maxPossibleTsf, data.textScaleFactor),
+            textScaleFactor: 1,
           ),
           child: child ?? const SizedBox.shrink(),
         );

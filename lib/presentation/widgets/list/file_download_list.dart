@@ -15,7 +15,9 @@ class FileDownloadList extends StatefulWidget {
 class _FileDownloadListState extends State<FileDownloadList> {
 
   _download(FileModel file) => () async {
-    DownloadService.download(url: file.url);
+    await DownloadService.download(url: file.url, callback: (prog, gres) {
+      print('$prog, $gres');
+    });
   };
 
   @override

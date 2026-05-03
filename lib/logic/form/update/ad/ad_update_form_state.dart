@@ -17,6 +17,9 @@ class AdUpdateFormState extends Equatable {
   final PhoneFormModel phone;
   final int countTry;
   final EnumFormState formState;
+  final AdvertType type;
+  final List<PlatformFile> media;
+  final ErrorModel? error;
 
 
   const AdUpdateFormState({
@@ -28,12 +31,15 @@ class AdUpdateFormState extends Equatable {
     this.countTry = 0,
     this.price = const PriceFormModel.pure(),
     this.phone = const PhoneFormModel.pure(),
-    this.formState = EnumFormState.filled
+    this.formState = EnumFormState.filled,
+    this.media = const [],
+    this.type = AdvertType.advert,
+    this.error
   });
 
 
   @override
-  List<Object?> get props => [status, description, price, title, category, city, phone, countTry];
+  List<Object?> get props => [status, description, price, title, category, city, phone, countTry, media, error, formState];
 
   AdUpdateFormState copyWith({
     bool? status,
@@ -45,7 +51,10 @@ class AdUpdateFormState extends Equatable {
     AdUpdateForm? state,
     PriceFormModel? price,
     PhoneFormModel? phone,
-    EnumFormState? formState
+    EnumFormState? formState,
+    List<PlatformFile>? media,
+    AdvertType? type,
+    ErrorModel? error,
   }) {
     return AdUpdateFormState(
       status: status ?? this.status,
@@ -56,7 +65,10 @@ class AdUpdateFormState extends Equatable {
       price: price ?? this.price,
       phone: phone ?? this.phone,
       countTry: countTry ?? this.countTry,
-      formState: formState ?? this.formState
+      formState: formState ?? this.formState,
+      type: type ?? this.type,
+      media: media ?? this.media,
+      error: error ?? this.error
     );
   }
 }

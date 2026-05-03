@@ -72,10 +72,12 @@ class _MyAdsScreenState extends State<MyAdsScreen> with SingleTickerProviderStat
 
   @override
   void initState() {
-    _tabController = TabController(length: 2, vsync: this);
 
     _scrollAdvertController = ScrollController()..addListener(_listenerAdvertScroll);
     _scrollServiceController = ScrollController()..addListener(_listenerServiceScroll);
+
+    _tabController = TabController(length: 2, vsync: this);
+
 
     _onRefresh();
     super.initState();
@@ -104,7 +106,19 @@ class _MyAdsScreenState extends State<MyAdsScreen> with SingleTickerProviderStat
                     children: [
                        Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: HeaderAppBar(isMenu: true, title: "My_announcement".tr()),
+                        child: BlocBuilder<AdvertScreenMyCubit, AdvertScreenMyState>(
+                          builder: (context, state) {
+                            return HeaderAppBar(
+                                isMenu: true,
+                                title: "My_announcement".tr(),
+                                onTrailing: _onRefresh,
+                                trailing: state.status != AdverScreenMyMainStatus.loading ? const Icon(
+                                  Icons.refresh,
+                                  size: 30,
+                                ) : CupertinoActivityIndicator(),
+                            );
+                          },
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -197,7 +211,7 @@ class _MyAdsScreenState extends State<MyAdsScreen> with SingleTickerProviderStat
                                     }).toList(),
                                     if(state.status == AdverScreenMyMainStatus.loading) const Loader(padding: 10)
                                     else if(state.status == AdverScreenMyMainStatus.error) ErrorMessage(error: state.error!)
-                                    else if(state.stock)  StockMessage(name: "Ads".tr())
+                                    else if(state.stock) StockMessage(name: "Ads".tr())
 
                                   ],
                                 );

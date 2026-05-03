@@ -11,6 +11,7 @@ class AdvertScreenDetailsCubit extends Cubit<AdvertScreenDetailsState> {
   final AdvertRepository _repository = AdvertRepository();
   AdvertScreenDetailsCubit() : super(AdvertScreenDetailsInitial());
 
+
   Future fetch({required int id}) async {
     if(state is AdvertScreenDetailsSuccess) {
       if((state as AdvertScreenDetailsSuccess).advert.id == id) return;
@@ -26,7 +27,6 @@ class AdvertScreenDetailsCubit extends Cubit<AdvertScreenDetailsState> {
       } else {
         emit(AdvertScreenDetailsError(ErrorModel.nothing));
       }
-
     });
   }
 }

@@ -48,7 +48,19 @@ class _ListExecutorsScreenState extends State<ListExecutorsScreen> {
                SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: HeaderAppBar(isBack: true, title: "Executor".tr()),
+                  child: BlocBuilder<OfferScreenMainCubit, OfferScreenMainState>(
+                    builder: (context, state) {
+                      return HeaderAppBar(
+                        isBack: true,
+                        title: "Executor".tr(),
+                        onTrailing: _refresh,
+                        trailing: state is! OfferScreenMainLoader ? const Icon(
+                          Icons.refresh,
+                          size: 30,
+                        ) : CupertinoActivityIndicator(),
+                      );
+                    },
+                  ),
                 ),
               )
             ];

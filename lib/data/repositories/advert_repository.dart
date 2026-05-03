@@ -14,7 +14,9 @@ class AdvertRepository {
 
 
   Future indexMy(AdvertIndexRequestParams params, [AdvertType type = AdvertType.advert]) => ApiService.I
-      .get('/adverts/my', queryParameters: params.copyWith(type: type).toData())
+      .get('/adverts/my',
+        queryParameters: params.copyWith(type: type).toData()
+      )
       .then((value) => AdvertModel.listFromJsonMini(value.data['list']));
 
   Future info(int id) => ApiService.I

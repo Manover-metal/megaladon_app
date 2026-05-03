@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:megaladon/data/models/request/params/register/register_user_request_params.dart';
-import 'package:megaladon/generated/locale_keys.g.dart';
 import 'package:megaladon/logic/form/register/register_user/register_user_form_cubit.dart';
 import 'package:megaladon/logic/register/register_user/register_user_bloc.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
+import 'package:megaladon/presentation/widgets/form/field/phone_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
@@ -79,7 +79,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
   void initState() {
     _listenRegister(false)(context, context.read<RegisterUserBloc>().state);
     _nameController = TextEditingController();
-    _phoneController = TextEditingController();
+    _phoneController = TextEditingController(text: '+7');
     _passwordController = TextEditingController();
     _passwordVerifyController = TextEditingController();
     _cityController = CityPickerController();
@@ -121,7 +121,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                   label: "What_is_your_name".tr(),
                   controller: _nameController,
                 ),
-                TextFieldApp(
+                PhoneField(
                   icon: const Icon(Icons.phone),
                   label: "Your_phone_number".tr(),
                   controller: _phoneController,

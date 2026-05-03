@@ -7,6 +7,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:megaladon/core/image/image_service.dart';
 import 'package:megaladon/data/models/error_model.dart';
 import 'package:megaladon/data/repositories/user_repository.dart';
+import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 
 part 'change_photo_state.dart';
@@ -14,7 +15,8 @@ part 'change_photo_state.dart';
 class ChangePhotoCubit extends Cubit<ChangePhotoState> {
   final UserRepository _repository = UserRepository();
   final ProfileScreenCubit profileCubit;
-  ChangePhotoCubit(this.profileCubit) : super(const ChangePhotoState()) {
+  final AuthBloc authBloc;
+  ChangePhotoCubit(this.profileCubit, this.authBloc) : super(const ChangePhotoState()) {
     _listenProfile(profileCubit.state);
     profileCubit.stream.listen(_listenProfile);
   }
@@ -34,6 +36,9 @@ class ChangePhotoCubit extends Cubit<ChangePhotoState> {
     });
     _repository.changePhoto(data).catchError((error) {
       if(error is DioError) {
+        if(error.response?.statusCode == 403) {
+          authBloc.add(AuthLogoutEvent());
+        }
         emit(ChangePhotoState(status: PhotoStatus.error, error: ErrorModel.parseDio(error)));
       } else {
         emit(ChangePhotoState(status: PhotoStatus.error, error: ErrorModel.nothing));

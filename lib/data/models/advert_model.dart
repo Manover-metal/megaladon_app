@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
+import 'package:megaladon/core/utils/parser.dart';
 import 'package:megaladon/data/models/dictionary/advert_category_model.dart';
+import 'package:megaladon/data/models/dictionary/advert_type.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/dictionary/file_model.dart';
 import 'package:megaladon/data/models/user_model.dart';
@@ -14,6 +16,7 @@ class AdvertModel extends Equatable {
   final String? additionalPhone;
   final List<FileModel> media;
   final UserModel? user;
+  final AdvertType type;
 
   const AdvertModel({
     required this.id,
@@ -24,7 +27,8 @@ class AdvertModel extends Equatable {
     this.additionalPhone,
     this.city,
     this.media = const [],
-    this.user
+    this.user,
+    this.type = AdvertType.advert
   });
 
   static AdvertModel fromJsonMini(data) {
@@ -32,9 +36,9 @@ class AdvertModel extends Equatable {
         id: data['id'],
         title: data['title'],
         description: data['description'],
-        price: data['price'],
+        price: Parser.toPrice(data['price']),
         media: data['media'] != null? FileModel.listFromJson(data['media']): [],
-
+        type: AdvertType.parse(data['type'])
     );
   }
 
@@ -49,14 +53,16 @@ class AdvertModel extends Equatable {
       id: data['id'],
       title: data['title'],
       description: data['description'],
-      price: data['price'],
+      price: Parser.toPrice(data['price']),
       media: data['media'] != null? FileModel.listFromJson(data['media']): [],
       category: data['category'] != null ? AdvertCategoryModel.fromJson(data['category']) : null,
       additionalPhone: data['additional_phone'],
-      user: data['user'] != null ? UserModel.fromJson(data['user']) : null
+      user: data['user'] != null ? UserModel.fromJson(data['user']) : null,
+      type: AdvertType.parse(data['type'])
+
     );
   }
 
   @override
-  List<Object?> get props => [id, title, description, price, category, additionalPhone, media];
+  List<Object?> get props => [id, title, description, price, category, additionalPhone, media, type];
 }

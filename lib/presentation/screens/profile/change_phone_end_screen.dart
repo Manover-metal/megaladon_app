@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/logic/screens/profile/change_phone/change_phone_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
+import 'package:megaladon/presentation/widgets/form/field/phone_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
@@ -34,7 +35,7 @@ class _ChangePhoneEndScreenState extends State<ChangePhoneEndScreen> {
   @override
   void initState() {
     _code = TextEditingController();
-    _newPhone = TextEditingController();
+    _newPhone = TextEditingController(text: '+7');
     super.initState();
   }
 
@@ -81,7 +82,7 @@ class _ChangePhoneEndScreenState extends State<ChangePhoneEndScreen> {
                 const Spacer(),
                  TitleApp("Change_phone_number".tr()),
                 const SizedBox(height: 20,),
-                TextFieldApp(
+                PhoneField(
                   icon: const Icon(Icons.phone),
                   label: "Old_phone".tr(),
                   controller: _newPhone,

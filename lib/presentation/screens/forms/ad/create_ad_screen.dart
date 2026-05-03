@@ -7,12 +7,13 @@ import 'package:megaladon/core/icons/icons.dart';
 import 'package:megaladon/data/models/dictionary/advert_type.dart';
 import 'package:megaladon/data/models/enum_form_state.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:megaladon/generated/locale_keys.g.dart';
 import 'package:megaladon/logic/form/create/ad/ad_create_form_cubit.dart';
+import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/description_field.dart';
+import 'package:megaladon/presentation/widgets/form/field/phone_field.dart';
 import 'package:megaladon/presentation/widgets/form/multi_picker/media_multi_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/advert_category_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
@@ -44,23 +45,9 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
     context.router.pop();
   }
   
-  _create() {
+  _create() async {
     if(_checkForm()) {
-      context.read<AdCreateFormCubit>().createFetch().then((value) {
-        context.router.popUntil((route) => route.settings.name == InitialRouter.name);
-        context.router.navigate( const InitialRouter(
-          children: [
-            AdRouter(
-              children: [MyAdsRoute()]
-            )
-          ]
-        ));
-
-      }).catchError((error) {
-        if(error is DioError) {
-          showErrorSnackBar(context, error.response?.data['message']);
-        }
-      });
+      await context.read<AdCreateFormCubit>().createFetch();
     }
   }
 
@@ -86,6 +73,21 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
         }
       }
     }
+    if(state.formState == EnumFormState.success) {
+      context.read<OrderScreenMyCubit>().refresh();
+      context.router.popUntil((route) => route.settings.name == InitialRouter.name);
+      context.router.navigate( const InitialRouter(
+          children: [
+            AdRouter(
+                children: [MyAdsRoute()]
+            )
+          ]
+      ));
+    } else if(state.formState == EnumFormState.error) {
+      if(state.error != null) {
+        showErrorSnackBar(context, state.error!.messages[0]);
+      }
+    }
   }
 
   @override
@@ -95,7 +97,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
     _cityController = CityPickerController();
     _priceController = TextEditingController();
     _descriptionController = TextEditingController();
-    _phoneController = TextEditingController();
+    _phoneController = TextEditingController(text: '+7');
     _imageController = ImageMultiPickerController();
     super.initState();
   }
@@ -131,7 +133,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
                 CityPicker(label: "Choose_city".tr(), controller: _cityController),
                 DescriptionFieldApp(label: "Description_of_your_offer".tr(), controller: _descriptionController, icon: const Icon(IconPack.description),),
                 NumberFieldApp(label: "Price".tr(), controller: _priceController, icon: const  Icon(Icons.money_sharp),),
-                TextFieldApp(controller: _phoneController, label: "Additional_Phone".tr(), icon: const Icon(Icons.phone),),
+                PhoneField(controller: _phoneController, label: "Additional_Phone".tr(), icon: const Icon(Icons.phone),),
                 ImageMultiPicker(controller: _imageController),
                 const SizedBox(height: 20),
                 BlocConsumer<AdCreateFormCubit, AdCreateFormState>(

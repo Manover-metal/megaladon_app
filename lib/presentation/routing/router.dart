@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:megaladon/data/models/advert_model.dart';
+import 'package:megaladon/data/models/chat/chat_model.dart';
 import 'package:megaladon/data/models/dictionary/advert_type.dart';
 import 'package:megaladon/data/models/order_model.dart';
 import 'package:megaladon/presentation/routing/guards/auth_guard.dart';
@@ -16,6 +17,7 @@ import 'package:megaladon/presentation/screens/auth/reset_password_screen.dart';
 import 'package:megaladon/presentation/screens/auth/verify_screen.dart';
 import 'package:megaladon/presentation/screens/chat/details_chat_screen.dart';
 import 'package:megaladon/presentation/screens/chat/list_chats_screen.dart';
+import 'package:megaladon/presentation/screens/executor/executor_details_screen.dart';
 import 'package:megaladon/presentation/screens/executor/list_my_executors_screen.dart';
 import 'package:megaladon/presentation/screens/forms/ad/create_ad_screen.dart';
 import 'package:megaladon/presentation/screens/forms/ad/update_ad_screen.dart';
@@ -30,6 +32,7 @@ import 'package:megaladon/presentation/screens/orders/list_executors_screen.dart
 import 'package:megaladon/presentation/screens/orders/list_my_orders_screen.dart';
 import 'package:megaladon/presentation/screens/orders/list_orders_screen.dart';
 import 'package:megaladon/presentation/screens/orders/review_screen.dart';
+import 'package:megaladon/presentation/screens/profile/about_screen.dart';
 import 'package:megaladon/presentation/screens/profile/change_password_screen.dart';
 import 'package:megaladon/presentation/screens/profile/change_phone_end_screen.dart';
 import 'package:megaladon/presentation/screens/profile/change_phone_start_screen.dart';
@@ -38,6 +41,7 @@ import 'package:megaladon/presentation/screens/profile/settings_screen.dart';
 import 'package:megaladon/presentation/screens/store/details_store_screen.dart';
 import 'package:megaladon/presentation/screens/store/list_stores_screen.dart';
 import 'package:megaladon/presentation/screens/splash_screen.dart';
+import 'package:megaladon/presentation/screens/subscribe/subscribe_screen.dart';
 
 part 'router.gr.dart';
 
@@ -47,6 +51,7 @@ const List<AutoRoute> profile = [
   AutoRoute(page: ChangeExecutorScreen, guards: [AuthGuard]),
   AutoRoute(page: ChangeStoreScreen, guards: [AuthGuard]),
   AutoRoute(page: ListChatsScreen, guards: [AuthGuard]),
+  AutoRoute(page: AboutScreen ),
 ];
 
 const List<AutoRoute> ad = [
@@ -65,9 +70,14 @@ const List<AutoRoute> order = [
   AutoRoute(page: ListMyOrdersScreen, guards: [AuthGuard]),
   AutoRoute(page: DetailsOrderScreen),
   AutoRoute(page: ListMyExecutorsScreen, guards: [AuthGuard]),
+  AutoRoute(page: DetailsExecutorScreen, guards: [AuthGuard]),
   AutoRoute(page: ListExecutorsScreen),
   AutoRoute(page: DetailsOfferScreen),
   AutoRoute(page: ReviewScreen),
+  AutoRoute(
+      page: SubscribeScreen,
+      guards: [AuthGuard]
+  ),
 ];
 
 const List<AutoRoute> auth = [
@@ -75,8 +85,8 @@ const List<AutoRoute> auth = [
   AutoRoute(page: ForgotPasswordScreen, guards: [NotAuthGuard]),
   AutoRoute(page: ResetPasswordScreen, guards: [NotAuthGuard]),
   AutoRoute(page: RegisterUserScreen, guards: [NotAuthGuard]),
-  AutoRoute(page: RegisterExecutorScreen, guards: [NotAuthGuard]),
-  AutoRoute(page: RegisterStoreScreen, guards: [NotAuthGuard]),
+  AutoRoute(page: RegisterExecutorScreen),
+  AutoRoute(page: RegisterStoreScreen),
   AutoRoute(page: VerifyScreen, guards: [NotAuthGuard]),
 ];
 

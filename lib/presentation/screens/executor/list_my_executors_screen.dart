@@ -6,6 +6,7 @@ import 'package:megaladon/logic/screens/executors/my/executor_screen_my_cubit.da
 import 'package:megaladon/presentation/widgets/card/executor_card.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/message/error_message.dart';
+import 'package:megaladon/presentation/widgets/message/stock_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 
 class ListMyExecutorsScreen extends StatefulWidget {
@@ -72,6 +73,7 @@ class _ListMyExecutorsScreenState extends State<ListMyExecutorsScreen> {
                           builder: (context, state) {
                             return Column(
                               children: [
+                                if(state.executors.isEmpty) StockMessage(name: "Executor".tr()),
                                 ...state.executors.map((executor) {
                                   return ExecutorCard(executor: executor);
                                 }).toList(),

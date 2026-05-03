@@ -7,6 +7,7 @@ import 'package:megaladon/data/models/dictionary/advert_category_model.dart';
 import 'package:megaladon/data/models/dictionary/advert_type.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/enum_form_state.dart';
+import 'package:megaladon/data/models/error_model.dart';
 import 'package:megaladon/data/models/form/description.dart';
 import 'package:megaladon/data/models/form/dictionary/advert_category.dart';
 import 'package:megaladon/data/models/form/dictionary/city.dart';
@@ -15,12 +16,14 @@ import 'package:megaladon/data/models/form/price.dart';
 import 'package:megaladon/data/models/form/title.dart';
 import 'package:megaladon/data/models/request/params/create/advert_create_request_params.dart';
 import 'package:megaladon/data/repositories/advert_repository.dart';
+import 'package:megaladon/logic/auth/auth_bloc.dart';
 
 part 'ad_create_form_state.dart';
 
 class AdCreateFormCubit extends Cubit<AdCreateFormState> {
   final AdvertRepository _repository = AdvertRepository();
-  AdCreateFormCubit() : super(const AdCreateFormState());
+  final AuthBloc authBloc;
+  AdCreateFormCubit(this.authBloc) : super(const AdCreateFormState());
 
   checkCreate({
     required String title,
@@ -60,7 +63,6 @@ class AdCreateFormCubit extends Cubit<AdCreateFormState> {
         media: media,
         type: type
     );
-    print(type);
     emit(stateNew);
     return stateNew.status;
   }
@@ -80,7 +82,7 @@ class AdCreateFormCubit extends Cubit<AdCreateFormState> {
       return _repository.create(AdvertCreateRequestParams(
         title: state.title.value,
         description: state.title.value,
-        price: int.parse(state.price.value),
+        price: int.tryParse(state.price.value),
         categoryId: state.category.value,
         cityId: state.city.value,
         additionalPhone: state.phone.value,
@@ -89,8 +91,20 @@ class AdCreateFormCubit extends Cubit<AdCreateFormState> {
       )).then((value) {
         emit(state.copyWith(formState: EnumFormState.success));
       }).catchError((error) {
-        print(error);
-        emit(state.copyWith(formState: EnumFormState.error));
+        if(error is DioError) {
+          if(error.response?.statusCode == 403) {
+            authBloc.add(AuthLogoutEvent());
+          }
+          emit(state.copyWith(
+              formState: EnumFormState.error,
+              error: ErrorModel.parseDio(error)
+          ));
+        } else {
+          emit(state.copyWith(
+              formState: EnumFormState.error,
+              error: ErrorModel.nothing
+          ));
+        }
       });
     }
   }

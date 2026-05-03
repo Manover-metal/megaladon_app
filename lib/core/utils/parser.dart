@@ -1,4 +1,4 @@
-import 'package:megaladon/data/models/dictionary/store_type_model.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class Parser {
   static int toInt(value) {
@@ -31,17 +31,17 @@ class Parser {
     }
   }
 
-  static StoreTypeModel toStoreType(value) {
-    switch(value.runtimeType) {
-      case String: {
-        return StoreTypeModel(id: 1, name: value);
-      }
-      case Null: {
-        return StoreTypeModel.nothing;
-      }
-      default: {
-        return StoreTypeModel.fromJson(value);
-      }
+  static String toPrice(value) {
+    try {
+      String cleanedInput = value.replaceAll(',', '').trim();
+      double number = double.parse(cleanedInput);
+      String formattedNumber = NumberFormat.decimalPattern().format(number);
+      return formattedNumber;
+    } catch(e) {
+      print(e);
     }
+    return '';
+
   }
+
 }

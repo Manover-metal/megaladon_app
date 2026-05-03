@@ -8,6 +8,7 @@ import 'package:megaladon/data/models/request/params/register/register_executor_
 import 'package:megaladon/data/models/request/params/update/change_executor_request_params.dart';
 import 'package:megaladon/data/repositories/auth/register_repository.dart';
 import 'package:megaladon/data/repositories/user_repository.dart';
+import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 
 part 'change_executor_event.dart';
@@ -15,9 +16,11 @@ part 'change_executor_state.dart';
 
 class ChangeExecutorBloc extends Bloc<ChangeExecutorEvent, ChangeExecutorState> {
   final ProfileScreenCubit profileCubit;
+  final AuthBloc authBloc;
   final UserRepository _repository = UserRepository();
-  ChangeExecutorBloc(this.profileCubit) : super(ChangeExecutorInitial()) {
+  ChangeExecutorBloc(this.profileCubit, this.authBloc) : super(ChangeExecutorInitial()) {
     on<ChangeExecutorFetchEvent>(_register);
+
   }
 
   _register(ChangeExecutorFetchEvent event, Emitter emit ) async {
@@ -28,6 +31,9 @@ class ChangeExecutorBloc extends Bloc<ChangeExecutorEvent, ChangeExecutorState> 
       emit(ChangeExecutorSuccess());
     }).catchError((error) {
       if(error is DioError) {
+        if(error.response?.statusCode == 403) {
+          authBloc.add(AuthLogoutEvent());
+        }
         emit(ChangeExecutorError(ErrorModel.parseDio(error)));
       } else {
         emit(ChangeExecutorError(ErrorModel.nothing));

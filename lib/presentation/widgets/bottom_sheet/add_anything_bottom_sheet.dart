@@ -38,21 +38,17 @@ class AddAnythingBottomSheet extends StatelessWidget {
                     builder: (context, state) {
                       return Visibility(
                         visible: state is AuthLoginState && state.auth.executor.value != null,
-                        child: Column(
-                          children: [
-                            ElevatedButtonApp(
-                              text: 'Ad'.tr(),
-                              onPressed: _createAdvert(context, AdvertType.advert),
-                            ),
-                            ElevatedButtonApp(
-                              text: 'Service'.tr(),
-                              onPressed: _createAdvert(context, AdvertType.service),
-                            ),
-                          ]
+                        child: ElevatedButtonApp(
+                          text: 'Service'.tr(),
+                          onPressed: _createAdvert(context, AdvertType.service),
                         ),
                       );
                       return Container();
                     }
+                ),
+                ElevatedButtonApp(
+                  text: 'Ad'.tr(),
+                  onPressed: _createAdvert(context, AdvertType.advert),
                 ),
                 ElevatedButtonApp(
                   text: 'Order2'.tr(),

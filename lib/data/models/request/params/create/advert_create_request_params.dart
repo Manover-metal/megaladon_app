@@ -4,7 +4,7 @@ import 'package:megaladon/data/models/dictionary/advert_type.dart';
 class AdvertCreateRequestParams {
   final String title;
   final String description;
-  final int price;
+  final int? price;
   final int categoryId;
   final int cityId;
   final String additionalPhone;
@@ -15,7 +15,7 @@ class AdvertCreateRequestParams {
   AdvertCreateRequestParams({
     required this.title,
     required this.description,
-    required this.price,
+    this.price,
     required this.categoryId,
     required this.cityId,
     required this.additionalPhone,

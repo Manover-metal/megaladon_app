@@ -1,9 +1,13 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:formz/formz.dart';
 import 'package:megaladon/data/models/dictionary/advert_category_model.dart';
+import 'package:megaladon/data/models/dictionary/advert_type.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/enum_form_state.dart';
+import 'package:megaladon/data/models/error_model.dart';
 import 'package:megaladon/data/models/form/description.dart';
 import 'package:megaladon/data/models/form/dictionary/advert_category.dart';
 import 'package:megaladon/data/models/form/dictionary/city.dart';
@@ -12,12 +16,14 @@ import 'package:megaladon/data/models/form/price.dart';
 import 'package:megaladon/data/models/form/title.dart';
 import 'package:megaladon/data/models/request/params/update/advert_update_request_params.dart';
 import 'package:megaladon/data/repositories/advert_repository.dart';
+import 'package:megaladon/logic/auth/auth_bloc.dart';
 
 part 'ad_update_form_state.dart';
 
 class AdUpdateFormCubit extends Cubit<AdUpdateFormState> {
   final AdvertRepository _repository = AdvertRepository();
-  AdUpdateFormCubit() : super(const AdUpdateFormState());
+  final AuthBloc authBloc;
+  AdUpdateFormCubit(this.authBloc) : super( AdUpdateFormState());
 
   checkUpdate({
     required String title,
@@ -25,14 +31,16 @@ class AdUpdateFormCubit extends Cubit<AdUpdateFormState> {
     required String price,
     required CityModel city,
     required AdvertCategoryModel category,
-    required String phone
+    required String phone,
+    required List<PlatformFile> media,
+    required AdvertType type,
   }) {
     TitleFormModel titleForm = TitleFormModel.dirty(title);
-    PriceFormModel priceForm = PriceFormModel.dirty(price);
+    PriceFormModel priceForm = PriceFormModel.dirty(price, false);
     DescriptionFormModel descriptionForm = DescriptionFormModel.dirty(description);
     CityFormModel cityForm = CityFormModel.dirty(city.id);
     AdvertCategoryFormModel categoryForm = AdvertCategoryFormModel.dirty(category.id);
-    PhoneFormModel phoneForm = PhoneFormModel.dirty(phone);
+    PhoneFormModel phoneForm = PhoneFormModel.dirty(phone, false);
 
     bool status = Formz.validate([
       titleForm,
@@ -51,7 +59,9 @@ class AdUpdateFormCubit extends Cubit<AdUpdateFormState> {
         city: cityForm,
         category: categoryForm,
         price: priceForm,
+        media: media,
         phone: phoneForm,
+        type: type
     );
     emit(stateNew);
     return stateNew.status;
@@ -59,17 +69,41 @@ class AdUpdateFormCubit extends Cubit<AdUpdateFormState> {
 
   Future updateFetch(int id) async {
     emit(state.copyWith(formState: EnumFormState.fetch));
+
+    List<MultipartFile> files = [];
+
+    for (var file in state.media) {
+      if(file.path != null) {
+        files.add(await MultipartFile.fromFile(file.path!, filename: file.name));
+      }
+    }
+
     return _repository.update(id, AdvertUpdateRequestParams(
       title: state.title.value,
       description: state.title.value,
-      price: int.parse(state.price.value),
+      price: int.tryParse(state.price.value),
       categoryId: state.category.value,
       cityId: state.city.value,
-      additionalPhone: state.phone.value
+      additionalPhone: state.phone.value,
+      media: files,
+      type: state.type,
     )).then((value) {
       emit(state.copyWith(formState: EnumFormState.success));
     }).catchError((error) {
-      emit(state.copyWith(formState: EnumFormState.error));
+      if(error is DioError) {
+        if(error.response?.statusCode == 403) {
+          authBloc.add(AuthLogoutEvent());
+        }
+        emit(state.copyWith(
+            formState: EnumFormState.error,
+            error: ErrorModel.parseDio(error)
+        ));
+      } else {
+        emit(state.copyWith(
+            formState: EnumFormState.error,
+            error: ErrorModel.nothing
+        ));
+      }
     });
   }
 }
