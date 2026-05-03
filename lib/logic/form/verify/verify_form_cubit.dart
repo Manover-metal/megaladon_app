@@ -11,7 +11,7 @@ class VerifyFormCubit extends Cubit<VerifyFormState> {
   bool checkForm(String code) {
     PincodeFormModel codeForm = PincodeFormModel.dirty(code);
 
-    FormzStatus status = Formz.validate([
+    bool status = Formz.validate([
       codeForm
     ]);
 
@@ -21,6 +21,6 @@ class VerifyFormCubit extends Cubit<VerifyFormState> {
         countTry: state.countTry + 1
     );
     emit(stateNew);
-    return stateNew.status.isValid;
+    return stateNew.status;
   }
 }

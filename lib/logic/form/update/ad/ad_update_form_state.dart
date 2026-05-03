@@ -8,7 +8,7 @@ enum AdUpdateForm {
 }
 
 class AdUpdateFormState extends Equatable {
-  final FormzStatus status;
+  final bool status;
   final DescriptionFormModel description;
   final TitleFormModel title;
   final PriceFormModel price;
@@ -20,7 +20,7 @@ class AdUpdateFormState extends Equatable {
 
 
   const AdUpdateFormState({
-    this.status = FormzStatus.pure,
+    this.status = false,
     this.description = const DescriptionFormModel.pure(),
     this.title = const TitleFormModel.pure(),
     this.category = const AdvertCategoryFormModel.pure(),
@@ -36,7 +36,7 @@ class AdUpdateFormState extends Equatable {
   List<Object?> get props => [status, description, price, title, category, city, phone, countTry];
 
   AdUpdateFormState copyWith({
-    FormzStatus? status,
+    bool? status,
     DescriptionFormModel? description,
     TitleFormModel? title,
     AdvertCategoryFormModel? category,

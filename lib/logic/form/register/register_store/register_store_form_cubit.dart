@@ -37,7 +37,7 @@ class RegisterStoreFormCubit extends Cubit<RegisterStoreFormState> {
     MultiContactFormModel contactsForm = MultiContactFormModel.dirty(contacts);
 
 
-    FormzStatus status = Formz.validate([
+    bool status = Formz.validate([
       nameForm,
       binForm,
       latForm,
@@ -61,6 +61,6 @@ class RegisterStoreFormCubit extends Cubit<RegisterStoreFormState> {
 
     emit(stateNew);
 
-    return stateNew.status.isValid;
+    return stateNew.status;
   }
 }

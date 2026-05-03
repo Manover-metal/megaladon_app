@@ -1,27 +1,27 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_picker/Picker.dart';
+// import 'package:flutter_picker/Picker.dart';
 import 'package:megaladon/data/models/contact_model.dart';
 
-Future<List<int>?> showContactTypePicker(BuildContext context) async {
-  return await Picker(
-    itemExtent: 30,
-    height: MediaQuery.of(context).size.height / 3.5,
-    backgroundColor: Theme.of(context).colorScheme.background,
-    adapter: PickerDataAdapter<ContactType>(
-        data: ContactType.values.map((type) {
-          return PickerItem<ContactType>(
-              text: Text(type.toString()),
-              value: type
-          );
-        }).toList()
-    ),
-    changeToFirst: false,
-    hideHeader: false,
-    cancelText: 'Cancel'.tr(),
-    confirmText: 'select'.tr(),
-  ).showModal(context);
-}
+// Future<List<int>?> showContactTypePicker(BuildContext context) async {
+//   return await Picker(
+//     itemExtent: 30,
+//     height: MediaQuery.of(context).size.height / 3.5,
+//     backgroundColor: Theme.of(context).colorScheme.background,
+//     adapter: PickerDataAdapter<ContactType>(
+//         data: ContactType.values.map((type) {
+//           return PickerItem<ContactType>(
+//               text: Text(type.toString()),
+//               value: type
+//           );
+//         }).toList()
+//     ),
+//     changeToFirst: false,
+//     hideHeader: false,
+//     cancelText: 'Cancel'.tr(),
+//     confirmText: 'select'.tr(),
+//   ).showModal(context);
+// }
 
 
 class ContactTypePickerController extends ValueNotifier<ContactType> {
@@ -84,7 +84,7 @@ class _ContactTypePickerState extends State<ContactTypePicker> {
   late TextEditingController _textController;
 
   _handleClickType(BuildContext context) => () async {
-    List<int>? result = await showContactTypePicker(context);
+    List<int>? result = null;
     try{
       if (result != null) {
         ContactType contactType = ContactType.values[result[0]];

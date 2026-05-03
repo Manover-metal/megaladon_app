@@ -1,31 +1,30 @@
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_picker/Picker.dart';
 import 'package:megaladon/data/models/request/index_period_enum.dart';
 
-Future<IndexPeriod?> showIndexPeriodPicker(BuildContext context) async {
-  final result =  await Picker(
-    itemExtent: 30,
-    height: MediaQuery.of(context).size.height / 3.5,
-    backgroundColor: Theme.of(context).colorScheme.background,
-    adapter: PickerDataAdapter<IndexPeriod>(
-        data: IndexPeriod.values.map((e) {
-          return PickerItem<IndexPeriod>(
-              text: Text(e.toString()),
-              value: e
-          );
-        }).toList()
-    ),
-    changeToFirst: false,
-    hideHeader: false,
-    cancelText: 'Cancel'.tr(),
-    confirmText: 'select'.tr(),
-  ).showModal(context);
+// Future<IndexPeriod?> showIndexPeriodPicker(BuildContext context) async {
+//   final result =  await Picker(
+//     itemExtent: 30,
+//     height: MediaQuery.of(context).size.height / 3.5,
+//     backgroundColor: Theme.of(context).colorScheme.background,
+//     adapter: PickerDataAdapter<IndexPeriod>(
+//         data: IndexPeriod.values.map((e) {
+//           return PickerItem<IndexPeriod>(
+//               text: Text(e.toString()),
+//               value: e
+//           );
+//         }).toList()
+//     ),
+//     changeToFirst: false,
+//     hideHeader: false,
+//     cancelText: 'Cancel'.tr(),
+//     confirmText: 'select'.tr(),
+//   ).showModal(context);
 
-  if(result == null) return null;
-  return IndexPeriod.values[result[0]];
-}
+//   if(result == null) return null;
+//   return IndexPeriod.values[result[0]];
+// }
 
 
 class IndexPeriodPickerController extends ValueNotifier<IndexPeriod> {
@@ -54,7 +53,7 @@ class IndexPeriodPicker extends StatefulWidget {
 class _IndexPeriodPickerState extends State<IndexPeriodPicker> {
 
   _handleClick() async {
-    IndexPeriod? period = await showIndexPeriodPicker(context);
+    IndexPeriod? period = null;
 
     if(period != null) {
       widget.controller._changeIndexPeriod(period);

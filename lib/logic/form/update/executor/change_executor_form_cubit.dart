@@ -29,7 +29,7 @@ class ChangeExecutorFormCubit extends Cubit<ChangeExecutorFormState> {
     MultiServiceTypeFormModel servicesForm = MultiServiceTypeFormModel.dirty(services);
 
 
-    FormzStatus status = Formz.validate([
+    bool status = Formz.validate([
       nameForm,
       binForm,
       latForm,
@@ -50,6 +50,6 @@ class ChangeExecutorFormCubit extends Cubit<ChangeExecutorFormState> {
 
     emit(stateNew);
 
-    return stateNew.status.isValid;
+    return stateNew.status;
   }
 }

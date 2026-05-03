@@ -35,7 +35,7 @@ class OrderUpdateFormCubit extends Cubit<OrderUpdateFormState> {
     CityFormModel cityForm = CityFormModel.dirty(city.id);
     OrderCategoryFormModel categoryForm = OrderCategoryFormModel.dirty(category.id);
 
-    FormzStatus status = Formz.validate([
+    bool status = Formz.validate([
       titleForm,
       descriptionForm,
       cityForm,
@@ -55,7 +55,7 @@ class OrderUpdateFormCubit extends Cubit<OrderUpdateFormState> {
         priceRecommended: priceRecommendedFormModel
     );
     emit(stateNew);
-    return stateNew.status.isValid;
+    return stateNew.status;
   }
 
   Future updateFetch(int id) async {

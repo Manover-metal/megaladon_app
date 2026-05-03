@@ -76,9 +76,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _listenerForm(BuildContext context, AuthFormState state) {
-    if(state.status.isInvalid) {
+    if(state.status) {
       for (var element in state.props) {
-        if(element is FormzInput && element.invalid) {
+        if(element is FormzInput && element.isNotValid) {
           return showErrorSnackBar(context, element.error.toString());
         }
       }

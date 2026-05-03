@@ -2,35 +2,34 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_picker/Picker.dart';
 import 'package:megaladon/data/models/dictionary/order_category_model.dart';
 import 'package:megaladon/logic/dictionary/dictionary_cubit.dart';
 
-Future<OrderCategoryModel?> showOrderCategoryPicker(BuildContext context) async {
-  List<OrderCategoryModel> orderCategories = context.read<DictionaryCubit>().state.orderCategories;
+// Future<OrderCategoryModel?> showOrderCategoryPicker(BuildContext context) async {
+//   List<OrderCategoryModel> orderCategories = context.read<DictionaryCubit>().state.orderCategories;
 
 
-  final result = await Picker(
-    itemExtent: 30,
-    height: MediaQuery.of(context).size.height / 3.5,
-    backgroundColor: Theme.of(context).colorScheme.background,
-    adapter: PickerDataAdapter<OrderCategoryModel>(
-        data: orderCategories.map((orderCategory) {
-          return PickerItem<OrderCategoryModel>(
-              text: Text(orderCategory.name),
-              value: orderCategory
-          );
-        }).toList()
-    ),
-    changeToFirst: false,
-    hideHeader: false,
-    cancelText: 'Cancel'.tr(),
-    confirmText: 'select'.tr(),
-  ).showModal(context);
+//   final result = await Picker(
+//     itemExtent: 30,
+//     height: MediaQuery.of(context).size.height / 3.5,
+//     backgroundColor: Theme.of(context).colorScheme.background,
+//     adapter: PickerDataAdapter<OrderCategoryModel>(
+//         data: orderCategories.map((orderCategory) {
+//           return PickerItem<OrderCategoryModel>(
+//               text: Text(orderCategory.name),
+//               value: orderCategory
+//           );
+//         }).toList()
+//     ),
+//     changeToFirst: false,
+//     hideHeader: false,
+//     cancelText: 'Cancel'.tr(),
+//     confirmText: 'select'.tr(),
+//   ).showModal(context);
 
-  if(result == null) return null;
-  return orderCategories[result[0]];
-}
+//   if(result == null) return null;
+//   return orderCategories[result[0]];
+// }
 
 
 class OrderCategoryPickerController extends ValueNotifier<OrderCategoryModel> {
@@ -59,7 +58,7 @@ class OrderCategoryPicker extends StatefulWidget {
 class _OrderCategoryPickerState extends State<OrderCategoryPicker> {
 
   _handleClick() async {
-    OrderCategoryModel? orderCategory = await showOrderCategoryPicker(context);
+    OrderCategoryModel? orderCategory = null;
 
     if (orderCategory != null) {
       widget.controller._changeOrderCategory(orderCategory);

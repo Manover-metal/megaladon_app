@@ -23,18 +23,18 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
     PasswordFormModel passwordForm = PasswordFormModel.dirty(password);
     PasswordConfirmationFormModel passwordConfirmationForm = PasswordConfirmationFormModel.dirty(password, passwordConfirmation);
 
-    FormzStatus status = Formz.validate([
+    final status = Formz.validate([
       passwordForm,
       passwordConfirmationForm,
       oldPasswordForm
     ]);
-    if(!status.isValid) {
-      if(passwordForm.invalid) emit(ChangePasswordState(error: ErrorModel([passwordForm.error.toString()]), status: ChangePasswordStatus.error));
-      if(passwordConfirmationForm.invalid) emit(ChangePasswordState(error: ErrorModel([passwordConfirmationForm.error.toString()]), status: ChangePasswordStatus.error));
-      if(oldPasswordForm.invalid) emit(ChangePasswordState(error: ErrorModel([oldPasswordForm.error.toString()]), status: ChangePasswordStatus.error));
+    if(!status) {
+      if(passwordForm.isNotValid) emit(ChangePasswordState(error: ErrorModel([passwordForm.error.toString()]), status: ChangePasswordStatus.error));
+      if(passwordConfirmationForm.isNotValid) emit(ChangePasswordState(error: ErrorModel([passwordConfirmationForm.error.toString()]), status: ChangePasswordStatus.error));
+      if(oldPasswordForm.isNotValid) emit(ChangePasswordState(error: ErrorModel([oldPasswordForm.error.toString()]), status: ChangePasswordStatus.error));
     }
 
-    return status.isValid;
+    return status;
   }
 
   changePassword({

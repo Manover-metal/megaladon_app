@@ -16,7 +16,7 @@ class AuthFormCubit extends Cubit<AuthFormState> {
     PasswordFormModel passwordForm = PasswordFormModel.dirty(password);
     PhoneFormModel phoneForm = PhoneFormModel.dirty(phone);
 
-    FormzStatus status = Formz.validate([
+    bool status = Formz.validate([
       passwordForm,
       phoneForm,
     ]);
@@ -28,6 +28,6 @@ class AuthFormCubit extends Cubit<AuthFormState> {
         countTry: state.countTry + 1
     );
     emit(stateNew);
-    return stateNew.status.isValid;
+    return stateNew.status;
   }
 }

@@ -2,34 +2,33 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_picker/Picker.dart';
 import 'package:megaladon/data/models/dictionary/service_type_model.dart';
 import 'package:megaladon/logic/dictionary/dictionary_cubit.dart';
 
-Future<ServiceTypeModel?> showServiceTypePicker(BuildContext context) async {
-  List<ServiceTypeModel> serviceTypes = context.read<DictionaryCubit>().state.serviceTypes;
+// Future<ServiceTypeModel?> showServiceTypePicker(BuildContext context) async {
+//   List<ServiceTypeModel> serviceTypes = context.read<DictionaryCubit>().state.serviceTypes;
 
-  final result = await Picker(
-    itemExtent: 30,
-    height: MediaQuery.of(context).size.height / 3.5,
-    backgroundColor: Theme.of(context).colorScheme.background,
-    adapter: PickerDataAdapter<ServiceTypeModel>(
-        data: serviceTypes.map((serviceType) {
-          return PickerItem<ServiceTypeModel>(
-              text: Text(serviceType.name),
-              value: serviceType
-          );
-        }).toList()
-    ),
-    changeToFirst: false,
-    hideHeader: false,
-    cancelText: 'Cancel'.tr(),
-    confirmText: 'select'.tr(),
-  ).showModal(context);
+//   final result = await Picker(
+//     itemExtent: 30,
+//     height: MediaQuery.of(context).size.height / 3.5,
+//     backgroundColor: Theme.of(context).colorScheme.background,
+//     adapter: PickerDataAdapter<ServiceTypeModel>(
+//         data: serviceTypes.map((serviceType) {
+//           return PickerItem<ServiceTypeModel>(
+//               text: Text(serviceType.name),
+//               value: serviceType
+//           );
+//         }).toList()
+//     ),
+//     changeToFirst: false,
+//     hideHeader: false,
+//     cancelText: 'Cancel'.tr(),
+//     confirmText: 'select'.tr(),
+//   ).showModal(context);
 
-  if(result == null) return null;
-  return serviceTypes[result[0]];
-}
+//   if(result == null) return null;
+//   return serviceTypes[result[0]];
+// }
 
 
 class ServiceTypePickerController extends ValueNotifier<ServiceTypeModel> {
@@ -68,7 +67,7 @@ class ServiceTypePicker extends StatefulWidget {
 class _ServiceTypePickerState extends State<ServiceTypePicker> {
 
   _handleClick() async {
-    ServiceTypeModel? serviceType = await showServiceTypePicker(context);
+    ServiceTypeModel? serviceType = null;
 
     if (serviceType != null) {
       widget.controller._changeServiceType(serviceType);

@@ -36,7 +36,7 @@ class OrderCreateFormCubit extends Cubit<OrderCreateFormState> {
     CityFormModel cityForm = CityFormModel.dirty(city.id);
     OrderCategoryFormModel categoryForm = OrderCategoryFormModel.dirty(category.id);
 
-    FormzStatus status = Formz.validate([
+    bool status = Formz.validate([
       titleForm,
       descriptionForm,
       cityForm,
@@ -57,7 +57,7 @@ class OrderCreateFormCubit extends Cubit<OrderCreateFormState> {
         files: files
     );
     emit(stateNew);
-    return stateNew.status.isValid;
+    return stateNew.status;
   }
 
   Future createFetch() async {

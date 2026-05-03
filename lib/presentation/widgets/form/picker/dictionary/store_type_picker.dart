@@ -2,36 +2,35 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_picker/Picker.dart';
 import 'package:megaladon/data/models/dictionary/store_type_model.dart';
 import 'package:megaladon/logic/dictionary/dictionary_cubit.dart';
 
-Future<StoreTypeModel?> showStoreTypePicker(BuildContext context) async {
-  List<StoreTypeModel> storeTypes = context.read<DictionaryCubit>().state.storeTypes;
+// Future<StoreTypeModel?> showStoreTypePicker(BuildContext context) async {
+//   List<StoreTypeModel> storeTypes = context.read<DictionaryCubit>().state.storeTypes;
 
 
-  final result = await Picker(
-    itemExtent: 30,
-    height: MediaQuery.of(context).size.height / 3.5,
-    backgroundColor: Theme.of(context).colorScheme.background,
-    adapter: PickerDataAdapter<StoreTypeModel>(
-        data: storeTypes.map((storeType) {
-          return PickerItem<StoreTypeModel>(
-              text: Text(storeType.name),
-              value: storeType
-          );
-        }).toList()
-    ),
-    changeToFirst: false,
-    hideHeader: false,
-    cancelText: 'Cancel'.tr(),
-    confirmText: 'select'.tr(),
-  ).showModal(context);
+//   final result = await Picker(
+//     itemExtent: 30,
+//     height: MediaQuery.of(context).size.height / 3.5,
+//     backgroundColor: Theme.of(context).colorScheme.background,
+//     adapter: PickerDataAdapter<StoreTypeModel>(
+//         data: storeTypes.map((storeType) {
+//           return PickerItem<StoreTypeModel>(
+//               text: Text(storeType.name),
+//               value: storeType
+//           );
+//         }).toList()
+//     ),
+//     changeToFirst: false,
+//     hideHeader: false,
+//     cancelText: 'Cancel'.tr(),
+//     confirmText: 'select'.tr(),
+//   ).showModal(context);
 
 
-  if(result == null) return null;
-  return storeTypes[result[0]];
-}
+//   if(result == null) return null;
+//   return storeTypes[result[0]];
+// }
 
 
 class StoreTypePickerController extends ValueNotifier<StoreTypeModel> {
@@ -56,7 +55,7 @@ class StoreTypePicker extends StatefulWidget {
 class _StoreTypePickerState extends State<StoreTypePicker> {
 
   _handleClick() async {
-    StoreTypeModel? storeType = await showStoreTypePicker(context);
+    StoreTypeModel? storeType = null;
 
     if (storeType != null) {
       widget.controller._changeStoreType(storeType);

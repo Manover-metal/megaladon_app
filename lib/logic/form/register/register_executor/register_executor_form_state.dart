@@ -1,7 +1,7 @@
 part of 'register_executor_form_cubit.dart';
 
 class RegisterExecutorFormState extends Equatable {
-  final FormzStatus status;
+  final bool status;
   final NameFormModel name;
   final CityFormModel city;
   final BinFormModel bin;
@@ -11,7 +11,7 @@ class RegisterExecutorFormState extends Equatable {
   final int countTry;
 
   const RegisterExecutorFormState( {
-    this.status = FormzStatus.pure,
+    this.status = false,
     this.name = const NameFormModel.pure(),
     this.city = const CityFormModel.pure(),
     this.bin = const BinFormModel.pure(),
@@ -25,7 +25,7 @@ class RegisterExecutorFormState extends Equatable {
   List<Object?> get props => [status, name, city, bin, lat, lon, services, countTry];
 
   RegisterExecutorFormState copyWith ({
-    FormzStatus? status,
+    bool? status,
     NameFormModel? name,
     CityFormModel? city,
     BinFormModel? bin,

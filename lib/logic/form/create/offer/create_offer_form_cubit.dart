@@ -30,7 +30,7 @@ class CreateOfferFormCubit extends Cubit<CreateOfferFormState> {
     ExpiredAtFormModel expiredAtForm = ExpiredAtFormModel.dirty(expiredAt);
     DateOfferFormModel dateForm = DateOfferFormModel.dirty(date);
 
-    FormzStatus status = Formz.validate([
+    bool status = Formz.validate([
       descriptionForm,
       cityForm,
       priceFormModel,
@@ -48,7 +48,7 @@ class CreateOfferFormCubit extends Cubit<CreateOfferFormState> {
         date: dateForm
     );
     emit(stateNew);
-    return stateNew.status.isValid;
+    return stateNew.status;
   }
 
   Future createFetch(int orderId) async {

@@ -2,34 +2,33 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_picker/Picker.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/logic/dictionary/dictionary_cubit.dart';
 
-Future<CityModel?> showCityPicker(BuildContext context) async {
-  List<CityModel> cities = context.read<DictionaryCubit>().state.cities;
+// Future<CityModel?> showCityPicker(BuildContext context) async {
+//   List<CityModel> cities = context.read<DictionaryCubit>().state.cities;
 
-  final result = await Picker(
-    itemExtent: 30,
-    height: MediaQuery.of(context).size.height / 3.5,
-    backgroundColor: Theme.of(context).colorScheme.background,
-    adapter: PickerDataAdapter<CityModel>(
-        data: cities.map((city) {
-          return PickerItem<CityModel>(
-              text: Text(city.name),
-              value: city
-          );
-        }).toList()
-    ),
-    changeToFirst: false,
-    hideHeader: false,
-    cancelText: 'Cancel'.tr(),
-    confirmText: 'select'.tr(),
-  ).showModal(context);
+//   final result = await Picker(
+//     itemExtent: 30,
+//     height: MediaQuery.of(context).size.height / 3.5,
+//     backgroundColor: Theme.of(context).colorScheme.background,
+//     adapter: PickerDataAdapter<CityModel>(
+//         data: cities.map((city) {
+//           return PickerItem<CityModel>(
+//               text: Text(city.name),
+//               value: city
+//           );
+//         }).toList()
+//     ),
+//     changeToFirst: false,
+//     hideHeader: false,
+//     cancelText: 'Cancel'.tr(),
+//     confirmText: 'select'.tr(),
+//   ).showModal(context);
 
-  if(result == null) return null;
-  return cities[result[0]];
-}
+//   if(result == null) return null;
+//   return cities[result[0]];
+// }
 
 
 class CityPickerController extends ValueNotifier<CityModel> {
@@ -59,7 +58,7 @@ class CityPicker extends StatefulWidget {
 class _CityPickerState extends State<CityPicker> {
 
   _handleClick() async {
-    CityModel? city = await showCityPicker(context);
+    CityModel? city = null;
     if (city != null) {
       widget.controller._changeCity(city);
     }

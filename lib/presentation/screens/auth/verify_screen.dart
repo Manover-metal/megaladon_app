@@ -23,17 +23,17 @@ class VerifyScreen extends StatefulWidget {
 }
 
 class _VerifyScreenState extends State<VerifyScreen> {
-  late TextEditingController _pinController;
+  late PinInputController _pinController;
 
   bool _checkForm() {
-    return context.read<VerifyFormCubit>().checkForm(_pinController.value.text);
+    return context.read<VerifyFormCubit>().checkForm(_pinController.text);
   }
   
   _verify() {
     if(_checkForm()) {
       context.read<AuthBloc>().add(AuthVerifyEvent(
         widget.phone,
-        _pinController.value.text
+        _pinController.text
 
       ));
     }
@@ -42,7 +42,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
   @override
   void initState() {
     _listenerVerify(false);
-    _pinController = TextEditingController();
+    _pinController = PinInputController();
     super.initState();
   }
 
@@ -53,7 +53,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
   }
   
   _listenerForm(BuildContext context, VerifyFormState state) {
-    if(state.pincode.invalid) showErrorSnackBar(context, state.pincode.error.toString());
+    if(state.pincode.isNotValid) showErrorSnackBar(context, state.pincode.error.toString());
   }
 
   _listenerVerify(bool isListener) => (BuildContext context, AuthState state) {
@@ -88,22 +88,11 @@ class _VerifyScreenState extends State<VerifyScreen> {
                 const Spacer(),
                 TitleApp("Registration".tr()),
                 const SizedBox(height: 20,),
-                PinCodeTextField(
-                    appContext: context,
+                MaterialPinField(
+                  pinController: _pinController,
                     length: 6,
-                    controller: _pinController,
-                    backgroundColor: Theme.of(context).colorScheme.onBackground,
-                    enableActiveFill: true,
-                    pinTheme: PinTheme(
-                      fieldOuterPadding: EdgeInsets.zero,
-                      shape: PinCodeFieldShape.box,
+                    theme: MaterialPinTheme(
                       borderRadius: BorderRadius.circular(10),
-                      activeColor: Theme.of(context).colorScheme.secondary,
-                      selectedColor: Theme.of(context).colorScheme.secondary,
-                      inactiveColor: Theme.of(context).colorScheme.secondary,
-                      activeFillColor: Theme.of(context).colorScheme.onBackground,
-                      selectedFillColor: Theme.of(context).colorScheme.onBackground,
-                      inactiveFillColor: Theme.of(context).colorScheme.onBackground,
                     ), onChanged: (String value) {  },
                 ),
                  Text("Enter_6digit_code_from_SMS".tr()),

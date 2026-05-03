@@ -29,7 +29,7 @@ class RegisterExecutorFormCubit extends Cubit<RegisterExecutorFormState> {
     MultiServiceTypeFormModel servicesForm = MultiServiceTypeFormModel.dirty(services);
 
 
-    FormzStatus status = Formz.validate([
+    bool status = Formz.validate([
       nameForm,
       binForm,
       latForm,
@@ -50,6 +50,6 @@ class RegisterExecutorFormCubit extends Cubit<RegisterExecutorFormState> {
 
     emit(stateNew);
 
-    return stateNew.status.isValid;
+    return stateNew.status;
   }
 }
