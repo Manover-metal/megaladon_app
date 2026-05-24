@@ -1,38 +1,10 @@
-
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/data/models/request/index_period_enum.dart';
 
-// Future<IndexPeriod?> showIndexPeriodPicker(BuildContext context) async {
-//   final result =  await Picker(
-//     itemExtent: 30,
-//     height: MediaQuery.of(context).size.height / 3.5,
-//     backgroundColor: Theme.of(context).colorScheme.background,
-//     adapter: PickerDataAdapter<IndexPeriod>(
-//         data: IndexPeriod.values.map((e) {
-//           return PickerItem<IndexPeriod>(
-//               text: Text(e.toString()),
-//               value: e
-//           );
-//         }).toList()
-//     ),
-//     changeToFirst: false,
-//     hideHeader: false,
-//     cancelText: 'Cancel'.tr(),
-//     confirmText: 'select'.tr(),
-//   ).showModal(context);
-
-//   if(result == null) return null;
-//   return IndexPeriod.values[result[0]];
-// }
-
-
 class IndexPeriodPickerController extends ValueNotifier<IndexPeriod> {
-
-
   IndexPeriodPickerController(IndexPeriod period) : super(period);
-
-
 
   void _changeIndexPeriod(IndexPeriod period) {
     value = period;
@@ -51,15 +23,52 @@ class IndexPeriodPicker extends StatefulWidget {
 }
 
 class _IndexPeriodPickerState extends State<IndexPeriodPicker> {
-
   _handleClick() async {
-    IndexPeriod? period = null;
+    final periods = IndexPeriod.values;
+    int initialIndex = periods.indexWhere((p) => p == widget.controller.value);
+    if (initialIndex < 0) initialIndex = 0;
 
-    if(period != null) {
-      widget.controller._changeIndexPeriod(period);
-    }
+    int selectedIndex = initialIndex;
+
+    await showCupertinoModalPopup<void>(
+      context: context,
+      builder: (ctx) => Container(
+        height: MediaQuery.of(ctx).size.height / 3.5 + 44,
+        color: Theme.of(ctx).colorScheme.surface,
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CupertinoButton(
+                  child: Text('Cancel'.tr()),
+                  onPressed: () => Navigator.of(ctx).pop(),
+                ),
+                CupertinoButton(
+                  child: Text('select'.tr()),
+                  onPressed: () {
+                    widget.controller._changeIndexPeriod(periods[selectedIndex]);
+                    Navigator.of(ctx).pop();
+                  },
+                ),
+              ],
+            ),
+            Expanded(
+              child: CupertinoPicker(
+                scrollController:
+                    FixedExtentScrollController(initialItem: initialIndex),
+                itemExtent: 36,
+                onSelectedItemChanged: (index) => selectedIndex = index,
+                children: periods
+                    .map((p) => Center(child: Text(p.toString())))
+                    .toList(),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -72,30 +81,29 @@ class _IndexPeriodPickerState extends State<IndexPeriodPicker> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(widget.label,
-                  style: TextStyle(
-                      color: Theme.of(context).colorScheme.secondary
-                  ),
+                Text(
+                  widget.label,
+                  style: TextStyle(color: Theme.of(context).colorScheme.secondary),
                 ),
                 const SizedBox(height: 5),
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(13),
                   decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.onBackground,
-                      border: Border.all(
-                          color: Theme.of(context).colorScheme.primary,
-                          width: 0.5
-                      ),
-                      borderRadius: BorderRadius.circular(10)
+                    color: Theme.of(context).colorScheme.onBackground,
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.primary,
+                      width: 0.5,
+                    ),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                   child: Row(
                     children: [
                       Expanded(child: Text(period.toString())),
-                      const Icon(Icons.keyboard_arrow_down_outlined)
+                      const Icon(Icons.keyboard_arrow_down_outlined),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           );

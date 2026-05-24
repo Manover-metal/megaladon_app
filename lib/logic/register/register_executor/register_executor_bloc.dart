@@ -24,9 +24,9 @@ class RegisterExecutorBloc extends Bloc<RegisterExecutorEvent, RegisterExecutorS
 
     emit(RegisterExecutorLoading());
     await _repository.registerExecutor(event.params).then((value) {
-      final ExecutorModel executor = ExecutorModel.fromJson(value.data['executor']);
-      emit(RegisterExecutorSuccess(executor));
+      emit(RegisterExecutorSuccess(value));
     }).catchError((error) {
+      print(error);
       if(error is DioError) {
         emit(RegisterExecutorError(ErrorModel.parseDio(error)));
       } else {

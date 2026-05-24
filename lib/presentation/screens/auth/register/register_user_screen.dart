@@ -42,6 +42,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
   }
 
   _listenerForm(BuildContext context, RegisterUserFormState state) {
+    print(state);
     if(state.status) {
       for (var element in state.props) {
         if(element is FormzInput && element.isNotValid) {

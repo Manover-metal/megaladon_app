@@ -10,7 +10,7 @@ import 'package:megaladon/data/models/user_model.dart';
 class AuthRepository {
   AuthInterceptor? interceptor;
 
-  Future login({
+  Future<AuthModel> login({
     required String phone,
     required String password
   }) async {
@@ -18,7 +18,7 @@ class AuthRepository {
       "phone": phone,
       "password": password
     }).then((value) {
-      return value;
+      return AuthModel.fromJson(value.data);
     });
   }
 
@@ -85,19 +85,21 @@ class AuthRepository {
     return auth;
   }
 
-  write(AuthModel auth, UserModel user, ExecutorModel? executor, StoreModel? store) async {
+  write(AuthModel auth,) async {
     _addInterceptor(auth);
     await IsarService.I.writeTxn(() async {
       await IsarService.I.authModels.put(auth);
-      await IsarService.I.userModels.put(user);
-      await auth.user.save();
+      if(auth.user.value != null) {
+        await IsarService.I.userModels.put(auth.user.value!);
+        await auth.user.save();
+      }
 
-      if(executor != null) {
-        await IsarService.I.executorModels.put(executor);
+      if(auth.executor.value != null) {
+        await IsarService.I.executorModels.put(auth.executor.value!);
         await auth.executor.save();
       }
-      if(store != null) {
-        await IsarService.I.storeModels.put(store);
+      if(auth.store.value != null) {
+        await IsarService.I.storeModels.put(auth.store.value!);
         await auth.store.save();
       }
     });

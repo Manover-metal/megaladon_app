@@ -49,7 +49,6 @@ dependencies:
   equatable: ^2.0.5
   formz: ^0.8.0
   modal_bottom_sheet: ^2.1.2
-  flutter_launcher_icons: ^0.11.0
   teledart: ^0.6.1
   flutter_dotenv: ^5.0.2
   easy_localization: ^3.0.1
@@ -71,6 +70,8 @@ dependencies:
   pusher_channels_flutter: ^2.1.2
   geolocator: ^9.0.2
   firebase_messaging: ^16.2.0
+  talker: ^5.1.17
+  talker_dio_logger_plus: ^1.0.6
 
 dev_dependencies:
   flutter_test:

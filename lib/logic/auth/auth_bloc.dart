@@ -7,7 +7,6 @@ import 'package:megaladon/data/models/auth/auth_model.dart';
 import 'package:megaladon/data/models/error_model.dart';
 import 'package:megaladon/data/models/executor_model.dart';
 import 'package:megaladon/data/models/store_model.dart';
-import 'package:megaladon/data/models/user_model.dart';
 import 'package:megaladon/data/repositories/auth/auth_repository.dart';
 import 'package:megaladon/data/repositories/auth/verify_repository.dart';
 import 'package:megaladon/logic/register/register_executor/register_executor_bloc.dart';
@@ -44,10 +43,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future _sendFbToken() async {
-    String? token = await FbNotificationService.I.getToken();
-    if(token != null) {
-      _authRepository.sendFB(token: token);
+    try {
+      String? token = await FbNotificationService.I.getToken();
+      if(token != null) {
+        _authRepository.sendFB(token: token);
+      }
+    } catch (e) {
+      print(e);
     }
+    
   }
 
   _login(AuthLoginEvent event, Emitter emit) async {
@@ -55,20 +59,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthLoadingState());
     await _authRepository.login(phone: event.phone, password: event.password).then((value) {
 
-      final user = UserModel.fromJson(value.data['user']);
-      final executor = value.data['user']['executor'] != null? ExecutorModel.fromJson(value.data['user']['executor']): null;
-      final store = value.data['user']['store'] != null? StoreModel.fromJsonFull(value.data['user']['store']): null;
+      _authRepository.write(value);
 
-
-      AuthModel auth = AuthModel()
-        ..token = value.data['token']
-        ..user.value = user
-        ..executor.value = executor
-        ..store.value = store;
-
-      _authRepository.write(auth, user, executor, store);
-
-      emit(AuthLoginState(auth));
+      emit(AuthLoginState(value));
     }).catchError((error) {
       print(error);
       if(error is DioError) {
@@ -89,20 +82,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     await _verifyRepository.verifyRegister(code: event.code, phone: event.phone).then((value) async {
 
-      final user = UserModel.fromJson(value.data['user']);
-      final executor = value.data['user']['executor'] != null? ExecutorModel.fromJson(value.data['user']['executor']): null;
-      final store = value.data['user']['store'] != null? StoreModel.fromJsonFull(value.data['user']['store']): null;
 
-      AuthModel auth = AuthModel()
-        ..token = value.data['token']
-        ..user.value = user
-        ..executor.value = executor
-        ..store.value = store;
-
-      _authRepository.write(auth, user, executor, store);
-      await _sendFbToken();
-      emit(AuthLoginState(auth));
+      _authRepository.write(value);
+      // await _sendFbToken();
+      emit(AuthLoginState(value));
     }).catchError((error) {
+      print(error);
       if(error is DioError) {
         emit(AuthErrorState(ErrorModel.parseDio(error)));
       } else {

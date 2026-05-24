@@ -18,4 +18,12 @@ class AuthModel {
 
   IsarLink<StoreModel> store = IsarLink<StoreModel>();
 
+  static AuthModel fromJson(Map<String, dynamic> json) {
+    AuthModel auth = AuthModel()..token = json['token']
+    ..user.value = UserModel.fromJson(json['user'])
+    ..executor.value = ExecutorModel.fromJsonOrNull(json['user']['executor'])
+    ..store.value = StoreModel.fromJsonFullOrNull(json['user']['store']);
+
+    return auth;
+  } 
 }

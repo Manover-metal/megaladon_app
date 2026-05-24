@@ -81,6 +81,15 @@ class StoreModel {
     );
   }
 
+  static StoreModel? fromJsonFullOrNull(Map<String, dynamic>? data) {
+    if(data == null) return null;
+    try {
+      return StoreModel.fromJsonFull(data);
+    } catch(e) {
+      return null;
+    }
+  }
+
   static List<StoreModel> listFromJsonMini(List data) {
     return data.map<StoreModel>((advert) {
       return StoreModel.fromJsonMini(advert);

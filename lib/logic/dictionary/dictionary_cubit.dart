@@ -22,12 +22,12 @@ class DictionaryCubit extends Cubit<DictionaryState> {
     await fetchSubscribesExecutor();
   }
 
-  fetchCities()  async {
+  fetchCities() async {
     await _repository.getCities().then((value) {
+      value.forEach((c) => print(c.name));
       emit(state.copyWith(cities: value));
     }).catchError((err) {
       emit(state.copyWith(cities: []));
-
     });
   }
 

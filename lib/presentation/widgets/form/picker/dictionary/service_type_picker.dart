@@ -1,46 +1,18 @@
-
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/dictionary/service_type_model.dart';
 import 'package:megaladon/logic/dictionary/dictionary_cubit.dart';
 
-// Future<ServiceTypeModel?> showServiceTypePicker(BuildContext context) async {
-//   List<ServiceTypeModel> serviceTypes = context.read<DictionaryCubit>().state.serviceTypes;
-
-//   final result = await Picker(
-//     itemExtent: 30,
-//     height: MediaQuery.of(context).size.height / 3.5,
-//     backgroundColor: Theme.of(context).colorScheme.background,
-//     adapter: PickerDataAdapter<ServiceTypeModel>(
-//         data: serviceTypes.map((serviceType) {
-//           return PickerItem<ServiceTypeModel>(
-//               text: Text(serviceType.name),
-//               value: serviceType
-//           );
-//         }).toList()
-//     ),
-//     changeToFirst: false,
-//     hideHeader: false,
-//     cancelText: 'Cancel'.tr(),
-//     confirmText: 'select'.tr(),
-//   ).showModal(context);
-
-//   if(result == null) return null;
-//   return serviceTypes[result[0]];
-// }
-
-
 class ServiceTypePickerController extends ValueNotifier<ServiceTypeModel> {
   static int lastId = 0;
   late int id;
 
-  ServiceTypePickerController({ServiceTypeModel? period}) : super(period ?? ServiceTypeModel.nothing) {
+  ServiceTypePickerController({ServiceTypeModel? period})
+      : super(period ?? ServiceTypeModel.nothing) {
     id = ++lastId;
   }
-
-
-
 
   void _changeServiceType(ServiceTypeModel period) {
     value = period;
@@ -65,13 +37,58 @@ class ServiceTypePicker extends StatefulWidget {
 }
 
 class _ServiceTypePickerState extends State<ServiceTypePicker> {
-
   _handleClick() async {
-    ServiceTypeModel? serviceType = null;
+    final List<ServiceTypeModel> serviceTypes =
+        context.read<DictionaryCubit>().state.serviceTypes;
 
-    if (serviceType != null) {
-      widget.controller._changeServiceType(serviceType);
-    }
+    if (serviceTypes.isEmpty) return;
+
+    int initialIndex = serviceTypes.indexWhere(
+      (s) => s.id == widget.controller.value.id,
+    );
+    if (initialIndex < 0) initialIndex = 0;
+
+    int selectedIndex = initialIndex;
+
+    await showCupertinoModalPopup<void>(
+      context: context,
+      builder: (ctx) => Container(
+        height: MediaQuery.of(ctx).size.height / 3.5 + 44,
+        color: Theme.of(ctx).colorScheme.surface,
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CupertinoButton(
+                  child: Text('Cancel'.tr()),
+                  onPressed: () => Navigator.of(ctx).pop(),
+                ),
+                CupertinoButton(
+                  child: Text('select'.tr()),
+                  onPressed: () {
+                    widget.controller
+                        ._changeServiceType(serviceTypes[selectedIndex]);
+                    Navigator.of(ctx).pop();
+                  },
+                ),
+              ],
+            ),
+            Expanded(
+              child: CupertinoPicker(
+                scrollController:
+                    FixedExtentScrollController(initialItem: initialIndex),
+                itemExtent: 36,
+                onSelectedItemChanged: (index) => selectedIndex = index,
+                children: serviceTypes
+                    .map((s) => Center(child: Text(s.name)))
+                    .toList(),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -85,30 +102,29 @@ class _ServiceTypePickerState extends State<ServiceTypePicker> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(widget.label,
-                  style: TextStyle(
-                      color: Theme.of(context).colorScheme.secondary
-                  ),
+                Text(
+                  widget.label,
+                  style: TextStyle(color: Theme.of(context).colorScheme.secondary),
                 ),
                 const SizedBox(height: 5),
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(13),
                   decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.tertiary,
-                      border: Border.all(
-                          color: Theme.of(context).colorScheme.primary,
-                          width: 0.5
-                      ),
-                      borderRadius: BorderRadius.circular(10)
+                    color: Theme.of(context).colorScheme.tertiary,
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.primary,
+                      width: 0.5,
+                    ),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                   child: Row(
                     children: [
                       Expanded(child: Text(serviceType.name)),
-                      const Icon(Icons.keyboard_arrow_down_outlined)
+                      const Icon(Icons.keyboard_arrow_down_outlined),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           );

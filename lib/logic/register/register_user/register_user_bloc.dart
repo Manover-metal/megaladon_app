@@ -23,6 +23,7 @@ class RegisterUserBloc extends Bloc<RegisterUserEvent, RegisterUserState> {
     await _repository.registerUser(event.params).then((value) {
       emit(RegisterUserSuccess());
     }).catchError((error) {
+      print(error);
       if(error is DioError) {
         emit(RegisterUserError(ErrorModel.parseDio(error)));
       } else {

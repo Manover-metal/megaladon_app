@@ -1,43 +1,13 @@
-
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/dictionary/order_category_model.dart';
 import 'package:megaladon/logic/dictionary/dictionary_cubit.dart';
 
-// Future<OrderCategoryModel?> showOrderCategoryPicker(BuildContext context) async {
-//   List<OrderCategoryModel> orderCategories = context.read<DictionaryCubit>().state.orderCategories;
-
-
-//   final result = await Picker(
-//     itemExtent: 30,
-//     height: MediaQuery.of(context).size.height / 3.5,
-//     backgroundColor: Theme.of(context).colorScheme.background,
-//     adapter: PickerDataAdapter<OrderCategoryModel>(
-//         data: orderCategories.map((orderCategory) {
-//           return PickerItem<OrderCategoryModel>(
-//               text: Text(orderCategory.name),
-//               value: orderCategory
-//           );
-//         }).toList()
-//     ),
-//     changeToFirst: false,
-//     hideHeader: false,
-//     cancelText: 'Cancel'.tr(),
-//     confirmText: 'select'.tr(),
-//   ).showModal(context);
-
-//   if(result == null) return null;
-//   return orderCategories[result[0]];
-// }
-
-
 class OrderCategoryPickerController extends ValueNotifier<OrderCategoryModel> {
-
-
-  OrderCategoryPickerController({OrderCategoryModel? category}) : super(category ?? OrderCategoryModel.nothing);
-
-
+  OrderCategoryPickerController({OrderCategoryModel? category})
+      : super(category ?? OrderCategoryModel.nothing);
 
   void _changeOrderCategory(OrderCategoryModel category) {
     value = category;
@@ -56,20 +26,64 @@ class OrderCategoryPicker extends StatefulWidget {
 }
 
 class _OrderCategoryPickerState extends State<OrderCategoryPicker> {
-
   _handleClick() async {
-    OrderCategoryModel? orderCategory = null;
+    final List<OrderCategoryModel> orderCategories =
+        context.read<DictionaryCubit>().state.orderCategories;
 
-    if (orderCategory != null) {
-      widget.controller._changeOrderCategory(orderCategory);
-    }
+    if (orderCategories.isEmpty) return;
+
+    int initialIndex = orderCategories.indexWhere(
+      (c) => c.id == widget.controller.value.id,
+    );
+    if (initialIndex < 0) initialIndex = 0;
+
+    int selectedIndex = initialIndex;
+
+    await showCupertinoModalPopup<void>(
+      context: context,
+      builder: (ctx) => Container(
+        height: MediaQuery.of(ctx).size.height / 3.5 + 44,
+        color: Theme.of(ctx).colorScheme.surface,
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CupertinoButton(
+                  child: Text('Cancel'.tr()),
+                  onPressed: () => Navigator.of(ctx).pop(),
+                ),
+                CupertinoButton(
+                  child: Text('select'.tr()),
+                  onPressed: () {
+                    widget.controller
+                        ._changeOrderCategory(orderCategories[selectedIndex]);
+                    Navigator.of(ctx).pop();
+                  },
+                ),
+              ],
+            ),
+            Expanded(
+              child: CupertinoPicker(
+                scrollController:
+                    FixedExtentScrollController(initialItem: initialIndex),
+                itemExtent: 36,
+                onSelectedItemChanged: (index) => selectedIndex = index,
+                children: orderCategories
+                    .map((c) => Center(child: Text(c.name)))
+                    .toList(),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 5.0),
-
       child: ValueListenableBuilder(
         builder: (BuildContext context, OrderCategoryModel orderCategory, Widget? child) {
           return GestureDetector(
@@ -77,30 +91,29 @@ class _OrderCategoryPickerState extends State<OrderCategoryPicker> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(widget.label,
-                  style: TextStyle(
-                      color: Theme.of(context).colorScheme.secondary
-                  ),
+                Text(
+                  widget.label,
+                  style: TextStyle(color: Theme.of(context).colorScheme.secondary),
                 ),
                 const SizedBox(height: 5),
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(13),
                   decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.tertiary,
-                      border: Border.all(
-                          color: Theme.of(context).colorScheme.primary,
-                          width: 0.5
-                      ),
-                      borderRadius: BorderRadius.circular(10)
+                    color: Theme.of(context).colorScheme.tertiary,
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.primary,
+                      width: 0.5,
+                    ),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                   child: Row(
                     children: [
                       Expanded(child: Text(orderCategory.name)),
-                      const Icon(Icons.keyboard_arrow_down_outlined)
+                      const Icon(Icons.keyboard_arrow_down_outlined),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           );

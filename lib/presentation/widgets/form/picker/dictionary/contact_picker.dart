@@ -1,36 +1,16 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_picker/Picker.dart';
 import 'package:megaladon/data/models/contact_model.dart';
-
-// Future<List<int>?> showContactTypePicker(BuildContext context) async {
-//   return await Picker(
-//     itemExtent: 30,
-//     height: MediaQuery.of(context).size.height / 3.5,
-//     backgroundColor: Theme.of(context).colorScheme.background,
-//     adapter: PickerDataAdapter<ContactType>(
-//         data: ContactType.values.map((type) {
-//           return PickerItem<ContactType>(
-//               text: Text(type.toString()),
-//               value: type
-//           );
-//         }).toList()
-//     ),
-//     changeToFirst: false,
-//     hideHeader: false,
-//     cancelText: 'Cancel'.tr(),
-//     confirmText: 'select'.tr(),
-//   ).showModal(context);
-// }
-
 
 class ContactTypePickerController extends ValueNotifier<ContactType> {
   late TextEditingController _valueController;
   TextEditingController? _nameController;
 
-  ContactTypePickerController({ ContactModel? type}) : super(type?.type ?? ContactType.phone) {
+  ContactTypePickerController({ContactModel? type})
+      : super(type?.type ?? ContactType.phone) {
     _valueController = TextEditingController(text: type?.value);
-    if(_checkPhone()) {
+    if (_checkPhone()) {
       _nameController = TextEditingController(text: type?.contactName);
     }
   }
@@ -42,7 +22,7 @@ class ContactTypePickerController extends ValueNotifier<ContactType> {
     _nameController?.dispose();
 
     _valueController = TextEditingController();
-    if(_checkPhone()) {
+    if (_checkPhone()) {
       _nameController = TextEditingController();
     } else {
       _nameController = null;
@@ -54,7 +34,7 @@ class ContactTypePickerController extends ValueNotifier<ContactType> {
     return ContactModel(
       type: value,
       value: _valueController.value.text,
-      contactName: _nameController?.value.text
+      contactName: _nameController?.value.text,
     );
   }
 
@@ -83,21 +63,10 @@ class ContactTypePicker extends StatefulWidget {
 class _ContactTypePickerState extends State<ContactTypePicker> {
   late TextEditingController _textController;
 
-  _handleClickType(BuildContext context) => () async {
-    List<int>? result = null;
-    try{
-      if (result != null) {
-        ContactType contactType = ContactType.values[result[0]];
-        widget.controller._changeContactType(contactType);
-        _textController.value = TextEditingValue(text: contactType.toString());
-      }
-    }catch (e) {}
-    FocusManager.instance.primaryFocus?.unfocus();
-  };
-
   @override
   void initState() {
-    _textController = TextEditingController(text: widget.controller.value.toString());
+    _textController =
+        TextEditingController(text: widget.controller.value.toString());
     super.initState();
   }
 
@@ -109,12 +78,66 @@ class _ContactTypePickerState extends State<ContactTypePicker> {
 
   @override
   void didUpdateWidget(covariant ContactTypePicker oldWidget) {
-    if(oldWidget.controller.value != widget.controller.value) {
+    if (oldWidget.controller.value != widget.controller.value) {
       _textController.dispose();
-      _textController = TextEditingController(text: widget.controller.value.toString());
+      _textController =
+          TextEditingController(text: widget.controller.value.toString());
     }
     super.didUpdateWidget(oldWidget);
   }
+
+  _handleClickType(BuildContext context) => () async {
+        final types = ContactType.values;
+        int initialIndex =
+            types.indexWhere((t) => t == widget.controller.value);
+        if (initialIndex < 0) initialIndex = 0;
+
+        int selectedIndex = initialIndex;
+
+        await showCupertinoModalPopup<void>(
+          context: context,
+          builder: (ctx) => Container(
+            height: MediaQuery.of(ctx).size.height / 3.5 + 44,
+            color: Theme.of(ctx).colorScheme.surface,
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CupertinoButton(
+                      child: Text('Cancel'.tr()),
+                      onPressed: () => Navigator.of(ctx).pop(),
+                    ),
+                    CupertinoButton(
+                      child: Text('select'.tr()),
+                      onPressed: () {
+                        final contactType = types[selectedIndex];
+                        widget.controller._changeContactType(contactType);
+                        _textController.value =
+                            TextEditingValue(text: contactType.toString());
+                        Navigator.of(ctx).pop();
+                      },
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: CupertinoPicker(
+                    scrollController:
+                        FixedExtentScrollController(initialItem: initialIndex),
+                    itemExtent: 36,
+                    onSelectedItemChanged: (index) => selectedIndex = index,
+                    children: types
+                        .map((t) => Center(child: Text(t.toString())))
+                        .toList(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+
+        FocusManager.instance.primaryFocus?.unfocus();
+      };
 
   @override
   Widget build(BuildContext context) {
@@ -127,30 +150,30 @@ class _ContactTypePickerState extends State<ContactTypePicker> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(widget.label,
+                  Text(
+                    widget.label,
                     style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary
-                    ),
+                        color: Theme.of(context).colorScheme.secondary),
                   ),
                   const SizedBox(height: 5),
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.all(13),
                     decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.tertiary,
-                        border: Border.all(
-                            color: Theme.of(context).colorScheme.primary,
-                            width: 0.5
-                        ),
-                        borderRadius: BorderRadius.circular(10)
+                      color: Theme.of(context).colorScheme.tertiary,
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.primary,
+                        width: 0.5,
+                      ),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     child: Row(
                       children: [
                         Expanded(child: Text(contactType.toString())),
-                        const Icon(Icons.keyboard_arrow_down_outlined)
+                        const Icon(Icons.keyboard_arrow_down_outlined),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -158,24 +181,23 @@ class _ContactTypePickerState extends State<ContactTypePicker> {
             TextField(
               controller: widget.controller._valueController,
               decoration: InputDecoration(
-                  labelText: widget.controller.value.toString(),
-                  labelStyle: const TextStyle(
-                      fontSize: 18
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 10)
+                labelText: widget.controller.value.toString(),
+                labelStyle: const TextStyle(fontSize: 18),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 10),
               ),
             ),
             const SizedBox(height: 10),
-            if(widget.controller._nameController != null) TextField(
-              controller: widget.controller._nameController,
-              decoration:  InputDecoration(
-                  labelText: "contact_name".tr(),
-                  labelStyle: TextStyle(
-                      fontSize: 18
-                  ),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 10)
+            if (widget.controller._nameController != null)
+              TextField(
+                controller: widget.controller._nameController,
+                decoration: InputDecoration(
+                  labelText: 'contact_name'.tr(),
+                  labelStyle: const TextStyle(fontSize: 18),
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 10),
+                ),
               ),
-            ),
           ],
         );
       },

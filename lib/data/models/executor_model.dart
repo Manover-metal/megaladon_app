@@ -60,6 +60,15 @@ class ExecutorModel {
     );
   }
 
+  static ExecutorModel? fromJsonOrNull(Map<String, dynamic>? data) {
+    if(data == null) return null;
+    try {
+      return ExecutorModel.fromJson(data);
+    } catch(e) {
+      return null;
+    }
+  }
+
   static ExecutorModel fromJsonMini(data) {
     return ExecutorModel(
         id: data['id'],
