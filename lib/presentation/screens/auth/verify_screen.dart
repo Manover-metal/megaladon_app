@@ -58,11 +58,11 @@ class _VerifyScreenState extends State<VerifyScreen> {
 
   _listenerVerify(bool isListener) => (BuildContext context, AuthState state) {
     if(state is AuthLoginState) {
-      context.router.navigate(const InitialRouter(
+      context.router.replaceAll([const InitialRouter(
         children: [
           ProfileRouter()
         ]
-      ));
+      )]);
     } else if(state is AuthErrorState && isListener) {
       showErrorSnackBar(context, state.error.messages[0]);
     }

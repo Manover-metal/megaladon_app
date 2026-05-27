@@ -6,6 +6,7 @@ import 'package:megaladon/generated/locale_keys.g.dart';
 import 'package:megaladon/logic/screens/profile/change_password/change_password_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
+import 'package:megaladon/presentation/widgets/form/field/password_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
@@ -88,17 +89,17 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 const Spacer(),
                  TitleApp("Change_password".tr()),
                 const SizedBox(height: 20,),
-                TextFieldApp(
+                PasswordFieldApp(
                   icon: const Icon(Icons.lock),
                   label: "Your_password".tr(),
                   controller: _oldPassword,
                 ),
-                TextFieldApp(
+                PasswordFieldApp(
                   icon: const Icon(Icons.lock),
                   label: "Choose_password".tr(),
                   controller: _password,
                 ),
-                TextFieldApp(
+                PasswordFieldApp(
                   icon: const Icon(Icons.lock),
                   label: "Confirm_the_password".tr(),
                   controller: _passwordConfirmation,

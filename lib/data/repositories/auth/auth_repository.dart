@@ -69,7 +69,7 @@ class AuthRepository {
   Future resetPassword({
     required String phone
   }) async {
-    return ApiService.I.delete('/auth/logout', data: {
+    return ApiService.I.post('/auth/reset-password', data: {
       'phone': phone
     }).then((value) {
       return value;

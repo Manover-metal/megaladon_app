@@ -37,6 +37,7 @@ class DrawerApp extends StatelessWidget {
 
   _logout(BuildContext context) => () {
     context.read<AuthBloc>().add(AuthLogoutEvent());
+    context.router.replaceAll([const LoginRoute()]);
   };
 
   @override
