@@ -14,7 +14,7 @@ class AuthFormState extends Equatable {
   });
 
   @override
-  List<Object?> get props => [status, phone, password];
+  List<Object?> get props => [status, phone, password, countTry];
 
   AuthFormState copyWith ({
     bool? status,

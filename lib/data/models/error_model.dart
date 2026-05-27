@@ -8,19 +8,26 @@ class ErrorModel {
 
   static ErrorModel parseDio(DioError error) {
     dynamic data = error.response?.data;
-    print(data);
     try {
-      if(data?['message'] != null) {
-        return ErrorModel([data['message']]);
-      } else if(data?['errors'] is List) {
-        return ErrorModel(data['errors']);
-      } else if(data?['errors'] is Map) {
-        return ErrorModel(data['errors'].map((val)=> val));
+      if (data?['errors'] is List) {
+        return ErrorModel(List<String>.from(data['errors']));
+      } else if (data?['errors'] is Map) {
+        final messages = <String>[];
+        (data['errors'] as Map).forEach((key, value) {
+          if (value is List) {
+            messages.addAll(value.cast<String>());
+          } else if (value is String) {
+            messages.add(value);
+          }
+        });
+        if (messages.isNotEmpty) return ErrorModel(messages);
+      }
+      if (data?['message'] != null) {
+        return ErrorModel([data['message'] as String]);
       }
     } catch (e) {
       return ErrorModel.nothing;
     }
-
     return ErrorModel.nothing;
   }
 

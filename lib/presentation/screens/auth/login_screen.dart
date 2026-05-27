@@ -8,6 +8,7 @@ import 'package:megaladon/logic/form/auth/auth_form_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
+import 'package:megaladon/presentation/widgets/form/field/password_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/phone_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
@@ -63,11 +64,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
   _listenerAuth(BuildContext context, AuthState state) {
     if(state is AuthLoginState) {
-      context.router.navigate(const InitialRouter(
+      context.router.replaceAll([const InitialRouter(
           children: [
             ProfileRouter()
           ]
-      ));
+      )]);
     } else if(state is AuthErrorState) {
       showErrorSnackBar(context, state.error.messages[0]);
     } else if(state is AuthTransitionVerify) {
@@ -76,9 +77,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _listenerForm(BuildContext context, AuthFormState state) {
-    if(state.status) {
+    if (!state.status) {
       for (var element in state.props) {
-        if(element is FormzInput && element.isNotValid) {
+        if (element is FormzInput && element.isNotValid) {
           return showErrorSnackBar(context, element.error.toString());
         }
       }
@@ -107,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   label: "Your_phone_number".tr(),
                   controller: _phone,
                 ),
-                TextFieldApp(
+                PasswordFieldApp(
                   icon: const Icon(Icons.lock),
                   label: "Your_password".tr(),
                   controller: _password,

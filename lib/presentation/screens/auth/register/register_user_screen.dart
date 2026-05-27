@@ -8,6 +8,7 @@ import 'package:megaladon/logic/form/register/register_user/register_user_form_c
 import 'package:megaladon/logic/register/register_user/register_user_bloc.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
+import 'package:megaladon/presentation/widgets/form/field/password_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/phone_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
@@ -42,10 +43,9 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
   }
 
   _listenerForm(BuildContext context, RegisterUserFormState state) {
-    print(state);
-    if(state.status) {
+    if (!state.status) {
       for (var element in state.props) {
-        if(element is FormzInput && element.isNotValid) {
+        if (element is FormzInput && element.isNotValid) {
           return showErrorSnackBar(context, element.error.toString());
         }
       }
@@ -127,12 +127,12 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                   label: "Your_phone_number".tr(),
                   controller: _phoneController,
                 ),
-                TextFieldApp(
+                PasswordFieldApp(
                   icon: const Icon(Icons.lock),
                   label: "Choose_password".tr(),
                   controller: _passwordController,
                 ),
-                TextFieldApp(
+                PasswordFieldApp(
                   icon: const Icon(Icons.lock),
                   label: "Confirm_the_password".tr(),
                   controller: _passwordVerifyController,
