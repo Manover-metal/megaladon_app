@@ -1,17 +1,17 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/data/models/contact_model.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/contact_picker.dart';
 
-class ContactTypeMultiPickerController extends ValueNotifier<List<ContactTypePickerController>> {
-  ContactTypeMultiPickerController({List<ContactModel>? contacts }) : super(
-      contacts != null? contacts.map((e) {
-        return ContactTypePickerController(type: e);
-      }).toList() : []
-  );
+class ContactTypeMultiPickerController
+    extends ValueNotifier<List<ContactTypePickerController>> {
+  ContactTypeMultiPickerController({List<ContactModel>? contacts})
+      : super(contacts != null
+            ? contacts.map((e) => ContactTypePickerController(type: e)).toList()
+            : []);
 
-  _listener() {
+  void _listener() {
     notifyListeners();
   }
 
@@ -28,7 +28,7 @@ class ContactTypeMultiPickerController extends ValueNotifier<List<ContactTypePic
 
   @override
   void dispose() {
-    for (var value in value) {
+    for (final value in value) {
       value.removeListener(_listener);
       value.dispose();
     }
@@ -37,60 +37,56 @@ class ContactTypeMultiPickerController extends ValueNotifier<List<ContactTypePic
 }
 
 class ContactTypeMultiPicker extends StatefulWidget {
+  const ContactTypeMultiPicker({required this.controller, super.key});
   final ContactTypeMultiPickerController controller;
-
-  const ContactTypeMultiPicker({super.key, required this.controller});
 
   @override
   State<ContactTypeMultiPicker> createState() => _ContactTypeMultiPickerState();
 }
 
 class _ContactTypeMultiPickerState extends State<ContactTypeMultiPicker> {
-  _addContact() {
+  void _addContact() {
     widget.controller._addContactType(ContactTypePickerController());
   }
 
-  _removeByIndex(int index) => () {
-    widget.controller._removeByIndex(index);
-  };
+  Null Function() _removeByIndex(int index) => () {
+        widget.controller._removeByIndex(index);
+      };
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ValueListenableBuilder(
-          valueListenable: widget.controller,
-          builder: (context, List<ContactTypePickerController> contactTypes, Widget? child) {
-            return ListView.builder(
+  Widget build(BuildContext context) => Column(
+        children: [
+          ValueListenableBuilder(
+            valueListenable: widget.controller,
+            builder: (context, contactTypes, child) => ListView.builder(
                 itemCount: contactTypes.length,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, item) {
-                  return Container(
-                    margin: const EdgeInsets.symmetric(vertical: 20),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: ContactTypePicker(
-                            label: 'Contact'.tr(),
-                            controller: widget.controller.value[item],
+                itemBuilder: (context, item) => Container(
+                      margin: const EdgeInsets.symmetric(vertical: 20),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: ContactTypePicker(
+                              label: AppLocalizations.of(context)!.contact,
+                              controller: widget.controller.value[item],
+                            ),
                           ),
-                        ),
-                        IconButton(
-                          onPressed: _removeByIndex(item),
-                          icon: Icon(Icons.remove_circle_outline_rounded,
-                            color: Theme.of(context).colorScheme.error,
-                          ),
-                        )
-                      ],
-                    ),
-                  );
-                }
-            );
-          },
-        ),
-        OutlinedButtonApp(text: 'add_contact'.tr(), onPressed: _addContact,)
-      ],
-    );
-  }
+                          IconButton(
+                            onPressed: _removeByIndex(item),
+                            icon: Icon(
+                              Icons.remove_circle_outline_rounded,
+                              color: Theme.of(context).colorScheme.error,
+                            ),
+                          )
+                        ],
+                      ),
+                    )),
+          ),
+          OutlinedButtonApp(
+            text: AppLocalizations.of(context)!.add_contact,
+            onPressed: _addContact,
+          )
+        ],
+      );
 }

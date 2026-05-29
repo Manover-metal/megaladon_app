@@ -10,104 +10,79 @@ import 'package:megaladon/data/models/user_model.dart';
 class AuthRepository {
   AuthInterceptor? interceptor;
 
-  Future<AuthModel> login({
-    required String phone,
-    required String password
-  }) async {
-    return ApiService.I.post('/auth/login', data:{
-      "phone": phone,
-      "password": password
-    }).then((value) {
-      return AuthModel.fromJson(value.data);
-    });
-  }
+  Future<AuthModel> login(
+          {required String phone, required String password}) async =>
+      ApiService.I.post('/auth/login', data: {
+        'phone': phone,
+        'password': password
+      }).then(
+          (value) => AuthModel.fromJson(value.data as Map<String, dynamic>));
 
   Future sendFB({
     required String token,
-  }) async {
-    return ApiService.I.post('/user/change-token', data: {
-      "token": token
-    }).then((value) {
-      return value;
-    }).catchError(( error) {
-      if(error is DioError) {
-        if(error.response?.statusCode == 403) {
-          logout();
-        }
-      }
-      // if(error.statusCode == 403) {
-      //
-      // }
+  }) async =>
+      ApiService.I
+          .post('/user/change-token', data: {'token': token})
+          .then((value) => value)
+          .catchError((error) {
+            if (error is DioException) {
+              if (error.response?.statusCode == 403) {
+                logout();
+              }
+            }
+            // if(error.statusCode == 403) {
+            //
+            // }
 
-      // logout();
-      // return error;
-    });
-  }
+            // logout();
+            // return error;
+          });
 
+  Future confirmRegister({required String phone, required String code}) async =>
+      ApiService.I.post('/auth/confirm-code',
+          data: {'phone': phone, 'code': code}).then((value) => value);
 
+  Future logout() async => ApiService.I.delete('/auth/logout').then((value) {
+        delete();
+      }).catchError((err) {
+        delete();
+      });
 
-  Future confirmRegister({
-    required String phone,
-    required String code
-  }) async {
-    return ApiService.I.post('/auth/confirm-code', data: {
-      "phone": phone,
-      "code": code
-    }).then((value) {
-      return value;
-    });
-  }
-
-  Future logout() async {
-    return ApiService.I.delete('/auth/logout').then((value) {
-      delete();
-    }).catchError((err) {
-      delete();
-    });
-  }
-
-  Future resetPassword({
-    required String phone
-  }) async {
-    return ApiService.I.post('/auth/reset-password', data: {
-      'phone': phone
-    }).then((value) {
-      return value;
-    });
-  }
-
+  Future resetPassword({required String phone}) async =>
+      ApiService.I.post('/auth/reset-password',
+          data: {'phone': phone}).then((value) => value);
 
   Future<AuthModel?> read() async {
-    AuthModel? auth = await IsarService.I.authModels.get(1);
-    if(auth != null) {
+    var auth = await IsarService.I.authModels.get(1);
+    if (auth != null) {
       _addInterceptor(auth);
     }
     return auth;
   }
 
-  write(AuthModel auth,) async {
+  Future<void> write(
+    AuthModel auth,
+  ) async {
     _addInterceptor(auth);
     await IsarService.I.writeTxn(() async {
       await IsarService.I.authModels.put(auth);
-      if(auth.user.value != null) {
+      if (auth.user.value != null) {
         await IsarService.I.userModels.put(auth.user.value!);
         await auth.user.save();
       }
 
-      if(auth.executor.value != null) {
+      if (auth.executor.value != null) {
         await IsarService.I.executorModels.put(auth.executor.value!);
         await auth.executor.save();
       }
-      if(auth.store.value != null) {
+      if (auth.store.value != null) {
         await IsarService.I.storeModels.put(auth.store.value!);
         await auth.store.save();
       }
     });
-
-
   }
 
-  addUser(AuthModel auth, UserModel user) async {
+  Future<void> addUser(AuthModel auth, UserModel user) async {
     await IsarService.I.writeTxn(() async {
       await IsarService.I.authModels.put(auth);
       await IsarService.I.userModels.put(user);
@@ -115,7 +90,7 @@ class AuthRepository {
     });
   }
 
-  addExecutor(AuthModel auth, ExecutorModel executor) async {
+  Future<void> addExecutor(AuthModel auth, ExecutorModel executor) async {
     await IsarService.I.writeTxn(() async {
       await IsarService.I.authModels.put(auth);
       await IsarService.I.executorModels.put(executor);
@@ -123,7 +98,7 @@ class AuthRepository {
     });
   }
 
-  addStore(AuthModel auth, StoreModel store) async {
+  Future<void> addStore(AuthModel auth, StoreModel store) async {
     await IsarService.I.writeTxn(() async {
       await IsarService.I.authModels.put(auth);
       await IsarService.I.storeModels.put(store);
@@ -131,12 +106,12 @@ class AuthRepository {
     });
   }
 
-  _addInterceptor(AuthModel auth) {
+  void _addInterceptor(AuthModel auth) {
     interceptor = AuthInterceptor(auth.token!);
     ApiService.addInterceptors(interceptor!);
   }
 
-  delete() async {
+  Future<void> delete() async {
     await IsarService.I.writeTxn(() async {
       await IsarService.I.authModels.clear();
     });

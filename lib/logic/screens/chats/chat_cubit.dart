@@ -1,10 +1,8 @@
-import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:megaladon/core/pusher/index.dart';
-import 'package:megaladon/data/models/auth/auth_model.dart';
 import 'package:megaladon/data/models/chat/chat_model.dart';
 import 'package:megaladon/data/models/chat/message_model.dart';
 import 'package:megaladon/data/models/error_model.dart';
@@ -15,19 +13,17 @@ import 'package:megaladon/logic/auth/auth_bloc.dart';
 
 part 'chat_state.dart';
 
-
 class ChatCubit extends Cubit<ChatState> {
-  final ChatRepository _repository = ChatRepository();
-  final AuthBloc authBloc;
-
   ChatCubit(this.authBloc) : super(ChatState()) {
     _listenAuth(authBloc.state);
     authBloc.stream.listen(_listenAuth);
   }
+  final ChatRepository _repository = ChatRepository();
+  final AuthBloc authBloc;
 
-  initial() async {
-    if(authBloc.state is AuthLoginState) {
-      AuthModel auth = (authBloc.state as AuthLoginState).auth;
+  Future<void> initial() async {
+    if (authBloc.state is AuthLoginState) {
+      var auth = (authBloc.state as AuthLoginState).auth;
       print(auth.token);
       await PusherService.init(auth.token!);
       await _connectUser();
@@ -35,99 +31,90 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  _listenAuth(state) {
-    if(state is AuthLoginState) {
+  void _listenAuth(state) {
+    if (state is AuthLoginState) {
       initial();
-    } else if(state is AuthLogoutState){
+    } else if (state is AuthLogoutState) {
       _dispose();
     }
   }
 
   Future getMessages(int chatId) async {
-    bool isLoading = state.isLoadingMessages[chatId] ?? false;
+    var isLoading = state.isLoadingMessages[chatId] ?? false;
 
-    if(!isLoading) {
-      Map<int, bool> isLoadingMessages = {
-        chatId: true
-      };
+    if (!isLoading) {
+      var isLoadingMessages = <int, bool>{chatId: true};
       emit(state.copyWith(
-        isLoadingMessages: isLoadingMessages,
-        update: state.update + 1
-      ));
+          isLoadingMessages: isLoadingMessages, update: state.update + 1));
 
-      ChatModel chat = state.chats.singleWhere((element) => element.id == chatId);
+      var chat = state.chats.singleWhere((element) => element.id == chatId);
 
-      MessageIndexRequestParams params = MessageIndexRequestParams(chat.messages.length);
+      var params = MessageIndexRequestParams(chat.messages.length);
 
       return _repository.getMessages(chatId, params).then((value) {
-        Map<int, MessageIndexRequestParams> allParams = state.params;
+        var allParams = state.params;
         allParams[chatId] = params;
         isLoadingMessages[chatId] = false;
 
         emit(state.copyWith(
             chats: state.chats.map((e) {
-              if(chat.id == e.id) {
+              if (chat.id == e.id) {
                 return chat.addMessage(value.reversed.toList());
-              } return e;
+              }
+              return e;
             }).toList(),
             isLoadingMessages: isLoadingMessages,
             params: allParams,
-            update: state.update + 1
-        ));
+            update: state.update + 1));
       }).catchError((error) {
         print(error);
         isLoadingMessages[chatId] = false;
         emit(state.copyWith(
-            isLoadingMessages: isLoadingMessages,
-            update: state.update + 1
-        ));
+            isLoadingMessages: isLoadingMessages, update: state.update + 1));
       });
     }
-
   }
 
   Future fetch() async {
-    if(state.status == ChatScreenMainStatus.loading
-        && state.error == null
-    ) return;
+    if (state.status == ChatScreenMainStatus.loading && state.error == null)
+      return;
 
     emit(state.copyWith(
-        status: ChatScreenMainStatus.loading,
-        error: null,
-      )
-    );
+      status: ChatScreenMainStatus.loading,
+      error: null,
+    ));
 
     return await _repository.index().then((value) {
-      for (var chat in value) {
+      for (final chat in value) {
         _connectChat(chat);
       }
       emit(state.copyWith(
-          chats: value,
-          status: ChatScreenMainStatus.success,
+        chats: value,
+        status: ChatScreenMainStatus.success,
       ));
     }).catchError((error) {
       print(error);
-      if(error is DioError) {
-        if(error.response?.statusCode == 403) {
+      if (error is DioException) {
+        if (error.response?.statusCode == 403) {
           authBloc.add(AuthLogoutEvent());
         } else {
           emit(state.copyWith(
               status: ChatScreenMainStatus.error,
-              error: ErrorModel.parseDio(error))
-          );
+              error: ErrorModel.parseDio(error)));
         }
       } else {
         emit(state.copyWith(
-            status: ChatScreenMainStatus.error,
-            error: ErrorModel.nothing)
-        );
+            status: ChatScreenMainStatus.error, error: ErrorModel.nothing));
       }
     });
   }
 
-  _connectChat(ChatModel chat) async {
-    await PusherService.instance.subscribe(channelName: 'chat.${chat.id}',
-        onEvent: _event(chat),
+  Future<void> _connectChat(ChatModel chat) async {
+    await PusherService.instance.subscribe(
+        channelName: 'chat.${chat.id}',
+
+        /// TODO: проблема с подпиской на канал, при каждом новом сообщении происходит перерисовка всего списка сообщений, нужно оптимизировать так, чтобы перерисовывалось только новое сообщение
+        // onEvent: _event(chat),
         onSubscriptionError: (e) {
           print(e);
         },
@@ -135,21 +122,22 @@ class ChatCubit extends Cubit<ChatState> {
           print(e);
         },
         onMemberAdded: (member) {
-          print("Member added: $member");
+          print('Member added: $member');
         },
         onMemberRemoved: (member) {
-          print("Member removed: $member");
-        }
-    );
+          print('Member removed: $member');
+        });
     await PusherService.instance.connect();
   }
 
-  _connectUser() async {
+  Future<void> _connectUser() async {
     print('connectUser');
-    if(authBloc.state is AuthLoginState) {
+    if (authBloc.state is AuthLoginState) {
       print('connectUser 2');
 
-      await PusherService.instance.subscribe(channelName: 'userChats.${(authBloc.state as AuthLoginState).auth.user.value!.id}',
+      await PusherService.instance.subscribe(
+          channelName:
+              'userChats.${(authBloc.state as AuthLoginState).auth.user.value!.id}',
           onEvent: _eventUser,
           onSubscriptionError: (e) {
             print(e);
@@ -158,55 +146,57 @@ class ChatCubit extends Cubit<ChatState> {
             print(e);
           },
           onMemberAdded: (member) {
-            print("Member added: $member");
+            print('Member added: $member');
           },
           onMemberRemoved: (member) {
-            print("Member removed: $member");
-          }
-      );
+            print('Member removed: $member');
+          });
       await PusherService.instance.connect();
     }
   }
 
-  _eventUser(event) {
+  void _eventUser(event) {
     fetch();
   }
 
-  _event(ChatModel chatOne) => (event) async {
-    print(event);
-    if(event.eventName == 'new_message') {
-      final data = jsonDecode(event.data);
-      MessageModel message = MessageModel.fromJson(data['message']);
-      ChatModel chat = state.chats.singleWhere((element) => element.id == chatOne.id);
-      chat.messages.add(message);
-      _changeLoadingMessages(chat.id, state.loadingMessages[chat.id]!.where((element) {
-        return element.text != message.text;
-      }).toList());
-      emit(state.copyWith(chats: state.chats.map((e) {
-        if(chat.id == e.id) {
-          return chat;
-        } return e;
-      }).toList(), update: state.update + 1));
-    }
-  };
+  // Future<void> Function(event) _event(ChatModel chatOne) =>
+  //     (event) async {
+  //       print(event);
 
+  /// TODO: оптимизировать добавление сообщений, сейчас при каждом новом сообщении происходит перерисовка всего списка сообщений, нужно оптимизировать так, чтобы перерисовывалось только новое сообщение
+  // if (event.eventName == 'new_message') {
+  //   final data = jsonDecode(event.data);
+  //   var message = MessageModel.fromJson(data['message']);
+  //   var chat =
+  //       state.chats.singleWhere((element) => element.id == chatOne.id);
+  //   chat.messages.add(message);
+  //   _changeLoadingMessages(
+  //       chat.id,
+  //       state.loadingMessages[chat.id]!
+  //           .where((element) => element.text != message.text)
+  //           .toList());
+  //   emit(state.copyWith(
+  //       chats: state.chats.map((e) {
+  //         if (chat.id == e.id) {
+  //           return chat;
+  //         }
+  //         return e;
+  //       }).toList(),
+  //       update: state.update + 1));
+  // }
+  // };
 
-  Future createChatOrder(int orderId, executorId) async{
-    return await _repository.createOrder(orderId, executorId).then((value) {
-      print(value);
-    });
-  }
+  Future createChatOrder(int orderId, int executorId) async =>
+      await _repository.createOrder(orderId, executorId).then(print);
 
-  Future createChatAdvert(int advertId) async{
-    return await _repository.createAdvert(advertId).then((value) {
-      print(value);
-    });
-  }
+  Future createChatAdvert(int advertId) async =>
+      await _repository.createAdvert(advertId).then(print);
 
-  _dispose() async {
+  Future<void> _dispose() async {
     try {
-      for (var element in state.chats) {
-        await PusherService.instance.unsubscribe(channelName: 'chat.${element.id}');
+      for (final element in state.chats) {
+        await PusherService.instance
+            .unsubscribe(channelName: 'chat.${element.id}');
       }
 
       await PusherService.instance.disconnect();
@@ -217,20 +207,22 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future sendMessage(ChatModel chat, String text) async {
-    if(text == '') return;
+    if (text == '') return;
 
-    if(authBloc.state is AuthLoginState) {
+    if (authBloc.state is AuthLoginState) {
       _changeLoadingMessages(chat.id, [
         ...?state.loadingMessages[chat.id],
         MessageModel(id: 1, createdAt: DateTime.now(), text: text)
       ]);
-      return await ChatRepository().sendMessage(MessageCreateRequestParams(
-          message: text,
-          chatId: chat.id
-      )).catchError((error) {
-        _changeLoadingMessages(chat.id, state.loadingMessages[chat.id]!.where((element) {
-          return element.text != text;
-        }).toList());
+      return await ChatRepository()
+          .sendMessage(
+              MessageCreateRequestParams(message: text, chatId: chat.id))
+          .catchError((error) {
+        _changeLoadingMessages(
+            chat.id,
+            state.loadingMessages[chat.id]!
+                .where((element) => element.text != text)
+                .toList());
         _changeErrorMessages(chat.id, [
           ...?state.loadingMessages[chat.id],
           MessageModel(id: 1, createdAt: DateTime.now(), text: text)
@@ -240,16 +232,17 @@ class ChatCubit extends Cubit<ChatState> {
     return;
   }
 
-  _changeLoadingMessages(int chatId, List<MessageModel> loadings) {
-    Map<int, List<MessageModel>> mapMessagesFromChat = state.loadingMessages;
+  void _changeLoadingMessages(int chatId, List<MessageModel> loadings) {
+    var mapMessagesFromChat = state.loadingMessages;
     mapMessagesFromChat.addAll({chatId: loadings});
-    emit(state.copyWith(loadingMessages: mapMessagesFromChat, update: state.update + 1));
+    emit(state.copyWith(
+        loadingMessages: mapMessagesFromChat, update: state.update + 1));
   }
 
-  _changeErrorMessages(int chatId, List<MessageModel> errors) {
-    Map<int, List<MessageModel>> mapMessagesFromChat = state.errorMessages;
+  void _changeErrorMessages(int chatId, List<MessageModel> errors) {
+    var mapMessagesFromChat = state.errorMessages;
     mapMessagesFromChat[chatId] = errors;
-    emit(state.copyWith(errorMessages: mapMessagesFromChat, update: state.update + 1));
+    emit(state.copyWith(
+        errorMessages: mapMessagesFromChat, update: state.update + 1));
   }
-
 }

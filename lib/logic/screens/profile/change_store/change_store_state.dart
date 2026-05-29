@@ -4,14 +4,12 @@ abstract class ChangeStoreState extends Equatable {
   const ChangeStoreState();
 }
 
-
 class ChangeStoreInitial extends ChangeStoreState {
   @override
   List<Object> get props => [];
 }
 
 class ChangeStoreSuccess extends ChangeStoreState {
-
   const ChangeStoreSuccess();
 
   @override
@@ -24,9 +22,8 @@ class ChangeStoreLoading extends ChangeStoreState {
 }
 
 class ChangeStoreError extends ChangeStoreState {
-  final ErrorModel error;
-
   const ChangeStoreError(this.error);
+  final ErrorModel error;
 
   @override
   List<Object> get props => [error];

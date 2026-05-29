@@ -3,13 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:megaladon/data/models/advert_model.dart';
 
 class AdTile extends StatelessWidget {
-
+  const AdTile({required this.advert, super.key});
   final AdvertModel advert;
 
-  const AdTile({super.key, required this.advert});
-
   @override
-  Widget build(BuildContext context) {
-    return Text(advert.title);
-  }
+  Widget build(BuildContext context) => Text(advert.title);
 }

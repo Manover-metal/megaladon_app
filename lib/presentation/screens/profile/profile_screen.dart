@@ -1,10 +1,7 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:megaladon/data/models/executor_model.dart';
-import 'package:megaladon/data/models/store_model.dart';
-import 'package:megaladon/data/models/user_model.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/form/price/price_form_cubit.dart';
 import 'package:megaladon/logic/screens/profile/change_photo/change_photo_cubit.dart';
@@ -45,67 +42,64 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
   }
 
-  _context(context) => () {
-    Scaffold.of(context).openEndDrawer();
-  };
+  Null Function() _context(BuildContext context) => () {
+        Scaffold.of(context).openEndDrawer();
+      };
 
-  _changePhoto() {
+  void _changePhoto() {
     context.read<ChangePhotoCubit>().changePhoto();
   }
 
-  _photoListener(BuildContext context, ChangePhotoState state) {
+  void _photoListener(BuildContext context, ChangePhotoState state) {
     if (state.status == PhotoStatus.error) {
       showErrorSnackBar(context, state.error!.messages[0]);
     }
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      endDrawer: DrawerProfile(),
-      body: SafeArea(
-        child: NestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return [
+  Widget build(BuildContext context) => Scaffold(
+        endDrawer: const DrawerProfile(),
+        body: SafeArea(
+          child: NestedScrollView(
+            headerSliverBuilder: (context, innerBoxIsScrolled) => [
               BlocBuilder<ProfileScreenCubit, ProfileScreenState>(
-                builder: (context, state) {
-                  return SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: HeaderAppBar(
-                          isMenu: true,
-                          title: "Profile".tr(),
-                          onTrailing:
-                              (state.status == ProfileScreenStatus.success)
-                                  ? _context(context)
-                                  : null),
-                    ),
-                  );
-                },
+                builder: (context, state) => SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: HeaderAppBar(
+                        isMenu: true,
+                        title: AppLocalizations.of(context)!.profile,
+                        onTrailing:
+                            (state.status == ProfileScreenStatus.success)
+                                ? _context(context)
+                                : null),
+                  ),
+                ),
               )
-            ];
-          },
-          body: RefreshIndicator(
-            onRefresh: _fetch,
-            child: SingleChildScrollView(
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  children: [
-                    BlocBuilder<ProfileScreenCubit, ProfileScreenState>(
-                      builder: (context, state) {
-                        if (state.status == ProfileScreenStatus.success) {
-                          UserModel user = state.user!;
-                          ExecutorModel? executor = state.executor;
-                          StoreModel? store = state.store;
-                          return Column(
-                            children: [
-                              BlocConsumer<ChangePhotoCubit, ChangePhotoState>(
-                                listener: _photoListener,
-                                builder: (context, state) {
-                                  return SizedBox(
-                                    width: MediaQuery.of(context).size.width / 3,
-                                    height: MediaQuery.of(context).size.width / 3,
+            ],
+            body: RefreshIndicator(
+              onRefresh: _fetch,
+              child: SingleChildScrollView(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    children: [
+                      BlocBuilder<ProfileScreenCubit, ProfileScreenState>(
+                        builder: (context, state) {
+                          if (state.status == ProfileScreenStatus.success) {
+                            var user = state.user!;
+                            var executor = state.executor;
+                            var store = state.store;
+                            return Column(
+                              children: [
+                                BlocConsumer<ChangePhotoCubit,
+                                    ChangePhotoState>(
+                                  listener: _photoListener,
+                                  builder: (context, state) => SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 3,
+                                    height:
+                                        MediaQuery.of(context).size.width / 3,
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(100),
                                       clipBehavior: Clip.hardEdge,
@@ -114,18 +108,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         children: [
                                           Container(
                                             width: double.infinity,
-                                            height: MediaQuery.of(context).size.width /  3,
-                                            color: Theme.of(context).colorScheme.secondary,
-                                            child: state.status == PhotoStatus.bytes
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                3,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .secondary,
+                                            child: state.status ==
+                                                    PhotoStatus.bytes
                                                 ? Image.memory(
                                                     state.imageData!,
                                                     fit: BoxFit.cover,
                                                   )
                                                 : CachedNetworkImage(
                                                     imageUrl: state.url ?? '',
-                                                    fadeInDuration: Duration.zero,
-                                                    progressIndicatorBuilder: (context, url, downloadProgress) => Icon(Icons.person, size: MediaQuery.of(context).size.width / 4),
-                                                    errorWidget: (context, url, error) => Icon(Icons.person, size: MediaQuery.of(context).size.width / 4),
+                                                    fadeInDuration:
+                                                        Duration.zero,
+                                                    progressIndicatorBuilder: (context,
+                                                            url,
+                                                            downloadProgress) =>
+                                                        Icon(Icons.person,
+                                                            size: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width /
+                                                                4),
+                                                    errorWidget: (context, url,
+                                                            error) =>
+                                                        Icon(Icons.person,
+                                                            size: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width /
+                                                                4),
                                                     fit: BoxFit.cover,
                                                   ),
                                           ),
@@ -137,13 +153,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   decoration: BoxDecoration(
                                                     borderRadius:
                                                         const BorderRadius
-                                                                .vertical(
+                                                            .vertical(
                                                             bottom:
                                                                 Radius.circular(
                                                                     1000)),
                                                     color: Theme.of(context)
                                                         .colorScheme
-                                                        .background
+                                                        .surface
                                                         .withOpacity(0.5),
                                                   ),
                                                   padding: const EdgeInsets
@@ -155,162 +171,204 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         ],
                                       ),
                                     ),
-                                  );
-                                },
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              DataTile(
-                                  title: "Name".tr(), data: user.name),
-                              if (user.phone != null)
-                                DataTile(
-                                    title: "Telephone".tr(), data: user.phone!),
-                              if (user.city != null)
-                                DataTile(
-                                    title: "Location".tr(),
-                                    data: 'г.${user.city?.name ?? ''}'),
-                              const Divider(thickness: 1),
-                              if (executor != null) ...[
-                                TitleApp("Artist_data".tr()),
+                                  ),
+                                ),
                                 const SizedBox(
                                   height: 20,
                                 ),
                                 DataTile(
-                                    title:"Organization".tr(),
-                                    data: executor.name),
-                                DataTile(title: "BIN".tr(), data: executor.bin!),
-                                DataTile(
-                                    title: "Rating".tr(),
-                                    data: executor.rating ?? '0'),
-                                if (executor.city != null)
+                                    title: AppLocalizations.of(context)!.name,
+                                    data: user.name),
+                                if (user.phone != null)
                                   DataTile(
-                                      title: "City".tr(),
-                                      data: executor.city!.name),
-                                if (executor.fullAddress != null)
+                                      title: AppLocalizations.of(context)!
+                                          .telephone,
+                                      data: user.phone!),
+                                if (user.city != null)
                                   DataTile(
-                                      title: "Address".tr(),
-                                      data: executor.fullAddress!),
-                                if (executor.countOrders != null)
+                                      title: AppLocalizations.of(context)!
+                                          .location,
+                                      data: 'г.${user.city?.name ?? ''}'),
+                                const Divider(thickness: 1),
+                                if (executor != null) ...[
+                                  TitleApp(AppLocalizations.of(context)!
+                                      .artist_data),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
                                   DataTile(
-                                      title: 'The_number_of_orders'.tr(),
-                                      data: executor.countOrders.toString()),
-                                if (executor.description != null) ...[
-                                  Text('Description'.tr(), style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w700
-                                  )),
-                                  Text(executor.description ?? '', style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                      fontSize: 18
-                                  )),
+                                      title: AppLocalizations.of(context)!
+                                          .organization,
+                                      data: executor.name),
+                                  DataTile(
+                                      title: AppLocalizations.of(context)!.bIN,
+                                      data: executor.bin!),
+                                  DataTile(
+                                      title:
+                                          AppLocalizations.of(context)!.rating,
+                                      data: executor.rating ?? '0'),
+                                  if (executor.city != null)
+                                    DataTile(
+                                        title:
+                                            AppLocalizations.of(context)!.city,
+                                        data: executor.city!.name),
+                                  if (executor.fullAddress != null)
+                                    DataTile(
+                                        title: AppLocalizations.of(context)!
+                                            .address,
+                                        data: executor.fullAddress!),
+                                  if (executor.countOrders != null)
+                                    DataTile(
+                                        title: AppLocalizations.of(context)!
+                                            .the_number_of_orders,
+                                        data: executor.countOrders.toString()),
+                                  if (executor.description != null) ...[
+                                    Text(
+                                        AppLocalizations.of(context)!
+                                            .description,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.copyWith(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w700)),
+                                    Text(executor.description ?? '',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.copyWith(fontSize: 18)),
+                                  ],
+                                  const Divider(thickness: 1),
                                 ],
-
-
-
-                                const Divider(thickness: 1),
-                              ],
-                              if (store != null) ...[
-                                TitleApp("Store_data".tr()),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                DataTile(
-                                    title:"Address".tr(),
-                                    data: store.fullAddress),
-                                DataTile(
-                                    title: "Rating".tr(),
-                                    data: store.rating ?? '0'),
-                                if (store.bin != null)
+                                if (store != null) ...[
+                                  TitleApp(
+                                      AppLocalizations.of(context)!.store_data),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
                                   DataTile(
-                                      title: "BIN".tr(), data: store.bin.toString()),
-                                if (store.city != null)
+                                      title:
+                                          AppLocalizations.of(context)!.address,
+                                      data: store.fullAddress),
                                   DataTile(
-                                      title: "City".tr(), data: store.city!.name),
-                                if (store.contacts != null)
-                                  ...store.contacts!.map((e) {
-                                    return ContactTile(contact: e);
-                                  }).toList(),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                TitleApp("Price_lists".tr()),
-
-                                BlocConsumer<PriceFormCubit, PriceFormState>(
-                                  builder: (context, state) {
-                                    return Column(
-                                    children: [
-                                      Column(
-                                        children: state.prices.map((file) {
-                                          return Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                      title:
+                                          AppLocalizations.of(context)!.rating,
+                                      data: store.rating ?? '0'),
+                                  if (store.bin != null)
+                                    DataTile(
+                                        title:
+                                            AppLocalizations.of(context)!.bIN,
+                                        data: store.bin.toString()),
+                                  if (store.city != null)
+                                    DataTile(
+                                        title:
+                                            AppLocalizations.of(context)!.city,
+                                        data: store.city!.name),
+                                  if (store.contacts != null)
+                                    ...store.contacts!
+                                        .map((e) => ContactTile(contact: e))
+                                        .toList(),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  TitleApp(AppLocalizations.of(context)!
+                                      .price_lists),
+                                  BlocConsumer<PriceFormCubit, PriceFormState>(
+                                      builder: (context, state) => Column(
                                             children: [
-                                              Expanded(
-                                                  child: Text(
-                                                file.name,
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                              )),
-                                              IconButton(
-                                                  onPressed: () => context.read<PriceFormCubit>().delete(file.id),
-                                                  icon: const Icon(Icons.delete, color: Colors.red)
+                                              Column(
+                                                children: state.prices
+                                                    .map((file) => Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Expanded(
+                                                                child: Text(
+                                                              file.name,
+                                                              maxLines: 1,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                            )),
+                                                            IconButton(
+                                                                onPressed: () => context
+                                                                    .read<
+                                                                        PriceFormCubit>()
+                                                                    .delete(file
+                                                                        .id),
+                                                                icon: const Icon(
+                                                                    Icons
+                                                                        .delete,
+                                                                    color: Colors
+                                                                        .red)),
+                                                            if (file.active)
+                                                              IconButton(
+                                                                  onPressed: () => context.read<PriceFormCubit>().deactivate(
+                                                                      file.id),
+                                                                  icon: const Icon(
+                                                                      Icons
+                                                                          .check_circle_rounded,
+                                                                      color: Colors
+                                                                          .green))
+                                                            else
+                                                              IconButton(
+                                                                  onPressed: () => context
+                                                                      .read<
+                                                                          PriceFormCubit>()
+                                                                      .activate(
+                                                                          file
+                                                                              .id),
+                                                                  icon: const Icon(
+                                                                      Icons.remove_circle_outline,
+                                                                      color: Colors.red))
+                                                          ],
+                                                        ))
+                                                    .toList(),
                                               ),
-                                              if (file.active)
-                                                IconButton(
-                                                    onPressed: () => context.read<PriceFormCubit>().deactivate(file.id),
-                                                    icon: const Icon(Icons.check_circle_rounded, color: Colors.green)
-                                                )
-                                              else IconButton(
-                                                  onPressed: () => context.read<PriceFormCubit>().activate(file.id),
-                                                  icon: const Icon(Icons.remove_circle_outline, color: Colors.red)
-                                                )
+                                              ElevatedButtonApp(
+                                                text: AppLocalizations.of(
+                                                        context)!
+                                                    .add_price,
+                                                onPressed: context
+                                                    .read<PriceFormCubit>()
+                                                    .addPrice,
+                                              ),
                                             ],
-                                          );
-                                        }).toList(),
-                                      ),
-                                      ElevatedButtonApp(
-                                        text: "Add_price".tr(),
-                                        onPressed: context
-                                            .read<PriceFormCubit>()
-                                            .addPrice,
-                                      ),
-                                    ],
-                                  );
-                                  },
-                                  listener: (context, state) {
-                                    if (state.error != null) {
-                                      showErrorSnackBar(
-                                          context, state.error!.messages[0]);
-                                    }
-                                  }
-                                ),
-
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                const Divider(thickness: 1),
-                              ]
-                            ],
-                          );
-                        }
-                        else if (state.status == ProfileScreenStatus.notAuth) {
-                          return const AuthMessage();
-                        } else if (state.status == ProfileScreenStatus.loading) {
-                          return const Loader();
-                        } else if (state.status == ProfileScreenStatus.notAuth) {
-                          return ErrorMessage(error: state.error!);
-                        } else {
-                          return Container();
-                        }
-                      },
-                    ),
-                  ],
+                                          ),
+                                      listener: (context, state) {
+                                        if (state.error != null) {
+                                          showErrorSnackBar(context,
+                                              state.error!.messages[0]);
+                                        }
+                                      }),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  const Divider(thickness: 1),
+                                ]
+                              ],
+                            );
+                          } else if (state.status ==
+                              ProfileScreenStatus.notAuth) {
+                            return const AuthMessage();
+                          } else if (state.status ==
+                              ProfileScreenStatus.loading) {
+                            return const Loader();
+                          } else if (state.status ==
+                              ProfileScreenStatus.notAuth) {
+                            return ErrorMessage(error: state.error!);
+                          } else {
+                            return Container();
+                          }
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }

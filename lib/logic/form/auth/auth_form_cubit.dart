@@ -9,24 +9,23 @@ part 'auth_form_state.dart';
 class AuthFormCubit extends Cubit<AuthFormState> {
   AuthFormCubit() : super(const AuthFormState());
 
-  checkLogin({
+  bool checkLogin({
     required String phone,
     required String password,
   }) {
-    PasswordFormModel passwordForm = PasswordFormModel.dirty(password);
-    PhoneFormModel phoneForm = PhoneFormModel.dirty(phone);
+    var passwordForm = PasswordFormModel.dirty(password);
+    var phoneForm = PhoneFormModel.dirty(phone);
 
-    bool status = Formz.validate([
+    var status = Formz.validate([
       passwordForm,
       phoneForm,
     ]);
 
-    AuthFormState stateNew = state.copyWith(
+    var stateNew = state.copyWith(
         phone: phoneForm,
         password: passwordForm,
         status: status,
-        countTry: state.countTry + 1
-    );
+        countTry: state.countTry + 1);
     emit(stateNew);
     return stateNew.status;
   }

@@ -4,16 +4,14 @@ abstract class RegisterStoreState extends Equatable {
   const RegisterStoreState();
 }
 
-
 class RegisterStoreInitial extends RegisterStoreState {
   @override
   List<Object> get props => [];
 }
 
 class RegisterStoreSuccess extends RegisterStoreState {
-  final StoreModel store;
-
   const RegisterStoreSuccess(this.store);
+  final StoreModel store;
 
   @override
   List<Object?> get props => [store];
@@ -25,9 +23,8 @@ class RegisterStoreLoading extends RegisterStoreState {
 }
 
 class RegisterStoreError extends RegisterStoreState {
-  final ErrorModel error;
-
   const RegisterStoreError(this.error);
+  final ErrorModel error;
 
   @override
   List<Object> get props => [error];

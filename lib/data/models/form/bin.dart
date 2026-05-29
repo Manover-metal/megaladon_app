@@ -1,20 +1,19 @@
-
-import 'package:easy_localization/easy_localization.dart';
 import 'package:formz/formz.dart';
 
 enum BinValidationError {
-  empty, min, max;
+  empty,
+  min,
+  max;
 
   @override
   String toString() {
-    switch(this) {
+    switch (this) {
       case BinValidationError.empty:
-        return 'BIN_is_not_filled'.tr();
+        return 'BIN/IIN is not filled';
       case BinValidationError.min:
-        return 'BIN_is_not_fully_filled'.tr();
+        return 'BIN/INN is not fully filled';
       case BinValidationError.max:
-        return 'BIN_maximum_12_digits'.tr();
-
+        return 'BIN/INN maximum 12 digits';
     }
   }
 }
@@ -29,7 +28,7 @@ class BinFormModel extends FormzInput<String, BinValidationError> {
       return BinValidationError.empty;
     } else if (value.length < 12) {
       return BinValidationError.min;
-    }else if (value.length >= 13) {
+    } else if (value.length >= 13) {
       return BinValidationError.max;
     }
     return null;

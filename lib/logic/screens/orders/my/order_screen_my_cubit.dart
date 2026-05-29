@@ -10,16 +10,15 @@ import 'package:megaladon/logic/auth/auth_bloc.dart';
 part 'order_screen_my_state.dart';
 
 class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
-  final OrderRepository _repository = OrderRepository();
-  final AuthBloc authBloc;
-
   OrderScreenMyCubit(this.authBloc) : super(const OrderScreenMyState()) {
     _listenAuth(authBloc.state);
     authBloc.stream.listen(_listenAuth);
   }
+  final OrderRepository _repository = OrderRepository();
+  final AuthBloc authBloc;
 
-  _listenAuth(stateAuth) {
-    if(stateAuth is AuthLoginState) {
+  void _listenAuth(stateAuth) {
+    if (stateAuth is AuthLoginState) {
       refresh();
     } else {
       emit(const OrderScreenMyState());
@@ -31,21 +30,20 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
     //     && state.error == null
     // ) return;
 
-    OrderIndexRequestParams mainParams = params ?? state.params;
+    var mainParams = params ?? state.params;
     emit(state.copyWith(
-        status: OrderScreenMyStatus.loading,
-        error: null,
-      )
-    );
+      status: OrderScreenMyStatus.loading,
+      error: null,
+    ));
     return await _repository.indexMy(mainParams).then((value) {
       final my = value;
 
-      if(mainParams.startRow == 0) {
+      if (mainParams.startRow == 0) {
         emit(state.copyWith(
-            orders: my,
-            params: mainParams,
-            status: OrderScreenMyStatus.success,
-            stock: my.length < mainParams.rowsPerPage,
+          orders: my,
+          params: mainParams,
+          status: OrderScreenMyStatus.success,
+          stock: my.length < mainParams.rowsPerPage,
         ));
       } else {
         emit(state.copyWith(
@@ -55,9 +53,9 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
           stock: my.length < mainParams.rowsPerPage,
         ));
       }
-    }).catchError(( error) {
-      if(error is DioError) {
-        if(error.response?.statusCode == 403) {
+    }).catchError((error) {
+      if (error is DioException) {
+        if (error.response?.statusCode == 403) {
           authBloc.add(AuthLogoutEvent());
         } else {
           emit(state.copyWith(error: ErrorModel.parseDio(error)));
@@ -73,39 +71,34 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
     //     && state.error == null
     // ) return;
 
-    OrderIndexRequestParams mainParams = params ?? state.params;
+    var mainParams = params ?? state.params;
     emit(state.copyWith(
-        status: OrderScreenMyStatus.loading,
-        error: null,
-      )
-    );
+      status: OrderScreenMyStatus.loading,
+      error: null,
+    ));
     return await _repository.indexMyResponded(mainParams).then((value) {
       final myResponded = value;
       print('fetch Responded');
 
-      if(mainParams.startRow == 0) {
+      if (mainParams.startRow == 0) {
         emit(state.copyWith(
             ordersResponded: myResponded,
             params: mainParams,
             status: OrderScreenMyStatus.success,
-            stockResponded: myResponded.length < mainParams.rowsPerPage
-        ));
+            stockResponded: myResponded.length < mainParams.rowsPerPage));
         print('fetch startRow == 0 emit');
-
       } else {
         emit(state.copyWith(
             status: OrderScreenMyStatus.success,
             ordersResponded: [...state.ordersResponded, ...myResponded],
             params: mainParams,
-            stockResponded: myResponded.length < mainParams.rowsPerPage
-        ));
+            stockResponded: myResponded.length < mainParams.rowsPerPage));
         print('fetch startRow not 0 emit');
-
       }
-    }).catchError(( error) {
-      print('Error Responded: ${error}');
-      if(error is DioError) {
-        if(error.response?.statusCode == 403) {
+    }).catchError((error) {
+      print('Error Responded: $error');
+      if (error is DioException) {
+        if (error.response?.statusCode == 403) {
           authBloc.add(AuthLogoutEvent());
         } else {
           emit(state.copyWith(error: ErrorModel.parseDio(error)));
@@ -116,21 +109,17 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
     });
   }
 
-
   Future refresh() async {
-    if(state.status == OrderScreenMyStatus.loading
-        && state.error == null
-    ) return;
+    if (state.status == OrderScreenMyStatus.loading && state.error == null)
+      return;
 
-    OrderIndexRequestParams mainParams = state.params.copyWith(startRow: 0);
+    var mainParams = state.params.copyWith(startRow: 0);
     return await Future.wait([
       _repository.indexMy(mainParams),
       _repository.indexMyResponded(mainParams),
-
     ]).then((value) {
       final my = value[0];
       final myResponded = value[1];
-
 
       emit(state.copyWith(
           orders: my,
@@ -138,11 +127,10 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
           status: OrderScreenMyStatus.success,
           stock: my.length < mainParams.rowsPerPage,
           ordersResponded: myResponded,
-          stockResponded: myResponded.length < mainParams.rowsPerPage
-      ));
-    }).catchError(( error) {
-      if(error is DioError) {
-        if(error.response?.statusCode == 403) {
+          stockResponded: myResponded.length < mainParams.rowsPerPage));
+    }).catchError((error) {
+      if (error is DioException) {
+        if (error.response?.statusCode == 403) {
           authBloc.add(AuthLogoutEvent());
         } else {
           emit(state.copyWith(error: ErrorModel.parseDio(error)));
@@ -153,9 +141,7 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
     });
   }
 
-  changeParams(OrderIndexRequestParams params) {
-    emit(state.copyWith(
-        params: params.copyWith(startRow: 0)
-    ));
+  void changeParams(OrderIndexRequestParams params) {
+    emit(state.copyWith(params: params.copyWith(startRow: 0)));
   }
 }

@@ -10,10 +10,10 @@ import 'package:megaladon/data/repositories/dictionary_repository.dart';
 part 'dictionary_state.dart';
 
 class DictionaryCubit extends Cubit<DictionaryState> {
+  DictionaryCubit() : super(const DictionaryState());
   final DictionaryRepository _repository = DictionaryRepository();
-  DictionaryCubit() : super(DictionaryState());
 
-  initial() async {
+  Future<void> initial() async {
     await fetchCities();
     await fetchAdvertCategories();
     await fetchOrderCategories();
@@ -22,34 +22,34 @@ class DictionaryCubit extends Cubit<DictionaryState> {
     await fetchSubscribesExecutor();
   }
 
-  fetchCities() async {
+  Future<void> fetchCities() async {
     await _repository.getCities().then((value) {
-      value.forEach((c) => print(c.name));
+      for (final c in value) {
+        print(c.name);
+      }
       emit(state.copyWith(cities: value));
     }).catchError((err) {
       emit(state.copyWith(cities: []));
     });
   }
 
-  fetchOrderCategories()  async {
+  Future<void> fetchOrderCategories() async {
     await _repository.getOrderCategories().then((value) {
       emit(state.copyWith(orderCategories: value));
     }).catchError((err) {
       emit(state.copyWith(orderCategories: []));
-
     });
   }
 
-  fetchAdvertCategories()  async {
+  Future<void> fetchAdvertCategories() async {
     await _repository.getAdvertCategories().then((value) {
       emit(state.copyWith(advertCategories: value));
     }).catchError((err) {
       emit(state.copyWith(advertCategories: []));
-
     });
   }
 
-  fetchServiceTypes()  async {
+  Future<void> fetchServiceTypes() async {
     await _repository.getServiceTypes().then((value) {
       emit(state.copyWith(serviceTypes: value));
     }).catchError((err) {
@@ -57,7 +57,7 @@ class DictionaryCubit extends Cubit<DictionaryState> {
     });
   }
 
-  fetchSubscribesStore()  async {
+  Future<void> fetchSubscribesStore() async {
     await _repository.getSubscribeStore().then((value) {
       print(value);
 
@@ -69,7 +69,7 @@ class DictionaryCubit extends Cubit<DictionaryState> {
     });
   }
 
-  fetchSubscribesExecutor()  async {
+  Future<void> fetchSubscribesExecutor() async {
     await _repository.getSubscribeExecutor().then((value) {
       print(value);
       emit(state.copyWith(subscribesExecutor: value));

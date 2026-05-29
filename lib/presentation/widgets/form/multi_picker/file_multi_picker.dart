@@ -1,12 +1,12 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 
 class FileMultiPickerController extends ValueNotifier<List<PlatformFile>> {
   FileMultiPickerController() : super([]);
 
-  _listener() {
+  void _listener() {
     notifyListeners();
   }
 
@@ -19,67 +19,60 @@ class FileMultiPickerController extends ValueNotifier<List<PlatformFile>> {
     value = List.from(value)..removeAt(index);
     _listener();
   }
-
 }
 
 class FileMultiPicker extends StatefulWidget {
+  const FileMultiPicker({required this.controller, super.key});
   final FileMultiPickerController controller;
-
-  const FileMultiPicker({super.key, required this.controller});
 
   @override
   State<FileMultiPicker> createState() => _FileMultiPickerState();
 }
 
 class _FileMultiPickerState extends State<FileMultiPicker> {
-  _addFile() async {
-    FilePickerResult? result = await FilePicker.pickFiles(
-        allowMultiple: true,
-        type: FileType.custom,
-        allowedExtensions: ['jpg', 'png', 'jpeg' ,'pdf', 'doc', 'docx'],
+  Future<void> _addFile() async {
+    var result = await FilePicker.pickFiles(
+      allowMultiple: true,
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'png', 'jpeg', 'pdf', 'doc', 'docx'],
     );
 
     if (result != null) {
-      final List<PlatformFile> files = result.files;
+      final files = result.files;
       widget.controller._addFiles(files);
     }
   }
 
-  _removeByIndex(int index) => () {
-    widget.controller._removeByIndex(index);
-  };
+  Null Function() _removeByIndex(int index) => () {
+        widget.controller._removeByIndex(index);
+      };
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ValueListenableBuilder(
-          valueListenable: widget.controller,
-          builder: (context, List<PlatformFile> files, Widget? child) {
-            return ListView.builder(
+  Widget build(BuildContext context) => Column(
+        children: [
+          ValueListenableBuilder(
+            valueListenable: widget.controller,
+            builder: (context, files, child) => ListView.builder(
                 itemCount: files.length,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, item) {
-                  return Row(
-                    children: [
-                      Expanded(
-                        child: Text(files[item].name)
-                      ),
-                      IconButton(
-                        onPressed: _removeByIndex(item),
-                        icon: Icon(Icons.remove_circle_outline_rounded,
-                          color: Theme.of(context).colorScheme.error,
-                        ),
-                      )
-                    ],
-                  );
-                }
-            );
-          },
-        ),
-        OutlinedButtonApp(text: 'Add_file'.tr(), onPressed: _addFile,)
-      ],
-    );
-  }
+                itemBuilder: (context, item) => Row(
+                      children: [
+                        Expanded(child: Text(files[item].name)),
+                        IconButton(
+                          onPressed: _removeByIndex(item),
+                          icon: Icon(
+                            Icons.remove_circle_outline_rounded,
+                            color: Theme.of(context).colorScheme.error,
+                          ),
+                        )
+                      ],
+                    )),
+          ),
+          OutlinedButtonApp(
+            text: AppLocalizations.of(context)!.add_file,
+            onPressed: _addFile,
+          )
+        ],
+      );
 }

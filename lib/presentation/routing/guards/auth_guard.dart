@@ -4,13 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 
 class AuthGuard extends AutoRouteGuard {
-  final BuildContext context;
-
   AuthGuard(this.context);
+  final BuildContext context;
 
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) {
-    if(context.read<AuthBloc>().state is AuthLoginState) {
+    if (context.read<AuthBloc>().state is AuthLoginState) {
       resolver.next(true);
     } else {
       router.pop();
@@ -19,13 +18,12 @@ class AuthGuard extends AutoRouteGuard {
 }
 
 class NotAuthGuard extends AutoRouteGuard {
-  final BuildContext context;
-
   NotAuthGuard(this.context);
+  final BuildContext context;
 
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) {
-    if(context.read<AuthBloc>().state is! AuthLoginState) {
+    if (context.read<AuthBloc>().state is! AuthLoginState) {
       resolver.next(true);
     } else {
       router.pop();

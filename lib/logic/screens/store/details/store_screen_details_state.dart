@@ -17,26 +17,20 @@ class StoreScreenDetailsLoader extends StoreScreenDetailsState {
 }
 
 class StoreScreenDetailsError extends StoreScreenDetailsState {
-  final ErrorModel error;
   StoreScreenDetailsError(this.error);
+  final ErrorModel error;
 
   @override
   List<Object> get props => [error];
 }
 
-class StoreScreenDetailsSuccess extends  StoreScreenDetailsState {
-  final StoreModel store;
-
+class StoreScreenDetailsSuccess extends StoreScreenDetailsState {
   StoreScreenDetailsSuccess({required this.store});
+  final StoreModel store;
 
   @override
   List<Object?> get props => [store];
 
-  StoreScreenDetailsSuccess copyWith({
-    StoreModel? store
-  }) {
-    return StoreScreenDetailsSuccess(
-        store: store ?? this.store
-    );
-  }
+  StoreScreenDetailsSuccess copyWith({StoreModel? store}) =>
+      StoreScreenDetailsSuccess(store: store ?? this.store);
 }

@@ -1,4 +1,3 @@
-
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
@@ -10,21 +9,20 @@ part 'register_user_event.dart';
 part 'register_user_state.dart';
 
 class RegisterUserBloc extends Bloc<RegisterUserEvent, RegisterUserState> {
-  final RegisterRepository _repository = RegisterRepository();
   RegisterUserBloc() : super(RegisterUserInitial()) {
     on<RegisterUserFetchEvent>(_register);
   }
+  final RegisterRepository _repository = RegisterRepository();
 
-  _register(RegisterUserFetchEvent event, Emitter emit ) async {
-    if(state is RegisterUserLoading) return;
-
+  Future<void> _register(RegisterUserFetchEvent event, Emitter emit) async {
+    if (state is RegisterUserLoading) return;
 
     emit(RegisterUserLoading());
     await _repository.registerUser(event.params).then((value) {
       emit(RegisterUserSuccess());
     }).catchError((error) {
       print(error);
-      if(error is DioError) {
+      if (error is DioException) {
         emit(RegisterUserError(ErrorModel.parseDio(error)));
       } else {
         emit(RegisterUserError(ErrorModel.nothing));

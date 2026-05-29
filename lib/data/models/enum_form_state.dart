@@ -1,6 +1,1 @@
-enum EnumFormState {
-  filled,
-  fetch,
-  success,
-  error
-}
+enum EnumFormState { filled, fetch, success, error }

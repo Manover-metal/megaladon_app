@@ -5,13 +5,11 @@ abstract class RegisterExecutorEvent extends Equatable {
 }
 
 class RegisterExecutorFetchEvent extends RegisterExecutorEvent {
-  final RegisterExecutorRequestParams params;
-
   const RegisterExecutorFetchEvent({
     required this.params,
   });
+  final RegisterExecutorRequestParams params;
 
   @override
   List<Object?> get props => [params];
-
 }

@@ -7,15 +7,15 @@ class OfferRepository {
       .post('/order/$orderId/offer', data: params.toData())
       .then((value) => value.data);
 
-  Future getAll(int orderId) => ApiService.I
-      .get('/order/$orderId/offer')
-      .then((value) => OfferModel.listFromJsonMini(value.data['list']));
+  Future<List<OfferModel>> getAll(int orderId) =>
+      ApiService.I.get('/order/$orderId/offer').then((value) =>
+          OfferModel.listFromJsonMini(value.data['list'] as List<dynamic>));
 
   Future accept(int orderId, int offerId) => ApiService.I
       .post('/order/$orderId/offer/$offerId')
       .then((value) => value.data);
 
-  Future getById(int orderId, int offerId) => ApiService.I
-      .get('/order/$orderId/offer/$offerId')
-      .then((value) => OfferModel.fromJsonFull(value.data['offer']));
+  Future<OfferModel> getById(int orderId, int offerId) =>
+      ApiService.I.get('/order/$orderId/offer/$offerId').then((value) =>
+          OfferModel.fromJsonFull(value.data['offer'] as Map<String, dynamic>));
 }

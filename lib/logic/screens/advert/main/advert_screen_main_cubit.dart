@@ -9,112 +9,89 @@ import 'package:megaladon/data/repositories/advert_repository.dart';
 
 part 'advert_screen_main_state.dart';
 
-
 class AdvertScreenMainCubit extends Cubit<AdvertScreenMainState> {
-  final AdvertRepository _repository = AdvertRepository();
   AdvertScreenMainCubit() : super(const AdvertScreenMainState());
+  final AdvertRepository _repository = AdvertRepository();
 
   Future fetchAdvert({AdvertIndexRequestParams? params}) async {
-    if(state.status == AdverScreenMainStatus.loading
-        && state.error == null
-    ) return;
+    if (state.status == AdverScreenMainStatus.loading && state.error == null)
+      return;
 
-
-    AdvertIndexRequestParams mainParams = params ?? state.params;
+    var mainParams = params ?? state.params;
     emit(state.copyWith(
-        status: AdverScreenMainStatus.loading,
-        error: null,
-        adverts: state.adverts,
-        params: mainParams,
-      )
-    );
+      status: AdverScreenMainStatus.loading,
+      error: null,
+      adverts: state.adverts,
+      params: mainParams,
+    ));
 
     return await _repository.index(mainParams).then((value) {
-      if(mainParams.startRow == 0) {
+      if (mainParams.startRow == 0) {
         emit(state.copyWith(
             adverts: value,
             params: mainParams,
             status: AdverScreenMainStatus.success,
-            stock: value.length < mainParams.rowsPerPage
-        ));
-
+            stock: value.length < mainParams.rowsPerPage));
       } else {
         emit(state.copyWith(
-          status: AdverScreenMainStatus.success,
-          adverts: [...state.adverts, ...value],
-          params: mainParams,
-          stock: value.length < mainParams.rowsPerPage
-        ));
+            status: AdverScreenMainStatus.success,
+            adverts: [...state.adverts, ...value],
+            params: mainParams,
+            stock: value.length < mainParams.rowsPerPage));
       }
-
-    }).catchError(( error) {
-      if(error is DioError) {
+    }).catchError((error) {
+      if (error is DioException) {
         emit(state.copyWith(
             status: AdverScreenMainStatus.error,
-            error: ErrorModel.parseDio(error))
-        );
+            error: ErrorModel.parseDio(error)));
       } else {
         emit(state.copyWith(
-            status: AdverScreenMainStatus.error,
-            error: ErrorModel.nothing)
-        );
+            status: AdverScreenMainStatus.error, error: ErrorModel.nothing));
       }
     });
   }
 
   Future fetchService({AdvertIndexRequestParams? params}) async {
-    if(state.status == AdverScreenMainStatus.loading
-        && state.error == null
-    ) return;
+    if (state.status == AdverScreenMainStatus.loading && state.error == null)
+      return;
 
+    var mainParams = params ?? state.params;
+    emit(state.copyWith(
+      status: AdverScreenMainStatus.loading,
+      error: null,
+      services: state.services,
+      params: mainParams,
+    ));
 
-    AdvertIndexRequestParams mainParams = params ?? state.params;
-      emit(state.copyWith(
-        status: AdverScreenMainStatus.loading,
-        error: null,
-        services: state.services,
-        params: mainParams,
-      )
-    );
-
-    return await _repository.index(mainParams, AdvertType.service).then((value) {
-      if(mainParams.startRow == 0) {
+    return await _repository
+        .index(mainParams, AdvertType.service)
+        .then((value) {
+      if (mainParams.startRow == 0) {
         emit(state.copyWith(
             services: value,
             params: mainParams,
             status: AdverScreenMainStatus.success,
-            stock: value.length < mainParams.rowsPerPage
-        ));
-
+            stock: value.length < mainParams.rowsPerPage));
       } else {
         emit(state.copyWith(
             status: AdverScreenMainStatus.success,
             services: [...state.services, ...value],
             params: mainParams,
-            stock: value.length < mainParams.rowsPerPage
-        ));
+            stock: value.length < mainParams.rowsPerPage));
       }
-
-    }).catchError(( error) {
-      if(error is DioError) {
+    }).catchError((error) {
+      if (error is DioException) {
         emit(state.copyWith(
             status: AdverScreenMainStatus.error,
-            error: ErrorModel.parseDio(error))
-        );
+            error: ErrorModel.parseDio(error)));
       } else {
         emit(state.copyWith(
-            status: AdverScreenMainStatus.error,
-            error: ErrorModel.nothing)
-        );
+            status: AdverScreenMainStatus.error, error: ErrorModel.nothing));
       }
     });
   }
 
-
-
-  changeParams(AdvertIndexRequestParams params) {
-    emit(state.copyWith(
-        params: params.copyWith(startRow: 0)
-    ));
+  void changeParams(AdvertIndexRequestParams params) {
+    emit(state.copyWith(params: params.copyWith(startRow: 0)));
   }
 }

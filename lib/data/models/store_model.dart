@@ -4,12 +4,25 @@ import 'package:megaladon/data/models/contact_model.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/dictionary/file_model.dart';
 
-
 part 'store_model.g.dart';
-
 
 @collection
 class StoreModel {
+  StoreModel({
+    required this.id,
+    required this.fullAddress,
+    required this.hasPhone,
+    this.photo,
+    this.rating,
+    this.prices = const [],
+    this.contacts,
+    this.bin,
+    this.lat,
+    this.lon,
+    this.name,
+    this.city,
+  });
+
   final Id id;
   final String fullAddress;
 
@@ -30,69 +43,54 @@ class StoreModel {
   @ignore
   final List<ContactModel>? contacts;
 
+  static StoreModel fromJsonMini(Map<String, dynamic> data) => StoreModel(
+      id: data['id'] as int,
+      name: data['name'] as String?,
+      hasPhone: false,
+      rating: data['rating'] as String?,
+      fullAddress: data['full_address'] as String,
+      photo: data['photo_url'] as String?,
+      city: data['city'] != null
+          ? CityModel.fromJson(data['city'] as Map<String, dynamic>)
+          : null);
 
-  StoreModel({
-    required this.id,
-    required this.fullAddress,
-    required this.hasPhone,
-    this.photo,
-    this.rating,
-    this.prices = const [],
-    this.contacts,
-    this.bin,
-    this.lat,
-    this.lon,
-    this.name,
-    this.city,
-  });
-
-  static StoreModel fromJsonMini(data) {
-    
+  static StoreModel fromJsonFull(Map<String, dynamic> data) {
+    var contacts = data['contacts'] != null
+        ? ContactModel.fromJsonList(data['contacts'] as List<dynamic>)
+        : null;
     return StoreModel(
-        id: data['id'],
-        name: data['name'],
-        hasPhone: false,
-        rating: data['rating'],
-        fullAddress: data['full_address'],
-        photo: data['photo_url'],
-        city: data['city'] != null? CityModel.fromJson(data['city']): null
-    );
-  }
-
-  static StoreModel fromJsonFull(data) {
-
-    List<ContactModel>? contacts = data['contacts'] != null? ContactModel.fromJsonList(data['contacts']): null;
-    return StoreModel(
-        id: data['id'],
-        rating: data['rating'],
+        id: data['id'] as int,
+        rating: data['rating'] as String?,
         bin: Parser.toInt(data['bin']),
-        fullAddress: data['full_address'],
-        photo: data['photo_url'],
-        name: data['name'],
-        prices: data['prices'] != null? FileModel.listFromJson(data['prices']): [],
+        fullAddress: data['full_address'] as String,
+        photo: data['photo_url'] as String?,
+        name: data['name'] as String?,
+        prices: data['prices'] != null
+            ? FileModel.listFromJson(data['prices'] as List<dynamic>)
+            : [],
         lat: Parser.toDouble(data['lat']),
         lon: Parser.toDouble(data['lon']),
         contacts: contacts,
-        hasPhone: (contacts != null)? contacts.any((element) {
-          return element.type == ContactType.home_phone || element.type == ContactType.phone;
-        }): false,
-        city: data['city'] != null? CityModel.fromJson(data['city']): null
-
-    );
+        hasPhone: (contacts != null) &&
+            contacts.any((element) =>
+                element.type == ContactType.home_phone ||
+                element.type == ContactType.phone),
+        city: data['city'] != null
+            ? CityModel.fromJson(data['city'] as Map<String, dynamic>)
+            : null);
   }
 
   static StoreModel? fromJsonFullOrNull(Map<String, dynamic>? data) {
-    if(data == null) return null;
+    if (data == null) return null;
     try {
       return StoreModel.fromJsonFull(data);
-    } catch(e) {
+    } catch (e) {
       return null;
     }
   }
 
-  static List<StoreModel> listFromJsonMini(List data) {
-    return data.map<StoreModel>((advert) {
-      return StoreModel.fromJsonMini(advert);
-    }).toList();
-  }
+  static List<StoreModel> listFromJsonMini(List<dynamic> data) => data
+      .map<StoreModel>(
+          (item) => StoreModel.fromJsonMini(item as Map<String, dynamic>))
+      .toList();
 }

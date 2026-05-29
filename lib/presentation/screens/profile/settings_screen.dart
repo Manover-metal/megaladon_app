@@ -1,42 +1,32 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
+import 'package:megaladon/logic/locale/locale_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 
+const _localeNames = {
+  'en': 'English',
+  'ru': 'Русский',
+  'kk': 'Қазақша',
+};
 
-class SettingsScreen extends StatefulWidget {
+class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
-  @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
-}
-
-class _SettingsScreenState extends State<SettingsScreen> {
-
-  _changeLocalization(Locale? newValue) {
-    if(newValue != null) {
-      context.setLocale(newValue);
-    }
-  }
-
-  _toAbout() {
-    context.router.navigate(InitialRouter(
-      children: [
-        ProfileRouter(
-          children: [
-            AboutRoute()
-          ]
-        )
-      ]
-    ));
+  void _toAbout(BuildContext context) {
+    context.router.navigate(const InitialRouter(children: [
+      ProfileRouter(children: [AboutRoute()])
+    ]));
   }
 
   @override
   Widget build(BuildContext context) {
-    print(context.supportedLocales.map((e) => e.languageCode));
-    print(context.locale.languageCode);
+    final l10n = AppLocalizations.of(context)!;
+    final currentLocale = context.read<LocaleCubit>().state;
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -44,65 +34,38 @@ class _SettingsScreenState extends State<SettingsScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                 HeaderAppBar(
-                  isMenu: true,
-                  title: 'Settings'.tr(),
-                ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: const [
-                //     Text('Push-уведомления'),
-                //     SwitchExample(),
-                //   ],
-                // ),
+                HeaderAppBar(isMenu: true, title: l10n.settings),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                     Expanded(
-                        child: Text('Language'.tr())
-                    ),
+                    Expanded(child: Text(l10n.language)),
                     Expanded(
                       child: DropdownButton<Locale>(
                         isExpanded: true,
-                        value: context.locale,
-                        items: context.supportedLocales.map((Locale locale) {
-                          return DropdownMenuItem(
-                            value: locale,
-                            child: Text(locale.languageCode.tr()),
-                          );
-                        }).toList(),
-                        onChanged: _changeLocalization
+                        value: currentLocale,
+                        items: AppLocalizations.supportedLocales
+                            .map((locale) => DropdownMenuItem(
+                                  value: locale,
+                                  child: Text(
+                                    _localeNames[locale.languageCode] ??
+                                        locale.languageCode,
+                                  ),
+                                ))
+                            .toList(),
+                        onChanged: (locale) {
+                          if (locale != null) {
+                            context.read<LocaleCubit>().change(locale);
+                          }
+                        },
                       ),
                     ),
-
                   ],
                 ),
-                // OutlinedButtonApp(
-                //   text: 'ЧАВО',
-                //   onPressed: () {},
-                // ),
                 OutlinedButtonApp(
-                  text: 'About_the_application'.tr(),
-                  onPressed: _toAbout,
+                  text: l10n.about_the_application,
+                  onPressed: () => _toAbout(context),
                 ),
-                // OutlinedButtonApp(
-                //   text: 'Сменить номер телефона',
-                //   onPressed: () {},
-                // ),
-                const SizedBox(
-                  height: 50,
-                ),
-                // OutlinedButtonApp(
-                //   text: 'Сканировать QR код',
-                //   onPressed: () {},
-                // ),
-                // Text(
-                //   'Сканируйте QR код для\nавторизации в Web-версии приложения ',
-                //   textAlign: TextAlign.center,
-                //   style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                //     color: Theme.of(context).colorScheme.secondary
-                //   ),
-                // ),
+                const SizedBox(height: 50),
               ],
             ),
           ),
@@ -110,7 +73,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
   }
-
 }
 
 class SwitchExample extends StatefulWidget {
@@ -124,17 +86,15 @@ class _SwitchExampleState extends State<SwitchExample> {
   bool light = true;
 
   @override
-  Widget build(BuildContext context) {
-    return Switch(
-      // This bool value toggles the switch.
-      value: light,
-      activeColor: Colors.green,
-      onChanged: (bool value) {
-        // This is called when the user toggles the switch.
-        setState(() {
-          light = value;
-        });
-      },
-    );
-  }
+  Widget build(BuildContext context) => Switch(
+        // This bool value toggles the switch.
+        value: light,
+        activeThumbColor: Colors.green,
+        onChanged: (value) {
+          // This is called when the user toggles the switch.
+          setState(() {
+            light = value;
+          });
+        },
+      );
 }

@@ -1,10 +1,7 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:megaladon/data/models/dictionary/city_model.dart';
-import 'package:megaladon/data/models/dictionary/order_category_model.dart';
-import 'package:megaladon/data/models/request/params/index/order_index_request_params.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/screens/orders/main/order_screen_main_cubit.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
@@ -15,6 +12,14 @@ import 'package:megaladon/presentation/widgets/text/title.dart';
 class FilterOrderBottomSheet extends StatefulWidget {
   const FilterOrderBottomSheet({super.key});
 
+  Future<bool?> show(BuildContext context) => showModalBottomSheet<bool>(
+      useRootNavigator: true,
+      useSafeArea: true,
+      isScrollControlled: true,
+      context: context,
+      elevation: 100,
+      builder: (_) => this);
+
   @override
   State<FilterOrderBottomSheet> createState() => _FilterOrderBottomSheetState();
 }
@@ -24,27 +29,26 @@ class _FilterOrderBottomSheetState extends State<FilterOrderBottomSheet> {
   late CityPickerController _cityPickerController;
   late OrderCategoryPickerController _orderCategoryPickerController;
 
-
-
-  _back() {
-    OrderIndexRequestParams params = context.read<OrderScreenMainCubit>().state.params;
+  void _back() {
+    var params = context.read<OrderScreenMainCubit>().state.params;
     final city = _cityPickerController.value;
     final category = _orderCategoryPickerController.value;
     context.read<OrderScreenMainCubit>().changeParams(params.copyWith(
-      startRow: 0,
-      last: _indexPeriodPickerController.value,
-      city: city,
-      category: category
-    ));
+        startRow: 0,
+        last: _indexPeriodPickerController.value,
+        city: city,
+        category: category));
     context.router.pop(true);
   }
 
   @override
   void initState() {
-    OrderScreenMainState state = context.read<OrderScreenMainCubit>().state;
-    _indexPeriodPickerController = IndexPeriodPickerController(state.params.last);
+    var state = context.read<OrderScreenMainCubit>().state;
+    _indexPeriodPickerController =
+        IndexPeriodPickerController(state.params.last);
     _cityPickerController = CityPickerController(city: state.params.city);
-    _orderCategoryPickerController = OrderCategoryPickerController(category: state.params.category);
+    _orderCategoryPickerController =
+        OrderCategoryPickerController(category: state.params.category);
     super.initState();
   }
 
@@ -57,44 +61,56 @@ class _FilterOrderBottomSheetState extends State<FilterOrderBottomSheet> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).colorScheme.background,
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-           TitleApp('filter'.tr()),
-          const Divider(thickness: 1,height: 20,),
-          Row(
-            children: [
-              Expanded(
-                child: CityPicker(label: 'City'.tr(), controller: _cityPickerController,),
-              )
-            ],
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: OrderCategoryPicker(label: 'category'.tr(), controller: _orderCategoryPickerController,),
-              )
-            ],
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: IndexPeriodPicker(label: 'last_period'.tr(), controller: _indexPeriodPickerController,),
-              )
-            ],
-          ),
-          const SizedBox(height: 30,),
-          ElevatedButtonApp(
-              text: 'Apply'.tr(),
-              onPressed: _back
-          ),
-          const SizedBox(height: 30,),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Container(
+        color: Theme.of(context).colorScheme.surface,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TitleApp(AppLocalizations.of(context)!.filter),
+            const Divider(
+              thickness: 1,
+              height: 20,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: CityPicker(
+                    label: AppLocalizations.of(context)!.city,
+                    controller: _cityPickerController,
+                  ),
+                )
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: OrderCategoryPicker(
+                    label: AppLocalizations.of(context)!.category,
+                    controller: _orderCategoryPickerController,
+                  ),
+                )
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: IndexPeriodPicker(
+                    label: AppLocalizations.of(context)!.last_period,
+                    controller: _indexPeriodPickerController,
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            ElevatedButtonApp(
+                text: AppLocalizations.of(context)!.apply, onPressed: _back),
+            const SizedBox(
+              height: 30,
+            ),
+          ],
+        ),
+      );
 }

@@ -1,15 +1,12 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:megaladon/generated/locale_keys.g.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 
 class StockMessage extends StatelessWidget {
+  const StockMessage({required this.name, super.key});
   final String name;
 
-  const StockMessage({super.key, required this.name});
-
   @override
-  Widget build(BuildContext context) {
-    return Container(
+  Widget build(BuildContext context) => Container(
       margin: const EdgeInsets.symmetric(vertical: 20),
       width: double.infinity,
       child: Column(
@@ -24,19 +21,17 @@ class StockMessage extends StatelessWidget {
             text: TextSpan(
               children: [
                 TextSpan(text: name),
-                TextSpan(text: "for_this_request_ended".tr()),
+                TextSpan(
+                    text: AppLocalizations.of(context)!.for_this_request_ended),
               ],
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w700,
-                fontSize: 18,
-                color: Theme.of(context).colorScheme.secondary,
-              ),
+                    fontWeight: FontWeight.w700,
+                    fontSize: 18,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
             ),
             textAlign: TextAlign.center,
           ),
         ],
-      )
-    );
-  }
-
+      ));
 }

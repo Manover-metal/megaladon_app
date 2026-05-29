@@ -1,13 +1,7 @@
-
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:megaladon/data/models/dictionary/store_type_model.dart';
-import 'package:megaladon/logic/dictionary/dictionary_cubit.dart';
 
 // Future<StoreTypeModel?> showStoreTypePicker(BuildContext context) async {
 //   List<StoreTypeModel> storeTypes = context.read<DictionaryCubit>().state.storeTypes;
-
 
 //   final result = await Picker(
 //     itemExtent: 30,
@@ -23,15 +17,13 @@ import 'package:megaladon/logic/dictionary/dictionary_cubit.dart';
 //     ),
 //     changeToFirst: false,
 //     hideHeader: false,
-//     cancelText: 'Cancel'.tr(),
-//     confirmText: 'select'.tr(),
+//     cancelText: AppLocalizations.of(context)!.cancel,
+//     confirmText: AppLocalizations.of(context)!.select,
 //   ).showModal(context);
-
 
 //   if(result == null) return null;
 //   return storeTypes[result[0]];
 // }
-
 
 // class StoreTypePickerController extends ValueNotifier<StoreTypeModel> {
 //   StoreTypePickerController({StoreTypeModel?  type}) : super(type ?? StoreTypeModel.nothing);

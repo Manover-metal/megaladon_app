@@ -3,7 +3,6 @@ import 'dart:typed_data';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:megaladon/core/image/image_service.dart';
 import 'package:megaladon/data/models/error_model.dart';
 import 'package:megaladon/data/repositories/user_repository.dart';
@@ -13,46 +12,45 @@ import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 part 'change_photo_state.dart';
 
 class ChangePhotoCubit extends Cubit<ChangePhotoState> {
-  final UserRepository _repository = UserRepository();
-  final ProfileScreenCubit profileCubit;
-  final AuthBloc authBloc;
-  ChangePhotoCubit(this.profileCubit, this.authBloc) : super(const ChangePhotoState()) {
+  ChangePhotoCubit(this.profileCubit, this.authBloc)
+      : super(const ChangePhotoState()) {
     _listenProfile(profileCubit.state);
     profileCubit.stream.listen(_listenProfile);
   }
+  final UserRepository _repository = UserRepository();
+  final ProfileScreenCubit profileCubit;
+  final AuthBloc authBloc;
 
-
-  changePhoto() async {
+  Future<void> changePhoto() async {
     final result = await ImageService.getImage();
-    if(result == null) return;
+    if (result == null) return;
 
-    PlatformFile file = result.files[0];
+    var file = result.files[0];
 
     emit(ChangePhotoState(imageData: file.bytes, status: PhotoStatus.bytes));
 
-
-    FormData data = FormData.fromMap({
+    var data = FormData.fromMap({
       'photo': await MultipartFile.fromFile(file.path!, filename: file.name)
     });
     _repository.changePhoto(data).catchError((error) {
-      if(error is DioError) {
-        if(error.response?.statusCode == 403) {
+      if (error is DioException) {
+        if (error.response?.statusCode == 403) {
           authBloc.add(AuthLogoutEvent());
         }
-        emit(ChangePhotoState(status: PhotoStatus.error, error: ErrorModel.parseDio(error)));
+        emit(ChangePhotoState(
+            status: PhotoStatus.error, error: ErrorModel.parseDio(error)));
       } else {
-        emit(ChangePhotoState(status: PhotoStatus.error, error: ErrorModel.nothing));
+        emit(ChangePhotoState(
+            status: PhotoStatus.error, error: ErrorModel.nothing));
       }
     });
   }
 
-  _listenProfile(ProfileScreenState profileState) {
-    if(profileState.status == ProfileScreenStatus.success) {
-      String? url = profileState.user?.photo;
+  void _listenProfile(ProfileScreenState profileState) {
+    if (profileState.status == ProfileScreenStatus.success) {
+      var url = profileState.user?.photo;
       emit(ChangePhotoState(
-          url: url,
-          status: url != null? PhotoStatus.url : PhotoStatus.none
-      ));
+          url: url, status: url != null ? PhotoStatus.url : PhotoStatus.none));
     }
   }
 }

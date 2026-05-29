@@ -5,34 +5,30 @@ import 'package:talker/talker.dart';
 import 'package:talker_dio_logger_plus/talker_dio_logger_plus.dart';
 
 class ApiService {
-  static late Dio _dio;
-
   ApiService();
 
   ApiService.initialize() {
-     _dio = Dio();
-     _dio.options.baseUrl = dotenv.env['BASE_URL']!;
-     _dio.options.headers.addAll({
-       'Accept': 'application/json'
-     });
-     addInterceptors(AdvancedDioLogger(
-          talker: Talker(),
-          settings: AdvancedDioLoggerSettings(
-            printRequestExtra: false,
-            printRequestHeaders: false,
-            printRequestData: true,
-            printResponseData: true,
-            printResponseHeaders: false,
-            printErrorMessage: true,
-          ),
-        ));
-     addInterceptors(ErrorInterceptor());
-      
+    _dio = Dio();
+    _dio.options.baseUrl = dotenv.env['BASE_URL']!;
+    _dio.options.headers.addAll({'Accept': 'application/json'});
+    addInterceptors(AdvancedDioLogger(
+      talker: Talker(),
+      settings: AdvancedDioLoggerSettings(
+        printRequestExtra: false,
+        printRequestHeaders: false,
+        printRequestData: true,
+        printResponseData: true,
+        printResponseHeaders: false,
+        printErrorMessage: true,
+      ),
+    ));
+    addInterceptors(ErrorInterceptor());
   }
+  static late Dio _dio;
 
   static Dio get I => _dio;
 
-  static addInterceptors(Interceptor interceptor) {
+  static void addInterceptors(Interceptor interceptor) {
     _dio.interceptors.add(interceptor);
   }
 }

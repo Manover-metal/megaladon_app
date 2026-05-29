@@ -1,19 +1,19 @@
-
-import 'package:easy_localization/easy_localization.dart';
 import 'package:formz/formz.dart';
 
 enum LatValidationError {
-  empty, min, max;
+  empty,
+  min,
+  max;
 
   @override
   String toString() {
-    switch(this) {
+    switch (this) {
       case LatValidationError.empty:
-        return 'Latitude_not_filled'.tr();
+        return 'Latitude is not filled';
       case LatValidationError.min:
-        return 'Latitude_cannot_be_less_than_90'.tr();
+        return 'Latitude cannot be less than -90°';
       case LatValidationError.max:
-        return 'Latitude_cannot_be_greater_than_90'.tr();
+        return 'Latitude cannot be greater than +90°';
     }
   }
 }

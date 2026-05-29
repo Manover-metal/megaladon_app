@@ -8,23 +8,21 @@ import 'package:megaladon/data/repositories/offer_repository.dart';
 part 'offer_screen_main_state.dart';
 
 class OfferScreenMainCubit extends Cubit<OfferScreenMainState> {
-  final OfferRepository _repository = OfferRepository();
   OfferScreenMainCubit() : super(OfferScreenMainInitial());
+  final OfferRepository _repository = OfferRepository();
 
   Future fetch({required int orderId}) async {
-
     emit(OfferScreenMainLoader());
     return await _repository.getAll(orderId).then((value) {
       emit(OfferScreenMainSuccess(
-          offers: value,
+        offers: value,
       ));
     }).catchError((error) {
-      if(error is DioError) {
+      if (error is DioException) {
         emit(OfferScreenMainError(ErrorModel.parseDio(error)));
       } else {
         emit(OfferScreenMainError(ErrorModel.nothing));
       }
     });
-
   }
 }

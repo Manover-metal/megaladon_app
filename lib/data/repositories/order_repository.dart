@@ -5,37 +5,44 @@ import 'package:megaladon/data/models/request/params/index/order_index_request_p
 import 'package:megaladon/data/models/request/params/update/order_update_request_params.dart';
 
 class OrderRepository {
-  Future index(OrderIndexRequestParams params) => ApiService.I
+  Future<List<OrderModel>> index(OrderIndexRequestParams params) => ApiService.I
       .get('/order', queryParameters: params.toData())
-      .then((value) => OrderModel.listFromJsonMini(value.data['list']));
+      .then((value) =>
+          OrderModel.listFromJsonMini(value.data['list'] as List<dynamic>));
 
-  Future indexMy(OrderIndexRequestParams params) => ApiService.I
-      .get('/order/my', queryParameters: params.toData())
-      .then((value) => OrderModel.listFromJsonMini(value.data['list']));
+  Future<List<OrderModel>> indexMy(OrderIndexRequestParams params) =>
+      ApiService.I.get('/order/my', queryParameters: params.toData()).then(
+          (value) =>
+              OrderModel.listFromJsonMini(value.data['list'] as List<dynamic>));
 
-  Future indexMyResponded(OrderIndexRequestParams params) => ApiService.I
-      .get('/order/my-responded', queryParameters: params.toData())
-      .then((value) => OrderModel.listFromJsonMini(value.data['list']));
+  Future<List<OrderModel>> indexMyResponded(OrderIndexRequestParams params) =>
+      ApiService.I
+          .get('/order/my-responded', queryParameters: params.toData())
+          .then((value) =>
+              OrderModel.listFromJsonMini(value.data['list'] as List<dynamic>));
 
-  Future info(int id) => ApiService.I
-      .get('/order/$id',)
-      .then((value) => OrderModel.fromJsonFull(value.data['order']));
+  Future<OrderModel> info(int id) => ApiService.I
+      .get(
+        '/order/$id',
+      )
+      .then((value) =>
+          OrderModel.fromJsonFull(value.data['order'] as Map<String, dynamic>));
 
   Future create(OrderCreateRequestParams params) => ApiService.I
       .post('/order/create', data: params.toData())
       .then((value) => value.data);
 
-  Future update(int id, OrderUpdateRequestParams params) => ApiService.I
-      .post('/order/$id/update', data: params.toData())
-      .then((value) => value.data['order']);
+  Future<OrderModel> update(int id, OrderUpdateRequestParams params) =>
+      ApiService.I.post('/order/$id/update', data: params.toData()).then(
+          (value) => OrderModel.fromJsonFull(
+              value.data['order'] as Map<String, dynamic>));
 
-  Future complete(int id) => ApiService.I
-      .post('/order/$id/complete')
-      .then((value) => value.data);
+  Future complete(int id) =>
+      ApiService.I.post('/order/$id/complete').then((value) => value.data);
 
   Future delete(int id) => ApiService.I
-      .delete('/order/$id/delete',)
+      .delete(
+        '/order/$id/delete',
+      )
       .then((value) => value.data);
 }
-
-

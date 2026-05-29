@@ -1,19 +1,19 @@
-
-import 'package:easy_localization/easy_localization.dart';
 import 'package:formz/formz.dart';
 
 enum LonValidationError {
-  empty, min, max;
+  empty,
+  min,
+  max;
 
   @override
   String toString() {
-    switch(this) {
+    switch (this) {
       case LonValidationError.empty:
-        return 'Longitude_is_not_filled'.tr();
+        return 'Longitude is not filled';
       case LonValidationError.min:
-        return 'Longitude_cannot_be_less_than_180'.tr();
+        return 'Longitude cannot be less than -180°';
       case LonValidationError.max:
-        return 'Longitude_cannot_be_greater_than_180'.tr();
+        return 'Longitude cannot be greater than 180°';
     }
   }
 }

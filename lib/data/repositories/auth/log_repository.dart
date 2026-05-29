@@ -4,31 +4,29 @@ import 'package:teledart/teledart.dart';
 import 'package:teledart/telegram.dart';
 
 class TelegramLogerRepository {
+  TelegramLogerRepository._(this.teledart, this.chatId);
   final TeleDart teledart;
   final String chatId;
 
-  TelegramLogerRepository._(this.teledart, this.chatId);
-
   static Future<TelegramLogerRepository> initialize() async {
-
-    String telegramBotToken = dotenv.env['TELEGRAM_BOT_TOKEN']!;
-    String chatId = dotenv.env['TELEGRAM_CHAT_ID']!;
+    var telegramBotToken = dotenv.env['TELEGRAM_BOT_TOKEN']!;
+    var chatId = dotenv.env['TELEGRAM_CHAT_ID']!;
 
     final username = (await Telegram(telegramBotToken).getMe()).username;
-    TeleDart teledart = TeleDart(telegramBotToken, Event(username!));
+    var teledart = TeleDart(telegramBotToken, Event(username!));
 
     return TelegramLogerRepository._(teledart, chatId);
   }
 
-  sendLog(error, stacktrace) {
+  void sendLog(error, stacktrace) {
     if (kDebugMode) {
       print(error);
-    }else {
+    } else {
       teledart.sendMessage(chatId, '$error\n$stacktrace');
     }
   }
 
-  sendMessage(String message) {
+  void sendMessage(String message) {
     teledart.sendMessage(chatId, message.toString());
   }
 }

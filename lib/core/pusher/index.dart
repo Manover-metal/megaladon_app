@@ -11,7 +11,8 @@ class PusherConfig {
   static const APP_CLUSTER = 'eu';
 
   static const HOST_END_POINT = '';
-  static final HOST_AUTH_POINT = "${ApiService.I.options.baseUrl}/auth/pusher-login";
+  static final HOST_AUTH_POINT =
+      '${ApiService.I.options.baseUrl}/auth/pusher-login';
   static const PORT = 6001;
 }
 
@@ -27,17 +28,17 @@ class PusherService {
           authEndpoint: PusherConfig.HOST_AUTH_POINT,
           cluster: PusherConfig.APP_CLUSTER,
           onConnectionStateChange: (currentState, b) {
-            print("Connection: $currentState");
+            print('Connection: $currentState');
           },
-          onAuthorizer: (String channelName, String socketID, dynamic options) async {
+          onAuthorizer: (channelName, socketID, options) async {
             print('token: $token, $socketID');
-            var result = await http.post(Uri.parse(PusherConfig.HOST_AUTH_POINT),
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': 'Bearer $token',
-                },
-                body: 'socket_id=$socketID&channel_name=$channelName'
-            );
+            var result =
+                await http.post(Uri.parse(PusherConfig.HOST_AUTH_POINT),
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': 'Bearer $token',
+                    },
+                    body: 'socket_id=$socketID&channel_name=$channelName');
             print('result: $result');
             print(result.body);
             var json = jsonDecode(result.body);
@@ -45,26 +46,24 @@ class PusherService {
             print(json['auth']);
             return json;
           },
-          onSubscriptionError: (String message, dynamic e) {
-            print("onSubscriptionError: $message Exception: $e");
+          onSubscriptionError: (message, e) {
+            print('onSubscriptionError: $message Exception: $e');
           },
-          onDecryptionFailure: (String event, String reason) {
-            print("onDecryptionFailure: $event reason: $reason");
+          onDecryptionFailure: (event, reason) {
+            print('onDecryptionFailure: $event reason: $reason');
           },
-          onMemberAdded: (String channelName, PusherMember member) {
-            print("onMemberAdded: $channelName member: $member");
+          onMemberAdded: (channelName, member) {
+            print('onMemberAdded: $channelName member: $member');
           },
-          onMemberRemoved: (String channelName, PusherMember member) {
-            print("onMemberRemoved: $channelName member: $member");
+          onMemberRemoved: (channelName, member) {
+            print('onMemberRemoved: $channelName member: $member');
           },
           onEvent: (e) {
             print(e);
-          }
-      );
-    } catch(e) {
+          });
+    } catch (e) {
       print(e);
     }
-
   }
 
   static PusherChannelsFlutter get instance => _pusher;

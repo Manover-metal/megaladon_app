@@ -1,5 +1,3 @@
-
-import 'package:easy_localization/easy_localization.dart';
 import 'package:formz/formz.dart';
 import 'package:megaladon/data/models/dictionary/service_type_model.dart';
 
@@ -8,9 +6,9 @@ enum ServiceTypeValidationError {
 
   @override
   String toString() {
-    switch(this) {
+    switch (this) {
       case ServiceTypeValidationError.empty:
-        return 'Type_is_not_specified'.tr();
+        return 'Type is not specified';
     }
   }
 }
@@ -19,10 +17,10 @@ class ServiceTypeFormModel extends FormzInput<int, ServiceTypeValidationError> {
   const ServiceTypeFormModel.pure() : super.pure(-1);
   const ServiceTypeFormModel.dirty([super.value = -1]) : super.dirty();
 
-
   @override
   ServiceTypeValidationError? validator(int value) {
-    if (value == ServiceTypeModel.nothing.id) return ServiceTypeValidationError.empty;
+    if (value == ServiceTypeModel.nothing.id)
+      return ServiceTypeValidationError.empty;
     return null;
   }
 }

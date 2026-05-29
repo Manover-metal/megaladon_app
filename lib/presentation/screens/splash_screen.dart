@@ -17,48 +17,46 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
-  _doubleTap(BuildContext context, PageRouteInfo page) => () {
+  Null Function() _doubleTap(BuildContext context, PageRouteInfo page) => () {
         context.router.navigate(page);
-  };
+      };
 
-  _handleClick(TabsRouter tabsRouter, int index) => () {
+  Null Function() _handleClick(TabsRouter tabsRouter, int index) => () {
         tabsRouter.setActiveIndex(index);
-  };
+      };
 
-  _add(BuildContext context) => () async {
+  Future<void> Function() _add(BuildContext context) => () async {
         await showModalBottomSheet(
             useRootNavigator: true,
             isScrollControlled: true,
             useSafeArea: true,
             context: context,
             elevation: 100,
-            builder: (_) => const AddAnythingBottomSheet()
-        );
-  };
+            builder: (_) => const AddAnythingBottomSheet());
+      };
 
-  _introStart(BuildContext context) => () async {
-    if(await IsFirstRun.isFirstCall()) Intro.of(context).start();
-  };
+  Future<void> Function() _introStart(BuildContext context) => () async {
+        if (await IsFirstRun.isFirstCall()) Intro.of(context).start();
+      };
 
-  listenFB() {
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+  void listenFB() {
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
       print('Got a message whilst in the foreground!');
       print('Message data: ${message.data}');
 
       if (message.notification != null) {
         print('Message also contained a notification: ${message.notification}');
       }
-      context.router.navigate(InitialRouter( children: [
-        OrderRouter(
-          children: [
-            DetailsOrderRoute(orderId: message.data['order_id'])
-          ]
-        )
-      ]));
+      if (!mounted) return;
+
+      /// TODO: handle notification
+      // context.router.navigate(InitialRouter(children: [
+      //   OrderRouter(
+      //       children: [DetailsOrderRoute(orderId: message.data['order_id'])])
+      // ]));
     });
 
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    FirebaseMessaging.onMessage.listen((message) {
       print('Got a message whilst in the foreground!');
       print('Message data: ${message.data}');
 
@@ -66,13 +64,10 @@ class _SplashScreenState extends State<SplashScreen> {
         print('Message also contained a notification: ${message.notification}');
       }
     });
-
   }
 
-
   @override
-  Widget build(BuildContext context) {
-    return Intro(
+  Widget build(BuildContext context) => Intro(
       padding: const EdgeInsets.all(20),
       borderRadius: BorderRadius.circular(100),
       maskClosable: true,
@@ -80,143 +75,123 @@ class _SplashScreenState extends State<SplashScreen> {
       child: AutoTabsScaffold(
         scaffoldKey: getItApp.get<GlobalKey<ScaffoldState>>(),
         lazyLoad: true,
-        drawer: const  DrawerApp(),
+        drawer: const DrawerApp(),
         routes: const [
           OrderRouter(),
           StoreRouter(),
           AdRouter(),
           ProfileRouter(),
         ],
-        bottomNavigationBuilder: (context, tabsRouter) {
-          return SafeArea(
-            child: Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                SizedBox(
-                    height: 50,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        IntroStepBuilder(
-                          builder: (context, key) {
-                            return Tab(
-                              key: key,
-                              icon: IconPack.basket,
-                              isActive: 0 == tabsRouter.activeIndex,
-                              click: _handleClick(tabsRouter, 0),
-                              doubleClick: _doubleTap(context,
-                                  const InitialRouter(children: [OrderRouter()])),
-                            );
-                          },
-                          order: 1,
-                          overlayBuilder: (StepWidgetParams params) {
-                            return const Text('Список размещенных на платформе заказов для поиска лучшего предложения от исполнителей.');
-                          },
-                          onWidgetLoad: _introStart(context)
-                        ),
-                        IntroStepBuilder(
-                          builder: (context, key) {
-                            return Tab(
-                              key: key,
-                              icon: IconPack.market,
-                              isActive: 1 == tabsRouter.activeIndex,
-                              click: _handleClick(tabsRouter, 1),
-                              doubleClick: _doubleTap(context,
-                                  const InitialRouter(children: [StoreRouter()])),
-                            );
-                          },
-                          order: 2,
-                          overlayBuilder: (StepWidgetParams params) {
-                            return const Text('Список компаний занимающихся продажей готовой продукции.');
-                          },
-                        ),
-                        const SizedBox(
-                          width: 50,
-                        ),
-                        IntroStepBuilder(
-                          builder: (context, key) {
-                            return Tab(
-                              key: key,
-                              icon: Icons.account_balance_wallet_outlined,
-                              isActive: 2 == tabsRouter.activeIndex,
-                              click: _handleClick(tabsRouter, 2),
-                              doubleClick: _doubleTap(
-                                  context, const InitialRouter(children: [AdRouter()])),
-                            );
-                          },
-                          order: 3,
-                          overlayBuilder: (StepWidgetParams params) {
-                            return const Text('Список объявлений о продажи товара или оказании услуг машиностроения.');
-                          },
-                        ),
-                        IntroStepBuilder(
-                          builder: (context, key) {
-                            return Tab(
-                              key: key,
-                              icon: IconPack.profile,
-                              isActive: 3 == tabsRouter.activeIndex,
-                              click: _handleClick(tabsRouter, 3),
-                              doubleClick: _doubleTap(context,
-                                  const InitialRouter(children: [ProfileRouter()])
+        bottomNavigationBuilder: (context, tabsRouter) => SafeArea(
+          child: Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              SizedBox(
+                  height: 50,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      IntroStepBuilder(
+                          builder: (context, key) => Tab(
+                                key: key,
+                                icon: IconPack.basket,
+                                isActive: 0 == tabsRouter.activeIndex,
+                                click: _handleClick(tabsRouter, 0),
+                                doubleClick: _doubleTap(
+                                    context,
+                                    const InitialRouter(
+                                        children: [OrderRouter()])),
                               ),
-                            );
-                          },
-                          order: 4,
-                          overlayBuilder: (StepWidgetParams params) {
-                            return const Text('Профиль пользователя.');
-                          },
+                          order: 1,
+                          overlayBuilder: (params) => const Text(
+                              'Список размещенных на платформе заказов для поиска лучшего предложения от исполнителей.'),
+                          onWidgetLoad: _introStart(context)),
+                      IntroStepBuilder(
+                        builder: (context, key) => Tab(
+                          key: key,
+                          icon: IconPack.market,
+                          isActive: 1 == tabsRouter.activeIndex,
+                          click: _handleClick(tabsRouter, 1),
+                          doubleClick: _doubleTap(context,
+                              const InitialRouter(children: [StoreRouter()])),
                         ),
-                      ],
-                    )
-                ),
-                Positioned(
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0),
-                    child: FloatingActionButton(
-                      onPressed: _add(context),
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                      child: Icon(
-                        Icons.add,
-                        color: Theme.of(context).colorScheme.background,
-                        size: 40,
+                        order: 2,
+                        overlayBuilder: (params) => const Text(
+                            'Список компаний занимающихся продажей готовой продукции.'),
                       ),
+                      const SizedBox(
+                        width: 50,
+                      ),
+                      IntroStepBuilder(
+                        builder: (context, key) => Tab(
+                          key: key,
+                          icon: Icons.account_balance_wallet_outlined,
+                          isActive: 2 == tabsRouter.activeIndex,
+                          click: _handleClick(tabsRouter, 2),
+                          doubleClick: _doubleTap(context,
+                              const InitialRouter(children: [AdRouter()])),
+                        ),
+                        order: 3,
+                        overlayBuilder: (params) => const Text(
+                            'Список объявлений о продажи товара или оказании услуг машиностроения.'),
+                      ),
+                      IntroStepBuilder(
+                        builder: (context, key) => Tab(
+                          key: key,
+                          icon: IconPack.profile,
+                          isActive: 3 == tabsRouter.activeIndex,
+                          click: _handleClick(tabsRouter, 3),
+                          doubleClick: _doubleTap(context,
+                              const InitialRouter(children: [ProfileRouter()])),
+                        ),
+                        order: 4,
+                        overlayBuilder: (params) =>
+                            const Text('Профиль пользователя.'),
+                      ),
+                    ],
+                  )),
+              Positioned(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: FloatingActionButton(
+                    onPressed: _add(context),
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    child: Icon(
+                      Icons.add,
+                      color: Theme.of(context).colorScheme.surface,
+                      size: 40,
                     ),
                   ),
-                )
-              ],
-            ),
-          );
-        },
-      )
-    );
-  }
+                ),
+              )
+            ],
+          ),
+        ),
+      ));
 }
 
 class Tab extends StatelessWidget {
+  const Tab(
+      {required this.icon,
+      required this.isActive,
+      required this.click,
+      required this.doubleClick,
+      super.key});
   final IconData icon;
   final bool isActive;
   final VoidCallback click;
   final VoidCallback doubleClick;
 
-  const Tab(
-      {super.key,
-      required this.icon,
-      required this.isActive,
-      required this.click,
-      required this.doubleClick});
-
   @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: click,
-      onDoubleTap: doubleClick,
-      child: Icon(
-        icon,
-        color: isActive
-            ? Theme.of(context).colorScheme.primary
-            : Theme.of(context).colorScheme.onSecondary,
-        size: isActive ? 30 : 25,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => InkWell(
+        onTap: click,
+        onDoubleTap: doubleClick,
+        child: Icon(
+          icon,
+          color: isActive
+              ? Theme.of(context).colorScheme.primary
+              : Theme.of(context).colorScheme.onSecondary,
+          size: isActive ? 30 : 25,
+        ),
+      );
 }

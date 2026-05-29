@@ -11,39 +11,37 @@ import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 part 'price_form_state.dart';
 
 class PriceFormCubit extends Cubit<PriceFormState> {
-  final PriceController _repository = PriceController();
-  final ProfileScreenCubit profileCubit;
-  final AuthBloc authBloc;
-
-  PriceFormCubit(this.profileCubit, this.authBloc) : super(const PriceFormState()) {
+  PriceFormCubit(this.profileCubit, this.authBloc)
+      : super(const PriceFormState()) {
     _checkUpdate();
     profileCubit.stream.listen((stateProfile) {
       _checkUpdate();
     });
   }
+  final PriceController _repository = PriceController();
+  final ProfileScreenCubit profileCubit;
+  final AuthBloc authBloc;
 
-  _checkUpdate() {
-    if(profileCubit.state.status == ProfileScreenStatus.success && profileCubit.state.store != null) {
+  void _checkUpdate() {
+    if (profileCubit.state.status == ProfileScreenStatus.success &&
+        profileCubit.state.store != null) {
       emit(PriceFormState(prices: profileCubit.state.store!.prices));
     }
   }
 
-
-  addPrice() async {
-    FilePickerResult? result = await FilePicker.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ['pdf']
-    );
+  Future<void> addPrice() async {
+    var result = await FilePicker.pickFiles(
+        type: FileType.custom, allowedExtensions: ['pdf']);
     if (result != null) {
-      final PlatformFile file = result.files[0];
-      FormData data = FormData.fromMap({
+      final file = result.files[0];
+      var data = FormData.fromMap({
         'file': await MultipartFile.fromFile(file.path!, filename: file.name)
       });
       await _repository.addPrice(data).then((value) {
         profileCubit.updateData(profileCubit.state.user!.id);
       }).catchError((error) {
-        if(error is DioError) {
-          emit(state.copyWith( error: ErrorModel.parseDio(error)));
+        if (error is DioException) {
+          emit(state.copyWith(error: ErrorModel.parseDio(error)));
         } else {
           emit(state.copyWith(error: ErrorModel.nothing));
         }
@@ -51,12 +49,11 @@ class PriceFormCubit extends Cubit<PriceFormState> {
     }
   }
 
-
-  deactivate(int id) async {
+  Future<void> deactivate(int id) async {
     _repository.deactivatePrice(id).then((value) {
       profileCubit.updateData(profileCubit.state.user!.id);
     }).catchError((error) {
-      if(error is DioError) {
+      if (error is DioException) {
         emit(state.copyWith(error: ErrorModel.parseDio(error)));
       } else {
         emit(state.copyWith(error: ErrorModel.nothing));
@@ -64,11 +61,11 @@ class PriceFormCubit extends Cubit<PriceFormState> {
     });
   }
 
-  delete(int id) async {
+  Future<void> delete(int id) async {
     _repository.delete(id).then((value) {
       profileCubit.updateData(profileCubit.state.user!.id);
     }).catchError((error) {
-      if(error is DioError) {
+      if (error is DioException) {
         emit(state.copyWith(error: ErrorModel.parseDio(error)));
       } else {
         emit(state.copyWith(error: ErrorModel.nothing));
@@ -76,15 +73,15 @@ class PriceFormCubit extends Cubit<PriceFormState> {
     });
   }
 
-  activate(int id) async {
+  Future<void> activate(int id) async {
     _repository.activatePrice(id).then((value) {
       profileCubit.updateData(profileCubit.state.user!.id);
     }).catchError((error) {
-      if(error is DioError) {
-        if(error.response?.statusCode == 403) {
+      if (error is DioException) {
+        if (error.response?.statusCode == 403) {
           authBloc.add(AuthLogoutEvent());
         }
-        emit(state.copyWith( error: ErrorModel.parseDio(error)));
+        emit(state.copyWith(error: ErrorModel.parseDio(error)));
       } else {
         emit(state.copyWith(error: ErrorModel.nothing));
       }

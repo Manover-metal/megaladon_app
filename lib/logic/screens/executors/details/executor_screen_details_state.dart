@@ -17,26 +17,20 @@ class ExecutorScreenDetailsLoader extends ExecutorScreenDetailsState {
 }
 
 class ExecutorScreenDetailsError extends ExecutorScreenDetailsState {
-  final ErrorModel error;
   ExecutorScreenDetailsError(this.error);
+  final ErrorModel error;
 
   @override
   List<Object> get props => [error];
 }
 
-class ExecutorScreenDetailsSuccess extends  ExecutorScreenDetailsState {
-  final ExecutorModel executor;
-
+class ExecutorScreenDetailsSuccess extends ExecutorScreenDetailsState {
   ExecutorScreenDetailsSuccess({required this.executor});
+  final ExecutorModel executor;
 
   @override
   List<Object?> get props => [executor];
 
-  ExecutorScreenDetailsSuccess copyWith({
-    ExecutorModel? executor
-  }) {
-    return ExecutorScreenDetailsSuccess(
-        executor: executor ?? this.executor
-    );
-  }
+  ExecutorScreenDetailsSuccess copyWith({ExecutorModel? executor}) =>
+      ExecutorScreenDetailsSuccess(executor: executor ?? this.executor);
 }

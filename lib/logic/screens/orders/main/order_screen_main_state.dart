@@ -1,25 +1,20 @@
 part of 'order_screen_main_cubit.dart';
 
-enum OrderScreenMainStatus {
-  loading,
-  error,
-  success
-}
+enum OrderScreenMainStatus { loading, error, success }
 
 class OrderScreenMainState extends Equatable {
+  const OrderScreenMainState({
+    this.status = OrderScreenMainStatus.success,
+    this.orders = const [],
+    this.error,
+    this.params = const OrderIndexRequestParams(),
+    this.stock = false,
+  });
   final OrderScreenMainStatus status;
   final List<OrderModel> orders;
   final ErrorModel? error;
   final OrderIndexRequestParams params;
   final bool stock;
-
-  const OrderScreenMainState({
-    this.status = OrderScreenMainStatus.success,
-    this.orders = const [],
-    this.error,
-    this.params =  const OrderIndexRequestParams(),
-    this.stock = false,
-  });
 
   @override
   List<Object?> get props => [status, orders, error, params, stock];
@@ -30,14 +25,11 @@ class OrderScreenMainState extends Equatable {
     ErrorModel? error,
     OrderIndexRequestParams? params,
     bool? stock,
-  }) {
-    return OrderScreenMainState(
-      status: status ?? this.status,
-      orders: orders ?? this.orders,
-      error: error,
-      params: params ?? this.params,
-      stock: stock ?? this.stock
-    );
-  }
-
+  }) =>
+      OrderScreenMainState(
+          status: status ?? this.status,
+          orders: orders ?? this.orders,
+          error: error,
+          params: params ?? this.params,
+          stock: stock ?? this.stock);
 }

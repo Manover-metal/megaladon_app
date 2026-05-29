@@ -1,13 +1,8 @@
 class CategoryModel {
+  CategoryModel(this.id, this.name);
   final int id;
   final String name;
 
-  CategoryModel(this.id, this.name);
-
-  static fromJson(data) {
-    return CategoryModel(
-      data['id'],
-      data['name']
-    );
-  }
+  static CategoryModel fromJson(Map<String, dynamic> data) =>
+      CategoryModel(data['id'] as int, data['name'] as String);
 }

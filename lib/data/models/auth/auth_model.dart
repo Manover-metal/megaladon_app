@@ -5,7 +5,6 @@ import 'package:megaladon/data/models/user_model.dart';
 
 part 'auth_model.g.dart';
 
-
 @collection
 class AuthModel {
   Id id = Isar.autoIncrement;
@@ -19,11 +18,14 @@ class AuthModel {
   IsarLink<StoreModel> store = IsarLink<StoreModel>();
 
   static AuthModel fromJson(Map<String, dynamic> json) {
-    AuthModel auth = AuthModel()..token = json['token']
-    ..user.value = UserModel.fromJson(json['user'])
-    ..executor.value = ExecutorModel.fromJsonOrNull(json['user']['executor'])
-    ..store.value = StoreModel.fromJsonFullOrNull(json['user']['store']);
+    var auth = AuthModel()
+      ..token = json['token'] as String
+      ..user.value = UserModel.fromJson(json['user'] as Map<String, dynamic>)
+      ..executor.value = ExecutorModel.fromJsonOrNull(
+          json['user']['executor'] as Map<String, dynamic>?)
+      ..store.value = StoreModel.fromJsonFullOrNull(
+          json['user']['store'] as Map<String, dynamic>?);
 
     return auth;
-  } 
+  }
 }

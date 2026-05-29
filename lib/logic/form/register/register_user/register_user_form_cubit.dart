@@ -11,32 +11,27 @@ part 'register_user_form_state.dart';
 class RegisterUserFormCubit extends Cubit<RegisterUserFormState> {
   RegisterUserFormCubit() : super(const RegisterUserFormState());
 
-  bool checkRegisterForm({
-    required String name,
-    required String phone,
-    required String password,
-    required String passwordConfirmation
-  }) {
-    NameFormModel nameForm = NameFormModel.dirty(name);
-    PasswordFormModel passwordForm = PasswordFormModel.dirty(password);
-    PasswordConfirmationFormModel passwordConfirmationForm = PasswordConfirmationFormModel.dirty(password, passwordConfirmation);
-    PhoneFormModel phoneForm = PhoneFormModel.dirty(phone);
+  bool checkRegisterForm(
+      {required String name,
+      required String phone,
+      required String password,
+      required String passwordConfirmation}) {
+    var nameForm = NameFormModel.dirty(name);
+    var passwordForm = PasswordFormModel.dirty(password);
+    var passwordConfirmationForm =
+        PasswordConfirmationFormModel.dirty(password, passwordConfirmation);
+    var phoneForm = PhoneFormModel.dirty(phone);
 
-    bool status = Formz.validate([
-      passwordForm,
-      phoneForm,
-      passwordConfirmationForm,
-      nameForm
-    ]);
+    var status = Formz.validate(
+        [passwordForm, phoneForm, passwordConfirmationForm, nameForm]);
 
-    RegisterUserFormState stateNew = state.copyWith(
+    var stateNew = state.copyWith(
         name: nameForm,
         phone: phoneForm,
         password: passwordForm,
         passwordConfirmation: passwordConfirmationForm,
         status: status,
-        countTry: state.countTry + 1
-    );
+        countTry: state.countTry + 1);
     emit(stateNew);
     return stateNew.status;
   }

@@ -1,8 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/dictionary/order_category_model.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/dictionary/dictionary_cubit.dart';
 
 class OrderCategoryPickerController extends ValueNotifier<OrderCategoryModel> {
@@ -16,28 +16,28 @@ class OrderCategoryPickerController extends ValueNotifier<OrderCategoryModel> {
 }
 
 class OrderCategoryPicker extends StatefulWidget {
+  const OrderCategoryPicker(
+      {required this.label, required this.controller, super.key});
   final String label;
   final OrderCategoryPickerController controller;
-
-  const OrderCategoryPicker({super.key, required this.label, required this.controller});
 
   @override
   State<OrderCategoryPicker> createState() => _OrderCategoryPickerState();
 }
 
 class _OrderCategoryPickerState extends State<OrderCategoryPicker> {
-  _handleClick() async {
-    final List<OrderCategoryModel> orderCategories =
+  Future<void> _handleClick() async {
+    final orderCategories =
         context.read<DictionaryCubit>().state.orderCategories;
 
     if (orderCategories.isEmpty) return;
 
-    int initialIndex = orderCategories.indexWhere(
+    var initialIndex = orderCategories.indexWhere(
       (c) => c.id == widget.controller.value.id,
     );
     if (initialIndex < 0) initialIndex = 0;
 
-    int selectedIndex = initialIndex;
+    var selectedIndex = initialIndex;
 
     await showCupertinoModalPopup<void>(
       context: context,
@@ -50,11 +50,11 @@ class _OrderCategoryPickerState extends State<OrderCategoryPicker> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CupertinoButton(
-                  child: Text('Cancel'.tr()),
+                  child: Text(AppLocalizations.of(context)!.cancel),
                   onPressed: () => Navigator.of(ctx).pop(),
                 ),
                 CupertinoButton(
-                  child: Text('select'.tr()),
+                  child: Text(AppLocalizations.of(context)!.select),
                   onPressed: () {
                     widget.controller
                         ._changeOrderCategory(orderCategories[selectedIndex]);
@@ -81,19 +81,18 @@ class _OrderCategoryPickerState extends State<OrderCategoryPicker> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 5.0),
-      child: ValueListenableBuilder(
-        builder: (BuildContext context, OrderCategoryModel orderCategory, Widget? child) {
-          return GestureDetector(
+  Widget build(BuildContext context) => Container(
+        padding: const EdgeInsets.symmetric(vertical: 5),
+        child: ValueListenableBuilder(
+          builder: (context, orderCategory, child) => GestureDetector(
             onTap: _handleClick,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   widget.label,
-                  style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.secondary),
                 ),
                 const SizedBox(height: 5),
                 Container(
@@ -116,10 +115,8 @@ class _OrderCategoryPickerState extends State<OrderCategoryPicker> {
                 ),
               ],
             ),
-          );
-        },
-        valueListenable: widget.controller,
-      ),
-    );
-  }
+          ),
+          valueListenable: widget.controller,
+        ),
+      );
 }

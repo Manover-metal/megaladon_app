@@ -1,57 +1,47 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/tiles/drawer_route_tile.dart';
-import 'package:megaladon/presentation/widgets/tiles/drawer_tile.dart';
 
 class DrawerProfile extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      child: SafeArea(
-        child: BlocBuilder<ProfileScreenCubit, ProfileScreenState>(
-          builder: (context, state) {
-            return Column(
-              children: [
-                const SizedBox(height: 20,),
-                if(state.user != null) ...[
-                   DrawerRouteTile(text: 'Change_phone_number'.tr(), page: ChangePhoneStartRoute()),
+  const DrawerProfile({super.key});
 
-                   DrawerRouteTile(text: 'Change_password'.tr(), page: ChangePasswordRoute()),
+  @override
+  Widget build(BuildContext context) => Drawer(
+        child: SafeArea(
+          child: BlocBuilder<ProfileScreenCubit, ProfileScreenState>(
+            builder: (context, state) => Column(
+              children: [
+                const SizedBox(
+                  height: 20,
+                ),
+                if (state.user != null) ...[
+                  DrawerRouteTile(
+                      text: AppLocalizations.of(context)!.change_phone_number,
+                      page: const ChangePhoneStartRoute()),
+                  DrawerRouteTile(
+                      text: AppLocalizations.of(context)!.change_password,
+                      page: const ChangePasswordRoute()),
                 ],
-                if(state.executor != null) ...[
-                   DrawerRouteTile(text: 'change_executor'.tr(), page: InitialRouter(
-                      children: [
-                        ProfileRouter(
-                          children: [
-                            ChangeExecutorRoute()
-                          ]
-                        )
-                      ]
-                    )
-                  ),
+                if (state.executor != null) ...[
+                  DrawerRouteTile(
+                      text: AppLocalizations.of(context)!.change_executor,
+                      page: const InitialRouter(children: [
+                        ProfileRouter(children: [ChangeExecutorRoute()])
+                      ])),
                 ],
-                if(state.store != null) ...[
-                   DrawerRouteTile(text: 'change_store'.tr(), page: InitialRouter(
-                      children: [
-                        ProfileRouter(
-                            children: [
-                              ChangeStoreRoute()
-                            ]
-                        )
-                      ]
-                  )
-                  ),
+                if (state.store != null) ...[
+                  DrawerRouteTile(
+                      text: AppLocalizations.of(context)!.change_store,
+                      page: const InitialRouter(children: [
+                        ProfileRouter(children: [ChangeStoreRoute()])
+                      ])),
                 ]
               ],
-            );
-          },
+            ),
+          ),
         ),
-      ),
-    );
-  }
-
+      );
 }

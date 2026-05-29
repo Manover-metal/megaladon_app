@@ -2,10 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:megaladon/core/dio/index.dart';
 
 class AuthInterceptor extends Interceptor {
-  final String token;
-
   AuthInterceptor(this.token);
-
+  final String token;
 
   Future<Response<dynamic>> _retry(RequestOptions requestOptions) async {
     final options = Options(
@@ -15,22 +13,19 @@ class AuthInterceptor extends Interceptor {
     return ApiService.I.request<dynamic>(requestOptions.path,
         data: requestOptions.data,
         queryParameters: requestOptions.queryParameters,
-        options: options
-    );
+        options: options);
   }
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    options.headers.addAll({
-      'Authorization': 'Bearer $token'
-    });
+    options.headers.addAll({'Authorization': 'Bearer $token'});
     print(options.headers);
     super.onRequest(options, handler);
   }
 
   @override
-  void onError(DioError err, ErrorInterceptorHandler handler) {
-    if(err.response?.statusCode == 403) {
+  void onError(DioException err, ErrorInterceptorHandler handler) {
+    if (err.response?.statusCode == 403) {
       // _retry(err.requestOptions);
       print('Authorization Error');
     }

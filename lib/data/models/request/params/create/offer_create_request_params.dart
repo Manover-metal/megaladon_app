@@ -1,20 +1,19 @@
 import 'package:dio/dio.dart';
 
 class OfferCreateRequestParams {
-  final String price;
-  final String date;
-  final String comment;
-  final int cityId;
-
   OfferCreateRequestParams({
     required this.price,
     required this.cityId,
     required this.comment,
     required this.date,
   });
+  final String price;
+  final String date;
+  final String comment;
+  final int cityId;
 
-  toData() {
-    FormData data = FormData.fromMap({
+  FormData toData() {
+    var data = FormData.fromMap({
       'price': int.parse(price),
       'comment': comment,
       'date': date,

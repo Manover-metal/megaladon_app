@@ -1,22 +1,17 @@
 import 'package:flutter/material.dart';
 
 class DrawerTile extends StatelessWidget {
+  const DrawerTile({required this.text, required this.callback, super.key});
   final String text;
   final VoidCallback callback;
 
-  const DrawerTile({super.key, required this.text, required this.callback});
-
-
   @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: callback,
-      child: Container(
-        alignment: Alignment.centerLeft,
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        child: Text(text),
-      ),
-    );
-  }
-
+  Widget build(BuildContext context) => InkWell(
+        onTap: callback,
+        child: Container(
+          alignment: Alignment.centerLeft,
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          child: Text(text),
+        ),
+      );
 }

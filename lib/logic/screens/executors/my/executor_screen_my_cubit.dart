@@ -9,15 +9,15 @@ import 'package:megaladon/logic/auth/auth_bloc.dart';
 part 'executor_screen_my_state.dart';
 
 class ExecutorScreenMyCubit extends Cubit<ExecutorScreenMyState> {
-  final ExecutorRepository _repository = ExecutorRepository();
-  final AuthBloc authBloc;
   ExecutorScreenMyCubit(this.authBloc) : super(const ExecutorScreenMyState()) {
     _listenAuth(authBloc.state);
     authBloc.stream.listen(_listenAuth);
   }
+  final ExecutorRepository _repository = ExecutorRepository();
+  final AuthBloc authBloc;
 
-  _listenAuth(stateAuth) {
-    if(stateAuth is AuthLoginState) {
+  void _listenAuth(stateAuth) {
+    if (stateAuth is AuthLoginState) {
       fetch();
     } else {
       emit(const ExecutorScreenMyState());
@@ -25,25 +25,22 @@ class ExecutorScreenMyCubit extends Cubit<ExecutorScreenMyState> {
   }
 
   Future fetch() async {
-    if(state.status == ExecutorScreenMyStatus.loading
-        && state.error == null
-    ) return;
+    if (state.status == ExecutorScreenMyStatus.loading && state.error == null)
+      return;
 
     emit(state.copyWith(
-        status: ExecutorScreenMyStatus.loading,
-        error: null,
-        executors: state.executors,
-
-      )
-    );
+      status: ExecutorScreenMyStatus.loading,
+      error: null,
+      executors: state.executors,
+    ));
 
     return await _repository.my().then((value) {
       emit(state.copyWith(
-          status: ExecutorScreenMyStatus.success,
-          executors: value,
+        status: ExecutorScreenMyStatus.success,
+        executors: value,
       ));
     }).catchError((error) {
-      if(error is DioError) {
+      if (error is DioException) {
         emit(state.copyWith(error: ErrorModel.parseDio(error)));
       } else {
         emit(state.copyWith(error: ErrorModel.nothing));
@@ -51,13 +48,9 @@ class ExecutorScreenMyCubit extends Cubit<ExecutorScreenMyState> {
     });
   }
 
-  Future add({
-    required int orderId,
-    required int executorId
-  }) async {
-    return await _repository.addFavorite(orderId, executorId).then((value) {
-      print(value);
-      fetch();
-    });
-  }
+  Future add({required int orderId, required int executorId}) async =>
+      await _repository.addFavorite(orderId, executorId).then((value) {
+        print(value);
+        fetch();
+      });
 }

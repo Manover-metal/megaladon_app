@@ -1,16 +1,14 @@
 import 'package:dio/dio.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 class ErrorModel {
+  ErrorModel(this.messages);
   final List<String> messages;
 
-  ErrorModel(this.messages);
-
-  static ErrorModel parseDio(DioError error) {
+  static ErrorModel parseDio(DioException error) {
     dynamic data = error.response?.data;
     try {
       if (data?['errors'] is List) {
-        return ErrorModel(List<String>.from(data['errors']));
+        return ErrorModel(List<String>.from(data['errors'] as List<dynamic>));
       } else if (data?['errors'] is Map) {
         final messages = <String>[];
         (data['errors'] as Map).forEach((key, value) {
@@ -31,5 +29,5 @@ class ErrorModel {
     return ErrorModel.nothing;
   }
 
-  static ErrorModel get nothing => ErrorModel(['Unknown_error'.tr()]);
+  static ErrorModel get nothing => ErrorModel(['Unknown error']);
 }

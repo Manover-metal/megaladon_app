@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/screens/chats/chat_cubit.dart';
 import 'package:megaladon/presentation/widgets/card/chat_card.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
@@ -19,9 +19,7 @@ class ListChatsScreen extends StatefulWidget {
 class _ListChatsScreenState extends State<ListChatsScreen> {
   late ScrollController _scrollController;
 
-  Future _refresh() async {
-    return context.read<ChatCubit>().fetch();
-  }
+  Future _refresh() async => context.read<ChatCubit>().fetch();
 
   @override
   void initState() {
@@ -37,56 +35,51 @@ class _ListChatsScreenState extends State<ListChatsScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: NestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool isBool) {
-            return [
-               SliverToBoxAdapter(
+  Widget build(BuildContext context) => Scaffold(
+        body: SafeArea(
+          child: NestedScrollView(
+            headerSliverBuilder: (context, isBool) => [
+              SliverToBoxAdapter(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: HeaderAppBar(
-                      isMenu: true,
-                      title: "Chats".tr(),
-                    ),
-                  )
-              ),
-            ];
-          },
-          body: RefreshIndicator(
-            color: Colors.white,
-            onRefresh: _refresh,
-            child: CupertinoScrollbar(
-              controller: _scrollController,
-              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: HeaderAppBar(
+                  isMenu: true,
+                  title: AppLocalizations.of(context)!.chats,
+                ),
+              )),
+            ],
+            body: RefreshIndicator(
+              color: Colors.white,
+              onRefresh: _refresh,
+              child: CupertinoScrollbar(
                 controller: _scrollController,
-                child: Container(
-                  constraints: BoxConstraints(
-                    minHeight: MediaQuery.of(context).size.height
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: BlocBuilder<ChatCubit, ChatState>(
-                    builder: (context, state) {
-                      return Column(
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  child: Container(
+                    constraints: BoxConstraints(
+                        minHeight: MediaQuery.of(context).size.height),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: BlocBuilder<ChatCubit, ChatState>(
+                      builder: (context, state) => Column(
                         children: [
-                          if(state.chats.isEmpty) StockMessage(name: "Chats".tr()),
-
-                          ...state.chats.map((chat) {
-                            return ChatCard(chat: chat);
-                          }).toList(),
-                          if(state.status == ChatScreenMainStatus.loading) const Loader(padding: 10)
-                          else if(state.status == ChatScreenMainStatus.error)  ErrorMessage(error: state.error!)
+                          if (state.chats.isEmpty)
+                            StockMessage(
+                                name: AppLocalizations.of(context)!.chats),
+                          ...state.chats
+                              .map((chat) => ChatCard(chat: chat))
+                              .toList(),
+                          if (state.status == ChatScreenMainStatus.loading)
+                            const Loader(padding: 10)
+                          else if (state.status == ChatScreenMainStatus.error)
+                            ErrorMessage(error: state.error!)
                         ],
-                      );
-                    },
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }

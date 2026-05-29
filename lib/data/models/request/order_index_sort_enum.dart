@@ -1,6 +1,3 @@
-
-import 'package:easy_localization/easy_localization.dart';
-
 enum OrderIndexSort {
   id,
   created_at,
@@ -9,11 +6,15 @@ enum OrderIndexSort {
 
   @override
   String toString() {
-    switch(this) {
-      case OrderIndexSort.id: return 'By_creation'.tr();
-      case OrderIndexSort.created_at: return 'By_date'.tr();
-      case OrderIndexSort.status: return 'By_status'.tr();
-      case OrderIndexSort.category_id: return 'By_category'.tr();
+    switch (this) {
+      case OrderIndexSort.id:
+        return 'By creation';
+      case OrderIndexSort.created_at:
+        return 'By date';
+      case OrderIndexSort.status:
+        return 'By status';
+      case OrderIndexSort.category_id:
+        return 'By category';
     }
   }
 }

@@ -5,13 +5,11 @@ abstract class ChangeStoreEvent extends Equatable {
 }
 
 class ChangeStoreFetchEvent extends ChangeStoreEvent {
-  final ChangeStoreRequestParams params;
-
   const ChangeStoreFetchEvent({
     required this.params,
   });
+  final ChangeStoreRequestParams params;
 
   @override
   List<Object?> get props => [params];
-
 }

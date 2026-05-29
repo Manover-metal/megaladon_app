@@ -1,12 +1,9 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/data/models/contact_model.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 
 class ContactTypePickerController extends ValueNotifier<ContactType> {
-  late TextEditingController _valueController;
-  TextEditingController? _nameController;
-
   ContactTypePickerController({ContactModel? type})
       : super(type?.type ?? ContactType.phone) {
     _valueController = TextEditingController(text: type?.value);
@@ -14,6 +11,8 @@ class ContactTypePickerController extends ValueNotifier<ContactType> {
       _nameController = TextEditingController(text: type?.contactName);
     }
   }
+  late TextEditingController _valueController;
+  TextEditingController? _nameController;
 
   void _changeContactType(ContactType type) {
     value = type;
@@ -30,17 +29,14 @@ class ContactTypePickerController extends ValueNotifier<ContactType> {
     notifyListeners();
   }
 
-  ContactModel getData() {
-    return ContactModel(
-      type: value,
-      value: _valueController.value.text,
-      contactName: _nameController?.value.text,
-    );
-  }
+  ContactModel getData() => ContactModel(
+        type: value,
+        value: _valueController.value.text,
+        contactName: _nameController?.value.text,
+      );
 
-  bool _checkPhone() {
-    return value == ContactType.phone || value == ContactType.home_phone;
-  }
+  bool _checkPhone() =>
+      value == ContactType.phone || value == ContactType.home_phone;
 
   @override
   void dispose() {
@@ -51,10 +47,10 @@ class ContactTypePickerController extends ValueNotifier<ContactType> {
 }
 
 class ContactTypePicker extends StatefulWidget {
+  const ContactTypePicker(
+      {required this.label, required this.controller, super.key});
   final String label;
   final ContactTypePickerController controller;
-
-  const ContactTypePicker({super.key, required this.label, required this.controller});
 
   @override
   State<ContactTypePicker> createState() => _ContactTypePickerState();
@@ -86,13 +82,13 @@ class _ContactTypePickerState extends State<ContactTypePicker> {
     super.didUpdateWidget(oldWidget);
   }
 
-  _handleClickType(BuildContext context) => () async {
-        final types = ContactType.values;
-        int initialIndex =
+  Future<void> Function() _handleClickType(BuildContext context) => () async {
+        const types = ContactType.values;
+        var initialIndex =
             types.indexWhere((t) => t == widget.controller.value);
         if (initialIndex < 0) initialIndex = 0;
 
-        int selectedIndex = initialIndex;
+        var selectedIndex = initialIndex;
 
         await showCupertinoModalPopup<void>(
           context: context,
@@ -105,11 +101,11 @@ class _ContactTypePickerState extends State<ContactTypePicker> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CupertinoButton(
-                      child: Text('Cancel'.tr()),
+                      child: Text(AppLocalizations.of(context)!.cancel),
                       onPressed: () => Navigator.of(ctx).pop(),
                     ),
                     CupertinoButton(
-                      child: Text('select'.tr()),
+                      child: Text(AppLocalizations.of(context)!.select),
                       onPressed: () {
                         final contactType = types[selectedIndex];
                         widget.controller._changeContactType(contactType);
@@ -140,10 +136,8 @@ class _ContactTypePickerState extends State<ContactTypePicker> {
       };
 
   @override
-  Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      builder: (BuildContext context, ContactType contactType, Widget? child) {
-        return Column(
+  Widget build(BuildContext context) => ValueListenableBuilder(
+        builder: (context, contactType, child) => Column(
           children: [
             GestureDetector(
               onTap: _handleClickType(context),
@@ -183,8 +177,7 @@ class _ContactTypePickerState extends State<ContactTypePicker> {
               decoration: InputDecoration(
                 labelText: widget.controller.value.toString(),
                 labelStyle: const TextStyle(fontSize: 18),
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 10),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 10),
               ),
             ),
             const SizedBox(height: 10),
@@ -192,16 +185,13 @@ class _ContactTypePickerState extends State<ContactTypePicker> {
               TextField(
                 controller: widget.controller._nameController,
                 decoration: InputDecoration(
-                  labelText: 'contact_name'.tr(),
+                  labelText: AppLocalizations.of(context)!.contact_name,
                   labelStyle: const TextStyle(fontSize: 18),
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 10),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 10),
                 ),
               ),
           ],
-        );
-      },
-      valueListenable: widget.controller,
-    );
-  }
+        ),
+        valueListenable: widget.controller,
+      );
 }

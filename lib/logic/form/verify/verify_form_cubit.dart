@@ -6,20 +6,15 @@ import 'package:megaladon/data/models/form/pincode.dart';
 part 'verify_form_state.dart';
 
 class VerifyFormCubit extends Cubit<VerifyFormState> {
-  VerifyFormCubit() : super(VerifyFormState());
+  VerifyFormCubit() : super(const VerifyFormState());
 
   bool checkForm(String code) {
-    PincodeFormModel codeForm = PincodeFormModel.dirty(code);
+    var codeForm = PincodeFormModel.dirty(code);
 
-    bool status = Formz.validate([
-      codeForm
-    ]);
+    var status = Formz.validate([codeForm]);
 
-    VerifyFormState stateNew = state.copyWith(
-        pincode: codeForm,
-        status: status,
-        countTry: state.countTry + 1
-    );
+    var stateNew = state.copyWith(
+        pincode: codeForm, status: status, countTry: state.countTry + 1);
     emit(stateNew);
     return stateNew.status;
   }

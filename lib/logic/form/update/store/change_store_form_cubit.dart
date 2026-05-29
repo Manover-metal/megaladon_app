@@ -10,7 +10,6 @@ import 'package:megaladon/data/models/form/lat.dart';
 import 'package:megaladon/data/models/form/lon.dart';
 import 'package:megaladon/data/models/form/name.dart';
 
-
 part 'change_store_form_state.dart';
 
 class ChangeStoreFormCubit extends Cubit<ChangeStoreFormState> {
@@ -25,24 +24,17 @@ class ChangeStoreFormCubit extends Cubit<ChangeStoreFormState> {
     required CityModel city,
     required List<ContactModel> contacts,
   }) {
-    NameFormModel nameForm = NameFormModel.dirty(name);
-    BinFormModel binForm = BinFormModel.dirty(bin);
-    LatFormModel latForm = LatFormModel.dirty(lat);
-    LonFormModel lonForm = LonFormModel.dirty(lon);
-    CityFormModel cityForm = CityFormModel.dirty(city.id);
-    MultiContactFormModel contactsForm = MultiContactFormModel.dirty(contacts);
+    var nameForm = NameFormModel.dirty(name);
+    var binForm = BinFormModel.dirty(bin);
+    var latForm = LatFormModel.dirty(lat);
+    var lonForm = LonFormModel.dirty(lon);
+    var cityForm = CityFormModel.dirty(city.id);
+    var contactsForm = MultiContactFormModel.dirty(contacts);
 
+    final status = Formz.validate(
+        [nameForm, binForm, latForm, lonForm, cityForm, contactsForm]);
 
-    final status = Formz.validate([
-      nameForm,
-      binForm,
-      latForm,
-      lonForm,
-      cityForm,
-      contactsForm
-    ]);
-
-    ChangeStoreFormState stateNew = state.copyWith(
+    var stateNew = state.copyWith(
         name: nameForm,
         bin: binForm,
         city: cityForm,
@@ -50,8 +42,7 @@ class ChangeStoreFormCubit extends Cubit<ChangeStoreFormState> {
         lon: lonForm,
         contacts: contactsForm,
         status: status,
-        countTry: state.countTry + 1
-    );
+        countTry: state.countTry + 1);
 
     emit(stateNew);
 

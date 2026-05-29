@@ -1,11 +1,12 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/dictionary/advert_category_model.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/dictionary/dictionary_cubit.dart';
 
-class AdvertCategoryPickerController extends ValueNotifier<AdvertCategoryModel> {
+class AdvertCategoryPickerController
+    extends ValueNotifier<AdvertCategoryModel> {
   AdvertCategoryPickerController({AdvertCategoryModel? category})
       : super(category ?? AdvertCategoryModel.nothing);
 
@@ -16,28 +17,28 @@ class AdvertCategoryPickerController extends ValueNotifier<AdvertCategoryModel> 
 }
 
 class AdvertCategoryPicker extends StatefulWidget {
+  const AdvertCategoryPicker(
+      {required this.label, required this.controller, super.key});
   final String label;
   final AdvertCategoryPickerController controller;
-
-  const AdvertCategoryPicker({super.key, required this.label, required this.controller});
 
   @override
   State<AdvertCategoryPicker> createState() => _AdvertCategoryPickerState();
 }
 
 class _AdvertCategoryPickerState extends State<AdvertCategoryPicker> {
-  _handleClick() async {
-    final List<AdvertCategoryModel> advertCategories =
+  Future<void> _handleClick() async {
+    final advertCategories =
         context.read<DictionaryCubit>().state.advertCategories;
 
     if (advertCategories.isEmpty) return;
 
-    int initialIndex = advertCategories.indexWhere(
+    var initialIndex = advertCategories.indexWhere(
       (c) => c.id == widget.controller.value.id,
     );
     if (initialIndex < 0) initialIndex = 0;
 
-    int selectedIndex = initialIndex;
+    var selectedIndex = initialIndex;
 
     await showCupertinoModalPopup<void>(
       context: context,
@@ -50,11 +51,11 @@ class _AdvertCategoryPickerState extends State<AdvertCategoryPicker> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CupertinoButton(
-                  child: Text('Cancel'.tr()),
+                  child: Text(AppLocalizations.of(context)!.cancel),
                   onPressed: () => Navigator.of(ctx).pop(),
                 ),
                 CupertinoButton(
-                  child: Text('select'.tr()),
+                  child: Text(AppLocalizations.of(context)!.select),
                   onPressed: () {
                     widget.controller
                         ._changeAdvertCategory(advertCategories[selectedIndex]);
@@ -81,19 +82,18 @@ class _AdvertCategoryPickerState extends State<AdvertCategoryPicker> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 5.0),
-      child: ValueListenableBuilder(
-        builder: (BuildContext context, AdvertCategoryModel advertCategory, Widget? child) {
-          return GestureDetector(
+  Widget build(BuildContext context) => Container(
+        padding: const EdgeInsets.symmetric(vertical: 5),
+        child: ValueListenableBuilder(
+          builder: (context, advertCategory, child) => GestureDetector(
             onTap: _handleClick,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   widget.label,
-                  style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.secondary),
                 ),
                 const SizedBox(height: 5),
                 Container(
@@ -116,10 +116,8 @@ class _AdvertCategoryPickerState extends State<AdvertCategoryPicker> {
                 ),
               ],
             ),
-          );
-        },
-        valueListenable: widget.controller,
-      ),
-    );
-  }
+          ),
+          valueListenable: widget.controller,
+        ),
+      );
 }

@@ -19,27 +19,27 @@ import 'package:megaladon/logic/auth/auth_bloc.dart';
 part 'order_create_form_state.dart';
 
 class OrderCreateFormCubit extends Cubit<OrderCreateFormState> {
+  OrderCreateFormCubit(this.authBloc) : super(const OrderCreateFormState());
   final OrderRepository _repository = OrderRepository();
   final AuthBloc authBloc;
-  OrderCreateFormCubit(this.authBloc) : super(const OrderCreateFormState());
 
-  checkCreate({
-    required String title,
-    required String description,
-    required String priceMax,
-    required String priceRecommended,
-    required CityModel city,
-    required OrderCategoryModel category,
-    required List<PlatformFile> files
-  }) {
-    TitleFormModel titleForm = TitleFormModel.dirty(title);
-    DescriptionFormModel descriptionForm = DescriptionFormModel.dirty(description);
-    PriceFormModel priceMaxFormModel = PriceFormModel.dirty(priceMax, false);
-    PriceFormModel priceRecommendedFormModel = PriceFormModel.dirty(priceRecommended, false);
-    CityFormModel cityForm = CityFormModel.dirty(city.id);
-    OrderCategoryFormModel categoryForm = OrderCategoryFormModel.dirty(category.id);
+  bool checkCreate(
+      {required String title,
+      required String description,
+      required String priceMax,
+      required String priceRecommended,
+      required CityModel city,
+      required OrderCategoryModel category,
+      required List<PlatformFile> files}) {
+    var titleForm = TitleFormModel.dirty(title);
+    var descriptionForm = DescriptionFormModel.dirty(description);
+    var priceMaxFormModel = PriceFormModel.dirty(priceMax, false);
+    var priceRecommendedFormModel =
+        PriceFormModel.dirty(priceRecommended, false);
+    var cityForm = CityFormModel.dirty(city.id);
+    var categoryForm = OrderCategoryFormModel.dirty(category.id);
 
-    bool status = Formz.validate([
+    var status = Formz.validate([
       titleForm,
       descriptionForm,
       cityForm,
@@ -48,7 +48,7 @@ class OrderCreateFormCubit extends Cubit<OrderCreateFormState> {
       priceRecommendedFormModel
     ]);
 
-    OrderCreateFormState stateNew = state.copyWith(
+    var stateNew = state.copyWith(
         title: titleForm,
         description: descriptionForm,
         status: status,
@@ -57,8 +57,7 @@ class OrderCreateFormCubit extends Cubit<OrderCreateFormState> {
         category: categoryForm,
         priceMax: priceMaxFormModel,
         priceRecommended: priceRecommendedFormModel,
-        files: files
-    );
+        files: files);
     emit(stateNew);
     return stateNew.status;
   }
@@ -69,40 +68,38 @@ class OrderCreateFormCubit extends Cubit<OrderCreateFormState> {
       print('b');
       emit(state.copyWith(formState: EnumFormState.fetch));
 
-      List<MultipartFile> files = [];
-      for (var file in state.files) {
+      var files = <MultipartFile>[];
+      for (final file in state.files) {
         if (file.path != null) {
           files.add(
               await MultipartFile.fromFile(file.path!, filename: file.name));
         }
       }
 
-      return await _repository.create(OrderCreateRequestParams(
-          title: state.title.value,
-          description: state.description.value,
-          priceMax: int.tryParse(state.priceMax.value),
-          priceRecommended: int.tryParse(state.priceRecommended.value),
-          categoryId: state.category.value,
-          cityId: state.city.value,
-          files: files
-      )).then((value) async {
+      return await _repository
+          .create(OrderCreateRequestParams(
+              title: state.title.value,
+              description: state.description.value,
+              priceMax: int.tryParse(state.priceMax.value),
+              priceRecommended: int.tryParse(state.priceRecommended.value),
+              categoryId: state.category.value,
+              cityId: state.city.value,
+              files: files))
+          .then((value) async {
         print('s');
         emit(state.copyWith(formState: EnumFormState.success));
       }).catchError((error) async {
         print('e');
-        if(error is DioError) {
-          if(error.response?.statusCode == 403) {
+        if (error is DioException) {
+          if (error.response?.statusCode == 403) {
             authBloc.add(AuthLogoutEvent());
           }
           emit(state.copyWith(
               formState: EnumFormState.error,
-              error: ErrorModel.parseDio(error)
-          ));
+              error: ErrorModel.parseDio(error)));
         } else {
           emit(state.copyWith(
-              formState: EnumFormState.error,
-              error: ErrorModel.nothing
-          ));
+              formState: EnumFormState.error, error: ErrorModel.nothing));
         }
       });
     }

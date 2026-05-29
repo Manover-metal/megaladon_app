@@ -2,6 +2,15 @@ import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/dictionary/service_type_model.dart';
 
 class ChangeExecutorRequestParams {
+  const ChangeExecutorRequestParams(
+      {required this.name,
+      required this.bin,
+      required this.fullAddress,
+      required this.lon,
+      required this.lat,
+      required this.city,
+      required this.description,
+      this.services = const []});
   final String name;
   final String bin;
   final String fullAddress;
@@ -11,18 +20,7 @@ class ChangeExecutorRequestParams {
   final double lat;
   final List<ServiceTypeModel> services;
 
-  const ChangeExecutorRequestParams({
-    required this.name,
-    required this.bin,
-    required this.fullAddress,
-    required this.lon,
-    required this.lat,
-    this.services = const [],
-    required this.city,
-    required this.description
-  });
-
-  toData() {
+  Map<String, Object> toData() {
     final data = {
       'name': name,
       'bin': bin,

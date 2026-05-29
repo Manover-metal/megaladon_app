@@ -5,13 +5,11 @@ abstract class RegisterStoreEvent extends Equatable {
 }
 
 class RegisterStoreFetchEvent extends RegisterStoreEvent {
-  final RegisterStoreRequestParams params;
-
   const RegisterStoreFetchEvent({
     required this.params,
   });
+  final RegisterStoreRequestParams params;
 
   @override
   List<Object?> get props => [params];
-
 }

@@ -1,10 +1,10 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:megaladon/data/models/request/params/update/change_store_request_params.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/form/update/store/change_store_form_cubit.dart';
 import 'package:megaladon/logic/screens/profile/change_store/change_store_bloc.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
@@ -32,12 +32,11 @@ class _ChangeStoreScreenState extends State<ChangeStoreScreen> {
   late TextEditingController _fullAddressController;
   late ContactTypeMultiPickerController _contactController;
 
-  _register() async {
-    if(await _checkForm()) {
-      Position? position = await getLocation();
-      if(position != null) {
-        context.read<ChangeStoreBloc>().add(
-            ChangeStoreFetchEvent(
+  Future<void> _register() async {
+    if (await _checkForm()) {
+      var position = await getLocation();
+      if (position != null) {
+        context.read<ChangeStoreBloc>().add(ChangeStoreFetchEvent(
               params: ChangeStoreRequestParams(
                   name: _nameController.value.text,
                   bin: _binController.value.text,
@@ -45,12 +44,10 @@ class _ChangeStoreScreenState extends State<ChangeStoreScreen> {
                   lon: position.longitude,
                   fullAddress: _fullAddressController.value.text,
                   city: _cityPickerController.value,
-                  contacts: _contactController.value.map((e) {
-                    return e.getData();
-                  }).toList()
-              ),
-            )
-        );
+                  contacts: _contactController.value
+                      .map((e) => e.getData())
+                      .toList()),
+            ));
       }
     }
   }
@@ -72,51 +69,51 @@ class _ChangeStoreScreenState extends State<ChangeStoreScreen> {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        showErrorSnackBar(context, 'Отключенено разрешение на получение геопозиция');
+        showErrorSnackBar(
+            context, 'Отключенено разрешение на получение геопозиция');
         return null;
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
-      showErrorSnackBar(context, 'Отключенено разрешение на получение геопозиция');
+      showErrorSnackBar(
+          context, 'Отключенено разрешение на получение геопозиция');
       return null;
     }
 
     // Get the current position (latitude and longitude)
-    Position position = await Geolocator.getCurrentPosition(
+    var position = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     );
 
     return position;
   }
 
-
-  _listenerForm(BuildContext context, ChangeStoreFormState state) {
-    if(state.status) {
-      for (var element in state.props) {
-        if(element is FormzInput && element.isNotValid) {
+  dynamic _listenerForm(BuildContext context, ChangeStoreFormState state) {
+    if (state.status) {
+      for (final element in state.props) {
+        if (element is FormzInput && element.isNotValid) {
           return showErrorSnackBar(context, element.error.toString());
         }
       }
     }
   }
 
-  _listenChange(bool isListener) => (BuildContext context, ChangeStoreState state) {
-    if(state is ChangeStoreSuccess) {
-      context.router.navigate(const InitialRouter(
-          children: [
-            ProfileRouter()
-          ]
-      ));
-    } else if(state is ChangeStoreError && isListener) {
-      showErrorSnackBar(context, state.error.messages[0]);
-    }
-  };
+  Null Function(BuildContext context, ChangeStoreState state) _listenChange(
+          bool isListener) =>
+      (context, state) {
+        if (state is ChangeStoreSuccess) {
+          context.router
+              .navigate(const InitialRouter(children: [ProfileRouter()]));
+        } else if (state is ChangeStoreError && isListener) {
+          showErrorSnackBar(context, state.error.messages[0]);
+        }
+      };
 
   Future<bool> _checkForm() async {
-    Position? position = await getLocation();
-    if(position != null) {
-      ChangeStoreFormCubit form = context.read<ChangeStoreFormCubit>();
+    var position = await getLocation();
+    if (position != null) {
+      var form = context.read<ChangeStoreFormCubit>();
       return form.checkChangeForm(
           name: _nameController.value.text,
           fullAddress: _fullAddressController.value.text,
@@ -124,24 +121,22 @@ class _ChangeStoreScreenState extends State<ChangeStoreScreen> {
           lat: position.latitude.toString(),
           lon: position.longitude.toString(),
           city: _cityPickerController.value,
-          contacts: _contactController.value.map((e) {
-            return e.getData();
-          }).toList()
-      );
-    }else {
+          contacts: _contactController.value.map((e) => e.getData()).toList());
+    } else {
       return false;
     }
-
   }
 
   @override
   void initState() {
-    ProfileScreenState state = context.read<ProfileScreenCubit>().state;
+    var state = context.read<ProfileScreenCubit>().state;
     _nameController = TextEditingController(text: state.store?.name);
-    _fullAddressController = TextEditingController(text: state.store?.fullAddress);
+    _fullAddressController =
+        TextEditingController(text: state.store?.fullAddress);
     _binController = TextEditingController(text: state.store?.bin.toString());
     _cityPickerController = CityPickerController(city: state.store?.city);
-    _contactController = ContactTypeMultiPickerController(contacts: state.store?.contacts);
+    _contactController =
+        ContactTypeMultiPickerController(contacts: state.store?.contacts);
     super.initState();
   }
 
@@ -156,69 +151,67 @@ class _ChangeStoreScreenState extends State<ChangeStoreScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            child: MultiBlocListener(
-              listeners: [
-                BlocListener<ChangeStoreFormCubit, ChangeStoreFormState>(
-                  listener: _listenerForm,
-                ),
-                BlocListener<ChangeStoreBloc, ChangeStoreState>(
-                  listener: _listenChange(true),
-                ),
-              ],
-              child: Column(
-                children: [
-                  TitleApp('Shop_registration'.tr()),
-                  const SizedBox(height: 20,),
-                  TextFieldApp(
-                    label: 'Names'.tr(),
-                    icon: const Icon(Icons.person_add_alt_1),
-                    controller: _nameController,
+  Widget build(BuildContext context) => Scaffold(
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              child: MultiBlocListener(
+                listeners: [
+                  BlocListener<ChangeStoreFormCubit, ChangeStoreFormState>(
+                    listener: _listenerForm,
                   ),
-                  NumberFieldApp(
-                    label: 'BIN'.tr(),
-                    icon: const Icon(Icons.wallet),
-                    controller: _binController,
-                  ),
-                  TextFieldApp(
-                    label: 'Full_address'.tr(),
-                    icon: const Icon(Icons.maps_home_work_outlined),
-                    controller: _fullAddressController,
-                  ),
-                  CityPicker(
-                      label: 'City'.tr(),
-                      controller: _cityPickerController
-                  ),
-                  ContactTypeMultiPicker(
-                    controller: _contactController,
-                  ),
-                  const SizedBox(height: 20),
-
-                  BlocBuilder<ChangeStoreBloc, ChangeStoreState>(
-                    builder: (context, state) {
-                      if (state is ChangeStoreLoading) {
-                        return ElevatedButtonApp(
-                          child: const Loader(),
-                          onPressed: () {},
-                        );
-                      }
-                      return ElevatedButtonApp(
-                        text: 'Edit'.tr(),
-                        onPressed: _register,
-                      );
-                    },
+                  BlocListener<ChangeStoreBloc, ChangeStoreState>(
+                    listener: _listenChange(true),
                   ),
                 ],
+                child: Column(
+                  children: [
+                    TitleApp(AppLocalizations.of(context)!.shop_registration),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextFieldApp(
+                      label: AppLocalizations.of(context)!.names,
+                      icon: const Icon(Icons.person_add_alt_1),
+                      controller: _nameController,
+                    ),
+                    NumberFieldApp(
+                      label: AppLocalizations.of(context)!.bIN,
+                      icon: const Icon(Icons.wallet),
+                      controller: _binController,
+                    ),
+                    TextFieldApp(
+                      label: AppLocalizations.of(context)!.full_address,
+                      icon: const Icon(Icons.maps_home_work_outlined),
+                      controller: _fullAddressController,
+                    ),
+                    CityPicker(
+                        label: AppLocalizations.of(context)!.city,
+                        controller: _cityPickerController),
+                    ContactTypeMultiPicker(
+                      controller: _contactController,
+                    ),
+                    const SizedBox(height: 20),
+                    BlocBuilder<ChangeStoreBloc, ChangeStoreState>(
+                      builder: (context, state) {
+                        if (state is ChangeStoreLoading) {
+                          return ElevatedButtonApp(
+                            child: const Loader(),
+                            onPressed: () {},
+                          );
+                        }
+                        return ElevatedButtonApp(
+                          text: AppLocalizations.of(context)!.edit,
+                          onPressed: _register,
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }

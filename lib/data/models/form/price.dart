@@ -1,5 +1,3 @@
-
-import 'package:easy_localization/easy_localization.dart';
 import 'package:formz/formz.dart';
 
 enum PriceValidationError {
@@ -7,17 +5,18 @@ enum PriceValidationError {
 
   @override
   String toString() {
-    switch(this) {
+    switch (this) {
       case PriceValidationError.empty:
-        return 'Fill_in_the_price'.tr();
+        return 'Fill in the price';
     }
   }
 }
 
 class PriceFormModel extends FormzInput<String, PriceValidationError> {
-  final bool isRequired;
   const PriceFormModel.pure([this.isRequired = true]) : super.pure('');
-  const PriceFormModel.dirty([super.value = '', this.isRequired = true]) : super.dirty();
+  const PriceFormModel.dirty([super.value = '', this.isRequired = true])
+      : super.dirty();
+  final bool isRequired;
 
   @override
   PriceValidationError? validator(String value) {

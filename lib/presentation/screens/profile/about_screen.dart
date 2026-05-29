@@ -1,49 +1,47 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 
 class AboutScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: NestedScrollView(
-          body: SingleChildScrollView(
-            child: Container(
-              padding: EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text('"Заказы" - список размещенных на платформе заказов для поиска лучшего предложения от исполнителей.'),
-                  Text('"Металлопрокат" - список компаний занимаеющихся продажей готовой продукции.'),
-                  Text('"+" (Заказ) - создание заказа для поиска исполнителей.'),
-                  Text('"+" (Услуги) - создание услуг для распространения своих услуг'),
-                  Text('"+" (Объявление) - создание объявления для продажи товаров или оказание услуг машиностроения.'),
-                  Text('"Торговая площадка" - список объявлений о продажи товара или оказании услуг машиностроения.'),
-                  Text('"Профиль" - профиль пользователя.'),
+  const AboutScreen({super.key});
 
-                ],
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        body: SafeArea(
+          child: NestedScrollView(
+            body: SingleChildScrollView(
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                child: const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                        '"Заказы" - список размещенных на платформе заказов для поиска лучшего предложения от исполнителей.'),
+                    Text(
+                        '"Металлопрокат" - список компаний занимаеющихся продажей готовой продукции.'),
+                    Text(
+                        '"+" (Заказ) - создание заказа для поиска исполнителей.'),
+                    Text(
+                        '"+" (Услуги) - создание услуг для распространения своих услуг'),
+                    Text(
+                        '"+" (Объявление) - создание объявления для продажи товаров или оказание услуг машиностроения.'),
+                    Text(
+                        '"Торговая площадка" - список объявлений о продажи товара или оказании услуг машиностроения.'),
+                    Text('"Профиль" - профиль пользователя.'),
+                  ],
+                ),
               ),
             ),
-          ),
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return [
+            headerSliverBuilder: (context, innerBoxIsScrolled) => [
               SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: HeaderAppBar(
+                  child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: HeaderAppBar(
                     isBack: true,
-                    title: "About_the_application".tr()
-                  ),
-                )
-              )
-            ];
-          },
+                    title: AppLocalizations.of(context)!.about_the_application),
+              ))
+            ],
+          ),
         ),
-
-      ),
-    );
-  }
-
+      );
 }

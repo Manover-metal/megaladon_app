@@ -38,9 +38,9 @@ import 'package:megaladon/presentation/screens/profile/change_phone_end_screen.d
 import 'package:megaladon/presentation/screens/profile/change_phone_start_screen.dart';
 import 'package:megaladon/presentation/screens/profile/profile_screen.dart';
 import 'package:megaladon/presentation/screens/profile/settings_screen.dart';
+import 'package:megaladon/presentation/screens/splash_screen.dart';
 import 'package:megaladon/presentation/screens/store/details_store_screen.dart';
 import 'package:megaladon/presentation/screens/store/list_stores_screen.dart';
-import 'package:megaladon/presentation/screens/splash_screen.dart';
 import 'package:megaladon/presentation/screens/subscribe/subscribe_screen.dart';
 
 part 'router.gr.dart';
@@ -51,7 +51,7 @@ const List<AutoRoute> profile = [
   AutoRoute(page: ChangeExecutorScreen, guards: [AuthGuard]),
   AutoRoute(page: ChangeStoreScreen, guards: [AuthGuard]),
   AutoRoute(page: ListChatsScreen, guards: [AuthGuard]),
-  AutoRoute(page: AboutScreen ),
+  AutoRoute(page: AboutScreen),
 ];
 
 const List<AutoRoute> ad = [
@@ -74,10 +74,7 @@ const List<AutoRoute> order = [
   AutoRoute(page: ListExecutorsScreen),
   AutoRoute(page: DetailsOfferScreen),
   AutoRoute(page: ReviewScreen),
-  AutoRoute(
-      page: SubscribeScreen,
-      guards: [AuthGuard]
-  ),
+  AutoRoute(page: SubscribeScreen, guards: [AuthGuard]),
 ];
 
 const List<AutoRoute> auth = [
@@ -96,18 +93,9 @@ const List<AutoRoute> form = [
   AutoRoute(page: UpdateAdScreen, guards: [AuthGuard]),
   AutoRoute(page: UpdateOrderScreen, guards: [AuthGuard]),
   AutoRoute(page: CreateOfferScreen, guards: [AuthGuard]),
-  AutoRoute(
-    page: ChangePasswordScreen,
-    guards: [AuthGuard]
-  ),
-  AutoRoute(
-    page: ChangePhoneStartScreen,
-    guards: [AuthGuard]
-  ),
-  AutoRoute(
-    page: ChangePhoneEndScreen,
-    guards: [AuthGuard]
-  ),
+  AutoRoute(page: ChangePasswordScreen, guards: [AuthGuard]),
+  AutoRoute(page: ChangePhoneStartScreen, guards: [AuthGuard]),
+  AutoRoute(page: ChangePhoneEndScreen, guards: [AuthGuard]),
 ];
 
 @MaterialAutoRouter(
@@ -119,32 +107,24 @@ const List<AutoRoute> form = [
           name: 'OrderRouter',
           path: 'order',
           children: order,
-          initial: true
-      ),
+          initial: true),
       AutoRoute(
           page: _EmptyRouteWidget,
           name: 'StoreRouter',
           path: 'store',
-          children: store
-      ),
+          children: store),
       AutoRoute(
-          page:_EmptyRouteWidget,
-          name: 'AdRouter',
-          path: 'ad',
-          children: ad
-      ),
+          page: _EmptyRouteWidget, name: 'AdRouter', path: 'ad', children: ad),
       AutoRoute(
           page: _EmptyRouteWidget,
           name: 'ProfileRouter',
           path: 'profile',
-          children: profile
-      ),
+          children: profile),
     ]),
     AutoRoute(
       page: DetailsChatScreen,
       name: 'DetailsChatRouter',
     ),
-
     ...auth,
     ...form
   ],
@@ -155,7 +135,5 @@ class AppRouter extends _$AppRouter {
 
 class _EmptyRouteWidget extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return const AutoRouter();
-  }
+  Widget build(BuildContext context) => const AutoRouter();
 }

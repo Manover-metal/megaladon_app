@@ -1,27 +1,21 @@
 part of 'advert_screen_my_cubit.dart';
 
-enum AdverScreenMyMainStatus {
-  loading,
-  error,
-  success
-}
+enum AdverScreenMyMainStatus { loading, error, success }
 
 class AdvertScreenMyState extends Equatable {
+  const AdvertScreenMyState(
+      {this.status = AdverScreenMyMainStatus.success,
+      this.adverts = const [],
+      this.services = const [],
+      this.error,
+      this.params = const AdvertIndexRequestParams(),
+      this.stock = false});
   final AdverScreenMyMainStatus status;
   final List<AdvertModel> adverts;
   final List<AdvertModel> services;
   final ErrorModel? error;
   final AdvertIndexRequestParams params;
   final bool stock;
-
-  const AdvertScreenMyState({
-    this.status = AdverScreenMyMainStatus.success,
-    this.adverts = const [],
-    this.services = const [],
-    this.error,
-    this.params = const AdvertIndexRequestParams(),
-    this.stock = false
-  });
 
   @override
   List<Object?> get props => [status, adverts, services, error, params, stock];
@@ -33,14 +27,12 @@ class AdvertScreenMyState extends Equatable {
     ErrorModel? error,
     AdvertIndexRequestParams? params,
     bool? stock,
-  }) {
-    return AdvertScreenMyState(
-      status: status ?? this.status,
-      adverts: adverts ?? this.adverts,
-      services: services ?? this.services,
-      error: error,
-      params: params ?? this.params,
-      stock: stock ?? this.stock
-    );
-  }
+  }) =>
+      AdvertScreenMyState(
+          status: status ?? this.status,
+          adverts: adverts ?? this.adverts,
+          services: services ?? this.services,
+          error: error,
+          params: params ?? this.params,
+          stock: stock ?? this.stock);
 }

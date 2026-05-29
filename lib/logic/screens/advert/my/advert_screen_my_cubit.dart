@@ -10,18 +10,16 @@ import 'package:megaladon/logic/auth/auth_bloc.dart';
 
 part 'advert_screen_my_state.dart';
 
-
 class AdvertScreenMyCubit extends Cubit<AdvertScreenMyState> {
-  final AdvertRepository _repository = AdvertRepository();
-  final AuthBloc authBloc;
   AdvertScreenMyCubit(this.authBloc) : super(const AdvertScreenMyState()) {
     _listenAuth(authBloc.state);
     authBloc.stream.listen(_listenAuth);
   }
+  final AdvertRepository _repository = AdvertRepository();
+  final AuthBloc authBloc;
 
-
-  _listenAuth(stateAuth) {
-    if(stateAuth is AuthLoginState) {
+  void _listenAuth(stateAuth) {
+    if (stateAuth is AuthLoginState) {
       fetchAdvert();
       fetchService();
     } else {
@@ -30,31 +28,31 @@ class AdvertScreenMyCubit extends Cubit<AdvertScreenMyState> {
   }
 
   Future fetchAdvert({AdvertIndexRequestParams? params}) async {
-    if(state.status == AdverScreenMyMainStatus.loading
-        && state.error == null
-    ) return;
+    if (state.status == AdverScreenMyMainStatus.loading && state.error == null)
+      return;
 
-    AdvertIndexRequestParams mainParams = params ?? state.params;
-    emit(state.copyWith(status: AdverScreenMyMainStatus.loading, error: null, adverts: state.adverts));
+    var mainParams = params ?? state.params;
+    emit(state.copyWith(
+        status: AdverScreenMyMainStatus.loading,
+        error: null,
+        adverts: state.adverts));
 
     return await _repository.indexMy(mainParams).then((value) {
-      if(mainParams.startRow == 0) {
+      if (mainParams.startRow == 0) {
         emit(state.copyWith(
             adverts: value,
             params: mainParams,
             status: AdverScreenMyMainStatus.success,
-            stock: value.length < mainParams.rowsPerPage
-        ));
+            stock: value.length < mainParams.rowsPerPage));
       } else {
         emit(state.copyWith(
-          status: AdverScreenMyMainStatus.success,
-          adverts: [...state.adverts, ...value],
-          params: mainParams,
-          stock: value.length < mainParams.rowsPerPage
-        ));
+            status: AdverScreenMyMainStatus.success,
+            adverts: [...state.adverts, ...value],
+            params: mainParams,
+            stock: value.length < mainParams.rowsPerPage));
       }
-    }).catchError(( error) {
-      if(error is DioError) {
+    }).catchError((error) {
+      if (error is DioException) {
         emit(state.copyWith(error: ErrorModel.parseDio(error)));
       } else {
         emit(state.copyWith(error: ErrorModel.nothing));
@@ -63,31 +61,33 @@ class AdvertScreenMyCubit extends Cubit<AdvertScreenMyState> {
   }
 
   Future fetchService({AdvertIndexRequestParams? params}) async {
-    if(state.status == AdverScreenMyMainStatus.loading
-        && state.error == null
-    ) return;
+    if (state.status == AdverScreenMyMainStatus.loading && state.error == null)
+      return;
 
-    AdvertIndexRequestParams mainParams = params ?? state.params;
-    emit(state.copyWith(status: AdverScreenMyMainStatus.loading, error: null, services: state.services));
+    var mainParams = params ?? state.params;
+    emit(state.copyWith(
+        status: AdverScreenMyMainStatus.loading,
+        error: null,
+        services: state.services));
 
-    return await _repository.indexMy(mainParams, AdvertType.service).then((value) {
-      if(mainParams.startRow == 0) {
+    return await _repository
+        .indexMy(mainParams, AdvertType.service)
+        .then((value) {
+      if (mainParams.startRow == 0) {
         emit(state.copyWith(
             services: value,
             params: mainParams,
             status: AdverScreenMyMainStatus.success,
-            stock: value.length < mainParams.rowsPerPage
-        ));
+            stock: value.length < mainParams.rowsPerPage));
       } else {
         emit(state.copyWith(
             status: AdverScreenMyMainStatus.success,
             services: [...state.services, ...value],
             params: mainParams,
-            stock: value.length < mainParams.rowsPerPage
-        ));
+            stock: value.length < mainParams.rowsPerPage));
       }
-    }).catchError(( error) {
-      if(error is DioError) {
+    }).catchError((error) {
+      if (error is DioException) {
         emit(state.copyWith(error: ErrorModel.parseDio(error)));
       } else {
         emit(state.copyWith(error: ErrorModel.nothing));
@@ -95,9 +95,7 @@ class AdvertScreenMyCubit extends Cubit<AdvertScreenMyState> {
     });
   }
 
-  changeParams(AdvertIndexRequestParams params) {
-    emit(state.copyWith(
-        params: params.copyWith(startRow: 0)
-    ));
+  void changeParams(AdvertIndexRequestParams params) {
+    emit(state.copyWith(params: params.copyWith(startRow: 0)));
   }
 }

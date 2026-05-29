@@ -6,9 +6,9 @@ import 'package:megaladon/data/models/dictionary/service_type_model.dart';
 import 'package:megaladon/data/models/form/bin.dart';
 import 'package:megaladon/data/models/form/description.dart';
 import 'package:megaladon/data/models/form/dictionary/city.dart';
+import 'package:megaladon/data/models/form/dictionary/multy_service_type.dart';
 import 'package:megaladon/data/models/form/lat.dart';
 import 'package:megaladon/data/models/form/lon.dart';
-import 'package:megaladon/data/models/form/dictionary/multy_service_type.dart';
 import 'package:megaladon/data/models/form/name.dart';
 
 part 'register_executor_form_state.dart';
@@ -16,26 +16,24 @@ part 'register_executor_form_state.dart';
 class RegisterExecutorFormCubit extends Cubit<RegisterExecutorFormState> {
   RegisterExecutorFormCubit() : super(const RegisterExecutorFormState());
 
-  bool checkRegisterForm({
-    required String name,
-    required String fullAddress,
-    required String bin,
-    required String lat,
-    required String lon,
-    required CityModel city,
-    required String description,
-    required List<ServiceTypeModel> services
-  }) {
-    NameFormModel nameForm = NameFormModel.dirty(name);
-    BinFormModel binForm = BinFormModel.dirty(bin);
-    LatFormModel latForm = LatFormModel.dirty(lat);
-    LonFormModel lonForm = LonFormModel.dirty(lon);
-    MultiServiceTypeFormModel servicesForm = MultiServiceTypeFormModel.dirty(services);
-    CityFormModel cityForm = CityFormModel.dirty(city.id);
-    DescriptionFormModel descriptionForm = DescriptionFormModel.dirty(description);
+  bool checkRegisterForm(
+      {required String name,
+      required String fullAddress,
+      required String bin,
+      required String lat,
+      required String lon,
+      required CityModel city,
+      required String description,
+      required List<ServiceTypeModel> services}) {
+    var nameForm = NameFormModel.dirty(name);
+    var binForm = BinFormModel.dirty(bin);
+    var latForm = LatFormModel.dirty(lat);
+    var lonForm = LonFormModel.dirty(lon);
+    var servicesForm = MultiServiceTypeFormModel.dirty(services);
+    var cityForm = CityFormModel.dirty(city.id);
+    var descriptionForm = DescriptionFormModel.dirty(description);
 
-
-    bool status = Formz.validate([
+    var status = Formz.validate([
       nameForm,
       binForm,
       latForm,
@@ -45,17 +43,15 @@ class RegisterExecutorFormCubit extends Cubit<RegisterExecutorFormState> {
       descriptionForm
     ]);
 
-    RegisterExecutorFormState stateNew = state.copyWith(
+    var stateNew = state.copyWith(
         city: cityForm,
-
         name: nameForm,
         bin: binForm,
         lat: latForm,
         lon: lonForm,
         services: servicesForm,
         status: status,
-        countTry: state.countTry + 1
-    );
+        countTry: state.countTry + 1);
 
     emit(stateNew);
 

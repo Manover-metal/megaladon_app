@@ -1,6 +1,6 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
-abstract class  LocaleKeys {
+abstract class LocaleKeys {
   static const main_screen = 'main_screen';
   static const element = 'element';
   static const project = 'project';
@@ -63,7 +63,8 @@ abstract class  LocaleKeys {
   static const Your_password = 'Your_password';
   static const Forgot_your_password = 'Forgot_your_password';
   static const Sign_in = 'Sign_in';
-  static const You_need_to_log_into_the_application = 'You_need_to_log_into_the_application';
+  static const You_need_to_log_into_the_application =
+      'You_need_to_log_into_the_application';
   static const Registration = 'Registration';
   static const Continue = 'Continue';
   static const for_this_request_ended = 'for_this_request_ended';
@@ -85,7 +86,8 @@ abstract class  LocaleKeys {
   static const Full_address = 'Full_address';
   static const Latitude = 'Latitude';
   static const Longitude = 'Longitude';
-  static const By_clicking_on_the_Continue_button_you_accept = 'By_clicking_on_the_Continue_button_you_accept';
+  static const By_clicking_on_the_Continue_button_you_accept =
+      'By_clicking_on_the_Continue_button_you_accept';
   static const user_Agreement_Terms = 'user_Agreement_Terms';
   static const Shop_registration = 'Shop_registration';
   static const Names = 'Names';
@@ -129,7 +131,8 @@ abstract class  LocaleKeys {
   static const Leave_feedback = 'Leave_feedback';
   static const Back = 'Back';
   static const Password_changed_successfully = 'Password_changed_successfully';
-  static const Phone_number_changed_successfully = 'Phone_number_changed_successfully';
+  static const Phone_number_changed_successfully =
+      'Phone_number_changed_successfully';
   static const Change_phone_number = 'Change_phone_number';
   static const Old_phone = 'Old_phone';
   static const Code = 'Code';
@@ -168,7 +171,8 @@ abstract class  LocaleKeys {
   static const Select_category = 'Select_category';
   static const Select_city = 'Select_city';
   static const Add_at_least_one_contact = 'Add_at_least_one_contact';
-  static const Contacts_are_not_fully_filled_out = 'Contacts_are_not_fully_filled_out';
+  static const Contacts_are_not_fully_filled_out =
+      'Contacts_are_not_fully_filled_out';
   static const Add_at_least_one_service = 'Add_at_least_one_service';
   static const Category_is_not_filled_out = 'Category_is_not_filled_out';
   static const Type_is_not_specified = 'Type_is_not_specified';
@@ -176,19 +180,26 @@ abstract class  LocaleKeys {
   static const BIN_is_not_fully_filled = 'BIN_is_not_fully_filled';
   static const BIN_maximum_12_digits = 'BIN_maximum_12_digits';
   static const Work_time_is_not_filled = 'Work_time_is_not_filled';
-  static const Description_exceeds_1000_characters = 'Description_exceeds_1000_characters';
+  static const Description_exceeds_1000_characters =
+      'Description_exceeds_1000_characters';
   static const Not_an_email = 'Not_an_email';
   static const Email_is_empty = 'Email_is_empty';
-  static const Response_relevance_is_not_filled = 'Response_relevance_is_not_filled';
+  static const Response_relevance_is_not_filled =
+      'Response_relevance_is_not_filled';
   static const Latitude_not_filled = 'Latitude_not_filled';
-  static const Latitude_cannot_be_less_than_90 = 'Latitude_cannot_be_less_than_90';
-  static const Latitude_cannot_be_greater_than_90 = 'Latitude_cannot_be_greater_than_90';
+  static const Latitude_cannot_be_less_than_90 =
+      'Latitude_cannot_be_less_than_90';
+  static const Latitude_cannot_be_greater_than_90 =
+      'Latitude_cannot_be_greater_than_90';
   static const Longitude_is_not_filled = 'Longitude_is_not_filled';
-  static const Longitude_cannot_be_less_than_180 = 'Longitude_cannot_be_less_than_180';
-  static const Longitude_cannot_be_greater_than_180 = 'Longitude_cannot_be_greater_than_180';
+  static const Longitude_cannot_be_less_than_180 =
+      'Longitude_cannot_be_less_than_180';
+  static const Longitude_cannot_be_greater_than_180 =
+      'Longitude_cannot_be_greater_than_180';
   static const Name_is_empty = 'Name_is_empty';
   static const Passwords_do_not_match = 'Passwords_do_not_match';
-  static const Password_must_be_at_least_8_characters = 'Password_must_be_at_least_8_characters';
+  static const Password_must_be_at_least_8_characters =
+      'Password_must_be_at_least_8_characters';
   static const Password_is_empty = 'Password_is_empty';
   static const Phone_number_is_empty = 'Phone_number_is_empty';
   static const Code_is_empty = 'Code_is_empty';
@@ -220,5 +231,4 @@ abstract class  LocaleKeys {
   static const ru = 'ru';
   static const kk = 'kk';
   static const Add_to_Favorite = 'Add_to_Favorite';
-
 }

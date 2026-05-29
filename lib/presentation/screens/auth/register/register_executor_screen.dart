@@ -1,16 +1,14 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:megaladon/data/models/request/params/register/register_executor_request_params.dart';
-import 'package:megaladon/generated/locale_keys.g.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/form/register/register_executor/register_executor_form_cubit.dart';
 import 'package:megaladon/logic/register/register_executor/register_executor_bloc.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
-import 'package:megaladon/presentation/widgets/form/field/double_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/number_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/form/multi_picker/service_type_multi_picker.dart';
@@ -21,7 +19,6 @@ import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class RegisterExecutorScreen extends StatefulWidget {
   const RegisterExecutorScreen({super.key});
-
 
   @override
   State<RegisterExecutorScreen> createState() => _RegisterExecutorScreenState();
@@ -35,56 +32,51 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
   late CityPickerController _cityController;
   late TextEditingController _descriptionController;
 
-
-
-  _register() async{
-    if(await _checkForm()) {
-      Position? position =  await getLocation();
-      if(position != null) {
+  Future<void> _register() async {
+    if (await _checkForm()) {
+      var position = await getLocation();
+      if (position != null) {
         context.read<RegisterExecutorBloc>().add(RegisterExecutorFetchEvent(
-          params: RegisterExecutorRequestParams(
-              name: _nameController.value.text,
-              bin: _binController.value.text,
-              lat: position.latitude,
-              lon: position.longitude,
-              fullAddress: _fullAddressController.value.text,
-              services: _serviceController.value.map((e) => e.value).toList(),
-              description: _descriptionController.value.text,
-              city: _cityController.value
-            ),
-          )
-        );
+              params: RegisterExecutorRequestParams(
+                  name: _nameController.value.text,
+                  bin: _binController.value.text,
+                  lat: position.latitude,
+                  lon: position.longitude,
+                  fullAddress: _fullAddressController.value.text,
+                  services:
+                      _serviceController.value.map((e) => e.value).toList(),
+                  description: _descriptionController.value.text,
+                  city: _cityController.value),
+            ));
       }
     }
   }
 
-  _listenerForm(BuildContext context, RegisterExecutorFormState state) {
-    if(state.status) {
-      for (var element in state.props) {
-        if(element is FormzInput && element.isNotValid) {
+  dynamic _listenerForm(BuildContext context, RegisterExecutorFormState state) {
+    if (state.status) {
+      for (final element in state.props) {
+        if (element is FormzInput && element.isNotValid) {
           return showErrorSnackBar(context, element.error.toString());
         }
       }
     }
   }
 
-  _listenRegister(bool isListener) => (BuildContext context, RegisterExecutorState state) {
-    if(state is RegisterExecutorSuccess) {
-      context.router.navigate(const InitialRouter(
-          children: [
-            ProfileRouter()
-          ]
-      ));
-    } else if(state is RegisterExecutorError && isListener) {
-      showErrorSnackBar(context, state.error.messages[0]);
-    }
-  };
+  Null Function(BuildContext context, RegisterExecutorState state)
+      _listenRegister(bool isListener) => (context, state) {
+            if (state is RegisterExecutorSuccess) {
+              context.router
+                  .navigate(const InitialRouter(children: [ProfileRouter()]));
+            } else if (state is RegisterExecutorError && isListener) {
+              showErrorSnackBar(context, state.error.messages[0]);
+            }
+          };
 
-  Future<bool> _checkForm() async{
-    Position? position =  await getLocation();
+  Future<bool> _checkForm() async {
+    var position = await getLocation();
 
-    if(position != null) {
-      RegisterExecutorFormCubit form = context.read<RegisterExecutorFormCubit>();
+    if (position != null) {
+      var form = context.read<RegisterExecutorFormCubit>();
       return form.checkRegisterForm(
           name: _nameController.value.text,
           fullAddress: _fullAddressController.value.text,
@@ -93,12 +85,10 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
           lon: position.longitude.toString(),
           city: _cityController.value,
           description: _descriptionController.value.text,
-          services: _serviceController.value.map((e) => e.value).toList()
-      );
+          services: _serviceController.value.map((e) => e.value).toList());
     } else {
       return false;
     }
-
   }
 
   Future<Position?> getLocation() async {
@@ -118,18 +108,20 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        showErrorSnackBar(context, 'Отключенено разрешение на получение геопозиция');
+        showErrorSnackBar(
+            context, 'Отключенено разрешение на получение геопозиция');
         return null;
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
-      showErrorSnackBar(context, 'Отключенено разрешение на получение геопозиция');
+      showErrorSnackBar(
+          context, 'Отключенено разрешение на получение геопозиция');
       return null;
     }
 
     // Get the current position (latitude and longitude)
-    Position position = await Geolocator.getCurrentPosition(
+    var position = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     );
 
@@ -147,7 +139,6 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
     super.initState();
   }
 
-
   @override
   void dispose() {
     _nameController.dispose();
@@ -160,88 +151,87 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: MultiBlocListener(
-        listeners: [
-          BlocListener<RegisterExecutorFormCubit, RegisterExecutorFormState>(
-            listener: _listenerForm,
-          ),
-          BlocListener<RegisterExecutorBloc, RegisterExecutorState>(
-            listener: _listenRegister(true),
-          ),
-        ],
-        child: SafeArea(
-          child: SingleChildScrollView(
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  TitleApp("Artist_registration".tr()),
-                  const SizedBox(height: 20,),
-                  TextFieldApp(
-                    label: "Name".tr(),
-                    icon: const Icon(Icons.person_add_alt_1),
-                    controller: _nameController,
-                  ),
-                  TextFieldApp(
-                    label: "Description".tr(),
-                    icon: const Icon(Icons.description),
-                    controller: _descriptionController,
-                  ),
-                  NumberFieldApp(
-                    label: "BIN".tr(),
-                    icon: const Icon(Icons.wallet),
-                    controller: _binController,
-                  ),
-                  CityPicker(
-                      label: 'City'.tr(),
-                      controller: _cityController,
-                      icon: const Icon(Icons.location_city)
-                  ),
-                  TextFieldApp(
-                    label: "Full_address".tr(),
-                    icon: const Icon(Icons.maps_home_work_outlined),
-                    controller: _fullAddressController,
-                  ),
-                  ServiceTypeMultiPicker(serviceTypeControllers: _serviceController),
-
-                  const SizedBox(height: 20),
-                  BlocBuilder<RegisterExecutorBloc, RegisterExecutorState>(
-                    builder: (context, state) {
-                      if (state is RegisterExecutorLoading) {
-                        return ElevatedButtonApp(
-                          child: const Loader(color: Colors.black,),
-                          onPressed: () {},
-                        );
-                      }
-                      return ElevatedButtonApp(
-                        text: "Register".tr(),
-                        onPressed: _register,
-                      );
-                    },
-                  ),
-                   Text.rich(
-                    TextSpan(
-                        children: [
-                          TextSpan(
-                            text: "By_clicking_on_the_Continue_button_you_accept".tr()
-                          ),
-                          TextSpan(text: "user_Agreement_Terms".tr(),
-                            style: TextStyle(
-                                decoration: TextDecoration.underline
-                            )
-                          )
-                        ]
+  Widget build(BuildContext context) => Scaffold(
+        body: MultiBlocListener(
+          listeners: [
+            BlocListener<RegisterExecutorFormCubit, RegisterExecutorFormState>(
+              listener: _listenerForm,
+            ),
+            BlocListener<RegisterExecutorBloc, RegisterExecutorState>(
+              listener: _listenRegister(true),
+            ),
+          ],
+          child: SafeArea(
+            child: SingleChildScrollView(
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    TitleApp(AppLocalizations.of(context)!.artist_registration),
+                    const SizedBox(
+                      height: 20,
                     ),
-                    textAlign: TextAlign.center,
-                  )
-                ],
+                    TextFieldApp(
+                      label: AppLocalizations.of(context)!.name,
+                      icon: const Icon(Icons.person_add_alt_1),
+                      controller: _nameController,
+                    ),
+                    TextFieldApp(
+                      label: AppLocalizations.of(context)!.description,
+                      icon: const Icon(Icons.description),
+                      controller: _descriptionController,
+                    ),
+                    NumberFieldApp(
+                      label: AppLocalizations.of(context)!.bIN,
+                      icon: const Icon(Icons.wallet),
+                      controller: _binController,
+                    ),
+                    CityPicker(
+                        label: AppLocalizations.of(context)!.city,
+                        controller: _cityController,
+                        icon: const Icon(Icons.location_city)),
+                    TextFieldApp(
+                      label: AppLocalizations.of(context)!.full_address,
+                      icon: const Icon(Icons.maps_home_work_outlined),
+                      controller: _fullAddressController,
+                    ),
+                    ServiceTypeMultiPicker(
+                        serviceTypeControllers: _serviceController),
+                    const SizedBox(height: 20),
+                    BlocBuilder<RegisterExecutorBloc, RegisterExecutorState>(
+                      builder: (context, state) {
+                        if (state is RegisterExecutorLoading) {
+                          return ElevatedButtonApp(
+                            child: const Loader(
+                              color: Colors.black,
+                            ),
+                            onPressed: () {},
+                          );
+                        }
+                        return ElevatedButtonApp(
+                          text: AppLocalizations.of(context)!.register,
+                          onPressed: _register,
+                        );
+                      },
+                    ),
+                    Text.rich(
+                      TextSpan(children: [
+                        TextSpan(
+                            text: AppLocalizations.of(context)!
+                                .by_clicking_on_the_Continue_button_you_accept),
+                        TextSpan(
+                            text: AppLocalizations.of(context)!
+                                .user_Agreement_Terms,
+                            style: const TextStyle(
+                                decoration: TextDecoration.underline))
+                      ]),
+                      textAlign: TextAlign.center,
+                    )
+                  ],
+                ),
               ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }

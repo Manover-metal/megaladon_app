@@ -1,5 +1,3 @@
-
-import 'package:easy_localization/easy_localization.dart';
 import 'package:formz/formz.dart';
 
 enum PasswordConfirmationValidationError {
@@ -7,18 +5,19 @@ enum PasswordConfirmationValidationError {
 
   @override
   String toString() {
-    switch(this) {
+    switch (this) {
       case PasswordConfirmationValidationError.notMatch:
-        return 'Passwords_do_not_match'.tr();
+        return 'Passwords do not match';
     }
   }
 }
 
-class PasswordConfirmationFormModel extends FormzInput<String, PasswordConfirmationValidationError> {
-  final String password;
-
+class PasswordConfirmationFormModel
+    extends FormzInput<String, PasswordConfirmationValidationError> {
   const PasswordConfirmationFormModel.pure(this.password) : super.pure('');
-  const PasswordConfirmationFormModel.dirty(this.password, [super.value = '']) : super.dirty();
+  const PasswordConfirmationFormModel.dirty(this.password, [super.value = ''])
+      : super.dirty();
+  final String password;
 
   @override
   PasswordConfirmationValidationError? validator(String value) {

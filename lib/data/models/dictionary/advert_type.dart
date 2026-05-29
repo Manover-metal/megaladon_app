@@ -1,10 +1,11 @@
 enum AdvertType {
-  service, advert;
+  service,
+  advert;
 
   static AdvertType parse(value) {
-    if(value == 'service') {
+    if (value == 'service') {
       return AdvertType.service;
-    } else if(value == 'advert') {
+    } else if (value == 'advert') {
       return AdvertType.advert;
     }
     return AdvertType.advert;

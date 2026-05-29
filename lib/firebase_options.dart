@@ -63,7 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '262839631693',
     projectId: 'manover-metal',
     storageBucket: 'manover-metal.appspot.com',
-    iosClientId: '262839631693-83smfag975kgd9hl37b4endt8koq5nbc.apps.googleusercontent.com',
+    iosClientId:
+        '262839631693-83smfag975kgd9hl37b4endt8koq5nbc.apps.googleusercontent.com',
     iosBundleId: 'com.sanja.megaladon',
   );
 }

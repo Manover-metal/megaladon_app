@@ -1,18 +1,17 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/dictionary/service_type_model.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/dictionary/dictionary_cubit.dart';
 
 class ServiceTypePickerController extends ValueNotifier<ServiceTypeModel> {
-  static int lastId = 0;
-  late int id;
-
   ServiceTypePickerController({ServiceTypeModel? period})
       : super(period ?? ServiceTypeModel.nothing) {
     id = ++lastId;
   }
+  static int lastId = 0;
+  late int id;
 
   void _changeServiceType(ServiceTypeModel period) {
     value = period;
@@ -27,28 +26,27 @@ class ServiceTypePickerController extends ValueNotifier<ServiceTypeModel> {
 }
 
 class ServiceTypePicker extends StatefulWidget {
+  const ServiceTypePicker(
+      {required this.label, required this.controller, super.key});
   final String label;
   final ServiceTypePickerController controller;
-
-  const ServiceTypePicker({super.key, required this.label, required this.controller});
 
   @override
   State<ServiceTypePicker> createState() => _ServiceTypePickerState();
 }
 
 class _ServiceTypePickerState extends State<ServiceTypePicker> {
-  _handleClick() async {
-    final List<ServiceTypeModel> serviceTypes =
-        context.read<DictionaryCubit>().state.serviceTypes;
+  Future<void> _handleClick() async {
+    final serviceTypes = context.read<DictionaryCubit>().state.serviceTypes;
 
     if (serviceTypes.isEmpty) return;
 
-    int initialIndex = serviceTypes.indexWhere(
+    var initialIndex = serviceTypes.indexWhere(
       (s) => s.id == widget.controller.value.id,
     );
     if (initialIndex < 0) initialIndex = 0;
 
-    int selectedIndex = initialIndex;
+    var selectedIndex = initialIndex;
 
     await showCupertinoModalPopup<void>(
       context: context,
@@ -61,11 +59,11 @@ class _ServiceTypePickerState extends State<ServiceTypePicker> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CupertinoButton(
-                  child: Text('Cancel'.tr()),
+                  child: Text(AppLocalizations.of(context)!.cancel),
                   onPressed: () => Navigator.of(ctx).pop(),
                 ),
                 CupertinoButton(
-                  child: Text('select'.tr()),
+                  child: Text(AppLocalizations.of(context)!.select),
                   onPressed: () {
                     widget.controller
                         ._changeServiceType(serviceTypes[selectedIndex]);
@@ -92,19 +90,18 @@ class _ServiceTypePickerState extends State<ServiceTypePicker> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 5.0),
-      child: ValueListenableBuilder(
-        builder: (BuildContext context, ServiceTypeModel serviceType, Widget? child) {
-          return GestureDetector(
+  Widget build(BuildContext context) => Container(
+        padding: const EdgeInsets.symmetric(vertical: 5),
+        child: ValueListenableBuilder(
+          builder: (context, serviceType, child) => GestureDetector(
             onTap: _handleClick,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   widget.label,
-                  style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.secondary),
                 ),
                 const SizedBox(height: 5),
                 Container(
@@ -127,10 +124,8 @@ class _ServiceTypePickerState extends State<ServiceTypePicker> {
                 ),
               ],
             ),
-          );
-        },
-        valueListenable: widget.controller,
-      ),
-    );
-  }
+          ),
+          valueListenable: widget.controller,
+        ),
+      );
 }

@@ -1,7 +1,7 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/data/models/request/index_period_enum.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 
 class IndexPeriodPickerController extends ValueNotifier<IndexPeriod> {
   IndexPeriodPickerController(IndexPeriod period) : super(period);
@@ -13,22 +13,22 @@ class IndexPeriodPickerController extends ValueNotifier<IndexPeriod> {
 }
 
 class IndexPeriodPicker extends StatefulWidget {
+  const IndexPeriodPicker(
+      {required this.label, required this.controller, super.key});
   final String label;
   final IndexPeriodPickerController controller;
-
-  const IndexPeriodPicker({super.key, required this.label, required this.controller});
 
   @override
   State<IndexPeriodPicker> createState() => _IndexPeriodPickerState();
 }
 
 class _IndexPeriodPickerState extends State<IndexPeriodPicker> {
-  _handleClick() async {
-    final periods = IndexPeriod.values;
-    int initialIndex = periods.indexWhere((p) => p == widget.controller.value);
+  Future<void> _handleClick() async {
+    const periods = IndexPeriod.values;
+    var initialIndex = periods.indexWhere((p) => p == widget.controller.value);
     if (initialIndex < 0) initialIndex = 0;
 
-    int selectedIndex = initialIndex;
+    var selectedIndex = initialIndex;
 
     await showCupertinoModalPopup<void>(
       context: context,
@@ -41,13 +41,14 @@ class _IndexPeriodPickerState extends State<IndexPeriodPicker> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CupertinoButton(
-                  child: Text('Cancel'.tr()),
+                  child: Text(AppLocalizations.of(context)!.cancel),
                   onPressed: () => Navigator.of(ctx).pop(),
                 ),
                 CupertinoButton(
-                  child: Text('select'.tr()),
+                  child: Text(AppLocalizations.of(context)!.select),
                   onPressed: () {
-                    widget.controller._changeIndexPeriod(periods[selectedIndex]);
+                    widget.controller
+                        ._changeIndexPeriod(periods[selectedIndex]);
                     Navigator.of(ctx).pop();
                   },
                 ),
@@ -71,26 +72,25 @@ class _IndexPeriodPickerState extends State<IndexPeriodPicker> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 5.0),
-      child: ValueListenableBuilder(
-        builder: (BuildContext context, IndexPeriod period, Widget? child) {
-          return GestureDetector(
+  Widget build(BuildContext context) => Container(
+        padding: const EdgeInsets.symmetric(vertical: 5),
+        child: ValueListenableBuilder(
+          builder: (context, period, child) => GestureDetector(
             onTap: _handleClick,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   widget.label,
-                  style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.secondary),
                 ),
                 const SizedBox(height: 5),
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(13),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.onBackground,
+                    color: Theme.of(context).colorScheme.onSurface,
                     border: Border.all(
                       color: Theme.of(context).colorScheme.primary,
                       width: 0.5,
@@ -106,10 +106,8 @@ class _IndexPeriodPickerState extends State<IndexPeriodPicker> {
                 ),
               ],
             ),
-          );
-        },
-        valueListenable: widget.controller,
-      ),
-    );
-  }
+          ),
+          valueListenable: widget.controller,
+        ),
+      );
 }

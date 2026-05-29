@@ -1,25 +1,19 @@
 part of 'store_screen_main_cubit.dart';
 
-enum StoreScreenMainStatus {
-  loading,
-  error,
-  success
-}
+enum StoreScreenMainStatus { loading, error, success }
 
 class StoreScreenMainState extends Equatable {
+  const StoreScreenMainState(
+      {this.status = StoreScreenMainStatus.success,
+      this.stores = const [],
+      this.error,
+      this.params = const StoreIndexRequestParams(),
+      this.stock = false});
   final StoreScreenMainStatus status;
   final List<StoreModel> stores;
   final ErrorModel? error;
   final StoreIndexRequestParams params;
   final bool stock;
-
-  const StoreScreenMainState({
-    this.status = StoreScreenMainStatus.success,
-    this.stores = const [],
-    this.error,
-    this.params =  const StoreIndexRequestParams(),
-    this.stock = false
-  });
 
   @override
   List<Object?> get props => [status, stores, error, params, stock];
@@ -30,16 +24,13 @@ class StoreScreenMainState extends Equatable {
     ErrorModel? error,
     StoreIndexRequestParams? params,
     bool? stock,
-  }) {
-    return StoreScreenMainState(
-      status: status ?? this.status,
-      stores: stores ?? this.stores,
-      error: error,
-      params: params ?? this.params,
-      stock: stock ?? this.stock
-    );
-  }
-
+  }) =>
+      StoreScreenMainState(
+          status: status ?? this.status,
+          stores: stores ?? this.stores,
+          error: error,
+          params: params ?? this.params,
+          stock: stock ?? this.stock);
 }
 
 // abstract class StoreScreenMainState extends Equatable {

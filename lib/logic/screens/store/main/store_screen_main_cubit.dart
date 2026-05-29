@@ -9,57 +9,46 @@ import 'package:megaladon/data/repositories/store_repository.dart';
 part 'store_screen_main_state.dart';
 
 class StoreScreenMainCubit extends Cubit<StoreScreenMainState> {
-  final StoreRepository _repository = StoreRepository();
   StoreScreenMainCubit() : super(const StoreScreenMainState());
+  final StoreRepository _repository = StoreRepository();
 
   Future fetch({StoreIndexRequestParams? params}) async {
-    if(state.status == StoreScreenMainStatus.loading
-        && state.error == null
-    ) return;
+    if (state.status == StoreScreenMainStatus.loading && state.error == null)
+      return;
 
-    StoreIndexRequestParams mainParams = params ?? state.params;
+    var mainParams = params ?? state.params;
     emit(state.copyWith(
-        status: StoreScreenMainStatus.loading,
-        error: null,
-        stores: state.stores,
-      )
-    );
+      status: StoreScreenMainStatus.loading,
+      error: null,
+      stores: state.stores,
+    ));
     return await _repository.index(mainParams).then((value) {
-      if(mainParams.startRow == 0) {
+      if (mainParams.startRow == 0) {
         emit(state.copyWith(
             stores: value,
             params: mainParams,
             status: StoreScreenMainStatus.success,
-            stock: value.length < mainParams.rowsPerPage
-          )
-        );
+            stock: value.length < mainParams.rowsPerPage));
       } else {
         emit(state.copyWith(
-          status: StoreScreenMainStatus.success,
-          stores: [...state.stores, ...value],
-          params: mainParams,
-          stock: value.length < mainParams.rowsPerPage
-        ));
+            status: StoreScreenMainStatus.success,
+            stores: [...state.stores, ...value],
+            params: mainParams,
+            stock: value.length < mainParams.rowsPerPage));
       }
-    }).catchError(( error) {
-      if(error is DioError) {
+    }).catchError((error) {
+      if (error is DioException) {
         emit(state.copyWith(
             status: StoreScreenMainStatus.error,
-            error: ErrorModel.parseDio(error))
-        );
+            error: ErrorModel.parseDio(error)));
       } else {
         emit(state.copyWith(
-            status: StoreScreenMainStatus.error,
-            error: ErrorModel.nothing)
-        );
+            status: StoreScreenMainStatus.error, error: ErrorModel.nothing));
       }
     });
   }
 
-
-  changeParams(StoreIndexRequestParams params) {
-    emit(state.copyWith(
-        params: params.copyWith(startRow: 0)
-    ));
+  void changeParams(StoreIndexRequestParams params) {
+    emit(state.copyWith(params: params.copyWith(startRow: 0)));
   }
 }

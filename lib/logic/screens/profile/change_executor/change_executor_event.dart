@@ -5,13 +5,11 @@ abstract class ChangeExecutorEvent extends Equatable {
 }
 
 class ChangeExecutorFetchEvent extends ChangeExecutorEvent {
-  final ChangeExecutorRequestParams params;
-
   const ChangeExecutorFetchEvent({
     required this.params,
   });
+  final ChangeExecutorRequestParams params;
 
   @override
   List<Object?> get props => [params];
-
 }

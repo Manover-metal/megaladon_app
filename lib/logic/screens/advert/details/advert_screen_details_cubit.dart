@@ -8,21 +8,18 @@ import 'package:megaladon/data/repositories/advert_repository.dart';
 part 'advert_screen_details_state.dart';
 
 class AdvertScreenDetailsCubit extends Cubit<AdvertScreenDetailsState> {
-  final AdvertRepository _repository = AdvertRepository();
   AdvertScreenDetailsCubit() : super(AdvertScreenDetailsInitial());
-
+  final AdvertRepository _repository = AdvertRepository();
 
   Future fetch({required int id}) async {
-    if(state is AdvertScreenDetailsSuccess) {
-      if((state as AdvertScreenDetailsSuccess).advert.id == id) return;
+    if (state is AdvertScreenDetailsSuccess) {
+      if ((state as AdvertScreenDetailsSuccess).advert.id == id) return;
     }
     emit(AdvertScreenDetailsLoader());
     return await _repository.info(id).then((value) {
-      emit(AdvertScreenDetailsSuccess(
-          advert: value
-      ));
-    }).catchError(( error) {
-      if(error is DioError) {
+      emit(AdvertScreenDetailsSuccess(advert: value));
+    }).catchError((error) {
+      if (error is DioException) {
         emit(AdvertScreenDetailsError(ErrorModel.parseDio(error)));
       } else {
         emit(AdvertScreenDetailsError(ErrorModel.nothing));

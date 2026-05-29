@@ -1,5 +1,3 @@
-
-import 'package:easy_localization/easy_localization.dart';
 import 'package:formz/formz.dart';
 
 enum ExpiredAtValidationError {
@@ -7,9 +5,9 @@ enum ExpiredAtValidationError {
 
   @override
   String toString() {
-    switch(this) {
+    switch (this) {
       case ExpiredAtValidationError.empty:
-        return 'Response_relevance_is_not_filled'.tr();
+        return 'Response relevance is not filled';
     }
   }
 }

@@ -1,23 +1,21 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:megaladon/core/icons/icons.dart';
-import 'package:megaladon/data/models/dictionary/advert_type.dart';
 import 'package:megaladon/data/models/enum_form_state.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/form/create/order/order_create_form_cubit.dart';
 import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/description_field.dart';
-import 'package:megaladon/presentation/widgets/form/multi_picker/file_multi_picker.dart';
-import 'package:megaladon/presentation/widgets/form/picker/dictionary/order_category_picker.dart';
-import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
-import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/number_field.dart';
+import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
+import 'package:megaladon/presentation/widgets/form/multi_picker/file_multi_picker.dart';
+import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
+import 'package:megaladon/presentation/widgets/form/picker/dictionary/order_category_picker.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
@@ -39,18 +37,18 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
   late TextEditingController _priceRecommendedController;
   late FileMultiPickerController _fileController;
 
-  _back() {
+  void _back() {
     context.router.pop();
   }
 
-  _create() async {
-    if(_checkForm()) {
+  Future<void> _create() async {
+    if (_checkForm()) {
       await context.read<OrderCreateFormCubit>().createFetch();
     }
   }
 
-  _checkForm() {
-    OrderCreateFormCubit form = context.read<OrderCreateFormCubit>();
+  bool _checkForm() {
+    var form = context.read<OrderCreateFormCubit>();
     return form.checkCreate(
         title: _titleController.value.text,
         description: _descriptionController.value.text,
@@ -58,34 +56,30 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
         city: _cityController.value,
         priceMax: _priceMaxController.value.text,
         priceRecommended: _priceRecommendedController.value.text,
-        files: _fileController.value
-    );
+        files: _fileController.value);
   }
 
-  _listenerForm(BuildContext context, OrderCreateFormState state) {
-    if(state.status) {
-      for (var element in state.props) {
-        if(element is FormzInput && element.isNotValid) {
+  void _listenerForm(BuildContext context, OrderCreateFormState state) {
+    if (state.status) {
+      for (final element in state.props) {
+        if (element is FormzInput && element.isNotValid) {
           return showErrorSnackBar(context, element.error.toString());
         }
       }
     }
     print(state.formState);
-    if(state.formState == EnumFormState.success) {
+    if (state.formState == EnumFormState.success) {
       print('success callback');
       context.read<OrderScreenMyCubit>().fetchMy();
-      context.router.popUntil((route) => route.settings.name == InitialRouter.name);
-      context.router.navigate(const InitialRouter(
-          children: [
-            OrderRouter(
-                children: [ListMyOrdersRoute()]
-            )
-          ]
-      ));
-    } else if(state.formState == EnumFormState.error) {
+      context.router
+          .popUntil((route) => route.settings.name == InitialRouter.name);
+      context.router.navigate(const InitialRouter(children: [
+        OrderRouter(children: [ListMyOrdersRoute()])
+      ]));
+    } else if (state.formState == EnumFormState.error) {
       print('error callback');
 
-      if(state.error != null) {
+      if (state.error != null) {
         showErrorSnackBar(context, state.error!.messages[0]);
       }
     }
@@ -104,8 +98,6 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
     super.initState();
   }
 
-
-
   @override
   void dispose() {
     _orderCategoryController.dispose();
@@ -119,43 +111,72 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
+  Widget build(BuildContext context) => Scaffold(
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  HeaderAppBar(
+                      isBack: true,
+                      title: AppLocalizations.of(context)!.create_an_order),
+                  const SizedBox(height: 30),
 
-                HeaderAppBar(isBack: true, title: "Create_an_order".tr()),
-                const SizedBox(height: 30),
-
-                OrderCategoryPicker(label: "Select_a_category".tr(), controller: _orderCategoryController, ),
-                CityPicker(label: "Choose_city".tr(), controller: _cityController),
-                TextFieldApp(controller: _titleController, label: "Header".tr(), icon: Icon(IconPack.job_description_kwo7og605c2l),),
-                DescriptionFieldApp(label: "Description_of_work".tr(), controller: _descriptionController,icon: Icon(IconPack.description),),
-                NumberFieldApp(label:"Desired_budget".tr(), controller: _priceMaxController,icon: Icon(Icons.money_sharp),),
-                NumberFieldApp(label: "Allowed_budget".tr(), controller: _priceRecommendedController,icon: Icon(Icons.money_sharp),),
-                FileMultiPicker(controller: _fileController),
-                const SizedBox(height: 30),
-                // BlocConsumer(builder: builder, listener: listener)
-                BlocConsumer<OrderCreateFormCubit, OrderCreateFormState>(
-                    listener: _listenerForm,
-                    builder: (context, state) {
-                      print(state.formState);
-                      if(state.formState == EnumFormState.fetch) {
-                        return ElevatedButtonApp(child: Loader(color: Theme.of(context).colorScheme.background), onPressed: () {},);
-                      }
-                      return ElevatedButtonApp(text: "create".tr(), onPressed: _create,);
-                    }
-                ),
-                OutlinedButtonApp(text: "Cancel".tr(), onPressed: _back,),
-              ],
+                  OrderCategoryPicker(
+                    label: AppLocalizations.of(context)!.select_a_category,
+                    controller: _orderCategoryController,
+                  ),
+                  CityPicker(
+                      label: AppLocalizations.of(context)!.choose_city,
+                      controller: _cityController),
+                  TextFieldApp(
+                    controller: _titleController,
+                    label: AppLocalizations.of(context)!.header,
+                    icon: const Icon(IconPack.job_description_kwo7og605c2l),
+                  ),
+                  DescriptionFieldApp(
+                    label: AppLocalizations.of(context)!.description_of_work,
+                    controller: _descriptionController,
+                    icon: const Icon(IconPack.description),
+                  ),
+                  NumberFieldApp(
+                    label: AppLocalizations.of(context)!.desired_budget,
+                    controller: _priceMaxController,
+                    icon: const Icon(Icons.money_sharp),
+                  ),
+                  NumberFieldApp(
+                    label: AppLocalizations.of(context)!.allowed_budget,
+                    controller: _priceRecommendedController,
+                    icon: const Icon(Icons.money_sharp),
+                  ),
+                  FileMultiPicker(controller: _fileController),
+                  const SizedBox(height: 30),
+                  // BlocConsumer(builder: builder, listener: listener)
+                  BlocConsumer<OrderCreateFormCubit, OrderCreateFormState>(
+                      listener: _listenerForm,
+                      builder: (context, state) {
+                        print(state.formState);
+                        if (state.formState == EnumFormState.fetch) {
+                          return ElevatedButtonApp(
+                            child: Loader(
+                                color: Theme.of(context).colorScheme.surface),
+                            onPressed: () {},
+                          );
+                        }
+                        return ElevatedButtonApp(
+                          text: AppLocalizations.of(context)!.create,
+                          onPressed: _create,
+                        );
+                      }),
+                  OutlinedButtonApp(
+                    text: AppLocalizations.of(context)!.cancel,
+                    onPressed: _back,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }

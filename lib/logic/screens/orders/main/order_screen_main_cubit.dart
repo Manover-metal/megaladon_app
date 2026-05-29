@@ -9,41 +9,35 @@ import 'package:megaladon/data/repositories/order_repository.dart';
 part 'order_screen_main_state.dart';
 
 class OrderScreenMainCubit extends Cubit<OrderScreenMainState> {
-  final OrderRepository _repository = OrderRepository();
   OrderScreenMainCubit() : super(const OrderScreenMainState());
+  final OrderRepository _repository = OrderRepository();
 
   Future fetch({OrderIndexRequestParams? params}) async {
-    if(state.status == OrderScreenMainStatus.loading
-        && state.error == null
-    ) return;
+    if (state.status == OrderScreenMainStatus.loading && state.error == null)
+      return;
 
-    OrderIndexRequestParams mainParams = params ?? state.params;
+    var mainParams = params ?? state.params;
     emit(state.copyWith(
-        status: OrderScreenMainStatus.loading,
-        error: null,
-        orders: state.orders,
-      )
-    );
+      status: OrderScreenMainStatus.loading,
+      error: null,
+      orders: state.orders,
+    ));
     return await _repository.index(mainParams).then((value) {
-      if(mainParams.startRow == 0) {
+      if (mainParams.startRow == 0) {
         emit(state.copyWith(
             orders: value,
             params: mainParams,
             status: OrderScreenMainStatus.success,
-            stock: value.length < mainParams.rowsPerPage
-          )
-        );
-
+            stock: value.length < mainParams.rowsPerPage));
       } else {
         emit(state.copyWith(
-          status: OrderScreenMainStatus.success,
-          orders: [...state.orders, ...value],
-          params: mainParams,
-          stock: value.length < mainParams.rowsPerPage
-        ));
+            status: OrderScreenMainStatus.success,
+            orders: [...state.orders, ...value],
+            params: mainParams,
+            stock: value.length < mainParams.rowsPerPage));
       }
-    }).catchError(( error) {
-      if(error is DioError) {
+    }).catchError((error) {
+      if (error is DioException) {
         emit(state.copyWith(error: ErrorModel.parseDio(error)));
       } else {
         emit(state.copyWith(error: ErrorModel.nothing));
@@ -51,10 +45,7 @@ class OrderScreenMainCubit extends Cubit<OrderScreenMainState> {
     });
   }
 
-
-  changeParams(OrderIndexRequestParams params) {
-    emit(state.copyWith(
-        params: params.copyWith(startRow: 0)
-    ));
+  void changeParams(OrderIndexRequestParams params) {
+    emit(state.copyWith(params: params.copyWith(startRow: 0)));
   }
 }

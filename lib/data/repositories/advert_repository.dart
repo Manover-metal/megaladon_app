@@ -6,22 +6,28 @@ import 'package:megaladon/data/models/request/params/index/advert_index_request_
 import 'package:megaladon/data/models/request/params/update/advert_update_request_params.dart';
 
 class AdvertRepository {
-  Future index(AdvertIndexRequestParams params, [AdvertType type = AdvertType.advert]) => ApiService.I
-      .get('/adverts',
-        queryParameters: params.copyWith(type: type).toData()
+  Future<List<AdvertModel>> index(AdvertIndexRequestParams params,
+          [AdvertType type = AdvertType.advert]) =>
+      ApiService.I
+          .get('/adverts',
+              queryParameters: params.copyWith(type: type).toData())
+          .then((value) => AdvertModel.listFromJsonMini(
+              value.data['list'] as List<dynamic>));
+
+  Future<List<AdvertModel>> indexMy(AdvertIndexRequestParams params,
+          [AdvertType type = AdvertType.advert]) =>
+      ApiService.I
+          .get('/adverts/my',
+              queryParameters: params.copyWith(type: type).toData())
+          .then((value) => AdvertModel.listFromJsonMini(
+              value.data['list'] as List<dynamic>));
+
+  Future<AdvertModel> info(int id) => ApiService.I
+      .get(
+        '/adverts/$id',
       )
-      .then((value) => AdvertModel.listFromJsonMini(value.data['list']));
-
-
-  Future indexMy(AdvertIndexRequestParams params, [AdvertType type = AdvertType.advert]) => ApiService.I
-      .get('/adverts/my',
-        queryParameters: params.copyWith(type: type).toData()
-      )
-      .then((value) => AdvertModel.listFromJsonMini(value.data['list']));
-
-  Future info(int id) => ApiService.I
-      .get('/adverts/$id',)
-      .then((value) => AdvertModel.fromJsonAll(value.data['advert']));
+      .then((value) => AdvertModel.fromJsonAll(
+          value.data['advert'] as Map<String, dynamic>));
 
   Future create(AdvertCreateRequestParams params) => ApiService.I
       .post('/adverts', data: params.toData())
@@ -32,6 +38,8 @@ class AdvertRepository {
       .then((value) => value.data);
 
   Future delete(int id) => ApiService.I
-      .delete('/adverts/$id/delete',)
+      .delete(
+        '/adverts/$id/delete',
+      )
       .then((value) => value.data);
 }

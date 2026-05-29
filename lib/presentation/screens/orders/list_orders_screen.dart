@@ -1,14 +1,13 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:megaladon/data/models/request/params/index/order_index_request_params.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/screens/orders/main/order_screen_main_cubit.dart';
 import 'package:megaladon/presentation/widgets/bottom_sheet/filters/filter_order_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/bottom_sheet/sort/sort_order_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/card/order_card.dart';
-import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
+import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/message/stock_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 
@@ -22,50 +21,37 @@ class ListOrdersScreen extends StatefulWidget {
 class _ListOrdersScreenState extends State<ListOrdersScreen> {
   late ScrollController _scrollController;
 
-
   Future _onRefresh() async {
     print('refresh');
     await context.read<OrderScreenMainCubit>().fetch();
   }
 
-  _showFilter() async {
-    bool? result = await showModalBottomSheet(
-        useSafeArea: true,
-        useRootNavigator: true,
-        isScrollControlled: true,
-        context: context,
-        elevation: 100,
-        builder: (_) => const FilterOrderBottomSheet()
-    );
-    if(result != null) {
+  Future<void> _showFilter() async {
+    var result = await const FilterOrderBottomSheet().show(context);
+    if (result != null && result) {
       context.read<OrderScreenMainCubit>().fetch();
     }
   }
 
-  _showSort() async {
-    bool? result = await showModalBottomSheet(
-        useRootNavigator: true,
-        isScrollControlled: true,
-        useSafeArea: true,
-        context: context,
-        elevation: 100,
-        builder: (_) => const SortOrderBottomSheet()
-    );
-    if(result != null && result) {
+  Future<void> _showSort() async {
+    var result = await const SortOrderBottomSheet().show(context);
+    if (result != null && result) {
       context.read<OrderScreenMainCubit>().fetch();
     }
   }
 
-  _listenerScroll() {
-    if (_scrollController.position.maxScrollExtent < _scrollController.position.pixels) {
+  void _listenerScroll() {
+    if (_scrollController.position.maxScrollExtent <
+        _scrollController.position.pixels) {
       final cubit = context.read<OrderScreenMainCubit>();
-      if(cubit.state.status != OrderScreenMainStatus.loading) {
-        OrderIndexRequestParams params = cubit.state.params;
-        cubit.fetch(params: params.copyWith(startRow: params.startRow + params.rowsPerPage));
+      if (cubit.state.status != OrderScreenMainStatus.loading) {
+        var params = cubit.state.params;
+        cubit.fetch(
+            params: params.copyWith(
+                startRow: params.startRow + params.rowsPerPage));
       }
     }
   }
-
 
   @override
   void initState() {
@@ -82,89 +68,88 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: NestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool isBool) {
-            return [
+  Widget build(BuildContext context) => Scaffold(
+        body: SafeArea(
+          child: NestedScrollView(
+            headerSliverBuilder: (context, isBool) => [
               SliverToBoxAdapter(
                   child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: BlocBuilder<OrderScreenMainCubit, OrderScreenMainState>(
-                          builder: (context, state) {
-                            return HeaderAppBar(
-                              isMenu: true,
-                              title: "Orders".tr(),
-                              onTrailing: _onRefresh,
-                              trailing: state.status != OrderScreenMainStatus.loading ? const Icon(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child:
+                        BlocBuilder<OrderScreenMainCubit, OrderScreenMainState>(
+                      builder: (context, state) => HeaderAppBar(
+                        isMenu: true,
+                        title: AppLocalizations.of(context)!.orders,
+                        onTrailing: _onRefresh,
+                        trailing: state.status != OrderScreenMainStatus.loading
+                            ? const Icon(
                                 Icons.refresh,
                                 size: 30,
-                              ) : CupertinoActivityIndicator(),
-                            );
-                          },
-                        ),
+                              )
+                            : const CupertinoActivityIndicator(),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            InkWell(
-                              onTap: _showSort,
-                              child: const Icon(Icons.sort, size: 30),
-                            ),
-                            const SizedBox(width: 10,),
-                            InkWell(
-                              onTap: _showFilter,
-                              child: const Icon(Icons.filter_alt, size: 30),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  )
-              ),
-            ];
-          },
-          body: RefreshIndicator(
-            onRefresh: _onRefresh,
-            child: CupertinoScrollbar(
-              controller: _scrollController,
-              child: SingleChildScrollView(
-                controller: _scrollController,
-                child: Container(
-                  constraints: BoxConstraints(
-                      minHeight: MediaQuery.of(context).size.height
+                    ),
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    children: [
-                      BlocBuilder<OrderScreenMainCubit, OrderScreenMainState>(
-                        builder: (context, state) {
-                          return Column(
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        InkWell(
+                          onTap: _showSort,
+                          child: const Icon(Icons.sort, size: 30),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        InkWell(
+                          onTap: _showFilter,
+                          child: const Icon(Icons.filter_alt, size: 30),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              )),
+            ],
+            body: RefreshIndicator(
+              onRefresh: _onRefresh,
+              child: CupertinoScrollbar(
+                controller: _scrollController,
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  child: Container(
+                    constraints: BoxConstraints(
+                        minHeight: MediaQuery.of(context).size.height),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      children: [
+                        BlocBuilder<OrderScreenMainCubit, OrderScreenMainState>(
+                          builder: (context, state) => Column(
                             children: [
-                              ...state.orders.map((order) {
-                                return OrderCard(order: order);
-                              }).toList(),
-                              if(state.status == OrderScreenMainStatus.loading) const Loader(padding: 10)
-                              else if(state.status == OrderScreenMainStatus.error) ErrorMessage(error: state.error!)
-                              else if(state.stock) StockMessage(name: "Orders".tr())
-
+                              ...state.orders
+                                  .map((order) => OrderCard(order: order))
+                                  .toList(),
+                              if (state.status == OrderScreenMainStatus.loading)
+                                const Loader(padding: 10)
+                              else if (state.status ==
+                                  OrderScreenMainStatus.error)
+                                ErrorMessage(error: state.error!)
+                              else if (state.stock)
+                                StockMessage(
+                                    name: AppLocalizations.of(context)!.orders)
                             ],
-                          );
-                        },
-                      ),
-                    ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }

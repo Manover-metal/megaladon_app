@@ -1,5 +1,3 @@
-
-import 'package:easy_localization/easy_localization.dart';
 import 'package:formz/formz.dart';
 
 enum TitleValidationError {
@@ -7,9 +5,9 @@ enum TitleValidationError {
 
   @override
   String toString() {
-    switch(this) {
+    switch (this) {
       case TitleValidationError.empty:
-        return 'Header_is_empty'.tr();
+        return 'Header is empty';
     }
   }
 }

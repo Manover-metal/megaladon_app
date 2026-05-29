@@ -2,6 +2,16 @@ import 'package:dio/dio.dart';
 import 'package:megaladon/data/models/dictionary/advert_type.dart';
 
 class AdvertUpdateRequestParams {
+  AdvertUpdateRequestParams({
+    required this.title,
+    required this.description,
+    required this.categoryId,
+    required this.cityId,
+    required this.additionalPhone,
+    required this.type,
+    this.price,
+    this.media = const [],
+  });
   final String title;
   final String description;
   final int? price;
@@ -11,19 +21,8 @@ class AdvertUpdateRequestParams {
   final List<MultipartFile> media;
   final AdvertType type;
 
-  AdvertUpdateRequestParams({
-    required this.title,
-    required this.description,
-    this.price,
-    required this.categoryId,
-    required this.cityId,
-    required this.additionalPhone,
-    this.media = const [],
-    required this.type,
-  });
-
-  toData() {
-    FormData data = FormData.fromMap({
+  FormData toData() {
+    var data = FormData.fromMap({
       'title': title,
       'description': description,
       'price': price,
@@ -32,7 +31,7 @@ class AdvertUpdateRequestParams {
       'additional_phone': additionalPhone,
       'type': type.name
     });
-    for (var element in media) {
+    for (final element in media) {
       data.files.add(MapEntry('files[]', element));
     }
     return data;

@@ -1,4 +1,3 @@
-
 import 'package:isar/isar.dart';
 import 'package:megaladon/core/utils/parser.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
@@ -6,9 +5,21 @@ import 'package:megaladon/data/models/dictionary/service_type_model.dart';
 
 part 'executor_model.g.dart';
 
-
 @collection
 class ExecutorModel {
+  ExecutorModel(
+      {required this.id,
+      required this.name,
+      this.rating,
+      this.bin,
+      this.lat,
+      this.lon,
+      this.fullAddress,
+      this.countOrders,
+      this.photo,
+      this.services = const [],
+      this.city,
+      this.description});
   final Id id;
   final String name;
   final String? rating;
@@ -20,69 +31,53 @@ class ExecutorModel {
   final String? photo;
   final String? description;
 
-
   @ignore
   final CityModel? city;
 
   @ignore
   final List<ServiceTypeModel> services;
 
-
-  ExecutorModel({
-    required this.id,
-    required this.name,
-    this.rating,
-    this.bin,
-    this.lat,
-    this.lon,
-    this.fullAddress,
-    this.countOrders,
-    this.photo,
-    this.services = const [],
-    this.city,
-    this.description
-  });
-
-  static ExecutorModel fromJson(data) {
-    return ExecutorModel(
-        id: data['id'],
-        name: data['name'],
-        rating: data['rating'],
-        bin: data['bin'],
-        photo: data['photo_url'],
-        lat: Parser.toDouble(data['lat']),
-        lon: Parser.toDouble(data['lon']),
-        fullAddress: data['full_address'],
-        countOrders: data['count_orders'],
-        services: data['services'] != null? ServiceTypeModel.listFromJson(data['services']): [],
-        city: data['city'] != null ? CityModel.fromJson(data['city']): null,
-        description: data['description']
-    );
-  }
+  static ExecutorModel fromJson(data) => ExecutorModel(
+      id: data['id'] as int,
+      name: data['name'] as String,
+      rating: data['rating'] as String?,
+      bin: data['bin'] as String?,
+      photo: data['photo_url'] as String?,
+      lat: Parser.toDouble(data['lat']),
+      lon: Parser.toDouble(data['lon']),
+      fullAddress: data['full_address'] as String?,
+      countOrders: data['count_orders'] as int?,
+      services: data['services'] != null
+          ? ServiceTypeModel.listFromJson(data['services'] as List<dynamic>)
+          : [],
+      city: data['city'] != null
+          ? CityModel.fromJson(data['city'] as Map<String, dynamic>)
+          : null,
+      description: data['description'] as String?);
 
   static ExecutorModel? fromJsonOrNull(Map<String, dynamic>? data) {
-    if(data == null) return null;
+    if (data == null) return null;
     try {
       return ExecutorModel.fromJson(data);
-    } catch(e) {
+    } catch (e) {
       return null;
     }
   }
 
-  static ExecutorModel fromJsonMini(data) {
-    return ExecutorModel(
-        id: data['id'],
-        name: data['name'],
-        rating: data['rating'],
-        city: data['city'] != null ? CityModel.fromJson(data['city']): null,
-        description: data['description']
-    );
-  }
+  static ExecutorModel fromJsonMini(data) => ExecutorModel(
+      id: data['id'] as int,
+      name: data['name'] as String,
+      rating: data['rating'] as String?,
+      city: data['city'] != null
+          ? CityModel.fromJson(data['city'] as Map<String, dynamic>)
+          : null,
+      description: data['description'] as String?);
 
-  static List<ExecutorModel> fromJsonList(data) {
+  static List<ExecutorModel> fromJsonList(List<dynamic> data) {
     print(data);
-    return data.map<ExecutorModel>((executor) {
-      return ExecutorModel.fromJson(executor);
-    }).toList();
+    return data
+        .map<ExecutorModel>(
+            (item) => ExecutorModel.fromJson(item as Map<String, dynamic>))
+        .toList();
   }
 }

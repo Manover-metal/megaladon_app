@@ -15,9 +15,8 @@ class IsarService {
       StoreModelSchema,
       AuthModelSchema
     ],
-      directory: (await getApplicationDocumentsDirectory()).path,
-      inspector: true
-    );
+        directory: (await getApplicationDocumentsDirectory()).path,
+        inspector: true);
   }
 
   static Isar get I => _isar;

@@ -1,17 +1,16 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/screens/offers/list/offer_screen_main_cubit.dart';
 import 'package:megaladon/presentation/widgets/card/offer_card.dart';
-import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
+import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 
 class ListExecutorsScreen extends StatefulWidget {
+  const ListExecutorsScreen({required this.orderId, super.key});
   final int orderId;
-
-  const ListExecutorsScreen({super.key, required this.orderId});
 
   @override
   State<ListExecutorsScreen> createState() => _ListExecutorsScreenState();
@@ -19,7 +18,6 @@ class ListExecutorsScreen extends StatefulWidget {
 
 class _ListExecutorsScreenState extends State<ListExecutorsScreen> {
   late ScrollController _scrollController;
-
 
   @override
   void initState() {
@@ -39,71 +37,68 @@ class _ListExecutorsScreenState extends State<ListExecutorsScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: NestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return [
-               SliverToBoxAdapter(
+  Widget build(BuildContext context) => Scaffold(
+        body: SafeArea(
+          child: NestedScrollView(
+            headerSliverBuilder: (context, innerBoxIsScrolled) => [
+              SliverToBoxAdapter(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: BlocBuilder<OfferScreenMainCubit, OfferScreenMainState>(
-                    builder: (context, state) {
-                      return HeaderAppBar(
-                        isBack: true,
-                        title: "Executor".tr(),
-                        onTrailing: _refresh,
-                        trailing: state is! OfferScreenMainLoader ? const Icon(
-                          Icons.refresh,
-                          size: 30,
-                        ) : CupertinoActivityIndicator(),
-                      );
-                    },
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child:
+                      BlocBuilder<OfferScreenMainCubit, OfferScreenMainState>(
+                    builder: (context, state) => HeaderAppBar(
+                      isBack: true,
+                      title: AppLocalizations.of(context)!.executor,
+                      onTrailing: _refresh,
+                      trailing: state is! OfferScreenMainLoader
+                          ? const Icon(
+                              Icons.refresh,
+                              size: 30,
+                            )
+                          : const CupertinoActivityIndicator(),
+                    ),
                   ),
                 ),
               )
-            ];
-          },
-          body: RefreshIndicator(
-            onRefresh: _refresh,
-            child: CupertinoScrollbar(
-              controller: _scrollController,
-              child: SingleChildScrollView(
+            ],
+            body: RefreshIndicator(
+              onRefresh: _refresh,
+              child: CupertinoScrollbar(
                 controller: _scrollController,
-                child: Container(
-                  constraints: BoxConstraints(
-                      minHeight: MediaQuery.of(context).size.height
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    children: [
-                      BlocBuilder<OfferScreenMainCubit, OfferScreenMainState>(
-                        builder: (context, state) {
-                          if(state is OfferScreenMainSuccess) {
-                            return Column(
-                              children: state.offers.map((offer) {
-                                return OfferCard(offer: offer, orderId: widget.orderId);
-                              }).toList(),
-                            );
-                          }else if(state is OfferScreenMainLoader) {
-                            return const Loader();
-                          } else if(state is OfferScreenMainError) {
-                            return ErrorMessage(error: state.error);
-                          }
-                          return Container();
-                        },
-                      )
-                    ],
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  child: Container(
+                    constraints: BoxConstraints(
+                        minHeight: MediaQuery.of(context).size.height),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      children: [
+                        BlocBuilder<OfferScreenMainCubit, OfferScreenMainState>(
+                          builder: (context, state) {
+                            if (state is OfferScreenMainSuccess) {
+                              return Column(
+                                children: state.offers
+                                    .map((offer) => OfferCard(
+                                        offer: offer, orderId: widget.orderId))
+                                    .toList(),
+                              );
+                            } else if (state is OfferScreenMainLoader) {
+                              return const Loader();
+                            } else if (state is OfferScreenMainError) {
+                              return ErrorMessage(error: state.error);
+                            }
+                            return Container();
+                          },
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 // return OfferCard();

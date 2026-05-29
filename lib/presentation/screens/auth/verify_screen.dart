@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/form/verify/verify_form_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
@@ -13,10 +13,8 @@ import 'package:megaladon/presentation/widgets/text/title.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class VerifyScreen extends StatefulWidget {
-
+  const VerifyScreen({required this.phone, super.key});
   final String phone;
-
-  const VerifyScreen({super.key, required this.phone});
 
   @override
   State<VerifyScreen> createState() => _VerifyScreenState();
@@ -25,20 +23,17 @@ class VerifyScreen extends StatefulWidget {
 class _VerifyScreenState extends State<VerifyScreen> {
   late PinInputController _pinController;
 
-  bool _checkForm() {
-    return context.read<VerifyFormCubit>().checkForm(_pinController.text);
-  }
-  
-  _verify() {
-    if(_checkForm()) {
-      context.read<AuthBloc>().add(AuthVerifyEvent(
-        widget.phone,
-        _pinController.text
+  bool _checkForm() =>
+      context.read<VerifyFormCubit>().checkForm(_pinController.text);
 
-      ));
+  void _verify() {
+    if (_checkForm()) {
+      context
+          .read<AuthBloc>()
+          .add(AuthVerifyEvent(widget.phone, _pinController.text));
     }
   }
-  
+
   @override
   void initState() {
     _listenerVerify(false);
@@ -51,69 +46,74 @@ class _VerifyScreenState extends State<VerifyScreen> {
     _pinController.dispose();
     super.dispose();
   }
-  
-  _listenerForm(BuildContext context, VerifyFormState state) {
-    if(state.pincode.isNotValid) showErrorSnackBar(context, state.pincode.error.toString());
+
+  void _listenerForm(BuildContext context, VerifyFormState state) {
+    if (state.pincode.isNotValid)
+      showErrorSnackBar(context, state.pincode.error.toString());
   }
 
-  _listenerVerify(bool isListener) => (BuildContext context, AuthState state) {
-    if(state is AuthLoginState) {
-      context.router.replaceAll([const InitialRouter(
-        children: [
-          ProfileRouter()
-        ]
-      )]);
-    } else if(state is AuthErrorState && isListener) {
-      showErrorSnackBar(context, state.error.messages[0]);
-    }
-  };
+  Null Function(BuildContext context, AuthState state) _listenerVerify(
+          bool isListener) =>
+      (context, state) {
+        if (state is AuthLoginState) {
+          context.router.replaceAll([
+            const InitialRouter(children: [ProfileRouter()])
+          ]);
+        } else if (state is AuthErrorState && isListener) {
+          showErrorSnackBar(context, state.error.messages[0]);
+        }
+      };
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: MultiBlocListener(
-        listeners: [
-          BlocListener<VerifyFormCubit, VerifyFormState>(
-            listener: _listenerForm,
-          ),
-          BlocListener<AuthBloc, AuthState>(
-            listener: _listenerVerify(true),
-          )
-        ],
-        child: SafeArea(
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              children: [
-                const Spacer(),
-                TitleApp("Registration".tr()),
-                const SizedBox(height: 20,),
-                MaterialPinField(
-                  pinController: _pinController,
+  Widget build(BuildContext context) => Scaffold(
+        body: MultiBlocListener(
+          listeners: [
+            BlocListener<VerifyFormCubit, VerifyFormState>(
+              listener: _listenerForm,
+            ),
+            BlocListener<AuthBloc, AuthState>(
+              listener: _listenerVerify(true),
+            )
+          ],
+          child: SafeArea(
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  const Spacer(),
+                  TitleApp(AppLocalizations.of(context)!.registration),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  MaterialPinField(
+                    pinController: _pinController,
                     length: 6,
                     theme: MaterialPinTheme(
                       borderRadius: BorderRadius.circular(10),
-                    ), onChanged: (String value) {  },
-                ),
-                 Text("Enter_6digit_code_from_SMS".tr()),
-                BlocBuilder<AuthBloc,AuthState>(
-                  builder: (context, state) {
-                    if(state is AuthLoginState) {
+                    ),
+                    onChanged: (value) {},
+                  ),
+                  Text(
+                      AppLocalizations.of(context)!.enter_6digit_code_from_SMS),
+                  BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+                    if (state is AuthLoginState) {
                       return ElevatedButtonApp(
-                        onPressed: _verify,
-                        child: Loader(color: Theme.of(context).colorScheme.background)
-                      );
+                          onPressed: _verify,
+                          child: Loader(
+                              color: Theme.of(context).colorScheme.surface));
                     }
-                    return ElevatedButtonApp(text: "Confirm".tr(), onPressed: _verify,);
-                  }
-                ),
-                OutlinedButtonApp(text: "Send_code_again".tr()),
-                const Spacer(flex: 3),
-              ],
+                    return ElevatedButtonApp(
+                      text: AppLocalizations.of(context)!.confirm,
+                      onPressed: _verify,
+                    );
+                  }),
+                  OutlinedButtonApp(
+                      text: AppLocalizations.of(context)!.send_code_again),
+                  const Spacer(flex: 3),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }

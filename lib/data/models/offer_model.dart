@@ -3,6 +3,13 @@ import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/executor_model.dart';
 
 class OfferModel {
+  OfferModel(
+      {required this.id,
+      required this.price,
+      required this.date,
+      required this.comment,
+      this.city,
+      this.executor});
   final int id;
   final String price;
   final String date;
@@ -10,40 +17,34 @@ class OfferModel {
   final CityModel? city;
   final ExecutorModel? executor;
 
-  OfferModel({
-    required this.id,
-    required this.price,
-    required this.date,
-    required this.comment,
-    this.city,
-    this.executor
-  });
+  static OfferModel fromJsonMini(Map<String, dynamic> data) => OfferModel(
+        id: data['id'] as int,
+        price: Parser.toPrice(data['price']),
+        date: data['date'] as String,
+        comment: data['description'] as String?,
+        city: data['city'] != null
+            ? CityModel.fromJson(data['city'] as Map<String, dynamic>)
+            : null,
+        executor: data['user'] != null
+            ? ExecutorModel.fromJson(data['user'] as Map<String, dynamic>)
+            : null,
+      );
 
-  static OfferModel fromJsonMini(data) {
-    return OfferModel(
-      id: data['id'],
-      price: Parser.toPrice(data['price']),
-      date: data['date'],
-      comment: data['description'],
-      city: data['city'] != null? CityModel.fromJson(data['city']): null,
-      executor: data['user'] != null? ExecutorModel.fromJson(data['user']): null,
-    );
-  }
+  static OfferModel fromJsonFull(Map<String, dynamic> data) => OfferModel(
+        id: data['id'] as int,
+        price: Parser.toPrice(data['price']),
+        date: data['date'] as String,
+        comment: data['comment'] as String?,
+        city: data['city'] != null
+            ? CityModel.fromJson(data['city'] as Map<String, dynamic>)
+            : null,
+        executor: data['user'] != null
+            ? ExecutorModel.fromJson(data['user'] as Map<String, dynamic>)
+            : null,
+      );
 
-  static OfferModel fromJsonFull(data) {
-    return OfferModel(
-      id: data['id'],
-      price: Parser.toPrice(data['price']),
-      date: data['date'],
-      comment: data['comment'],
-      city: data['city'] != null? CityModel.fromJson(data['city']): null,
-      executor: data['user'] != null? ExecutorModel.fromJson(data['user']): null,
-    );
-  }
-
-  static List<OfferModel> listFromJsonMini(List data) {
-    return data.map<OfferModel>((advert) {
-      return OfferModel.fromJsonMini(advert);
-    }).toList();
-  }
+  static List<OfferModel> listFromJsonMini(List<dynamic> data) => data
+      .map<OfferModel>(
+          (item) => OfferModel.fromJsonMini(item as Map<String, dynamic>))
+      .toList();
 }

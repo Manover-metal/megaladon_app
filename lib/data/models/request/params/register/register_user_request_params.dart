@@ -1,22 +1,19 @@
-
 import 'package:megaladon/data/models/dictionary/city_model.dart';
 
 class RegisterUserRequestParams {
+  const RegisterUserRequestParams(
+      {required this.name,
+      required this.phone,
+      required this.password,
+      required this.passwordConfirmation,
+      required this.city});
   final String name;
   final String phone;
   final String password;
   final String passwordConfirmation;
   final CityModel city;
 
-  const RegisterUserRequestParams({
-    required this.name,
-    required this.phone,
-    required this.password,
-    required this.passwordConfirmation,
-    required this.city
-  });
-
-  toData() {
+  Map<String, Object> toData() {
     final data = {
       'name': name,
       'phone': phone,

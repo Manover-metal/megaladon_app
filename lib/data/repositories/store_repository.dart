@@ -3,31 +3,42 @@ import 'package:megaladon/data/models/request/params/index/store_index_request_p
 import 'package:megaladon/data/models/store_model.dart';
 
 class StoreRepository {
-  Future index(StoreIndexRequestParams params) => ApiService.I
+  Future<List<StoreModel>> index(StoreIndexRequestParams params) => ApiService.I
       .get('/store', queryParameters: params.toData())
-      .then((value) => StoreModel.listFromJsonMini(value.data['list']));
+      .then((value) =>
+          StoreModel.listFromJsonMini(value.data['list'] as List<dynamic>));
 
-  Future info(int id) => ApiService.I
-      .get('/store/$id',)
-      .then((value) => StoreModel.fromJsonFull(value.data['store']));
+  Future<StoreModel> info(int id) => ApiService.I
+      .get(
+        '/store/$id',
+      )
+      .then((value) =>
+          StoreModel.fromJsonFull(value.data['store'] as Map<String, dynamic>));
 
   Future createPrice() => ApiService.I
-      .post('/order/price',)
+      .post(
+        '/order/price',
+      )
       .then((value) => value.data);
 
   Future activatePrice(int id) => ApiService.I
-      .post('/store/price/$id/activate',)
+      .post(
+        '/store/price/$id/activate',
+      )
       .then((value) => value.data);
 
   Future deactivatePrice(int id) => ApiService.I
-      .post('/store/price/$id/deactivate',)
+      .post(
+        '/store/price/$id/deactivate',
+      )
       .then((value) => value.data);
 
   Future deletePrice(int id) => ApiService.I
-      .delete('/store/price/$id/delete',)
+      .delete(
+        '/store/price/$id/delete',
+      )
       .then((value) => value.data);
 
-  Future rate(int id, int rate) => ApiService.I
-      .post('/store/$id/rate', data: {'rate': rate})
-      .then((value) => value.data);
+  Future rate(int id, int rate) => ApiService.I.post('/store/$id/rate',
+      data: {'rate': rate}).then((value) => value.data);
 }

@@ -21,11 +21,11 @@ import 'package:megaladon/logic/auth/auth_bloc.dart';
 part 'ad_create_form_state.dart';
 
 class AdCreateFormCubit extends Cubit<AdCreateFormState> {
+  AdCreateFormCubit(this.authBloc) : super(const AdCreateFormState());
   final AdvertRepository _repository = AdvertRepository();
   final AuthBloc authBloc;
-  AdCreateFormCubit(this.authBloc) : super(const AdCreateFormState());
 
-  checkCreate({
+  bool checkCreate({
     required String title,
     required String description,
     required String price,
@@ -35,12 +35,12 @@ class AdCreateFormCubit extends Cubit<AdCreateFormState> {
     required List<PlatformFile> media,
     required AdvertType type,
   }) {
-    TitleFormModel titleForm = TitleFormModel.dirty(title);
-    PriceFormModel priceForm = PriceFormModel.dirty(price, false);
-    DescriptionFormModel descriptionForm = DescriptionFormModel.dirty(description);
-    CityFormModel cityForm = CityFormModel.dirty(city.id);
-    AdvertCategoryFormModel categoryForm = AdvertCategoryFormModel.dirty(category.id);
-    PhoneFormModel phoneForm = PhoneFormModel.dirty(phone, false);
+    var titleForm = TitleFormModel.dirty(title);
+    var priceForm = PriceFormModel.dirty(price, false);
+    var descriptionForm = DescriptionFormModel.dirty(description);
+    var cityForm = CityFormModel.dirty(city.id);
+    var categoryForm = AdvertCategoryFormModel.dirty(category.id);
+    var phoneForm = PhoneFormModel.dirty(phone, false);
 
     final status = Formz.validate([
       titleForm,
@@ -51,7 +51,7 @@ class AdCreateFormCubit extends Cubit<AdCreateFormState> {
       phoneForm
     ]);
 
-    AdCreateFormState stateNew = state.copyWith(
+    var stateNew = state.copyWith(
         title: titleForm,
         description: descriptionForm,
         status: status,
@@ -61,49 +61,47 @@ class AdCreateFormCubit extends Cubit<AdCreateFormState> {
         price: priceForm,
         phone: phoneForm,
         media: media,
-        type: type
-    );
+        type: type);
     emit(stateNew);
     return stateNew.status;
   }
 
   Future createFetch() async {
-    if(state.formState != EnumFormState.fetch) {
+    if (state.formState != EnumFormState.fetch) {
       emit(state.copyWith(formState: EnumFormState.fetch));
 
-      List<MultipartFile> files = [];
+      var files = <MultipartFile>[];
 
-      for (var file in state.media) {
-        if(file.path != null) {
-          files.add(await MultipartFile.fromFile(file.path!, filename: file.name));
+      for (final file in state.media) {
+        if (file.path != null) {
+          files.add(
+              await MultipartFile.fromFile(file.path!, filename: file.name));
         }
       }
 
-      return _repository.create(AdvertCreateRequestParams(
-        title: state.title.value,
-        description: state.title.value,
-        price: int.tryParse(state.price.value),
-        categoryId: state.category.value,
-        cityId: state.city.value,
-        additionalPhone: state.phone.value,
-        media: files,
-        type: state.type
-      )).then((value) {
+      return _repository
+          .create(AdvertCreateRequestParams(
+              title: state.title.value,
+              description: state.title.value,
+              price: int.tryParse(state.price.value),
+              categoryId: state.category.value,
+              cityId: state.city.value,
+              additionalPhone: state.phone.value,
+              media: files,
+              type: state.type))
+          .then((value) {
         emit(state.copyWith(formState: EnumFormState.success));
       }).catchError((error) {
-        if(error is DioError) {
-          if(error.response?.statusCode == 403) {
+        if (error is DioException) {
+          if (error.response?.statusCode == 403) {
             authBloc.add(AuthLogoutEvent());
           }
           emit(state.copyWith(
               formState: EnumFormState.error,
-              error: ErrorModel.parseDio(error)
-          ));
+              error: ErrorModel.parseDio(error)));
         } else {
           emit(state.copyWith(
-              formState: EnumFormState.error,
-              error: ErrorModel.nothing
-          ));
+              formState: EnumFormState.error, error: ErrorModel.nothing));
         }
       });
     }

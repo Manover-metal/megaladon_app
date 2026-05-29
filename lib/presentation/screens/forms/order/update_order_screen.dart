@@ -1,11 +1,10 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:dio/dio.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:megaladon/data/models/enum_form_state.dart';
 import 'package:megaladon/data/models/order_model.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/form/update/order/order_update_form_cubit.dart';
 import 'package:megaladon/logic/screens/orders/details/order_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
@@ -13,19 +12,18 @@ import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/description_field.dart';
-import 'package:megaladon/presentation/widgets/form/multi_picker/file_multi_picker.dart';
-import 'package:megaladon/presentation/widgets/form/picker/dictionary/order_category_picker.dart';
-import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
-import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/number_field.dart';
+import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
+import 'package:megaladon/presentation/widgets/form/multi_picker/file_multi_picker.dart';
+import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
+import 'package:megaladon/presentation/widgets/form/picker/dictionary/order_category_picker.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
 
 class UpdateOrderScreen extends StatefulWidget {
+  const UpdateOrderScreen({required this.order, super.key});
   final OrderModel order;
-
-  const UpdateOrderScreen({super.key, required this.order});
 
   @override
   State<UpdateOrderScreen> createState() => _UpdateOrderScreenState();
@@ -41,19 +39,18 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
   late TextEditingController _priceRecommendedController;
   late FileMultiPickerController _fileController;
 
-
-  _back() {
+  void _back() {
     context.router.pop();
   }
 
-  _create() async {
-    if(_checkForm()) {
+  Future<void> _create() async {
+    if (_checkForm()) {
       await context.read<OrderUpdateFormCubit>().updateFetch(widget.order.id);
     }
   }
 
-  _checkForm() {
-    OrderUpdateFormCubit form = context.read<OrderUpdateFormCubit>();
+  bool _checkForm() {
+    var form = context.read<OrderUpdateFormCubit>();
     return form.checkUpdate(
         title: _titleController.value.text,
         description: _descriptionController.value.text,
@@ -61,34 +58,27 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
         city: _cityController.value,
         priceMax: _priceMaxController.value.text,
         priceRecommended: _priceRecommendedController.value.text,
-        files: _fileController.value
-
-    );
+        files: _fileController.value);
   }
 
-  _listenerForm(BuildContext context, OrderUpdateFormState state) {
-    if(state.status) {
-      for (var element in state.props) {
-        if(element is FormzInput && element.isNotValid) {
+  void _listenerForm(BuildContext context, OrderUpdateFormState state) {
+    if (state.status) {
+      for (final element in state.props) {
+        if (element is FormzInput && element.isNotValid) {
           return showErrorSnackBar(context, element.error.toString());
         }
       }
     }
-    if(state.formState == EnumFormState.success) {
+    if (state.formState == EnumFormState.success) {
       context.read<OrderScreenDetailsCubit>().fetch(id: widget.order.id);
       context.read<OrderScreenMyCubit>().fetchMy();
-      context.router.popUntil((route) => route.settings.name == InitialRouter.name);
-      context.router.navigate(InitialRouter(
-          children: [
-            OrderRouter(
-                children: [
-                  DetailsOrderRoute(orderId: widget.order.id)
-                ]
-            )
-          ]
-      ));
-    } else if(state.formState == EnumFormState.error) {
-      if(state.error != null) {
+      context.router
+          .popUntil((route) => route.settings.name == InitialRouter.name);
+      context.router.navigate(InitialRouter(children: [
+        OrderRouter(children: [DetailsOrderRoute(orderId: widget.order.id)])
+      ]));
+    } else if (state.formState == EnumFormState.error) {
+      if (state.error != null) {
         showErrorSnackBar(context, state.error!.messages[0]);
       }
     }
@@ -96,17 +86,19 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
 
   @override
   void initState() {
-    _orderCategoryController = OrderCategoryPickerController(category: widget.order.category);
+    _orderCategoryController =
+        OrderCategoryPickerController(category: widget.order.category);
     _titleController = TextEditingController(text: widget.order.title);
     _cityController = CityPickerController(city: widget.order.city);
-    _priceMaxController = TextEditingController(text: widget.order.priceMax.toString());
-    _priceRecommendedController = TextEditingController(text: widget.order.priceRecommended.toString());
-    _descriptionController = TextEditingController(text: widget.order.description);
+    _priceMaxController =
+        TextEditingController(text: widget.order.priceMax.toString());
+    _priceRecommendedController =
+        TextEditingController(text: widget.order.priceRecommended.toString());
+    _descriptionController =
+        TextEditingController(text: widget.order.description);
     _fileController = FileMultiPickerController();
     super.initState();
   }
-
-
 
   @override
   void dispose() {
@@ -121,43 +113,64 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                HeaderAppBar(
-                  isBack: true,
-                  title: "Change_order".tr(),
-                ),
-                const SizedBox(height: 30),
-                OrderCategoryPicker(label: "category".tr(), controller: _orderCategoryController),
-                TextFieldApp(controller: _titleController, label: "Header".tr(),),
-                CityPicker(label: "City".tr(), controller: _cityController),
-                DescriptionFieldApp(label: "Store_data".tr(), controller: _descriptionController),
-                NumberFieldApp(label: "Desired_budget".tr(), controller: _priceMaxController,),
-                NumberFieldApp(label: "Allowed_budget".tr(), controller: _priceRecommendedController,),
-                FileMultiPicker(controller: _fileController),
-                const SizedBox(height: 30),
-
-                BlocConsumer<OrderUpdateFormCubit, OrderUpdateFormState>(
-                  listener: _listenerForm,
-                  builder: (context, state) {
-                    if(state.formState == EnumFormState.fetch) {
-                      return ElevatedButtonApp(child: Loader(color: Theme.of(context).colorScheme.background), onPressed: () {},);
-                    }
-                    return ElevatedButtonApp(text: "Edit".tr(), onPressed: _create,);
-                  }
-                ),
-                OutlinedButtonApp(text: "Cancel".tr(), onPressed: _back,),
-              ],
+  Widget build(BuildContext context) => Scaffold(
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  HeaderAppBar(
+                    isBack: true,
+                    title: AppLocalizations.of(context)!.change_order,
+                  ),
+                  const SizedBox(height: 30),
+                  OrderCategoryPicker(
+                      label: AppLocalizations.of(context)!.category,
+                      controller: _orderCategoryController),
+                  TextFieldApp(
+                    controller: _titleController,
+                    label: AppLocalizations.of(context)!.header,
+                  ),
+                  CityPicker(
+                      label: AppLocalizations.of(context)!.city,
+                      controller: _cityController),
+                  DescriptionFieldApp(
+                      label: AppLocalizations.of(context)!.store_data,
+                      controller: _descriptionController),
+                  NumberFieldApp(
+                    label: AppLocalizations.of(context)!.desired_budget,
+                    controller: _priceMaxController,
+                  ),
+                  NumberFieldApp(
+                    label: AppLocalizations.of(context)!.allowed_budget,
+                    controller: _priceRecommendedController,
+                  ),
+                  FileMultiPicker(controller: _fileController),
+                  const SizedBox(height: 30),
+                  BlocConsumer<OrderUpdateFormCubit, OrderUpdateFormState>(
+                      listener: _listenerForm,
+                      builder: (context, state) {
+                        if (state.formState == EnumFormState.fetch) {
+                          return ElevatedButtonApp(
+                            child: Loader(
+                                color: Theme.of(context).colorScheme.surface),
+                            onPressed: () {},
+                          );
+                        }
+                        return ElevatedButtonApp(
+                          text: AppLocalizations.of(context)!.edit,
+                          onPressed: _create,
+                        );
+                      }),
+                  OutlinedButtonApp(
+                    text: AppLocalizations.of(context)!.cancel,
+                    onPressed: _back,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }

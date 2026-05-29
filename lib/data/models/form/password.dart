@@ -1,17 +1,16 @@
-
-import 'package:easy_localization/easy_localization.dart';
 import 'package:formz/formz.dart';
 
 enum PasswordValidationError {
-  empty, min;
+  empty,
+  min;
 
   @override
   String toString() {
-    switch(this) {
+    switch (this) {
       case PasswordValidationError.min:
-        return 'Password_must_be_at_least_8_characters'.tr();
+        return 'Password must be at least 8 characters';
       case PasswordValidationError.empty:
-        return 'Password_is_empty'.tr();
+        return 'Password is empty';
     }
   }
 }
@@ -24,7 +23,7 @@ class PasswordFormModel extends FormzInput<String, PasswordValidationError> {
   PasswordValidationError? validator(String value) {
     if (value.isEmpty) {
       return PasswordValidationError.empty;
-    } else if(value.length <=  7) {
+    } else if (value.length <= 7) {
       return PasswordValidationError.min;
     }
     return null;

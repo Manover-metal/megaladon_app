@@ -1,4 +1,3 @@
-
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
@@ -11,21 +10,20 @@ part 'register_store_event.dart';
 part 'register_store_state.dart';
 
 class RegisterStoreBloc extends Bloc<RegisterStoreEvent, RegisterStoreState> {
-  final RegisterRepository _repository = RegisterRepository();
   RegisterStoreBloc() : super(RegisterStoreInitial()) {
     on<RegisterStoreFetchEvent>(_register);
   }
+  final RegisterRepository _repository = RegisterRepository();
 
-  _register(RegisterStoreFetchEvent event, Emitter emit ) async {
-    if(state is RegisterStoreLoading) return;
-
+  Future<void> _register(
+      RegisterStoreFetchEvent event, Emitter<void> emit) async {
+    if (state is RegisterStoreLoading) return;
 
     emit(RegisterStoreLoading());
-    await _repository.registerStore(event.params).then((value) {
-      final StoreModel store = StoreModel.fromJsonMini(value.data['store']);
+    await _repository.registerStore(event.params).then((store) {
       emit(RegisterStoreSuccess(store));
-    }).catchError((error) {
-      if(error is DioError) {
+    }).catchError((Object error) {
+      if (error is DioException) {
         emit(RegisterStoreError(ErrorModel.parseDio(error)));
       } else {
         emit(RegisterStoreError(ErrorModel.nothing));

@@ -10,25 +10,22 @@ class AuthInitialEvent extends AuthEvent {
 }
 
 class AuthLoginEvent extends AuthEvent {
+  const AuthLoginEvent(this.phone, this.password);
   final String phone;
   final String password;
-
-  const AuthLoginEvent(this.phone, this.password);
 
   @override
   List<Object?> get props => [phone, password];
 }
 
 class AuthVerifyEvent extends AuthEvent {
+  const AuthVerifyEvent(this.phone, this.code);
   final String phone;
   final String code;
-
-  const AuthVerifyEvent(this.phone, this.code);
 
   @override
   List<Object?> get props => [phone, code];
 }
-
 
 class AuthLogoutEvent extends AuthEvent {
   @override
@@ -36,24 +33,17 @@ class AuthLogoutEvent extends AuthEvent {
 }
 
 class AuthAddExecutorEvent extends AuthEvent {
-  final ExecutorModel executor;
-
   const AuthAddExecutorEvent(this.executor);
+  final ExecutorModel executor;
 
   @override
   List<Object?> get props => [executor];
 }
 
-
 class AuthAddStoreEvent extends AuthEvent {
-  final StoreModel store;
-
   const AuthAddStoreEvent(this.store);
+  final StoreModel store;
 
   @override
   List<Object?> get props => [store];
 }
-
-
-
-

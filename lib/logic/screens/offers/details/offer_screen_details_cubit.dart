@@ -8,31 +8,25 @@ import 'package:megaladon/data/repositories/offer_repository.dart';
 part 'offer_screen_details_state.dart';
 
 class OfferScreenDetailsCubit extends Cubit<OfferScreenDetailsState> {
-  final OfferRepository _repository = OfferRepository();
   OfferScreenDetailsCubit() : super(OfferScreenDetailsInitial());
+  final OfferRepository _repository = OfferRepository();
 
   Future fetch({required int orderId, required int offerId}) async {
-    if(state is OfferScreenDetailsSuccess) {
-      if((state as OfferScreenDetailsSuccess).offer.id == offerId) return;
+    if (state is OfferScreenDetailsSuccess) {
+      if ((state as OfferScreenDetailsSuccess).offer.id == offerId) return;
     }
     emit(OfferScreenDetailsLoader());
     return await _fetch(orderId: orderId, offerId: offerId);
   }
 
-
-
-
-  Future _fetch({required int orderId, required int offerId}) async {
-    return await _repository.getById(orderId, offerId).then((value) {
-      emit(OfferScreenDetailsSuccess(
-          offer: value
-      ));
-    }).catchError(( error) {
-      if(error is DioError) {
-        emit(OfferScreenDetailsError(ErrorModel.parseDio(error)));
-      } else {
-        emit(OfferScreenDetailsError(ErrorModel.nothing));
-      }
-    });
-  }
+  Future _fetch({required int orderId, required int offerId}) async =>
+      await _repository.getById(orderId, offerId).then((value) {
+        emit(OfferScreenDetailsSuccess(offer: value));
+      }).catchError((error) {
+        if (error is DioException) {
+          emit(OfferScreenDetailsError(ErrorModel.parseDio(error)));
+        } else {
+          emit(OfferScreenDetailsError(ErrorModel.nothing));
+        }
+      });
 }

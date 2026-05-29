@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:formz/formz.dart';
 
 enum DescriptionValidationError {
@@ -6,20 +5,21 @@ enum DescriptionValidationError {
 
   @override
   String toString() {
-    switch(this) {
+    switch (this) {
       case DescriptionValidationError.limit:
-        return 'Description_exceeds_1000_characters'.tr();
+        return 'Description exceeds 1000 characters';
     }
   }
 }
 
-class DescriptionFormModel extends FormzInput<String, DescriptionValidationError> {
+class DescriptionFormModel
+    extends FormzInput<String, DescriptionValidationError> {
   const DescriptionFormModel.pure() : super.pure('');
   const DescriptionFormModel.dirty([super.value = '']) : super.dirty();
 
   @override
   DescriptionValidationError? validator(String value) {
-    if(value.length > 1000) return DescriptionValidationError.limit;
+    if (value.length > 1000) return DescriptionValidationError.limit;
     return null;
   }
 }

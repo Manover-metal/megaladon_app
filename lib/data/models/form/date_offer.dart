@@ -1,5 +1,3 @@
-
-import 'package:easy_localization/easy_localization.dart';
 import 'package:formz/formz.dart';
 
 enum DateOfferValidationError {
@@ -7,9 +5,9 @@ enum DateOfferValidationError {
 
   @override
   String toString() {
-    switch(this) {
+    switch (this) {
       case DateOfferValidationError.empty:
-        return 'Work_time_is_not_filled'.tr();
+        return 'Work time is not filled';
     }
   }
 }

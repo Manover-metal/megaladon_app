@@ -17,27 +17,20 @@ class AdvertScreenDetailsLoader extends AdvertScreenDetailsState {
 }
 
 class AdvertScreenDetailsError extends AdvertScreenDetailsState {
-  final ErrorModel error;
-
   AdvertScreenDetailsError(this.error);
+  final ErrorModel error;
 
   @override
   List<Object> get props => [error];
 }
 
-class AdvertScreenDetailsSuccess extends  AdvertScreenDetailsState {
-  final AdvertModel advert;
-
+class AdvertScreenDetailsSuccess extends AdvertScreenDetailsState {
   AdvertScreenDetailsSuccess({required this.advert});
+  final AdvertModel advert;
 
   @override
   List<Object?> get props => [advert];
 
-  AdvertScreenDetailsSuccess copyWith({
-    AdvertModel? advert
-  }) {
-    return AdvertScreenDetailsSuccess(
-        advert: advert ?? this.advert
-    );
-  }
+  AdvertScreenDetailsSuccess copyWith({AdvertModel? advert}) =>
+      AdvertScreenDetailsSuccess(advert: advert ?? this.advert);
 }

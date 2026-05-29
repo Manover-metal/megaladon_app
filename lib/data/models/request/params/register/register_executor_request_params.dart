@@ -2,6 +2,15 @@ import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/dictionary/service_type_model.dart';
 
 class RegisterExecutorRequestParams {
+  const RegisterExecutorRequestParams(
+      {required this.name,
+      required this.description,
+      required this.bin,
+      required this.fullAddress,
+      required this.lon,
+      required this.lat,
+      required this.city,
+      this.services = const []});
   final String name;
   final String bin;
   final String fullAddress;
@@ -11,18 +20,7 @@ class RegisterExecutorRequestParams {
   final CityModel city;
   final List<ServiceTypeModel> services;
 
-  const RegisterExecutorRequestParams({
-    required this.name,
-    required this.description,
-    required this.bin,
-    required this.fullAddress,
-    required this.lon,
-    required this.lat,
-    required this.city,
-    this.services = const []
-  });
-
-  toData() {
+  Map<String, Object> toData() {
     final data = {
       'name': name,
       'bin': bin,
