@@ -70,7 +70,8 @@ class _ServiceTypeMultiPickerState extends State<ServiceTypeMultiPicker> {
                       children: [
                         Expanded(
                           child: ServiceTypePicker(
-                            label: 'Категория услуг',
+                            label:
+                                AppLocalizations.of(context)!.service_category,
                             controller:
                                 widget.serviceTypeControllers.value[item],
                           ),

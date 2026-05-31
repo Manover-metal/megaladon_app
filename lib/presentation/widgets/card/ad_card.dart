@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/core/themes/dark.dart';
 import 'package:megaladon/data/models/advert_model.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 
 class AdCard extends StatelessWidget {
@@ -69,7 +70,8 @@ class AdCard extends StatelessWidget {
                   height: 10,
                 ),
                 Text(
-                  '${advert.price} ₸',
+                  AppLocalizations.of(context)!
+                      .tenge_price(advert.price.toString()),
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                       color: ColorSchemeApp.success.color,
                       fontWeight: FontWeight.w600),

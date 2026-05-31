@@ -88,7 +88,7 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
                     children: [
                       OutlinedButtonApp(
                         onPressed: _toUpdate,
-                        child: const Text('Изменить'),
+                        child: Text(AppLocalizations.of(context)!.update),
                       ),
                       const SizedBox(height: 5),
                     ],
@@ -115,7 +115,7 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: HeaderAppBar(
                         isBack: true,
-                        title: '${state.store.name}',
+                        title: state.store.name,
                         onTrailing: _onTrailing),
                   ));
                 } else {
@@ -165,7 +165,7 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
                           ),
                           TextButton(
                               onPressed: _rateStore(state.store),
-                              child: const Text('Оценить')),
+                              child: Text(AppLocalizations.of(context)!.rate)),
                           const SizedBox(
                             height: 20,
                           ),
@@ -257,14 +257,14 @@ class _RateStoreModalState extends State<RateStoreModal> {
   void _listener(BuildContext context, RateStoreState state) {
     if (state is RateStoreSuccess) {
       context.router.pop();
-      showSuccessSnackBar(context, 'Вы оценили магазин');
+      showSuccessSnackBar(context, AppLocalizations.of(context)!.storeRated);
     } else if (state is RateStoreError) {
       context.router.pop();
       showErrorSnackBar(
           context,
           state.error.messages.isNotEmpty
               ? state.error.messages.first
-              : 'Неизвестная ошибка');
+              : AppLocalizations.of(context)!.unknown_error);
     }
   }
 
@@ -281,7 +281,8 @@ class _RateStoreModalState extends State<RateStoreModal> {
               StarPicker(controller: _starPickerController),
               const SizedBox(height: 10),
               ElevatedButtonApp(
-                  onPressed: _rate, child: const Text('Отправить'))
+                  onPressed: _rate,
+                  child: Text(AppLocalizations.of(context)!.send))
             ],
           ),
         ),

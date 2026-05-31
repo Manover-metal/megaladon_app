@@ -159,6 +159,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscription => 'Subscription';
 
   @override
+  String get subscriptions => 'Subscriptions';
+
+  @override
   String get store_data => 'Store data';
 
   @override
@@ -189,8 +192,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sign_in => 'Sign in';
 
   @override
-  String get you_need_to_log_into_the_application =>
-      'You need to log into the application';
+  String you_need_to_log_into_the_application(String suffix) {
+    return 'You need to log into the application$suffix';
+  }
 
   @override
   String get registration => 'Registration';
@@ -214,6 +218,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get register => 'Register';
 
   @override
+  String get registerAsExecutor => 'Register as Executor';
+
+  @override
   String get ad => 'Ad';
 
   @override
@@ -224,6 +231,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get price_up_to => 'Price: up to ';
+
+  @override
+  String priceUpToAmount(String amount) {
+    return 'Price: up to $amount ₸';
+  }
+
+  @override
+  String priceAmount(String amount) {
+    return '$amount ₸';
+  }
 
   @override
   String get call => 'Call';
@@ -296,6 +313,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chat => 'Chat';
 
   @override
+  String get noMessagesInChat => 'No messages in this chat yet';
+
+  @override
   String get chats => 'Chats';
 
   @override
@@ -308,7 +328,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get edit_ad => 'Edit ad';
 
   @override
+  String get editService => 'Edit service';
+
+  @override
   String get response_to_order => 'Response to order №';
+
+  @override
+  String responseToOrderId(String id) {
+    return 'Response to order №$id';
+  }
+
+  @override
+  String get responseSent => 'Response sent';
 
   @override
   String get actual_until => 'Actual until';
@@ -335,10 +366,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get terms => 'Terms: ';
 
   @override
+  String get createChat => 'Create chat';
+
+  @override
   String get location2 => 'Location: ';
 
   @override
   String get description2 => 'Description: ';
+
+  @override
+  String get executorAddedToFavorites => 'Executor added to favorites';
+
+  @override
+  String get executorSuggestedPrice => 'Executor\'s suggested price: ';
+
+  @override
+  String get executionDate => 'Execution date: ';
+
+  @override
+  String cityName(String name) {
+    return 'city $name';
+  }
 
   @override
   String get set_as_executor => 'Set as executor';
@@ -347,10 +395,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get order => 'Order №';
 
   @override
+  String orderWithId(String id) {
+    return 'Order №$id';
+  }
+
+  @override
   String get desired_budget_up_to => 'Desired budget: up to ';
 
   @override
+  String desiredBudgetUpToAmount(String amount) {
+    return 'Desired budget: up to $amount ₸';
+  }
+
+  @override
   String get valid_to => 'Valid to: ';
+
+  @override
+  String validToAmount(String amount) {
+    return 'Valid to: $amount ₸';
+  }
 
   @override
   String get offer_services => 'Offer services';
@@ -360,6 +423,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get offers => 'Offers: ';
+
+  @override
+  String offersCount(String count) {
+    return 'Offers ($count new)';
+  }
+
+  @override
+  String offersWithCount(String count) {
+    return 'Offers: $count';
+  }
 
   @override
   String get discuss_in_chat2 => 'Discuss in chat (5 new)';
@@ -377,7 +450,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get as_a_executor => 'As an executor';
 
   @override
+  String get asAStore => 'As a store';
+
+  @override
   String get feedback_on_order => 'Feedback on order';
+
+  @override
+  String feedbackOnOrderId(String id) {
+    return 'Feedback on order №$id';
+  }
 
   @override
   String get leave_feedback => 'Leave feedback';
@@ -408,6 +489,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get submit_Code => 'Submit code';
 
   @override
+  String get rate => 'Rate';
+
+  @override
+  String get send => 'Send';
+
+  @override
+  String get storeRated => 'You rated the store';
+
+  @override
   String get profile => 'Profile';
 
   @override
@@ -421,6 +511,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get about_the_application => 'About the application';
+
+  @override
+  String get aboutText =>
+      '\"Orders\" — a list of orders placed on the platform to find the best offer from executors.\n\"Rolled metal\" — a list of companies selling finished products.\n\"+\" (Order) — create an order to find executors.\n\"+\" (Services) — create services to promote your offerings.\n\"+\" (Ad) — create an ad to sell goods or provide mechanical engineering services.\n\"Marketplace\" — a list of ads for selling goods or providing mechanical engineering services.\n\"Profile\" — user profile.';
+
+  @override
+  String get introOrders =>
+      'A list of orders placed on the platform to find the best offer from executors.';
+
+  @override
+  String get introStores => 'A list of companies selling finished products.';
+
+  @override
+  String get introAds =>
+      'A list of ads for selling goods or providing mechanical engineering services.';
+
+  @override
+  String get introProfile => 'User profile.';
 
   @override
   String get change_artist_details => 'Change artist details';
@@ -666,4 +774,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get create_service => 'Create service';
+
+  @override
+  String get service_category => 'Service category';
+
+  @override
+  String get period => 'Period';
+
+  @override
+  String days_count(String count) {
+    return '$count days';
+  }
+
+  @override
+  String get activate_for_free => 'Activate for free';
+
+  @override
+  String get buy => 'Buy';
+
+  @override
+  String subscribed_for_days(String count) {
+    return 'You subscribed for $count days';
+  }
+
+  @override
+  String tenge_price(String amount) {
+    return '$amount ₸';
+  }
 }

@@ -12,24 +12,7 @@ class AboutScreen extends StatelessWidget {
             body: SingleChildScrollView(
               child: Container(
                 padding: const EdgeInsets.all(20),
-                child: const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                        '"Заказы" - список размещенных на платформе заказов для поиска лучшего предложения от исполнителей.'),
-                    Text(
-                        '"Металлопрокат" - список компаний занимаеющихся продажей готовой продукции.'),
-                    Text(
-                        '"+" (Заказ) - создание заказа для поиска исполнителей.'),
-                    Text(
-                        '"+" (Услуги) - создание услуг для распространения своих услуг'),
-                    Text(
-                        '"+" (Объявление) - создание объявления для продажи товаров или оказание услуг машиностроения.'),
-                    Text(
-                        '"Торговая площадка" - список объявлений о продажи товара или оказании услуг машиностроения.'),
-                    Text('"Профиль" - профиль пользователя.'),
-                  ],
-                ),
+                child: Text(AppLocalizations.of(context)!.aboutText),
               ),
             ),
             headerSliverBuilder: (context, innerBoxIsScrolled) => [

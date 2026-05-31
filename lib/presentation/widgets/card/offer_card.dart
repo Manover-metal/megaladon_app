@@ -40,8 +40,10 @@ class OfferCard extends StatelessWidget {
                 title: AppLocalizations.of(context)!.description2,
                 data: offer.comment ??
                     AppLocalizations.of(context)!.no_description),
-            DataTile(title: 'Terms ', data: offer.date),
-            DataTile(title: 'Price: ', data: offer.price),
+            DataTile(
+                title: AppLocalizations.of(context)!.terms, data: offer.date),
+            DataTile(
+                title: AppLocalizations.of(context)!.price2, data: offer.price),
             const SizedBox(
               height: 30,
             ),
@@ -49,7 +51,8 @@ class OfferCard extends StatelessWidget {
               children: [
                 Expanded(
                     child: OutlinedButtonApp(
-                        text: 'Создать чат', onPressed: _createChat(context))),
+                        text: AppLocalizations.of(context)!.createChat,
+                        onPressed: _createChat(context))),
                 const SizedBox(width: 10),
                 Expanded(
                     child: ElevatedButtonApp(

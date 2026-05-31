@@ -55,7 +55,7 @@ outdated: ## check for outdated dependencies
 .PHONY: fix
 fix: get ## format and fix code
 	$(call print-target)
-	@fvm dart format . -l 80 lib/
+	@fvm dart format .
 	@fvm dart fix --apply lib/
 
 .PHONY: format

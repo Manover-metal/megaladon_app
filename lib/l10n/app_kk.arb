@@ -44,6 +44,7 @@
   "price": "Бағасы",
   "create_ad": "Хабарландыруды құру",
   "create_service": "Қызметті құру",
+  "service_category": "Қызмет санаты",
   "name": "Аты",
   "telephone": "Телефоны",
   "artist_data": "Орындаушының деректері",
@@ -52,6 +53,7 @@
   "services": "Қызметтер",
   "service": "Сервис (Қызмет)",
   "subscription": "Жазылу",
+  "subscriptions": "Жазылымдар",
   "store_data": "Дүкен деректері",
   "description": "Сипаттама",
   "email": "Email",
@@ -62,7 +64,7 @@
   "your_password": "Сіздің пароліңіз (Сіздің құпиясөзіңіз)",
   "forgot_your_password": "Құпия сөзді ұмыттыңыз ба?",
   "sign_in": "Кіру",
-  "you_need_to_log_into_the_application": "Сізге қосымшаға авторизация жасау керек",
+  "you_need_to_log_into_the_application": "Сізге қосымшаға авторизация жасау керек{suffix}",
   "registration": "Тіркелу",
   "continueAction": "Жалғастыру",
   "for_this_request_ended": " берілген сұраныс бойынша аяқталды",
@@ -70,10 +72,27 @@
   "choose_password": "Құпиясөзді таңдау",
   "confirm_the_password": "Құпия сөзді растаңыз",
   "register": "Тіркелі",
+  "registerAsExecutor": "Орындаушы ретінде тіркелі",
   "ad": "Хабарландыру",
   "no_attached_files": "Тіркелген файлдар жоқ",
   "attached_files": "Тіркелген файлдар",
   "price_up_to": "Бағасы: дейін",
+  "priceUpToAmount": "Бағасы: дейін {amount} ₸",
+  "priceAmount": "{amount} ₸",
+  "@priceAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "@priceUpToAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "call": "Қоңырау шалу",
   "ask_a_question_in_the_chat": "Чатта сұрақ қою",
   "my_announcement": "Менің хабарландыруларым",
@@ -97,11 +116,22 @@
   "confirm": "Растау",
   "send_code_again": "Кодты қайта жіберіңіз",
   "chat": "Чат",
+  "noMessagesInChat": "Бұл чатта әлі хабарлама жоқ",
   "chats": "Чаттар",
   "executor": "Орындаушы: ",
   "additional_Phone": "Қосымша телефон",
   "edit_ad": "Хабарландыруды өзгерту",
+  "editService": "Сервисті өзгерту",
   "response_to_order": "№ тапсырысына жауап",
+  "responseToOrderId": "№{id} тапсырысына жауап",
+  "@responseToOrderId": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "responseSent": "Жауап жіберілді",
   "actual_until": "Дейін өзекті",
   "time_to_work": " Жұмыс істеуіне берілген уақыт",
   "respond": "Жауап беру",
@@ -110,21 +140,70 @@
   "artists_suggestion": "Орындаушының ұсынысы",
   "price2": "Бағасы: ",
   "terms": "Мерзімі: ",
+  "createChat": "Чат жасау",
   "location2": "Орналасқан жері: ",
   "description2": "Сипаттамасы: ",
+  "executorAddedToFavorites": "Орындаушы таңдаулыларға қосылды",
+  "executorSuggestedPrice": "Орындаушы ұсынған баға: ",
+  "executionDate": "Орындау күні: ",
+  "cityName": "қ. {name}",
+  "@cityName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "set_as_executor": "Орындаушы болып тағайындалсын",
   "order": "№ тапсырыс",
+  "orderWithId": "№{id} тапсырыс",
+  "@orderWithId": {
+    "placeholders": {
+      "id": {"type": "String"}
+    }
+  },
   "desired_budget_up_to": " Қажетті бюджет: дейін ",
+  "desiredBudgetUpToAmount": "Қажетті бюджет: дейін {amount} ₸",
+  "@desiredBudgetUpToAmount": {
+    "placeholders": {
+      "amount": {"type": "String"}
+    }
+  },
   "valid_to": "Рұқсат етілген: дейін",
+  "validToAmount": "Рұқсат етілген: дейін {amount} ₸",
+  "@validToAmount": {
+    "placeholders": {
+      "amount": {"type": "String"}
+    }
+  },
   "offer_services": "Қызметтерді ұсыну",
   "discuss_in_chat": "Чатта талқылау",
   "offers": "Ұсыныстар: ",
+  "offersCount": "Ұсыныстар ({count} жаңа)",
+  "offersWithCount": "Ұсыныстар: {count}",
+  "@offersWithCount": {
+    "placeholders": {
+      "count": {"type": "String"}
+    }
+  },
+  "@offersCount": {
+    "placeholders": {
+      "count": {"type": "String"}
+    }
+  },
   "discuss_in_chat2": "Чатта талқылау (5 жаңа)",
   "to_finish_work": "Жұмысты аяқтау",
   "my_orders": "Менің тапсырыстарым",
   "as_a_user": "Пайдаланушы ретінде",
   "as_a_executor": "Орындаушы ретінде",
+  "asAStore": "Дүкен ретінде",
   "feedback_on_order": "Тапсырыс бойынша пікір",
+  "feedbackOnOrderId": "№{id} тапсырыс бойынша пікір",
+  "@feedbackOnOrderId": {
+    "placeholders": {
+      "id": {"type": "String"}
+    }
+  },
   "leave_feedback": "Пікір қалдыру",
   "back": "Кері",
   "password_changed_successfully": "Құпия сөз сәтті өзгертілді",
@@ -134,11 +213,19 @@
   "code": "Код",
   "new_phone": "Жаңа телефон",
   "submit_Code": "Кодты жіберу",
+  "rate": "Бағалау",
+  "send": "Жіберу",
+  "storeRated": "Сіз дүкенді бағаладыңыз",
   "profile": "Профиль",
   "add_price": "Бағасын (прайсты) қосу",
   "settings": "Параметрлер (орнатқыштар)",
   "language": "Тіл",
   "about_the_application": "Қосымша туралы",
+  "aboutText": "\"Тапсырыстар\" — орындаушылардан ең жақсы ұсынысты іздеу үшін платформада орналастырылған тапсырыстар тізімі.\n\"Металл прокаты\" — дайын өнімдерді сататын компаниялар тізімі.\n\"+\" (Тапсырыс) — орындаушыларды іздеу үшін тапсырыс жасау.\n\"+\" (Қызметтер) — қызметтерді таратуға арналған қызмет жасау.\n\"+\" (Хабарландыру) — тауарларды сату немесе машина жасау қызметтерін ұсыну үшін хабарландыру жасау.\n\"Сауда алаңы\" — тауарларды сату немесе машина жасау қызметтерін ұсыну туралы хабарландырулар тізімі.\n\"Профиль\" — пайдаланушы профилі.",
+  "introOrders": "Орындаушылардан ең жақсы ұсынысты іздеу үшін платформада орналастырылған тапсырыстар тізімі.",
+  "introStores": "Дайын өнімдерді сататын компаниялар тізімі.",
+  "introAds": "Тауарларды сату немесе машина жасау қызметтерін ұсыну туралы хабарландырулар тізімі.",
+  "introProfile": "Пайдаланушы профилі.",
   "change_artist_details": "Орындаушының деректерін өзгерту",
   "rating2": "Рейтинг: ",
   "filter": "Сүзгі (Фильтр)",
@@ -215,5 +302,32 @@
   "en": "Ағылшын",
   "ru": "Орыс",
   "kk": "Қазақ",
-  "add_to_Favorite": "Добавить в избранное"
+  "add_to_Favorite": "Добавить в избранное",
+  "period": "Кезең",
+  "days_count": "{count} күн",
+  "@days_count": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "activate_for_free": "Тегін белсендіру",
+  "buy": "Сатып алу",
+  "subscribed_for_days": "{count} күнге жазылдыңыз",
+  "@subscribed_for_days": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "tenge_price": "{amount} ₸",
+  "@tenge_price": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -159,6 +159,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get subscription => 'Подписка';
 
   @override
+  String get subscriptions => 'Подписки';
+
+  @override
   String get store_data => 'Данные металопроката';
 
   @override
@@ -189,8 +192,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get sign_in => 'Войти';
 
   @override
-  String get you_need_to_log_into_the_application =>
-      'Вам нужно авторизоваться в приложение';
+  String you_need_to_log_into_the_application(String suffix) {
+    return 'Вам нужно авторизоваться в приложение$suffix';
+  }
 
   @override
   String get registration => 'Регистрация';
@@ -214,6 +218,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get register => 'Зарегистрироваться';
 
   @override
+  String get registerAsExecutor => 'Зарегистрируйтесь как Исполнитель';
+
+  @override
   String get ad => 'Объявление';
 
   @override
@@ -224,6 +231,16 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get price_up_to => 'Цена: до';
+
+  @override
+  String priceUpToAmount(String amount) {
+    return 'Цена: до $amount ₸';
+  }
+
+  @override
+  String priceAmount(String amount) {
+    return '$amount ₸';
+  }
 
   @override
   String get call => 'Позвонить';
@@ -296,6 +313,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get chat => 'Чат';
 
   @override
+  String get noMessagesInChat => 'Пока что сообщений в этом чате нет';
+
+  @override
   String get chats => 'Чаты';
 
   @override
@@ -308,7 +328,18 @@ class AppLocalizationsRu extends AppLocalizations {
   String get edit_ad => 'Изменить объявление';
 
   @override
+  String get editService => 'Изменить сервис';
+
+  @override
   String get response_to_order => 'Отклик на заказ №';
+
+  @override
+  String responseToOrderId(String id) {
+    return 'Отклик на заказ №$id';
+  }
+
+  @override
+  String get responseSent => 'Отклик отправлен';
 
   @override
   String get actual_until => 'Актуален до';
@@ -335,10 +366,27 @@ class AppLocalizationsRu extends AppLocalizations {
   String get terms => 'Сроки: ';
 
   @override
+  String get createChat => 'Создать чат';
+
+  @override
   String get location2 => 'Местоположение: ';
 
   @override
   String get description2 => 'Описание: ';
+
+  @override
+  String get executorAddedToFavorites => 'Исполнитель добавлен в избранное';
+
+  @override
+  String get executorSuggestedPrice => 'Предложенная исполнителем цена: ';
+
+  @override
+  String get executionDate => 'Дата исполнения: ';
+
+  @override
+  String cityName(String name) {
+    return 'г. $name';
+  }
 
   @override
   String get set_as_executor => 'Назначить исполнителем';
@@ -347,10 +395,25 @@ class AppLocalizationsRu extends AppLocalizations {
   String get order => 'Заказ №';
 
   @override
+  String orderWithId(String id) {
+    return 'Заказ №$id';
+  }
+
+  @override
   String get desired_budget_up_to => 'Желаемый бюджет: до ';
 
   @override
+  String desiredBudgetUpToAmount(String amount) {
+    return 'Желаемый бюджет: до $amount ₸';
+  }
+
+  @override
   String get valid_to => 'Допустимый: до ';
+
+  @override
+  String validToAmount(String amount) {
+    return 'Допустимый: до $amount ₸';
+  }
 
   @override
   String get offer_services => 'Предложить услуги';
@@ -360,6 +423,16 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get offers => 'Предложений: ';
+
+  @override
+  String offersCount(String count) {
+    return 'Предложений ($count новых)';
+  }
+
+  @override
+  String offersWithCount(String count) {
+    return 'Предложений: $count';
+  }
 
   @override
   String get discuss_in_chat2 => 'Обсудить в чате (5 новых)';
@@ -377,7 +450,15 @@ class AppLocalizationsRu extends AppLocalizations {
   String get as_a_executor => 'Как исполнителя';
 
   @override
+  String get asAStore => 'Как магазина';
+
+  @override
   String get feedback_on_order => 'Отзыв по заказу';
+
+  @override
+  String feedbackOnOrderId(String id) {
+    return 'Отзыв по заказу №$id';
+  }
 
   @override
   String get leave_feedback => 'Оставить отзыв';
@@ -408,6 +489,15 @@ class AppLocalizationsRu extends AppLocalizations {
   String get submit_Code => 'Отправить код';
 
   @override
+  String get rate => 'Оценить';
+
+  @override
+  String get send => 'Отправить';
+
+  @override
+  String get storeRated => 'Вы оценили магазин';
+
+  @override
   String get profile => 'Профиль';
 
   @override
@@ -421,6 +511,25 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get about_the_application => 'О приложении';
+
+  @override
+  String get aboutText =>
+      '\"Заказы\" — список размещённых на платформе заказов для поиска лучшего предложения от исполнителей.\n\"Металлопрокат\" — список компаний, занимающихся продажей готовой продукции.\n\"+\" (Заказ) — создание заказа для поиска исполнителей.\n\"+\" (Услуги) — создание услуг для распространения своих услуг.\n\"+\" (Объявление) — создание объявления для продажи товаров или оказания услуг машиностроения.\n\"Торговая площадка\" — список объявлений о продаже товара или оказании услуг машиностроения.\n\"Профиль\" — профиль пользователя.';
+
+  @override
+  String get introOrders =>
+      'Список размещённых на платформе заказов для поиска лучшего предложения от исполнителей.';
+
+  @override
+  String get introStores =>
+      'Список компаний, занимающихся продажей готовой продукции.';
+
+  @override
+  String get introAds =>
+      'Список объявлений о продаже товара или оказании услуг машиностроения.';
+
+  @override
+  String get introProfile => 'Профиль пользователя.';
 
   @override
   String get change_artist_details => 'Изменить данные исполнителя';
@@ -666,4 +775,31 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get create_service => 'Создать услугу';
+
+  @override
+  String get service_category => 'Категория услуг';
+
+  @override
+  String get period => 'Период';
+
+  @override
+  String days_count(String count) {
+    return '$count дней';
+  }
+
+  @override
+  String get activate_for_free => 'Активировать бесплатно';
+
+  @override
+  String get buy => 'Купить';
+
+  @override
+  String subscribed_for_days(String count) {
+    return 'Вы взяли подписку на $count дней';
+  }
+
+  @override
+  String tenge_price(String amount) {
+    return '$amount ₸';
+  }
 }

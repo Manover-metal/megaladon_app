@@ -56,13 +56,14 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
   void _listenFavorite(BuildContext context, AddFavoriteState state) {
     if (state is AddFavoriteSuccess) {
       context.read<ExecutorScreenMyCubit>().fetch();
-      showSuccessSnackBar(context, 'Исполнитель добавлен в избранное');
+      showSuccessSnackBar(
+          context, AppLocalizations.of(context)!.executorAddedToFavorites);
     } else if (state is AddFavoriteError) {
       showErrorSnackBar(
           context,
           state.error.messages.isNotEmpty
               ? state.error.messages.first
-              : 'Неизвестная ошибка');
+              : AppLocalizations.of(context)!.unknown_error);
     }
   }
 
@@ -113,7 +114,8 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
                                     if (state.offer.executor?.description !=
                                         null)
                                       DataTile(
-                                        title: 'Description:',
+                                        title: AppLocalizations.of(context)!
+                                            .description2,
                                         data:
                                             state.offer.executor?.description ??
                                                 '',
@@ -132,18 +134,22 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
                                     height: 20,
                                   ),
                                   DataTile(
-                                    title:
-                                        'Предложенная исполнителем ${AppLocalizations.of(context)!.price2}',
-                                    data: '${state.offer.price} ₸',
+                                    title: AppLocalizations.of(context)!
+                                        .executorSuggestedPrice,
+                                    data: AppLocalizations.of(context)!
+                                        .priceAmount(
+                                            state.offer.price.toString()),
                                   ),
                                   DataTile(
-                                    title: 'Дата исполнения: ',
+                                    title: AppLocalizations.of(context)!
+                                        .executionDate,
                                     data: state.offer.date,
                                   ),
                                   DataTile(
                                     title:
                                         AppLocalizations.of(context)!.location2,
-                                    data: 'г. ${state.offer.city?.name}',
+                                    data: AppLocalizations.of(context)!
+                                        .cityName(state.offer.city?.name ?? ''),
                                   ),
                                   if (state.offer.comment != null)
                                     DataTile(

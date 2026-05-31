@@ -1,20 +1,23 @@
+import 'package:megaladon/generated/l10n/app_localizations.dart';
+
 enum OrderIndexSort {
   id,
   created_at,
   status,
   category_id;
 
-  @override
-  String toString() {
+  String localize(AppLocalizations l10n) {
     switch (this) {
       case OrderIndexSort.id:
-        return 'By creation';
+        return l10n.by_creation;
       case OrderIndexSort.created_at:
-        return 'By date';
+        return l10n.by_date;
       case OrderIndexSort.status:
-        return 'By status';
+        return l10n.by_status;
       case OrderIndexSort.category_id:
-        return 'By category';
+        return l10n.by_category;
+      default:
+        return l10n.by_creation;
     }
   }
 }

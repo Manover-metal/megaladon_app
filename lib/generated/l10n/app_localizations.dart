@@ -400,6 +400,12 @@ abstract class AppLocalizations {
   /// **'Subscription'**
   String get subscription;
 
+  /// No description provided for @subscriptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscriptions'**
+  String get subscriptions;
+
   /// No description provided for @store_data.
   ///
   /// In en, this message translates to:
@@ -463,8 +469,8 @@ abstract class AppLocalizations {
   /// No description provided for @you_need_to_log_into_the_application.
   ///
   /// In en, this message translates to:
-  /// **'You need to log into the application'**
-  String get you_need_to_log_into_the_application;
+  /// **'You need to log into the application{suffix}'**
+  String you_need_to_log_into_the_application(String suffix);
 
   /// No description provided for @registration.
   ///
@@ -508,6 +514,12 @@ abstract class AppLocalizations {
   /// **'Register'**
   String get register;
 
+  /// No description provided for @registerAsExecutor.
+  ///
+  /// In en, this message translates to:
+  /// **'Register as Executor'**
+  String get registerAsExecutor;
+
   /// No description provided for @ad.
   ///
   /// In en, this message translates to:
@@ -531,6 +543,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Price: up to '**
   String get price_up_to;
+
+  /// No description provided for @priceUpToAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Price: up to {amount} ₸'**
+  String priceUpToAmount(String amount);
+
+  /// No description provided for @priceAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} ₸'**
+  String priceAmount(String amount);
 
   /// No description provided for @call.
   ///
@@ -670,6 +694,12 @@ abstract class AppLocalizations {
   /// **'Chat'**
   String get chat;
 
+  /// No description provided for @noMessagesInChat.
+  ///
+  /// In en, this message translates to:
+  /// **'No messages in this chat yet'**
+  String get noMessagesInChat;
+
   /// No description provided for @chats.
   ///
   /// In en, this message translates to:
@@ -694,11 +724,29 @@ abstract class AppLocalizations {
   /// **'Edit ad'**
   String get edit_ad;
 
+  /// No description provided for @editService.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit service'**
+  String get editService;
+
   /// No description provided for @response_to_order.
   ///
   /// In en, this message translates to:
   /// **'Response to order №'**
   String get response_to_order;
+
+  /// No description provided for @responseToOrderId.
+  ///
+  /// In en, this message translates to:
+  /// **'Response to order №{id}'**
+  String responseToOrderId(String id);
+
+  /// No description provided for @responseSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Response sent'**
+  String get responseSent;
 
   /// No description provided for @actual_until.
   ///
@@ -748,6 +796,12 @@ abstract class AppLocalizations {
   /// **'Terms: '**
   String get terms;
 
+  /// No description provided for @createChat.
+  ///
+  /// In en, this message translates to:
+  /// **'Create chat'**
+  String get createChat;
+
   /// No description provided for @location2.
   ///
   /// In en, this message translates to:
@@ -759,6 +813,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Description: '**
   String get description2;
+
+  /// No description provided for @executorAddedToFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'Executor added to favorites'**
+  String get executorAddedToFavorites;
+
+  /// No description provided for @executorSuggestedPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Executor\'s suggested price: '**
+  String get executorSuggestedPrice;
+
+  /// No description provided for @executionDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Execution date: '**
+  String get executionDate;
+
+  /// No description provided for @cityName.
+  ///
+  /// In en, this message translates to:
+  /// **'city {name}'**
+  String cityName(String name);
 
   /// No description provided for @set_as_executor.
   ///
@@ -772,17 +850,35 @@ abstract class AppLocalizations {
   /// **'Order №'**
   String get order;
 
+  /// No description provided for @orderWithId.
+  ///
+  /// In en, this message translates to:
+  /// **'Order №{id}'**
+  String orderWithId(String id);
+
   /// No description provided for @desired_budget_up_to.
   ///
   /// In en, this message translates to:
   /// **'Desired budget: up to '**
   String get desired_budget_up_to;
 
+  /// No description provided for @desiredBudgetUpToAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Desired budget: up to {amount} ₸'**
+  String desiredBudgetUpToAmount(String amount);
+
   /// No description provided for @valid_to.
   ///
   /// In en, this message translates to:
   /// **'Valid to: '**
   String get valid_to;
+
+  /// No description provided for @validToAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Valid to: {amount} ₸'**
+  String validToAmount(String amount);
 
   /// No description provided for @offer_services.
   ///
@@ -801,6 +897,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Offers: '**
   String get offers;
+
+  /// No description provided for @offersCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Offers ({count} new)'**
+  String offersCount(String count);
+
+  /// No description provided for @offersWithCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Offers: {count}'**
+  String offersWithCount(String count);
 
   /// No description provided for @discuss_in_chat2.
   ///
@@ -832,11 +940,23 @@ abstract class AppLocalizations {
   /// **'As an executor'**
   String get as_a_executor;
 
+  /// No description provided for @asAStore.
+  ///
+  /// In en, this message translates to:
+  /// **'As a store'**
+  String get asAStore;
+
   /// No description provided for @feedback_on_order.
   ///
   /// In en, this message translates to:
   /// **'Feedback on order'**
   String get feedback_on_order;
+
+  /// No description provided for @feedbackOnOrderId.
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback on order №{id}'**
+  String feedbackOnOrderId(String id);
 
   /// No description provided for @leave_feedback.
   ///
@@ -892,6 +1012,24 @@ abstract class AppLocalizations {
   /// **'Submit code'**
   String get submit_Code;
 
+  /// No description provided for @rate.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate'**
+  String get rate;
+
+  /// No description provided for @send.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get send;
+
+  /// No description provided for @storeRated.
+  ///
+  /// In en, this message translates to:
+  /// **'You rated the store'**
+  String get storeRated;
+
   /// No description provided for @profile.
   ///
   /// In en, this message translates to:
@@ -921,6 +1059,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'About the application'**
   String get about_the_application;
+
+  /// No description provided for @aboutText.
+  ///
+  /// In en, this message translates to:
+  /// **'\"Orders\" — a list of orders placed on the platform to find the best offer from executors.\n\"Rolled metal\" — a list of companies selling finished products.\n\"+\" (Order) — create an order to find executors.\n\"+\" (Services) — create services to promote your offerings.\n\"+\" (Ad) — create an ad to sell goods or provide mechanical engineering services.\n\"Marketplace\" — a list of ads for selling goods or providing mechanical engineering services.\n\"Profile\" — user profile.'**
+  String get aboutText;
+
+  /// No description provided for @introOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'A list of orders placed on the platform to find the best offer from executors.'**
+  String get introOrders;
+
+  /// No description provided for @introStores.
+  ///
+  /// In en, this message translates to:
+  /// **'A list of companies selling finished products.'**
+  String get introStores;
+
+  /// No description provided for @introAds.
+  ///
+  /// In en, this message translates to:
+  /// **'A list of ads for selling goods or providing mechanical engineering services.'**
+  String get introAds;
+
+  /// No description provided for @introProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'User profile.'**
+  String get introProfile;
 
   /// No description provided for @change_artist_details.
   ///
@@ -1395,6 +1563,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Create service'**
   String get create_service;
+
+  /// No description provided for @service_category.
+  ///
+  /// In en, this message translates to:
+  /// **'Service category'**
+  String get service_category;
+
+  /// No description provided for @period.
+  ///
+  /// In en, this message translates to:
+  /// **'Period'**
+  String get period;
+
+  /// No description provided for @days_count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} days'**
+  String days_count(String count);
+
+  /// No description provided for @activate_for_free.
+  ///
+  /// In en, this message translates to:
+  /// **'Activate for free'**
+  String get activate_for_free;
+
+  /// No description provided for @buy.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy'**
+  String get buy;
+
+  /// No description provided for @subscribed_for_days.
+  ///
+  /// In en, this message translates to:
+  /// **'You subscribed for {count} days'**
+  String subscribed_for_days(String count);
+
+  /// No description provided for @tenge_price.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} ₸'**
+  String tenge_price(String amount);
 }
 
 class _AppLocalizationsDelegate

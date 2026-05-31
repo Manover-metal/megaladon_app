@@ -160,7 +160,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     color: Theme.of(context)
                                                         .colorScheme
                                                         .surface
-                                                        .withOpacity(0.5),
+                                                        .withValues(alpha: 0.5),
                                                   ),
                                                   padding: const EdgeInsets
                                                       .symmetric(vertical: 3),
@@ -188,7 +188,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   DataTile(
                                       title: AppLocalizations.of(context)!
                                           .location,
-                                      data: 'г.${user.city?.name ?? ''}'),
+                                      data: AppLocalizations.of(context)!
+                                          .cityName(user.city?.name ?? '')),
                                 const Divider(thickness: 1),
                                 if (executor != null) ...[
                                   TitleApp(AppLocalizations.of(context)!

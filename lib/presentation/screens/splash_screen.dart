@@ -5,6 +5,7 @@ import 'package:flutter_intro/flutter_intro.dart';
 import 'package:is_first_run/is_first_run.dart';
 import 'package:megaladon/core/get.dart';
 import 'package:megaladon/core/icons/icons.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/bottom_sheet/add_anything_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/drawer/drawer_app.dart';
@@ -103,8 +104,8 @@ class _SplashScreenState extends State<SplashScreen> {
                                         children: [OrderRouter()])),
                               ),
                           order: 1,
-                          overlayBuilder: (params) => const Text(
-                              'Список размещенных на платформе заказов для поиска лучшего предложения от исполнителей.'),
+                          overlayBuilder: (params) =>
+                              Text(AppLocalizations.of(context)!.introOrders),
                           onWidgetLoad: _introStart(context)),
                       IntroStepBuilder(
                         builder: (context, key) => Tab(
@@ -116,8 +117,8 @@ class _SplashScreenState extends State<SplashScreen> {
                               const InitialRouter(children: [StoreRouter()])),
                         ),
                         order: 2,
-                        overlayBuilder: (params) => const Text(
-                            'Список компаний занимающихся продажей готовой продукции.'),
+                        overlayBuilder: (params) =>
+                            Text(AppLocalizations.of(context)!.introStores),
                       ),
                       const SizedBox(
                         width: 50,
@@ -132,8 +133,8 @@ class _SplashScreenState extends State<SplashScreen> {
                               const InitialRouter(children: [AdRouter()])),
                         ),
                         order: 3,
-                        overlayBuilder: (params) => const Text(
-                            'Список объявлений о продажи товара или оказании услуг машиностроения.'),
+                        overlayBuilder: (params) =>
+                            Text(AppLocalizations.of(context)!.introAds),
                       ),
                       IntroStepBuilder(
                         builder: (context, key) => Tab(
@@ -146,7 +147,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         ),
                         order: 4,
                         overlayBuilder: (params) =>
-                            const Text('Профиль пользователя.'),
+                            Text(AppLocalizations.of(context)!.introProfile),
                       ),
                     ],
                   )),

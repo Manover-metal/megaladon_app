@@ -123,7 +123,9 @@ class _ContactTypePickerState extends State<ContactTypePicker> {
                     itemExtent: 36,
                     onSelectedItemChanged: (index) => selectedIndex = index,
                     children: types
-                        .map((t) => Center(child: Text(t.toString())))
+                        .map((t) => Center(
+                            child: Text(
+                                t.localize(AppLocalizations.of(context)!))))
                         .toList(),
                   ),
                 ),
@@ -163,7 +165,9 @@ class _ContactTypePickerState extends State<ContactTypePicker> {
                     ),
                     child: Row(
                       children: [
-                        Expanded(child: Text(contactType.toString())),
+                        Expanded(
+                            child: Text(contactType
+                                .localize(AppLocalizations.of(context)!))),
                         const Icon(Icons.keyboard_arrow_down_outlined),
                       ],
                     ),

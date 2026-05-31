@@ -100,6 +100,8 @@
   "@service": {},
   "subscription": "Subscription",
   "@subscription": {},
+  "subscriptions": "Subscriptions",
+  "@subscriptions": {},
   "store_data": "Store data",
   "@store_data": {},
   "description": "Description",
@@ -120,8 +122,14 @@
   "@forgot_your_password": {},
   "sign_in": "Sign in",
   "@sign_in": {},
-  "you_need_to_log_into_the_application": "You need to log into the application",
-  "@you_need_to_log_into_the_application": {},
+  "you_need_to_log_into_the_application": "You need to log into the application{suffix}",
+  "@you_need_to_log_into_the_application": {
+    "placeholders": {
+      "suffix": {
+        "type": "String"
+      }
+    }
+  },
   "registration": "Registration",
   "@registration": {},
   "continueAction": "Continue",
@@ -136,6 +144,8 @@
   "@confirm_the_password": {},
   "register": "Register",
   "@register": {},
+  "registerAsExecutor": "Register as Executor",
+  "@registerAsExecutor": {},
   "ad": "Ad",
   "@ad": {},
   "no_attached_files": "No attached files",
@@ -144,6 +154,22 @@
   "@attached_files": {},
   "price_up_to": "Price: up to ",
   "@price_up_to": {},
+  "priceUpToAmount": "Price: up to {amount} ₸",
+  "@priceUpToAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "priceAmount": "{amount} ₸",
+  "@priceAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "call": "Call",
   "@call": {},
   "ask_a_question_in_the_chat": "Ask a question in the chat",
@@ -190,6 +216,8 @@
   "@send_code_again": {},
   "chat": "Chat",
   "@chat": {},
+  "noMessagesInChat": "No messages in this chat yet",
+  "@noMessagesInChat": {},
   "chats": "Chats",
   "@chats": {},
   "executor": "Executor: ",
@@ -198,8 +226,20 @@
   "@additional_Phone": {},
   "edit_ad": "Edit ad",
   "@edit_ad": {},
+  "editService": "Edit service",
+  "@editService": {},
   "response_to_order": "Response to order №",
   "@response_to_order": {},
+  "responseToOrderId": "Response to order №{id}",
+  "@responseToOrderId": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "responseSent": "Response sent",
+  "@responseSent": {},
   "actual_until": "Actual until",
   "@actual_until": {},
   "time_to_work": "Time to work",
@@ -216,24 +256,70 @@
   "@price2": {},
   "terms": "Terms: ",
   "@terms": {},
+  "createChat": "Create chat",
+  "@createChat": {},
   "location2": "Location: ",
   "@location2": {},
   "description2": "Description: ",
   "@description2": {},
+  "executorAddedToFavorites": "Executor added to favorites",
+  "@executorAddedToFavorites": {},
+  "executorSuggestedPrice": "Executor's suggested price: ",
+  "@executorSuggestedPrice": {},
+  "executionDate": "Execution date: ",
+  "@executionDate": {},
+  "cityName": "city {name}",
+  "@cityName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "set_as_executor": "Set as executor",
   "@set_as_executor": {},
   "order": "Order №",
   "@order": {},
+  "orderWithId": "Order №{id}",
+  "@orderWithId": {
+    "placeholders": {
+      "id": {"type": "String"}
+    }
+  },
   "desired_budget_up_to": "Desired budget: up to ",
   "@desired_budget_up_to": {},
+  "desiredBudgetUpToAmount": "Desired budget: up to {amount} ₸",
+  "@desiredBudgetUpToAmount": {
+    "placeholders": {
+      "amount": {"type": "String"}
+    }
+  },
   "valid_to": "Valid to: ",
   "@valid_to": {},
+  "validToAmount": "Valid to: {amount} ₸",
+  "@validToAmount": {
+    "placeholders": {
+      "amount": {"type": "String"}
+    }
+  },
   "offer_services": "Offer services",
   "@offer_services": {},
   "discuss_in_chat": "Discuss in chat",
   "@discuss_in_chat": {},
   "offers": "Offers: ",
   "@offers": {},
+  "offersCount": "Offers ({count} new)",
+  "@offersCount": {
+    "placeholders": {
+      "count": {"type": "String"}
+    }
+  },
+  "offersWithCount": "Offers: {count}",
+  "@offersWithCount": {
+    "placeholders": {
+      "count": {"type": "String"}
+    }
+  },
   "discuss_in_chat2": "Discuss in chat (5 new)",
   "@discuss_in_chat2": {},
   "to_finish_work": "To finish work",
@@ -244,8 +330,16 @@
   "@as_a_user": {},
   "as_a_executor": "As an executor",
   "@as_a_executor": {},
+  "asAStore": "As a store",
+  "@asAStore": {},
   "feedback_on_order": "Feedback on order",
   "@feedback_on_order": {},
+  "feedbackOnOrderId": "Feedback on order №{id}",
+  "@feedbackOnOrderId": {
+    "placeholders": {
+      "id": {"type": "String"}
+    }
+  },
   "leave_feedback": "Leave feedback",
   "@leave_feedback": {},
   "back": "Back",
@@ -264,6 +358,12 @@
   "@new_phone": {},
   "submit_Code": "Submit code",
   "@submit_Code": {},
+  "rate": "Rate",
+  "@rate": {},
+  "send": "Send",
+  "@send": {},
+  "storeRated": "You rated the store",
+  "@storeRated": {},
   "profile": "Profile",
   "@profile": {},
   "add_price": "Add price",
@@ -274,6 +374,16 @@
   "@language": {},
   "about_the_application": "About the application",
   "@about_the_application": {},
+  "aboutText": "\"Orders\" — a list of orders placed on the platform to find the best offer from executors.\n\"Rolled metal\" — a list of companies selling finished products.\n\"+\" (Order) — create an order to find executors.\n\"+\" (Services) — create services to promote your offerings.\n\"+\" (Ad) — create an ad to sell goods or provide mechanical engineering services.\n\"Marketplace\" — a list of ads for selling goods or providing mechanical engineering services.\n\"Profile\" — user profile.",
+  "@aboutText": {},
+  "introOrders": "A list of orders placed on the platform to find the best offer from executors.",
+  "@introOrders": {},
+  "introStores": "A list of companies selling finished products.",
+  "@introStores": {},
+  "introAds": "A list of ads for selling goods or providing mechanical engineering services.",
+  "@introAds": {},
+  "introProfile": "User profile.",
+  "@introProfile": {},
   "change_artist_details": "Change artist details",
   "@change_artist_details": {},
   "rating2": "Rating: ",
@@ -431,5 +541,37 @@
   "creating_an_service": "Creating a service",
   "@creating_an_service": {},
   "create_service": "Create service",
-  "@create_service": {}
+  "@create_service": {},
+  "service_category": "Service category",
+  "@service_category": {},
+  "period": "Period",
+  "@period": {},
+  "days_count": "{count} days",
+  "@days_count": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "activate_for_free": "Activate for free",
+  "@activate_for_free": {},
+  "buy": "Buy",
+  "@buy": {},
+  "subscribed_for_days": "You subscribed for {count} days",
+  "@subscribed_for_days": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "tenge_price": "{amount} ₸",
+  "@tenge_price": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  }
 }

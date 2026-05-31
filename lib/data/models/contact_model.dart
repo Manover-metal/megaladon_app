@@ -1,3 +1,5 @@
+import 'package:megaladon/generated/l10n/app_localizations.dart';
+
 enum ContactType {
   phone,
   home_phone,
@@ -27,27 +29,18 @@ enum ContactType {
     }
   }
 
-  @override
-  String toString() {
+  String localize(AppLocalizations l10n) {
     switch (this) {
-      case phone:
-        {
-          return 'Mobile phone';
-        }
-      case home_phone:
-        {
-          return 'Home phone';
-        }
-      case site:
-        {
-          return 'Website';
-        }
-      case email:
-        {
-          return 'Email';
-        }
+      case ContactType.phone:
+        return l10n.mobile_phone;
+      case ContactType.home_phone:
+        return l10n.home_phone;
+      case ContactType.site:
+        return l10n.website;
+      case ContactType.email:
+        return l10n.email;
       default:
-        return 'Additional data';
+        return l10n.additional_data;
     }
   }
 }

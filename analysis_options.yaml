@@ -194,8 +194,7 @@ analyzer:
     strict-raw-types: true
     strict-inference: true
     
-  plugins:
-    - custom_lint
+
     
   exclude:
   # Tests
@@ -209,23 +208,17 @@ analyzer:
   - "*.gr.dart"
   - "**/generated/**"
 
-custom_lint:
-  exclude:
-    # Tests
-    - ".test_coverage.dart"
-    - "assets/**"
 
-    - "lib/generated/**"
-    - "**.g.dart"
-    - "test/**"
 
-  rules:
-    - markup_analyzer:
-      simple: error
-      interpolation: error
-      binary: none
-      adjacent: warning
+plugins:
+  markup_analyzer:
+    version: ^4.0.1
+    diagnostics:
+      simple_string: error
       prefixed_identifier: none
-      method: none
+      string_interpolation: error
+      binary_expression: false
+      adjacent_strings: error
+      method_invocation: none
       simple_identifier: none
-      function: none
+      function_invocation: error

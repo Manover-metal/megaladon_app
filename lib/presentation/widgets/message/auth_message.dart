@@ -21,7 +21,8 @@ class AuthMessage extends StatelessWidget {
                   .bodyLarge
                   ?.copyWith(color: Colors.white)),
           Text(
-            '${AppLocalizations.of(context)!.you_need_to_log_into_the_application}${continueText ?? ''}',
+            AppLocalizations.of(context)!
+                .you_need_to_log_into_the_application(continueText ?? ''),
             style: Theme.of(context)
                 .textTheme
                 .bodySmall

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:megaladon/data/models/contact_model.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 
 class ContactTile extends StatelessWidget {
   const ContactTile({required this.contact, super.key});
@@ -13,7 +14,7 @@ class ContactTile extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                contact.type.toString(),
+                contact.type.localize(AppLocalizations.of(context)!),
                 style: Theme.of(context)
                     .textTheme
                     .bodyMedium

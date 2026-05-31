@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/dictionary/dictionary_cubit.dart';
 import 'package:megaladon/presentation/widgets/card/subscribe_card.dart';
@@ -67,12 +68,14 @@ class _SubscribeScreenState extends State<SubscribeScreen>
             body: SafeArea(
               child: NestedScrollView(
                 headerSliverBuilder: (context, isBool) => [
-                  const SliverToBoxAdapter(
+                  SliverToBoxAdapter(
                       child: Column(
                     children: [
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: HeaderAppBar(isMenu: true, title: 'Подписки'),
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: HeaderAppBar(
+                            isMenu: true,
+                            title: AppLocalizations.of(context)!.subscriptions),
                       ),
                     ],
                   )),
@@ -92,8 +95,12 @@ class _SubscribeScreenState extends State<SubscribeScreen>
                       unselectedLabelColor: Colors.grey,
                       indicatorColor: Theme.of(context).colorScheme.primary,
                       tabs: [
-                        if (_isExecutor()) const Tab(text: 'Как исполнителя'),
-                        if (_isStore()) const Tab(text: 'Как магазина'),
+                        if (_isExecutor())
+                          Tab(
+                              text:
+                                  AppLocalizations.of(context)!.as_a_executor),
+                        if (_isStore())
+                          Tab(text: AppLocalizations.of(context)!.asAStore),
                       ],
                     ),
                   ))

@@ -261,7 +261,8 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen>
                         constraints: BoxConstraints(
                             minHeight: MediaQuery.of(context).size.height),
                         padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: const Text('Зарегистрируйте как Исполнитель'),
+                        child: Text(
+                            AppLocalizations.of(context)!.registerAsExecutor),
                       )),
                   ],
                 ),

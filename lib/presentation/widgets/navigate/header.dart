@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:megaladon/core/get.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
-class HeaderAppBar extends StatelessWidget {
+class HeaderAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HeaderAppBar(
       {super.key,
       this.padding = const EdgeInsets.only(bottom: 30, top: 10),
@@ -20,6 +20,9 @@ class HeaderAppBar extends StatelessWidget {
 
   final EdgeInsets padding;
   final Widget? trailing;
+
+  @override
+  Size get preferredSize => const Size.fromHeight(70);
 
   Null Function() _back(BuildContext context) => () {
         context.router.pop();

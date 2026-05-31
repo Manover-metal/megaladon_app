@@ -44,6 +44,7 @@
   "price": "Цена",
   "create_ad": "Создать объявление",
   "create_service": "Создать услугу",
+  "service_category": "Категория услуг",
   "name": "Имя",
   "telephone": "Телефон",
   "artist_data": "Данные исполнителя",
@@ -52,6 +53,7 @@
   "services": "Услуги",
   "service": "Сервис",
   "subscription": "Подписка",
+  "subscriptions": "Подписки",
   "store_data": "Данные металопроката",
   "description": "Описание",
   "email": "Email",
@@ -62,7 +64,7 @@
   "your_password": "Ваш пароль",
   "forgot_your_password": "Забыли пароль?",
   "sign_in": "Войти",
-  "you_need_to_log_into_the_application": "Вам нужно авторизоваться в приложение",
+  "you_need_to_log_into_the_application": "Вам нужно авторизоваться в приложение{suffix}",
   "registration": "Регистрация",
   "continueAction": "Продолжить",
   "for_this_request_ended": " по данному запросу закончились",
@@ -70,10 +72,27 @@
   "choose_password": "Выберите пароль",
   "confirm_the_password": "Подтвердите пароль",
   "register": "Зарегистрироваться",
+  "registerAsExecutor": "Зарегистрируйтесь как Исполнитель",
   "ad": "Объявление",
   "no_attached_files": "Нет прикреплённых файлов",
   "attached_files": "Прикреплённые файлы",
   "price_up_to": "Цена: до",
+  "priceUpToAmount": "Цена: до {amount} ₸",
+  "priceAmount": "{amount} ₸",
+  "@priceAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "@priceUpToAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "call": "Позвонить",
   "ask_a_question_in_the_chat": "Задать вопрос в чате",
   "my_announcement": "Мои объявления",
@@ -97,11 +116,22 @@
   "confirm": "Подтвердить",
   "send_code_again": "Выслать код повторно",
   "chat": "Чат",
+  "noMessagesInChat": "Пока что сообщений в этом чате нет",
   "chats": "Чаты",
   "executor": "Исполнитель: ",
   "additional_Phone": "Дополнительный телефон",
   "edit_ad": "Изменить объявление",
+  "editService": "Изменить сервис",
   "response_to_order": "Отклик на заказ №",
+  "responseToOrderId": "Отклик на заказ №{id}",
+  "@responseToOrderId": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "responseSent": "Отклик отправлен",
   "actual_until": "Актуален до",
   "time_to_work": "Время на работу",
   "respond": "Откликнуться",
@@ -110,21 +140,70 @@
   "artists_suggestion": "Предложение исполнителя",
   "price2": "Цена: ",
   "terms": "Сроки: ",
+  "createChat": "Создать чат",
   "location2": "Местоположение: ",
   "description2": "Описание: ",
+  "executorAddedToFavorites": "Исполнитель добавлен в избранное",
+  "executorSuggestedPrice": "Предложенная исполнителем цена: ",
+  "executionDate": "Дата исполнения: ",
+  "cityName": "г. {name}",
+  "@cityName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "set_as_executor": "Назначить исполнителем",
   "order": "Заказ №",
+  "orderWithId": "Заказ №{id}",
+  "@orderWithId": {
+    "placeholders": {
+      "id": {"type": "String"}
+    }
+  },
   "desired_budget_up_to": "Желаемый бюджет: до ",
+  "desiredBudgetUpToAmount": "Желаемый бюджет: до {amount} ₸",
+  "@desiredBudgetUpToAmount": {
+    "placeholders": {
+      "amount": {"type": "String"}
+    }
+  },
   "valid_to": "Допустимый: до ",
+  "validToAmount": "Допустимый: до {amount} ₸",
+  "@validToAmount": {
+    "placeholders": {
+      "amount": {"type": "String"}
+    }
+  },
   "offer_services": "Предложить услуги",
   "discuss_in_chat": "Обсудить в чате",
   "offers": "Предложений: ",
+  "offersCount": "Предложений ({count} новых)",
+  "offersWithCount": "Предложений: {count}",
+  "@offersWithCount": {
+    "placeholders": {
+      "count": {"type": "String"}
+    }
+  },
+  "@offersCount": {
+    "placeholders": {
+      "count": {"type": "String"}
+    }
+  },
   "discuss_in_chat2": "Обсудить в чате (5 новых)",
   "to_finish_work": "Завершить работу",
   "my_orders": "Мои заказы",
   "as_a_user": "Как пользователя",
   "as_a_executor": "Как исполнителя",
+  "asAStore": "Как магазина",
   "feedback_on_order": "Отзыв по заказу",
+  "feedbackOnOrderId": "Отзыв по заказу №{id}",
+  "@feedbackOnOrderId": {
+    "placeholders": {
+      "id": {"type": "String"}
+    }
+  },
   "leave_feedback": "Оставить отзыв",
   "back": "Назад",
   "password_changed_successfully": "Пароль успешно изменен",
@@ -134,11 +213,19 @@
   "code": "Код",
   "new_phone": "Новый телефон",
   "submit_Code": "Отправить код",
+  "rate": "Оценить",
+  "send": "Отправить",
+  "storeRated": "Вы оценили магазин",
   "profile": "Профиль",
   "add_price": "Добавить прайс",
   "settings": "Настройки",
   "language": "Язык",
   "about_the_application": "О приложении",
+  "aboutText": "\"Заказы\" — список размещённых на платформе заказов для поиска лучшего предложения от исполнителей.\n\"Металлопрокат\" — список компаний, занимающихся продажей готовой продукции.\n\"+\" (Заказ) — создание заказа для поиска исполнителей.\n\"+\" (Услуги) — создание услуг для распространения своих услуг.\n\"+\" (Объявление) — создание объявления для продажи товаров или оказания услуг машиностроения.\n\"Торговая площадка\" — список объявлений о продаже товара или оказании услуг машиностроения.\n\"Профиль\" — профиль пользователя.",
+  "introOrders": "Список размещённых на платформе заказов для поиска лучшего предложения от исполнителей.",
+  "introStores": "Список компаний, занимающихся продажей готовой продукции.",
+  "introAds": "Список объявлений о продаже товара или оказании услуг машиностроения.",
+  "introProfile": "Профиль пользователя.",
   "change_artist_details": "Изменить данные исполнителя",
   "rating2": "Рейтинг: ",
   "filter": "Фильтр",
@@ -215,5 +302,32 @@
   "en": "Английский",
   "ru": "Русский",
   "kk": "Казахский",
-  "add_to_Favorite": "Добавить в избранное"
+  "add_to_Favorite": "Добавить в избранное",
+  "period": "Период",
+  "days_count": "{count} дней",
+  "@days_count": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "activate_for_free": "Активировать бесплатно",
+  "buy": "Купить",
+  "subscribed_for_days": "Вы взяли подписку на {count} дней",
+  "@subscribed_for_days": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "tenge_price": "{amount} ₸",
+  "@tenge_price": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  }
 }

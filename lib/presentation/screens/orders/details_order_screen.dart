@@ -88,7 +88,7 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
           context,
           state.error.messages.isNotEmpty
               ? state.error.messages.first
-              : 'Неизвестная ошибка');
+              : AppLocalizations.of(context)!.unknown_error);
     }
   }
 
@@ -105,12 +105,12 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                     children: [
                       OutlinedButtonApp(
                         onPressed: _toUpdate(order),
-                        child: const Text('Изменить'),
+                        child: Text(AppLocalizations.of(context)!.update),
                       ),
                       const SizedBox(height: 5),
                       ElevatedButtonApp(
                         onPressed: _toDelete(order),
-                        child: const Text('Удалить'),
+                        child: Text(AppLocalizations.of(context)!.delete),
                       )
                     ],
                   ),
@@ -144,8 +144,8 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                       child: BlocBuilder<AuthBloc, AuthState>(
                         builder: (context, authState) => HeaderAppBar(
                             isBack: true,
-                            title:
-                                '${AppLocalizations.of(context)!.order}${state.order!.id}',
+                            title: AppLocalizations.of(context)!
+                                .orderWithId(state.order!.id.toString()),
                             onTrailing: (authState is AuthLoginState) &&
                                     authState.auth.user.value?.id ==
                                         state.order?.user?.id
@@ -274,10 +274,12 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                      '${AppLocalizations.of(context)!.desired_budget_up_to}${order.priceMax} ₸'),
-                                  Text(
-                                      '${AppLocalizations.of(context)!.valid_to} ${order.priceRecommended} ₸'),
+                                  Text(AppLocalizations.of(context)!
+                                      .desiredBudgetUpToAmount(
+                                          order.priceMax.toString())),
+                                  Text(AppLocalizations.of(context)!
+                                      .validToAmount(
+                                          order.priceRecommended.toString())),
                                   const SizedBox(
                                     height: 20,
                                   ),
@@ -325,8 +327,11 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                               if (order.status ==
                                                   OrderStatus.active) ...[
                                                 ElevatedButtonApp(
-                                                  text:
-                                                      '${AppLocalizations.of(context)!.offers}(${order.countOffers} новых)',
+                                                  text: AppLocalizations.of(
+                                                          context)!
+                                                      .offersCount(order
+                                                          .countOffers
+                                                          .toString()),
                                                   onPressed: _checkExecutors,
                                                 ),
                                                 // OutlinedButtonApp(

@@ -39,8 +39,8 @@ class OrderCard extends StatelessWidget {
                           const SizedBox(
                             width: 10,
                           ),
-                          Text(
-                              '${AppLocalizations.of(context)!.offers}${order.countOffers}')
+                          Text(AppLocalizations.of(context)!
+                              .offersWithCount(order.countOffers.toString()))
                         ],
                       ),
                       const SizedBox(

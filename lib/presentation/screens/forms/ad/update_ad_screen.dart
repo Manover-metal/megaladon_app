@@ -129,7 +129,9 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
                       title: AppLocalizations.of(context)!.edit_ad,
                     )
                   else if (widget.type == AdvertType.service)
-                    const HeaderAppBar(isBack: true, title: 'Изменить сервис'),
+                    HeaderAppBar(
+                        isBack: true,
+                        title: AppLocalizations.of(context)!.editService),
                   const SizedBox(height: 30),
                   TextFieldApp(
                       controller: _titleController,

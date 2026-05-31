@@ -16,15 +16,16 @@ class SubscribeCard extends StatelessWidget {
   Widget build(BuildContext context) =>
       BlocListener<SubscribeCubit, SubscribeState>(
         listener: (context, state) {
+          final l10n = AppLocalizations.of(context)!;
           if (state is SubscribeSuccess) {
-            showSuccessSnackBar(context,
-                'Вы взяли подписку на ${state.subscribe.duration} дней');
+            showSuccessSnackBar(
+                context, l10n.subscribed_for_days(state.subscribe.duration));
           } else if (state is SubscribeError) {
             showErrorSnackBar(
                 context,
                 state.error.messages.isNotEmpty
                     ? state.error.messages.first
-                    : 'Неизвестная ошибка');
+                    : l10n.unknown_error);
           }
         },
         child: _SubscribeCardBody(subscribe: subscribe),
@@ -49,12 +50,17 @@ class _SubscribeCardBody extends StatelessWidget {
           children: [
             DataTile(
                 title: AppLocalizations.of(context)!.price,
-                data: '${subscribe.price} ₸'),
-            DataTile(title: 'Период', data: '${subscribe.duration} дней'),
+                data: AppLocalizations.of(context)!
+                    .tenge_price(subscribe.price.toString())),
+            DataTile(
+                title: AppLocalizations.of(context)!.period,
+                data: AppLocalizations.of(context)!
+                    .days_count(subscribe.duration)),
             const SizedBox(height: 10),
             ElevatedButtonApp(
-              text:
-                  subscribe.price == 0.0 ? 'Активировать бесплатно' : 'Купить',
+              text: subscribe.price == 0.0
+                  ? AppLocalizations.of(context)!.activate_for_free
+                  : AppLocalizations.of(context)!.buy,
               onPressed: () => context.read<SubscribeCubit>().buy(subscribe),
             ),
           ],

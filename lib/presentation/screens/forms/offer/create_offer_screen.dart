@@ -51,7 +51,7 @@ class _CreateOfferScreenState extends State<CreateOfferScreen> {
 
   void _listenerForm(BuildContext context, CreateOfferFormState state) {
     if (state.formState == EnumFormState.success) {
-      showSuccessSnackBar(context, 'Отлик отправлен');
+      showSuccessSnackBar(context, AppLocalizations.of(context)!.responseSent);
       context.router.pop();
     } else if (state.formState == EnumFormState.error) {
       if (state.error != null) {
@@ -95,8 +95,8 @@ class _CreateOfferScreenState extends State<CreateOfferScreen> {
                 children: [
                   HeaderAppBar(
                       isBack: true,
-                      title:
-                          '${AppLocalizations.of(context)!.response_to_order}${widget.orderId}'),
+                      title: AppLocalizations.of(context)!
+                          .responseToOrderId(widget.orderId.toString())),
                   const SizedBox(
                     height: 20,
                   ),

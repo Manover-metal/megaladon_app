@@ -69,7 +69,8 @@ class _SortOrderBottomSheetState extends State<SortOrderBottomSheet> {
                 builder: (context, state) => Column(
                       children: OrderIndexSort.values
                           .map((sort) => SortTile(
-                                title: sort.toString(),
+                                title: sort
+                                    .localize(AppLocalizations.of(context)!),
                                 isActive: sortCurrent.index == sort.index,
                                 desc: desc,
                                 onTap: _handleChange(sort),

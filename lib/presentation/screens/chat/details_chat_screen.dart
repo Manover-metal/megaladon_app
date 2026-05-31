@@ -95,8 +95,8 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
                                 children: [
                                   const SizedBox(height: 120),
                                   if (messages.isEmpty)
-                                    const Text(
-                                        'Пока что сообщений в этом чате нет'),
+                                    Text(AppLocalizations.of(context)!
+                                        .noMessagesInChat),
                                   ...messages.map((e) {
                                     var isMe = false;
                                     if (authState is AuthLoginState) {
@@ -188,7 +188,10 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
                 borderRadius: BorderRadius.circular(10),
                 color: !isMe
                     ? Theme.of(context).colorScheme.tertiary
-                    : Theme.of(context).colorScheme.primary.withOpacity(0.2),
+                    : Theme.of(context)
+                        .colorScheme
+                        .primary
+                        .withValues(alpha: 0.2),
               ),
               padding: const EdgeInsets.all(10),
               constraints: BoxConstraints(

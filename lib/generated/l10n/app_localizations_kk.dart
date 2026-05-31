@@ -159,6 +159,9 @@ class AppLocalizationsKk extends AppLocalizations {
   String get subscription => 'Жазылу';
 
   @override
+  String get subscriptions => 'Жазылымдар';
+
+  @override
   String get store_data => 'Дүкен деректері';
 
   @override
@@ -189,8 +192,9 @@ class AppLocalizationsKk extends AppLocalizations {
   String get sign_in => 'Кіру';
 
   @override
-  String get you_need_to_log_into_the_application =>
-      'Сізге қосымшаға авторизация жасау керек';
+  String you_need_to_log_into_the_application(String suffix) {
+    return 'Сізге қосымшаға авторизация жасау керек$suffix';
+  }
 
   @override
   String get registration => 'Тіркелу';
@@ -214,6 +218,9 @@ class AppLocalizationsKk extends AppLocalizations {
   String get register => 'Тіркелі';
 
   @override
+  String get registerAsExecutor => 'Орындаушы ретінде тіркелі';
+
+  @override
   String get ad => 'Хабарландыру';
 
   @override
@@ -224,6 +231,16 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get price_up_to => 'Бағасы: дейін';
+
+  @override
+  String priceUpToAmount(String amount) {
+    return 'Бағасы: дейін $amount ₸';
+  }
+
+  @override
+  String priceAmount(String amount) {
+    return '$amount ₸';
+  }
 
   @override
   String get call => 'Қоңырау шалу';
@@ -296,6 +313,9 @@ class AppLocalizationsKk extends AppLocalizations {
   String get chat => 'Чат';
 
   @override
+  String get noMessagesInChat => 'Бұл чатта әлі хабарлама жоқ';
+
+  @override
   String get chats => 'Чаттар';
 
   @override
@@ -308,7 +328,18 @@ class AppLocalizationsKk extends AppLocalizations {
   String get edit_ad => 'Хабарландыруды өзгерту';
 
   @override
+  String get editService => 'Сервисті өзгерту';
+
+  @override
   String get response_to_order => '№ тапсырысына жауап';
+
+  @override
+  String responseToOrderId(String id) {
+    return '№$id тапсырысына жауап';
+  }
+
+  @override
+  String get responseSent => 'Жауап жіберілді';
 
   @override
   String get actual_until => 'Дейін өзекті';
@@ -335,10 +366,27 @@ class AppLocalizationsKk extends AppLocalizations {
   String get terms => 'Мерзімі: ';
 
   @override
+  String get createChat => 'Чат жасау';
+
+  @override
   String get location2 => 'Орналасқан жері: ';
 
   @override
   String get description2 => 'Сипаттамасы: ';
+
+  @override
+  String get executorAddedToFavorites => 'Орындаушы таңдаулыларға қосылды';
+
+  @override
+  String get executorSuggestedPrice => 'Орындаушы ұсынған баға: ';
+
+  @override
+  String get executionDate => 'Орындау күні: ';
+
+  @override
+  String cityName(String name) {
+    return 'қ. $name';
+  }
 
   @override
   String get set_as_executor => 'Орындаушы болып тағайындалсын';
@@ -347,10 +395,25 @@ class AppLocalizationsKk extends AppLocalizations {
   String get order => '№ тапсырыс';
 
   @override
+  String orderWithId(String id) {
+    return '№$id тапсырыс';
+  }
+
+  @override
   String get desired_budget_up_to => ' Қажетті бюджет: дейін ';
 
   @override
+  String desiredBudgetUpToAmount(String amount) {
+    return 'Қажетті бюджет: дейін $amount ₸';
+  }
+
+  @override
   String get valid_to => 'Рұқсат етілген: дейін';
+
+  @override
+  String validToAmount(String amount) {
+    return 'Рұқсат етілген: дейін $amount ₸';
+  }
 
   @override
   String get offer_services => 'Қызметтерді ұсыну';
@@ -360,6 +423,16 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get offers => 'Ұсыныстар: ';
+
+  @override
+  String offersCount(String count) {
+    return 'Ұсыныстар ($count жаңа)';
+  }
+
+  @override
+  String offersWithCount(String count) {
+    return 'Ұсыныстар: $count';
+  }
 
   @override
   String get discuss_in_chat2 => 'Чатта талқылау (5 жаңа)';
@@ -377,7 +450,15 @@ class AppLocalizationsKk extends AppLocalizations {
   String get as_a_executor => 'Орындаушы ретінде';
 
   @override
+  String get asAStore => 'Дүкен ретінде';
+
+  @override
   String get feedback_on_order => 'Тапсырыс бойынша пікір';
+
+  @override
+  String feedbackOnOrderId(String id) {
+    return '№$id тапсырыс бойынша пікір';
+  }
 
   @override
   String get leave_feedback => 'Пікір қалдыру';
@@ -408,6 +489,15 @@ class AppLocalizationsKk extends AppLocalizations {
   String get submit_Code => 'Кодты жіберу';
 
   @override
+  String get rate => 'Бағалау';
+
+  @override
+  String get send => 'Жіберу';
+
+  @override
+  String get storeRated => 'Сіз дүкенді бағаладыңыз';
+
+  @override
   String get profile => 'Профиль';
 
   @override
@@ -421,6 +511,24 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get about_the_application => 'Қосымша туралы';
+
+  @override
+  String get aboutText =>
+      '\"Тапсырыстар\" — орындаушылардан ең жақсы ұсынысты іздеу үшін платформада орналастырылған тапсырыстар тізімі.\n\"Металл прокаты\" — дайын өнімдерді сататын компаниялар тізімі.\n\"+\" (Тапсырыс) — орындаушыларды іздеу үшін тапсырыс жасау.\n\"+\" (Қызметтер) — қызметтерді таратуға арналған қызмет жасау.\n\"+\" (Хабарландыру) — тауарларды сату немесе машина жасау қызметтерін ұсыну үшін хабарландыру жасау.\n\"Сауда алаңы\" — тауарларды сату немесе машина жасау қызметтерін ұсыну туралы хабарландырулар тізімі.\n\"Профиль\" — пайдаланушы профилі.';
+
+  @override
+  String get introOrders =>
+      'Орындаушылардан ең жақсы ұсынысты іздеу үшін платформада орналастырылған тапсырыстар тізімі.';
+
+  @override
+  String get introStores => 'Дайын өнімдерді сататын компаниялар тізімі.';
+
+  @override
+  String get introAds =>
+      'Тауарларды сату немесе машина жасау қызметтерін ұсыну туралы хабарландырулар тізімі.';
+
+  @override
+  String get introProfile => 'Пайдаланушы профилі.';
 
   @override
   String get change_artist_details => 'Орындаушының деректерін өзгерту';
@@ -667,4 +775,31 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get create_service => 'Қызметті құру';
+
+  @override
+  String get service_category => 'Қызмет санаты';
+
+  @override
+  String get period => 'Кезең';
+
+  @override
+  String days_count(String count) {
+    return '$count күн';
+  }
+
+  @override
+  String get activate_for_free => 'Тегін белсендіру';
+
+  @override
+  String get buy => 'Сатып алу';
+
+  @override
+  String subscribed_for_days(String count) {
+    return '$count күнге жазылдыңыз';
+  }
+
+  @override
+  String tenge_price(String amount) {
+    return '$amount ₸';
+  }
 }

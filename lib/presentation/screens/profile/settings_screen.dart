@@ -28,13 +28,13 @@ class SettingsScreen extends StatelessWidget {
     final currentLocale = context.read<LocaleCubit>().state;
 
     return Scaffold(
+      appBar: HeaderAppBar(isMenu: true, title: l10n.settings),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                HeaderAppBar(isMenu: true, title: l10n.settings),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -89,7 +89,6 @@ class _SwitchExampleState extends State<SwitchExample> {
   Widget build(BuildContext context) => Switch(
         // This bool value toggles the switch.
         value: light,
-        activeThumbColor: Colors.green,
         onChanged: (value) {
           // This is called when the user toggles the switch.
           setState(() {

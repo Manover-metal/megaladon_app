@@ -53,30 +53,29 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
     context.read<AdvertScreenDetailsCubit>().fetch(id: widget.id);
   }
 
-  Null Function() _onTrailing(AdvertModel advert) => () {
-        showModalBottomSheet(
-            useRootNavigator: true,
-            useSafeArea: true,
-            context: context,
-            builder: (context) => Container(
-                  color: Theme.of(context).colorScheme.surface,
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      OutlinedButtonApp(
-                        onPressed: _toUpdate(advert),
-                        child: const Text('Изменить'),
-                      ),
-                      const SizedBox(height: 5),
-                      ElevatedButtonApp(
-                        onPressed: _toDelete(advert),
-                        child: const Text('Удалить'),
-                      )
-                    ],
-                  ),
-                ));
-      };
+  Future<void> Function() _onTrailing(AdvertModel advert) =>
+      () => showModalBottomSheet<void>(
+          useRootNavigator: true,
+          useSafeArea: true,
+          context: context,
+          builder: (context) => Container(
+                color: Theme.of(context).colorScheme.surface,
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    OutlinedButtonApp(
+                      onPressed: _toUpdate(advert),
+                      child: Text(AppLocalizations.of(context)!.update),
+                    ),
+                    const SizedBox(height: 5),
+                    ElevatedButtonApp(
+                      onPressed: _toDelete(advert),
+                      child: Text(AppLocalizations.of(context)!.delete),
+                    )
+                  ],
+                ),
+              ));
 
   Null Function() _toUpdate(AdvertModel advert) => () {
         context.router
@@ -99,7 +98,7 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
           context,
           state.error.messages.isNotEmpty
               ? state.error.messages.first
-              : 'Неизвестная ошибка');
+              : AppLocalizations.of(context)!.unknown_error);
     }
   }
 
@@ -135,7 +134,6 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                             }
                             return HeaderAppBar(
                               isBack: true,
-                              title: '',
                               onTrailing: _refresh,
                             );
                           },
@@ -224,8 +222,9 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                        '${AppLocalizations.of(context)!.price_up_to} ${state.advert.price} ₸'),
+                                    Text(AppLocalizations.of(context)!
+                                        .priceUpToAmount(
+                                            state.advert.price.toString())),
                                     const SizedBox(
                                       height: 10,
                                     ),

@@ -61,8 +61,8 @@ class _ReviewScreenState extends State<ReviewScreen> {
                 children: [
                   HeaderAppBar(
                     isBack: true,
-                    title:
-                        '${AppLocalizations.of(context)!.feedback_on_order}№1321412313',
+                    title: AppLocalizations.of(context)!
+                        .feedbackOnOrderId(widget.order.id.toString()),
                   ),
                   const SizedBox(
                     height: 20,

@@ -70,7 +70,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await dotenv.load(fileName: '.env');
-  initializeGetIt();
+  await initializeGetIt();
 
   await IsarService.initialize();
   await Firebase.initializeApp(
