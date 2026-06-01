@@ -41,35 +41,34 @@ class _ListChatsScreenState extends State<ListChatsScreen> {
           title: AppLocalizations.of(context)!.chats,
         ),
         body: RefreshIndicator(
-              color: Colors.white,
-              onRefresh: _refresh,
-              child: CupertinoScrollbar(
-                controller: _scrollController,
-                child: SingleChildScrollView(
-                  controller: _scrollController,
-                  child: Container(
-                    constraints: BoxConstraints(
-                        minHeight: MediaQuery.of(context).size.height),
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: BlocBuilder<ChatCubit, ChatState>(
-                      builder: (context, state) => Column(
-                        children: [
-                          if (state.chats.isEmpty)
-                            StockMessage(
-                                name: AppLocalizations.of(context)!.chats),
-                          ...state.chats
-                              .map((chat) => ChatCard(chat: chat))
-                              .toList(),
-                          if (state.status == ChatScreenMainStatus.loading)
-                            const Loader(padding: 10)
-                          else if (state.status == ChatScreenMainStatus.error)
-                            ErrorMessage(error: state.error!)
-                        ],
-                      ),
-                    ),
+          color: Colors.white,
+          onRefresh: _refresh,
+          child: CupertinoScrollbar(
+            controller: _scrollController,
+            child: SingleChildScrollView(
+              controller: _scrollController,
+              child: Container(
+                constraints: BoxConstraints(
+                    minHeight: MediaQuery.of(context).size.height),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: BlocBuilder<ChatCubit, ChatState>(
+                  builder: (context, state) => Column(
+                    children: [
+                      if (state.chats.isEmpty)
+                        StockMessage(name: AppLocalizations.of(context)!.chats),
+                      ...state.chats
+                          .map((chat) => ChatCard(chat: chat))
+                          .toList(),
+                      if (state.status == ChatScreenMainStatus.loading)
+                        const Loader(padding: 10)
+                      else if (state.status == ChatScreenMainStatus.error)
+                        ErrorMessage(error: state.error!)
+                    ],
                   ),
                 ),
               ),
             ),
+          ),
+        ),
       );
 }

@@ -8,7 +8,7 @@ import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
-import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
+import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
@@ -48,8 +48,13 @@ class _VerifyScreenState extends State<VerifyScreen> {
   }
 
   void _listenerForm(BuildContext context, VerifyFormState state) {
-    if (state.pincode.isNotValid)
-      showErrorSnackBar(context, state.pincode.error.toString());
+    if (state.pincode.isNotValid) {
+      CustomSnackBar.error(
+        Text(
+          state.pincode.error.toString(),
+        ),
+      ).view(context);
+    }
   }
 
   Null Function(BuildContext context, AuthState state) _listenerVerify(
@@ -60,7 +65,13 @@ class _VerifyScreenState extends State<VerifyScreen> {
             const InitialRouter(children: [ProfileRouter()])
           ]);
         } else if (state is AuthErrorState && isListener) {
-          showErrorSnackBar(context, state.error.messages[0]);
+          CustomSnackBar.error(
+            Text(
+              state.error.messages.isNotEmpty
+                  ? state.error.messages.first
+                  : AppLocalizations.of(context)!.unknown_error,
+            ),
+          ).view(context);
         }
       };
 

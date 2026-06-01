@@ -16,8 +16,7 @@ import 'package:megaladon/presentation/widgets/list/file_download_list.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
-import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
-import 'package:megaladon/presentation/widgets/snackbars/success_snackbar.dart';
+import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 import 'package:megaladon/presentation/widgets/tiles/contact_tile.dart';
 import 'package:megaladon/presentation/widgets/tiles/data_tile.dart';
@@ -117,97 +116,93 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
           ),
         ),
         body: SingleChildScrollView(
-              child: Container(
-                constraints: BoxConstraints(
-                    minHeight: MediaQuery.of(context).size.height),
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: BlocBuilder<StoreScreenDetailsCubit,
-                    StoreScreenDetailsState>(
-                  builder: (context, state) {
-                    if (state is StoreScreenDetailsSuccess) {
-                      return Column(
-                        children: [
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(100),
-                            child: Container(
-                              width: MediaQuery.of(context).size.width / 3,
-                              height: MediaQuery.of(context).size.width / 3,
-                              color: Theme.of(context).colorScheme.secondary,
-                              child: CachedNetworkImage(
-                                imageUrl: state.store.photo ?? '',
-                                progressIndicatorBuilder:
-                                    (context, url, downloadProgress) => Icon(
-                                        IconPack.market,
-                                        size:
-                                            MediaQuery.of(context).size.width /
-                                                5),
-                                errorWidget: (context, url, error) => Icon(
+          child: Container(
+            constraints:
+                BoxConstraints(minHeight: MediaQuery.of(context).size.height),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child:
+                BlocBuilder<StoreScreenDetailsCubit, StoreScreenDetailsState>(
+              builder: (context, state) {
+                if (state is StoreScreenDetailsSuccess) {
+                  return Column(
+                    children: [
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width / 3,
+                          height: MediaQuery.of(context).size.width / 3,
+                          color: Theme.of(context).colorScheme.secondary,
+                          child: CachedNetworkImage(
+                            imageUrl: state.store.photo ?? '',
+                            progressIndicatorBuilder:
+                                (context, url, downloadProgress) => Icon(
                                     IconPack.market,
                                     size:
                                         MediaQuery.of(context).size.width / 5),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
+                            errorWidget: (context, url, error) => Icon(
+                                IconPack.market,
+                                size: MediaQuery.of(context).size.width / 5),
+                            fit: BoxFit.cover,
                           ),
-                          TextButton(
-                              onPressed: _rateStore(state.store),
-                              child: Text(AppLocalizations.of(context)!.rate)),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          DataTile(
-                              title: AppLocalizations.of(context)!.address2,
-                              data: state.store.fullAddress),
-                          if (state.store.city != null)
-                            DataTile(
-                                title: AppLocalizations.of(context)!.city2,
-                                data: state.store.city!.name),
-                          if (state.store.bin != null)
-                            DataTile(
-                                title: AppLocalizations.of(context)!.bIN2,
-                                data: state.store.bin.toString()),
-                          ...state.store.contacts!
-                              .map((contact) => ContactTile(contact: contact))
-                              .toList(),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          if (state.store.prices.isEmpty)
-                            SubTitleApp(
-                                AppLocalizations.of(context)!.no_price_list)
-                          else ...[
-                            SubTitleApp(
-                                AppLocalizations.of(context)!.price_list),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            FileDownloadList(files: state.store.prices),
-                          ],
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          if (state.store.hasPhone)
-                            ElevatedButtonApp(
-                              text: AppLocalizations.of(context)!.call,
-                              onPressed: _call(state.store),
-                            ),
-                        ],
-                      );
-                    } else if (state is StoreScreenDetailsLoader) {
-                      return const Loader(
-                        padding: 10,
-                      );
-                    } else if (state is StoreScreenDetailsError) {
-                      return ErrorMessage(error: state.error);
-                    }
-                    return Container();
-                  },
-                ),
-              ),
+                        ),
+                      ),
+                      TextButton(
+                          onPressed: _rateStore(state.store),
+                          child: Text(AppLocalizations.of(context)!.rate)),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      DataTile(
+                          title: AppLocalizations.of(context)!.address2,
+                          data: state.store.fullAddress),
+                      if (state.store.city != null)
+                        DataTile(
+                            title: AppLocalizations.of(context)!.city2,
+                            data: state.store.city!.name),
+                      if (state.store.bin != null)
+                        DataTile(
+                            title: AppLocalizations.of(context)!.bIN2,
+                            data: state.store.bin.toString()),
+                      ...state.store.contacts!
+                          .map((contact) => ContactTile(contact: contact))
+                          .toList(),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      if (state.store.prices.isEmpty)
+                        SubTitleApp(AppLocalizations.of(context)!.no_price_list)
+                      else ...[
+                        SubTitleApp(AppLocalizations.of(context)!.price_list),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        FileDownloadList(files: state.store.prices),
+                      ],
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      if (state.store.hasPhone)
+                        ElevatedButtonApp(
+                          text: AppLocalizations.of(context)!.call,
+                          onPressed: _call(state.store),
+                        ),
+                    ],
+                  );
+                } else if (state is StoreScreenDetailsLoader) {
+                  return const Loader(
+                    padding: 10,
+                  );
+                } else if (state is StoreScreenDetailsError) {
+                  return ErrorMessage(error: state.error);
+                }
+                return Container();
+              },
             ),
+          ),
+        ),
       );
 }
 
@@ -244,14 +239,16 @@ class _RateStoreModalState extends State<RateStoreModal> {
   void _listener(BuildContext context, RateStoreState state) {
     if (state is RateStoreSuccess) {
       context.router.pop();
-      showSuccessSnackBar(context, AppLocalizations.of(context)!.storeRated);
+      CustomSnackBar.success(
+        Text(AppLocalizations.of(context)!.storeRated),
+      ).view(context);
     } else if (state is RateStoreError) {
       context.router.pop();
-      showErrorSnackBar(
-          context,
-          state.error.messages.isNotEmpty
-              ? state.error.messages.first
-              : AppLocalizations.of(context)!.unknown_error);
+      CustomSnackBar.error(
+        Text(state.error.messages.isNotEmpty == true
+            ? state.error.messages.first
+            : AppLocalizations.of(context)!.unknown_error),
+      ).view(context);
     }
   }
 

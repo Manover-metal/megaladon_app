@@ -133,51 +133,84 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen>
                     child: Column(
                   children: [
                     Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: InkWell(
-                            onTap: _showFilter,
-                            child: const Icon(Icons.filter_alt, size: 30),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: InkWell(
+                          onTap: _showFilter,
+                          child: const Icon(Icons.filter_alt, size: 30),
+                        ),
+                      ),
+                    ),
+                  ],
+                )),
+                SliverPersistentHeader(
+                    delegate: TabBarDelegate(
+                  TabBar(
+                    controller: _tabController,
+                    labelColor: Theme.of(context).colorScheme.primary,
+                    labelStyle: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(fontWeight: FontWeight.w600),
+                    unselectedLabelStyle: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(fontWeight: FontWeight.w500),
+                    unselectedLabelColor: Colors.grey,
+                    indicatorColor: Theme.of(context).colorScheme.primary,
+                    tabs: [
+                      Tab(text: AppLocalizations.of(context)!.as_a_user),
+                      if (_isExecutor())
+                        Tab(text: AppLocalizations.of(context)!.as_a_executor),
+                    ],
+                  ),
+                ))
+              ],
+              body: TabBarView(
+                controller: _tabController,
+                children: [
+                  RefreshIndicator(
+                    onRefresh: _onRefresh,
+                    child: CupertinoScrollbar(
+                      controller: _scrollController,
+                      child: SingleChildScrollView(
+                        controller: _scrollController,
+                        child: Container(
+                          constraints: BoxConstraints(
+                              minHeight:
+                                  MediaQuery.of(context).size.height + 200),
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: BlocBuilder<OrderScreenMyCubit,
+                              OrderScreenMyState>(
+                            builder: (context, state) => Column(
+                              children: [
+                                ...state.orders
+                                    .map((order) => OrderCard(order: order))
+                                    .toList(),
+                                if (state.status == OrderScreenMyStatus.loading)
+                                  const Loader(padding: 10)
+                                else if (state.status ==
+                                    OrderScreenMyStatus.error)
+                                  ErrorMessage(error: state.error!)
+                                else if (state.stock)
+                                  StockMessage(
+                                      name:
+                                          AppLocalizations.of(context)!.orders)
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ],
-                  )),
-                  SliverPersistentHeader(
-                      delegate: TabBarDelegate(
-                    TabBar(
-                      controller: _tabController,
-                      labelColor: Theme.of(context).colorScheme.primary,
-                      labelStyle: Theme.of(context)
-                          .textTheme
-                          .bodyMedium
-                          ?.copyWith(fontWeight: FontWeight.w600),
-                      unselectedLabelStyle: Theme.of(context)
-                          .textTheme
-                          .bodyMedium
-                          ?.copyWith(fontWeight: FontWeight.w500),
-                      unselectedLabelColor: Colors.grey,
-                      indicatorColor: Theme.of(context).colorScheme.primary,
-                      tabs: [
-                        Tab(text: AppLocalizations.of(context)!.as_a_user),
-                        if (_isExecutor())
-                          Tab(
-                              text:
-                                  AppLocalizations.of(context)!.as_a_executor),
-                      ],
                     ),
-                  ))
-                ],
-                body: TabBarView(
-                  controller: _tabController,
-                  children: [
+                  ),
+                  if (_isExecutor())
                     RefreshIndicator(
                       onRefresh: _onRefresh,
                       child: CupertinoScrollbar(
-                        controller: _scrollController,
+                        controller: _scrollControllerResponded,
                         child: SingleChildScrollView(
-                          controller: _scrollController,
+                          controller: _scrollControllerResponded,
                           child: Container(
                             constraints: BoxConstraints(
                                 minHeight:
@@ -185,84 +218,46 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen>
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: BlocBuilder<OrderScreenMyCubit,
                                 OrderScreenMyState>(
-                              builder: (context, state) => Column(
-                                children: [
-                                  ...state.orders
-                                      .map((order) => OrderCard(order: order))
-                                      .toList(),
-                                  if (state.status ==
-                                      OrderScreenMyStatus.loading)
-                                    const Loader(padding: 10)
-                                  else if (state.status ==
-                                      OrderScreenMyStatus.error)
-                                    ErrorMessage(error: state.error!)
-                                  else if (state.stock)
-                                    StockMessage(
-                                        name: AppLocalizations.of(context)!
-                                            .orders)
-                                ],
-                              ),
+                              builder: (context, state) {
+                                print(
+                                    'responded ${state.stockResponded} ${state.ordersResponded} ${state.status}');
+                                return Column(
+                                  children: [
+                                    ...state.ordersResponded
+                                        .map((order) => OrderCard(order: order))
+                                        .toList(),
+                                    if (state.status ==
+                                        OrderScreenMyStatus.loading)
+                                      const Loader(padding: 10)
+                                    else if (state.status ==
+                                        OrderScreenMyStatus.error)
+                                      ErrorMessage(error: state.error!)
+                                    else if (state.stockResponded)
+                                      StockMessage(
+                                          name: AppLocalizations.of(context)!
+                                              .orders)
+                                  ],
+                                );
+                              },
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    if (_isExecutor())
-                      RefreshIndicator(
-                        onRefresh: _onRefresh,
-                        child: CupertinoScrollbar(
-                          controller: _scrollControllerResponded,
-                          child: SingleChildScrollView(
-                            controller: _scrollControllerResponded,
-                            child: Container(
-                              constraints: BoxConstraints(
-                                  minHeight:
-                                      MediaQuery.of(context).size.height + 200),
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: BlocBuilder<OrderScreenMyCubit,
-                                  OrderScreenMyState>(
-                                builder: (context, state) {
-                                  print(
-                                      'responded ${state.stockResponded} ${state.ordersResponded} ${state.status}');
-                                  return Column(
-                                    children: [
-                                      ...state.ordersResponded
-                                          .map((order) =>
-                                              OrderCard(order: order))
-                                          .toList(),
-                                      if (state.status ==
-                                          OrderScreenMyStatus.loading)
-                                        const Loader(padding: 10)
-                                      else if (state.status ==
-                                          OrderScreenMyStatus.error)
-                                        ErrorMessage(error: state.error!)
-                                      else if (state.stockResponded)
-                                        StockMessage(
-                                            name: AppLocalizations.of(context)!
-                                                .orders)
-                                    ],
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    else
-                      SingleChildScrollView(
-                          child: Container(
-                        constraints: BoxConstraints(
-                            minHeight: MediaQuery.of(context).size.height),
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Text(
-                            AppLocalizations.of(context)!.registerAsExecutor),
-                      )),
-                  ],
-                ),
+                    )
+                  else
+                    SingleChildScrollView(
+                        child: Container(
+                      constraints: BoxConstraints(
+                          minHeight: MediaQuery.of(context).size.height),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Text(
+                          AppLocalizations.of(context)!.registerAsExecutor),
+                    )),
+                ],
               ),
             ),
           ),
+        ),
       );
 }
 

@@ -30,43 +30,43 @@ class SettingsScreen extends StatelessWidget {
     return Scaffold(
       appBar: HeaderAppBar(isMenu: true, title: l10n.settings),
       body: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(child: Text(l10n.language)),
-                    Expanded(
-                      child: DropdownButton<Locale>(
-                        isExpanded: true,
-                        value: currentLocale,
-                        items: AppLocalizations.supportedLocales
-                            .map((locale) => DropdownMenuItem(
-                                  value: locale,
-                                  child: Text(
-                                    _localeNames[locale.languageCode] ??
-                                        locale.languageCode,
-                                  ),
-                                ))
-                            .toList(),
-                        onChanged: (locale) {
-                          if (locale != null) {
-                            context.read<LocaleCubit>().change(locale);
-                          }
-                        },
-                      ),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(child: Text(l10n.language)),
+                  Expanded(
+                    child: DropdownButton<Locale>(
+                      isExpanded: true,
+                      value: currentLocale,
+                      items: AppLocalizations.supportedLocales
+                          .map((locale) => DropdownMenuItem(
+                                value: locale,
+                                child: Text(
+                                  _localeNames[locale.languageCode] ??
+                                      locale.languageCode,
+                                ),
+                              ))
+                          .toList(),
+                      onChanged: (locale) {
+                        if (locale != null) {
+                          context.read<LocaleCubit>().change(locale);
+                        }
+                      },
                     ),
-                  ],
-                ),
-                OutlinedButtonApp(
-                  text: l10n.about_the_application,
-                  onPressed: () => _toAbout(context),
-                ),
-                const SizedBox(height: 50),
-              ],
-            ),
+                  ),
+                ],
+              ),
+              OutlinedButtonApp(
+                text: l10n.about_the_application,
+                onPressed: () => _toAbout(context),
+              ),
+              const SizedBox(height: 50),
+            ],
+          ),
         ),
       ),
     );

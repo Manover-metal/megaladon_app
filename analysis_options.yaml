@@ -194,7 +194,18 @@ analyzer:
     strict-raw-types: true
     strict-inference: true
     
-
+  plugins:
+    markup_analyzer:
+      version: ^4.0.1
+      diagnostics:
+        simple_string: error
+        prefixed_identifier: error
+        string_interpolation: error
+        binary_expression: error
+        adjacent_strings: error
+        method_invocation: error
+        simple_identifier: error
+        function_invocation: error
     
   exclude:
   # Tests
@@ -215,10 +226,10 @@ plugins:
     version: ^4.0.1
     diagnostics:
       simple_string: error
-      prefixed_identifier: none
+      prefixed_identifier: error
       string_interpolation: error
-      binary_expression: false
+      binary_expression: error
       adjacent_strings: error
-      method_invocation: none
-      simple_identifier: none
+      method_invocation: error
+      simple_identifier: error
       function_invocation: error

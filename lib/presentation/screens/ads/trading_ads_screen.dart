@@ -116,114 +116,112 @@ class _TradingAdsScreenState extends State<TradingAdsScreen>
                   child: Column(
                 children: [
                   Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: InkWell(
-                          onTap: _showFilter,
-                          child: const Icon(Icons.filter_alt, size: 30),
-                        ),
-                      ),
-                    ),
-                  ],
-                )),
-                SliverPersistentHeader(
-                    delegate: TabBarDelegate(
-                  TabBar(
-                    controller: _tabController,
-                    labelColor: Theme.of(context).colorScheme.primary,
-                    labelStyle: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(fontWeight: FontWeight.w600),
-                    unselectedLabelStyle: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(fontWeight: FontWeight.w500),
-                    unselectedLabelColor: Colors.grey,
-                    indicatorColor: Theme.of(context).colorScheme.primary,
-                    tabs: [
-                      Tab(text: AppLocalizations.of(context)!.services),
-                      Tab(text: AppLocalizations.of(context)!.ads),
-                    ],
-                  ),
-                ))
-              ],
-              body: TabBarView(
-                controller: _tabController,
-                children: [
-                  RefreshIndicator(
-                    color: Colors.white,
-                    onRefresh: _onRefresh,
-                    child: CupertinoScrollbar(
-                      controller: _scrollServiceController,
-                      child: SingleChildScrollView(
-                        controller: _scrollServiceController,
-                        child: Container(
-                          constraints: BoxConstraints(
-                              minHeight: MediaQuery.of(context).size.height),
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: BlocBuilder<AdvertScreenMainCubit,
-                              AdvertScreenMainState>(
-                            builder: (context, state) => Column(
-                              children: [
-                                ...state.services
-                                    .map((advert) => AdCard(advert: advert))
-                                    .toList(),
-                                if (state.status ==
-                                    AdverScreenMainStatus.loading)
-                                  const Loader(padding: 10)
-                                else if (state.status ==
-                                    AdverScreenMainStatus.error)
-                                  ErrorMessage(error: state.error!)
-                                else if (state.stock)
-                                  StockMessage(
-                                      name: AppLocalizations.of(context)!
-                                          .services)
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  RefreshIndicator(
-                    color: Colors.white,
-                    onRefresh: _onRefresh,
-                    child: CupertinoScrollbar(
-                      controller: _scrollAdvertController,
-                      child: SingleChildScrollView(
-                        controller: _scrollAdvertController,
-                        child: Container(
-                          constraints: BoxConstraints(
-                              minHeight: MediaQuery.of(context).size.height),
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: BlocBuilder<AdvertScreenMainCubit,
-                              AdvertScreenMainState>(
-                            builder: (context, state) => Column(
-                              children: [
-                                ...state.adverts
-                                    .map((advert) => AdCard(advert: advert))
-                                    .toList(),
-                                if (state.status ==
-                                    AdverScreenMainStatus.loading)
-                                  const Loader(padding: 10)
-                                else if (state.status ==
-                                    AdverScreenMainStatus.error)
-                                  ErrorMessage(error: state.error!)
-                                else if (state.stock)
-                                  StockMessage(
-                                      name: AppLocalizations.of(context)!.ads)
-                              ],
-                            ),
-                          ),
-                        ),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: InkWell(
+                        onTap: _showFilter,
+                        child: const Icon(Icons.filter_alt, size: 30),
                       ),
                     ),
                   ),
                 ],
-              ),
+              )),
+              SliverPersistentHeader(
+                  delegate: TabBarDelegate(
+                TabBar(
+                  controller: _tabController,
+                  labelColor: Theme.of(context).colorScheme.primary,
+                  labelStyle: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(fontWeight: FontWeight.w600),
+                  unselectedLabelStyle: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(fontWeight: FontWeight.w500),
+                  unselectedLabelColor: Colors.grey,
+                  indicatorColor: Theme.of(context).colorScheme.primary,
+                  tabs: [
+                    Tab(text: AppLocalizations.of(context)!.services),
+                    Tab(text: AppLocalizations.of(context)!.ads),
+                  ],
+                ),
+              ))
+            ],
+            body: TabBarView(
+              controller: _tabController,
+              children: [
+                RefreshIndicator(
+                  color: Colors.white,
+                  onRefresh: _onRefresh,
+                  child: CupertinoScrollbar(
+                    controller: _scrollServiceController,
+                    child: SingleChildScrollView(
+                      controller: _scrollServiceController,
+                      child: Container(
+                        constraints: BoxConstraints(
+                            minHeight: MediaQuery.of(context).size.height),
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: BlocBuilder<AdvertScreenMainCubit,
+                            AdvertScreenMainState>(
+                          builder: (context, state) => Column(
+                            children: [
+                              ...state.services
+                                  .map((advert) => AdCard(advert: advert))
+                                  .toList(),
+                              if (state.status == AdverScreenMainStatus.loading)
+                                const Loader(padding: 10)
+                              else if (state.status ==
+                                  AdverScreenMainStatus.error)
+                                ErrorMessage(error: state.error!)
+                              else if (state.stock)
+                                StockMessage(
+                                    name:
+                                        AppLocalizations.of(context)!.services)
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                RefreshIndicator(
+                  color: Colors.white,
+                  onRefresh: _onRefresh,
+                  child: CupertinoScrollbar(
+                    controller: _scrollAdvertController,
+                    child: SingleChildScrollView(
+                      controller: _scrollAdvertController,
+                      child: Container(
+                        constraints: BoxConstraints(
+                            minHeight: MediaQuery.of(context).size.height),
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: BlocBuilder<AdvertScreenMainCubit,
+                            AdvertScreenMainState>(
+                          builder: (context, state) => Column(
+                            children: [
+                              ...state.adverts
+                                  .map((advert) => AdCard(advert: advert))
+                                  .toList(),
+                              if (state.status == AdverScreenMainStatus.loading)
+                                const Loader(padding: 10)
+                              else if (state.status ==
+                                  AdverScreenMainStatus.error)
+                                ErrorMessage(error: state.error!)
+                              else if (state.stock)
+                                StockMessage(
+                                    name: AppLocalizations.of(context)!.ads)
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
+        ),
       );
 }

@@ -13,7 +13,7 @@ import 'package:megaladon/presentation/widgets/form/field/phone_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
-import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
+import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class RegisterUserScreen extends StatefulWidget {
@@ -43,7 +43,9 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
     if (!state.status) {
       for (final element in state.props) {
         if (element is FormzInput && element.isNotValid) {
-          return showErrorSnackBar(context, element.error.toString());
+          return CustomSnackBar.error(
+            Text(element.error.toString()),
+          ).view(context);
         }
       }
     }
@@ -56,7 +58,13 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
           var phone = context.read<RegisterUserFormCubit>().state.phone.value;
           context.router.replace(VerifyRoute(phone: phone));
         } else if (state is RegisterUserError && isListener) {
-          showErrorSnackBar(context, state.error.messages[0]);
+          CustomSnackBar.error(
+            Text(
+              state.error.messages.isNotEmpty
+                  ? state.error.messages.first
+                  : AppLocalizations.of(context)!.unknown_error,
+            ),
+          ).view(context);
         }
       };
 

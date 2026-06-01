@@ -41,43 +41,42 @@ class _ListMyExecutorsScreenState extends State<ListMyExecutorsScreen> {
           title: AppLocalizations.of(context)!.executor,
         ),
         body: RefreshIndicator(
-            onRefresh: _fetch,
-            child: CupertinoScrollbar(
+          onRefresh: _fetch,
+          child: CupertinoScrollbar(
+            controller: _scrollController,
+            child: SingleChildScrollView(
               controller: _scrollController,
-              child: SingleChildScrollView(
-                controller: _scrollController,
-                scrollDirection: Axis.vertical,
-                child: Container(
-                  constraints: BoxConstraints(
-                      minHeight: MediaQuery.of(context).size.height),
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    children: [
-                      BlocBuilder<ExecutorScreenMyCubit, ExecutorScreenMyState>(
-                        builder: (context, state) => Column(
-                          children: [
-                            if (state.executors.isEmpty)
-                              StockMessage(
-                                  name: AppLocalizations.of(context)!.executor),
-                            ...state.executors
-                                .map((executor) =>
-                                    ExecutorCard(executor: executor))
-                                .toList(),
-                            if (state.status == ExecutorScreenMyStatus.loading)
-                              const Loader(
-                                padding: 10,
-                              )
-                            else if (state.status ==
-                                ExecutorScreenMyStatus.error)
-                              ErrorMessage(error: state.error!)
-                          ],
-                        ),
+              scrollDirection: Axis.vertical,
+              child: Container(
+                constraints: BoxConstraints(
+                    minHeight: MediaQuery.of(context).size.height),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: [
+                    BlocBuilder<ExecutorScreenMyCubit, ExecutorScreenMyState>(
+                      builder: (context, state) => Column(
+                        children: [
+                          if (state.executors.isEmpty)
+                            StockMessage(
+                                name: AppLocalizations.of(context)!.executor),
+                          ...state.executors
+                              .map((executor) =>
+                                  ExecutorCard(executor: executor))
+                              .toList(),
+                          if (state.status == ExecutorScreenMyStatus.loading)
+                            const Loader(
+                              padding: 10,
+                            )
+                          else if (state.status == ExecutorScreenMyStatus.error)
+                            ErrorMessage(error: state.error!)
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
+        ),
       );
 }

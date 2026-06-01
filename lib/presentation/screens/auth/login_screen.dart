@@ -11,7 +11,7 @@ import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/password_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/phone_field.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
-import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
+import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -65,7 +65,13 @@ class _LoginScreenState extends State<LoginScreen> {
         const InitialRouter(children: [ProfileRouter()])
       ]);
     } else if (state is AuthErrorState) {
-      showErrorSnackBar(context, state.error.messages[0]);
+      CustomSnackBar.error(
+        Text(
+          state.error.messages.isNotEmpty
+              ? state.error.messages.first
+              : AppLocalizations.of(context)!.unknown_error,
+        ),
+      ).view(context);
     } else if (state is AuthTransitionVerify) {
       context.router.replace(VerifyRoute(phone: _phone.value.text));
     }
@@ -75,7 +81,9 @@ class _LoginScreenState extends State<LoginScreen> {
     if (!state.status) {
       for (final element in state.props) {
         if (element is FormzInput && element.isNotValid) {
-          return showErrorSnackBar(context, element.error.toString());
+          return CustomSnackBar.error(
+            Text(element.error.toString()),
+          ).view(context);
         }
       }
     }

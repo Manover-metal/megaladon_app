@@ -83,8 +83,8 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 5),
                 decoration: BoxDecoration(
-                  border: Border.all(
-                      color: Theme.of(context).colorScheme.primary),
+                  border:
+                      Border.all(color: Theme.of(context).colorScheme.primary),
                   borderRadius: BorderRadius.circular(20),
                   color: Theme.of(context).colorScheme.tertiary,
                 ),
@@ -108,30 +108,26 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
                   BlocBuilder<ChatCubit, ChatState>(
                 builder: (context, state) {
                   var messages = state.chats
-                      .firstWhere(
-                          (element) => element.id == widget.chat.id)
+                      .firstWhere((element) => element.id == widget.chat.id)
                       .messages;
                   return Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
                       children: [
                         if (messages.isEmpty)
-                          Text(AppLocalizations.of(context)!
-                              .noMessagesInChat),
+                          Text(AppLocalizations.of(context)!.noMessagesInChat),
                         ...messages.map((e) {
                           var isMe = false;
                           if (authState is AuthLoginState) {
-                            isMe = e.user?.id ==
-                                    authState.auth.user.value?.id ||
-                                e.user?.id == null;
+                            isMe =
+                                e.user?.id == authState.auth.user.value?.id ||
+                                    e.user?.id == null;
                           }
                           return message(context, e, isMe);
                         }).toList(),
                         if (state.loadingMessages[widget.chat.id] != null)
                           ...state.loadingMessages[widget.chat.id]!
-                              .map((value) =>
-                                  message(context, value, true))
+                              .map((value) => message(context, value, true))
                               .toList(),
                         if (state.errorMessages[widget.chat.id] != null)
                           ...state.errorMessages[widget.chat.id]!

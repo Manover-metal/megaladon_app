@@ -18,7 +18,7 @@ import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picke
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/order_category_picker.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
-import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
+import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
 
 class CreateOrderScreen extends StatefulWidget {
   const CreateOrderScreen({super.key});
@@ -63,7 +63,9 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
     if (state.status) {
       for (final element in state.props) {
         if (element is FormzInput && element.isNotValid) {
-          return showErrorSnackBar(context, element.error.toString());
+          return CustomSnackBar.error(
+            Text(element.error.toString()),
+          ).view(context);
         }
       }
     }
@@ -80,7 +82,13 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
       print('error callback');
 
       if (state.error != null) {
-        showErrorSnackBar(context, state.error!.messages[0]);
+        CustomSnackBar.error(
+          Text(
+            state.error?.messages.isNotEmpty == true
+                ? state.error!.messages.first
+                : AppLocalizations.of(context)!.unknown_error,
+          ),
+        ).view(context);
       }
     }
   }
@@ -113,68 +121,67 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: HeaderAppBar(
-            isBack: true,
-            title: AppLocalizations.of(context)!.create_an_order),
+            isBack: true, title: AppLocalizations.of(context)!.create_an_order),
         body: SingleChildScrollView(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                children: [
-                  const SizedBox(height: 30),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                const SizedBox(height: 30),
 
-                  OrderCategoryPicker(
-                    label: AppLocalizations.of(context)!.select_a_category,
-                    controller: _orderCategoryController,
-                  ),
-                  CityPicker(
-                      label: AppLocalizations.of(context)!.choose_city,
-                      controller: _cityController),
-                  TextFieldApp(
-                    controller: _titleController,
-                    label: AppLocalizations.of(context)!.header,
-                    icon: const Icon(IconPack.job_description_kwo7og605c2l),
-                  ),
-                  DescriptionFieldApp(
-                    label: AppLocalizations.of(context)!.description_of_work,
-                    controller: _descriptionController,
-                    icon: const Icon(IconPack.description),
-                  ),
-                  NumberFieldApp(
-                    label: AppLocalizations.of(context)!.desired_budget,
-                    controller: _priceMaxController,
-                    icon: const Icon(Icons.money_sharp),
-                  ),
-                  NumberFieldApp(
-                    label: AppLocalizations.of(context)!.allowed_budget,
-                    controller: _priceRecommendedController,
-                    icon: const Icon(Icons.money_sharp),
-                  ),
-                  FileMultiPicker(controller: _fileController),
-                  const SizedBox(height: 30),
-                  // BlocConsumer(builder: builder, listener: listener)
-                  BlocConsumer<OrderCreateFormCubit, OrderCreateFormState>(
-                      listener: _listenerForm,
-                      builder: (context, state) {
-                        print(state.formState);
-                        if (state.formState == EnumFormState.fetch) {
-                          return ElevatedButtonApp(
-                            child: Loader(
-                                color: Theme.of(context).colorScheme.surface),
-                            onPressed: () {},
-                          );
-                        }
+                OrderCategoryPicker(
+                  label: AppLocalizations.of(context)!.select_a_category,
+                  controller: _orderCategoryController,
+                ),
+                CityPicker(
+                    label: AppLocalizations.of(context)!.choose_city,
+                    controller: _cityController),
+                TextFieldApp(
+                  controller: _titleController,
+                  label: AppLocalizations.of(context)!.header,
+                  icon: const Icon(IconPack.job_description_kwo7og605c2l),
+                ),
+                DescriptionFieldApp(
+                  label: AppLocalizations.of(context)!.description_of_work,
+                  controller: _descriptionController,
+                  icon: const Icon(IconPack.description),
+                ),
+                NumberFieldApp(
+                  label: AppLocalizations.of(context)!.desired_budget,
+                  controller: _priceMaxController,
+                  icon: const Icon(Icons.money_sharp),
+                ),
+                NumberFieldApp(
+                  label: AppLocalizations.of(context)!.allowed_budget,
+                  controller: _priceRecommendedController,
+                  icon: const Icon(Icons.money_sharp),
+                ),
+                FileMultiPicker(controller: _fileController),
+                const SizedBox(height: 30),
+                // BlocConsumer(builder: builder, listener: listener)
+                BlocConsumer<OrderCreateFormCubit, OrderCreateFormState>(
+                    listener: _listenerForm,
+                    builder: (context, state) {
+                      print(state.formState);
+                      if (state.formState == EnumFormState.fetch) {
                         return ElevatedButtonApp(
-                          text: AppLocalizations.of(context)!.create,
-                          onPressed: _create,
+                          child: Loader(
+                              color: Theme.of(context).colorScheme.surface),
+                          onPressed: () {},
                         );
-                      }),
-                  OutlinedButtonApp(
-                    text: AppLocalizations.of(context)!.cancel,
-                    onPressed: _back,
-                  ),
-                ],
-              ),
+                      }
+                      return ElevatedButtonApp(
+                        text: AppLocalizations.of(context)!.create,
+                        onPressed: _create,
+                      );
+                    }),
+                OutlinedButtonApp(
+                  text: AppLocalizations.of(context)!.cancel,
+                  onPressed: _back,
+                ),
+              ],
             ),
           ),
+        ),
       );
 }

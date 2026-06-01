@@ -12,8 +12,7 @@ import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
-import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
-import 'package:megaladon/presentation/widgets/snackbars/success_snackbar.dart';
+import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
 import 'package:megaladon/presentation/widgets/tiles/data_tile.dart';
 import 'package:megaladon/presentation/widgets/tiles/executor_tile.dart';
 
@@ -49,21 +48,30 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
 
   void _listenOrder(BuildContext context, OrderScreenDetailsState state) {
     if (state.status == OrderScreenDetailsStateStatus.errorMessage) {
-      showErrorSnackBar(context, state.errorMessage!.messages[0]);
+      CustomSnackBar.error(
+        Text(
+          state.error?.messages.isNotEmpty == true
+              ? state.error!.messages.first
+              : AppLocalizations.of(context)!.unknown_error,
+        ),
+      ).view(context);
     }
   }
 
   void _listenFavorite(BuildContext context, AddFavoriteState state) {
     if (state is AddFavoriteSuccess) {
       context.read<ExecutorScreenMyCubit>().fetch();
-      showSuccessSnackBar(
-          context, AppLocalizations.of(context)!.executorAddedToFavorites);
+      CustomSnackBar.success(
+        Text(AppLocalizations.of(context)!.executorAddedToFavorites),
+      ).view(context);
     } else if (state is AddFavoriteError) {
-      showErrorSnackBar(
-          context,
+      CustomSnackBar.error(
+        Text(
           state.error.messages.isNotEmpty
               ? state.error.messages.first
-              : AppLocalizations.of(context)!.unknown_error);
+              : AppLocalizations.of(context)!.unknown_error,
+        ),
+      ).view(context);
     }
   }
 
@@ -85,90 +93,85 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
           body: BlocListener<OrderScreenDetailsCubit, OrderScreenDetailsState>(
             listener: _listenOrder,
             child: SingleChildScrollView(
-                  child: Container(
-                    constraints: BoxConstraints(
-                        minHeight: MediaQuery.of(context).size.height),
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      children: [
-                        BlocBuilder<OfferScreenDetailsCubit,
-                            OfferScreenDetailsState>(
-                          builder: (context, state) {
-                            if (state is OfferScreenDetailsSuccess) {
-                              return Column(
-                                children: [
-                                  if (state.offer.executor != null) ...[
-                                    ExecutorTile(
-                                      executor: state.offer.executor!,
-                                    ),
-                                    if (state.offer.executor?.description !=
-                                        null)
-                                      DataTile(
-                                        title: AppLocalizations.of(context)!
-                                            .description2,
-                                        data:
-                                            state.offer.executor?.description ??
-                                                '',
-                                      ),
-                                    Align(
-                                      child: TextButton(
-                                        onPressed: _addToFavorite(
-                                            state.offer.executor!),
-                                        child: Text(
-                                            AppLocalizations.of(context)!
-                                                .add_to_Favorite),
-                                      ),
-                                    ),
-                                  ],
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
+              child: Container(
+                constraints: BoxConstraints(
+                    minHeight: MediaQuery.of(context).size.height),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: [
+                    BlocBuilder<OfferScreenDetailsCubit,
+                        OfferScreenDetailsState>(
+                      builder: (context, state) {
+                        if (state is OfferScreenDetailsSuccess) {
+                          return Column(
+                            children: [
+                              if (state.offer.executor != null) ...[
+                                ExecutorTile(
+                                  executor: state.offer.executor!,
+                                ),
+                                if (state.offer.executor?.description != null)
                                   DataTile(
                                     title: AppLocalizations.of(context)!
-                                        .executorSuggestedPrice,
-                                    data: AppLocalizations.of(context)!
-                                        .priceAmount(
-                                            state.offer.price.toString()),
+                                        .description2,
+                                    data:
+                                        state.offer.executor?.description ?? '',
                                   ),
-                                  DataTile(
-                                    title: AppLocalizations.of(context)!
-                                        .executionDate,
-                                    data: state.offer.date,
+                                Align(
+                                  child: TextButton(
+                                    onPressed:
+                                        _addToFavorite(state.offer.executor!),
+                                    child: Text(AppLocalizations.of(context)!
+                                        .add_to_Favorite),
                                   ),
-                                  DataTile(
-                                    title:
-                                        AppLocalizations.of(context)!.location2,
-                                    data: AppLocalizations.of(context)!
-                                        .cityName(state.offer.city?.name ?? ''),
-                                  ),
-                                  if (state.offer.comment != null)
-                                    DataTile(
-                                      title: AppLocalizations.of(context)!
-                                          .description2,
-                                      data: state.offer.comment!,
-                                    ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  ElevatedButtonApp(
-                                    text: AppLocalizations.of(context)!
-                                        .set_as_executor,
-                                    onPressed: _acceptOffer,
-                                  )
-                                ],
-                              );
-                            } else if (state is OfferScreenDetailsLoader) {
-                              return const Loader();
-                            } else if (state is OfferScreenDetailsError) {
-                              return ErrorMessage(error: state.error);
-                            }
-                            return Container();
-                          },
-                        ),
-                      ],
+                                ),
+                              ],
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              DataTile(
+                                title: AppLocalizations.of(context)!
+                                    .executorSuggestedPrice,
+                                data: AppLocalizations.of(context)!
+                                    .priceAmount(state.offer.price.toString()),
+                              ),
+                              DataTile(
+                                title:
+                                    AppLocalizations.of(context)!.executionDate,
+                                data: state.offer.date,
+                              ),
+                              DataTile(
+                                title: AppLocalizations.of(context)!.location2,
+                                data: AppLocalizations.of(context)!
+                                    .cityName(state.offer.city?.name ?? ''),
+                              ),
+                              if (state.offer.comment != null)
+                                DataTile(
+                                  title: AppLocalizations.of(context)!
+                                      .description2,
+                                  data: state.offer.comment!,
+                                ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              ElevatedButtonApp(
+                                text: AppLocalizations.of(context)!
+                                    .set_as_executor,
+                                onPressed: _acceptOffer,
+                              )
+                            ],
+                          );
+                        } else if (state is OfferScreenDetailsLoader) {
+                          return const Loader();
+                        } else if (state is OfferScreenDetailsError) {
+                          return ErrorMessage(error: state.error);
+                        }
+                        return Container();
+                      },
                     ),
-                  ),
+                  ],
                 ),
+              ),
+            ),
           ),
         ),
       );

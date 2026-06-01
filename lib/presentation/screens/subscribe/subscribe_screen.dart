@@ -70,82 +70,78 @@ class _SubscribeScreenState extends State<SubscribeScreen>
                 title: AppLocalizations.of(context)!.subscriptions),
             body: NestedScrollView(
               headerSliverBuilder: (context, isBool) => [
-                  SliverPersistentHeader(
-                      delegate: TabBarDelegate(
-                    TabBar(
-                      controller: _tabController,
-                      labelColor: Theme.of(context).colorScheme.primary,
-                      labelStyle: Theme.of(context)
-                          .textTheme
-                          .bodyMedium
-                          ?.copyWith(fontWeight: FontWeight.w600),
-                      unselectedLabelStyle: Theme.of(context)
-                          .textTheme
-                          .bodyMedium
-                          ?.copyWith(fontWeight: FontWeight.w500),
-                      unselectedLabelColor: Colors.grey,
-                      indicatorColor: Theme.of(context).colorScheme.primary,
-                      tabs: [
-                        if (_isExecutor())
-                          Tab(
-                              text:
-                                  AppLocalizations.of(context)!.as_a_executor),
-                        if (_isStore())
-                          Tab(text: AppLocalizations.of(context)!.asAStore),
-                      ],
-                    ),
-                  ))
-                ],
-                body: TabBarView(
-                  controller: _tabController,
-                  children: [
-                    if (_isExecutor())
-                      CupertinoScrollbar(
+                SliverPersistentHeader(
+                    delegate: TabBarDelegate(
+                  TabBar(
+                    controller: _tabController,
+                    labelColor: Theme.of(context).colorScheme.primary,
+                    labelStyle: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(fontWeight: FontWeight.w600),
+                    unselectedLabelStyle: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(fontWeight: FontWeight.w500),
+                    unselectedLabelColor: Colors.grey,
+                    indicatorColor: Theme.of(context).colorScheme.primary,
+                    tabs: [
+                      if (_isExecutor())
+                        Tab(text: AppLocalizations.of(context)!.as_a_executor),
+                      if (_isStore())
+                        Tab(text: AppLocalizations.of(context)!.asAStore),
+                    ],
+                  ),
+                ))
+              ],
+              body: TabBarView(
+                controller: _tabController,
+                children: [
+                  if (_isExecutor())
+                    CupertinoScrollbar(
+                      controller: _scrollControllerExecutor,
+                      child: SingleChildScrollView(
                         controller: _scrollControllerExecutor,
-                        child: SingleChildScrollView(
-                          controller: _scrollControllerExecutor,
-                          child: Container(
-                            constraints: BoxConstraints(
-                                minHeight: MediaQuery.of(context).size.height),
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child:
-                                BlocBuilder<DictionaryCubit, DictionaryState>(
-                              builder: (context, state) => Column(
-                                  children: state.subscribesExecutor
-                                      .map((e) => SubscribeCard(
-                                            subscribe: e,
-                                          ))
-                                      .toList()),
-                            ),
+                        child: Container(
+                          constraints: BoxConstraints(
+                              minHeight: MediaQuery.of(context).size.height),
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: BlocBuilder<DictionaryCubit, DictionaryState>(
+                            builder: (context, state) => Column(
+                                children: state.subscribesExecutor
+                                    .map((e) => SubscribeCard(
+                                          subscribe: e,
+                                        ))
+                                    .toList()),
                           ),
                         ),
                       ),
-                    if (_isStore())
-                      CupertinoScrollbar(
+                    ),
+                  if (_isStore())
+                    CupertinoScrollbar(
+                      controller: _scrollControllerStore,
+                      child: SingleChildScrollView(
                         controller: _scrollControllerStore,
-                        child: SingleChildScrollView(
-                          controller: _scrollControllerStore,
-                          child: Container(
-                            constraints: BoxConstraints(
-                                minHeight: MediaQuery.of(context).size.height),
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child:
-                                BlocBuilder<DictionaryCubit, DictionaryState>(
-                              builder: (context, state) => Column(
-                                  children: state.subscribesStore
-                                      .map((e) => SubscribeCard(
-                                            subscribe: e,
-                                          ))
-                                      .toList()),
-                            ),
+                        child: Container(
+                          constraints: BoxConstraints(
+                              minHeight: MediaQuery.of(context).size.height),
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: BlocBuilder<DictionaryCubit, DictionaryState>(
+                            builder: (context, state) => Column(
+                                children: state.subscribesStore
+                                    .map((e) => SubscribeCard(
+                                          subscribe: e,
+                                        ))
+                                    .toList()),
                           ),
                         ),
                       ),
-                  ],
-                ),
+                    ),
+                ],
               ),
             ),
           ),
+        ),
       );
 }
 

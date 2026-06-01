@@ -88,62 +88,62 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
                 child: Column(
               children: [
                 Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        InkWell(
-                          onTap: _showSort,
-                          child: const Icon(Icons.sort, size: 30),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        InkWell(
-                          onTap: _showFilter,
-                          child: const Icon(Icons.filter_alt, size: 30),
-                        ),
-                      ],
-                    ),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: _showSort,
+                        child: const Icon(Icons.sort, size: 30),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      InkWell(
+                        onTap: _showFilter,
+                        child: const Icon(Icons.filter_alt, size: 30),
+                      ),
+                    ],
                   ),
-                ],
-              )),
-            ],
-            body: RefreshIndicator(
-              onRefresh: _onRefresh,
-              child: CupertinoScrollbar(
+                ),
+              ],
+            )),
+          ],
+          body: RefreshIndicator(
+            onRefresh: _onRefresh,
+            child: CupertinoScrollbar(
+              controller: _scrollController,
+              child: SingleChildScrollView(
                 controller: _scrollController,
-                child: SingleChildScrollView(
-                  controller: _scrollController,
-                  child: Container(
-                    constraints: BoxConstraints(
-                        minHeight: MediaQuery.of(context).size.height),
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      children: [
-                        BlocBuilder<OrderScreenMainCubit, OrderScreenMainState>(
-                          builder: (context, state) => Column(
-                            children: [
-                              ...state.orders
-                                  .map((order) => OrderCard(order: order))
-                                  .toList(),
-                              if (state.status == OrderScreenMainStatus.loading)
-                                const Loader(padding: 10)
-                              else if (state.status ==
-                                  OrderScreenMainStatus.error)
-                                ErrorMessage(error: state.error!)
-                              else if (state.stock)
-                                StockMessage(
-                                    name: AppLocalizations.of(context)!.orders)
-                            ],
-                          ),
+                child: Container(
+                  constraints: BoxConstraints(
+                      minHeight: MediaQuery.of(context).size.height),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    children: [
+                      BlocBuilder<OrderScreenMainCubit, OrderScreenMainState>(
+                        builder: (context, state) => Column(
+                          children: [
+                            ...state.orders
+                                .map((order) => OrderCard(order: order))
+                                .toList(),
+                            if (state.status == OrderScreenMainStatus.loading)
+                              const Loader(padding: 10)
+                            else if (state.status ==
+                                OrderScreenMainStatus.error)
+                              ErrorMessage(error: state.error!)
+                            else if (state.stock)
+                              StockMessage(
+                                  name: AppLocalizations.of(context)!.orders)
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
           ),
+        ),
       );
 }

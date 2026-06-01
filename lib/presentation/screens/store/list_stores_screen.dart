@@ -85,56 +85,55 @@ class _ListStoresScreenState extends State<ListStoresScreen> {
                 child: Column(
               children: [
                 Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: InkWell(
-                        onTap: _showFilter,
-                        child: const Icon(Icons.filter_alt, size: 30),
-                      ),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: InkWell(
+                      onTap: _showFilter,
+                      child: const Icon(Icons.filter_alt, size: 30),
                     ),
                   ),
-                ],
-              )),
-            ],
-            body: RefreshIndicator(
-              onRefresh: _onRefresh,
-              child: CupertinoScrollbar(
+                ),
+              ],
+            )),
+          ],
+          body: RefreshIndicator(
+            onRefresh: _onRefresh,
+            child: CupertinoScrollbar(
+              controller: _scrollController,
+              child: SingleChildScrollView(
                 controller: _scrollController,
-                child: SingleChildScrollView(
-                  controller: _scrollController,
-                  child: Container(
-                    constraints: BoxConstraints(
-                        minHeight: MediaQuery.of(context).size.height),
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      children: [
-                        BlocBuilder<StoreScreenMainCubit, StoreScreenMainState>(
-                          builder: (context, state) => Column(
-                            children: [
-                              ...state.stores
-                                  .map((store) => StoreCard(store: store))
-                                  .toList(),
-                              if (state.status == StoreScreenMainStatus.loading)
-                                const Loader(
-                                  padding: 10,
-                                )
-                              else if (state.status ==
-                                  StoreScreenMainStatus.error)
-                                ErrorMessage(error: state.error!)
-                              else if (state.stock)
-                                StockMessage(
-                                    name:
-                                        AppLocalizations.of(context)!.theshops)
-                            ],
-                          ),
+                child: Container(
+                  constraints: BoxConstraints(
+                      minHeight: MediaQuery.of(context).size.height),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    children: [
+                      BlocBuilder<StoreScreenMainCubit, StoreScreenMainState>(
+                        builder: (context, state) => Column(
+                          children: [
+                            ...state.stores
+                                .map((store) => StoreCard(store: store))
+                                .toList(),
+                            if (state.status == StoreScreenMainStatus.loading)
+                              const Loader(
+                                padding: 10,
+                              )
+                            else if (state.status ==
+                                StoreScreenMainStatus.error)
+                              ErrorMessage(error: state.error!)
+                            else if (state.stock)
+                              StockMessage(
+                                  name: AppLocalizations.of(context)!.theshops)
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
           ),
+        ),
       );
 }

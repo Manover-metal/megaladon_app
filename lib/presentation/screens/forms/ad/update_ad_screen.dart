@@ -22,7 +22,7 @@ import 'package:megaladon/presentation/widgets/form/picker/dictionary/advert_cat
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
-import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
+import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
 
 class UpdateAdScreen extends StatefulWidget {
   const UpdateAdScreen({required this.advert, required this.type, super.key});
@@ -69,7 +69,9 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
     if (state.status) {
       for (final element in state.props) {
         if (element is FormzInput && element.isNotValid) {
-          return showErrorSnackBar(context, element.error.toString());
+          return CustomSnackBar.error(
+            Text(element.error.toString()),
+          ).view(context);
         }
       }
     }
@@ -83,7 +85,13 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
       ]));
     } else if (state.formState == EnumFormState.error) {
       if (state.error != null) {
-        showErrorSnackBar(context, state.error!.messages[0]);
+        CustomSnackBar.error(
+          Text(
+            state.error!.messages.isNotEmpty
+                ? state.error!.messages.first
+                : AppLocalizations.of(context)!.unknown_error,
+          ),
+        ).view(context);
       }
     }
   }
@@ -123,61 +131,61 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
                 ? AppLocalizations.of(context)!.edit_ad
                 : AppLocalizations.of(context)!.editService),
         body: SingleChildScrollView(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                children: [
-                  const SizedBox(height: 30),
-                  TextFieldApp(
-                      controller: _titleController,
-                      label: AppLocalizations.of(context)!.name_field,
-                      icon: const Icon(Icons.edit)),
-                  AdvertCategoryPicker(
-                      label: AppLocalizations.of(context)!.select_a_category,
-                      controller: _advertCategoryController),
-                  CityPicker(
-                      label: AppLocalizations.of(context)!.choose_city,
-                      controller: _cityController),
-                  DescriptionFieldApp(
-                    label:
-                        AppLocalizations.of(context)!.description_of_your_offer,
-                    controller: _descriptionController,
-                    icon: const Icon(IconPack.description),
-                  ),
-                  NumberFieldApp(
-                    label: AppLocalizations.of(context)!.price,
-                    controller: _priceController,
-                    icon: const Icon(Icons.money_sharp),
-                  ),
-                  PhoneField(
-                    controller: _phoneController,
-                    label: AppLocalizations.of(context)!.additional_Phone,
-                    icon: const Icon(Icons.phone),
-                  ),
-                  ImageMultiPicker(controller: _imageController),
-                  // BlocConsumer(builder: builder, listener: listener)
-                  BlocConsumer<AdUpdateFormCubit, AdUpdateFormState>(
-                      listener: _listenerForm,
-                      builder: (context, state) {
-                        if (state.formState == EnumFormState.fetch) {
-                          return ElevatedButtonApp(
-                            child: Loader(
-                                color: Theme.of(context).colorScheme.surface),
-                            onPressed: () {},
-                          );
-                        }
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                const SizedBox(height: 30),
+                TextFieldApp(
+                    controller: _titleController,
+                    label: AppLocalizations.of(context)!.name_field,
+                    icon: const Icon(Icons.edit)),
+                AdvertCategoryPicker(
+                    label: AppLocalizations.of(context)!.select_a_category,
+                    controller: _advertCategoryController),
+                CityPicker(
+                    label: AppLocalizations.of(context)!.choose_city,
+                    controller: _cityController),
+                DescriptionFieldApp(
+                  label:
+                      AppLocalizations.of(context)!.description_of_your_offer,
+                  controller: _descriptionController,
+                  icon: const Icon(IconPack.description),
+                ),
+                NumberFieldApp(
+                  label: AppLocalizations.of(context)!.price,
+                  controller: _priceController,
+                  icon: const Icon(Icons.money_sharp),
+                ),
+                PhoneField(
+                  controller: _phoneController,
+                  label: AppLocalizations.of(context)!.additional_Phone,
+                  icon: const Icon(Icons.phone),
+                ),
+                ImageMultiPicker(controller: _imageController),
+                // BlocConsumer(builder: builder, listener: listener)
+                BlocConsumer<AdUpdateFormCubit, AdUpdateFormState>(
+                    listener: _listenerForm,
+                    builder: (context, state) {
+                      if (state.formState == EnumFormState.fetch) {
                         return ElevatedButtonApp(
-                          text: AppLocalizations.of(context)!.edit,
-                          onPressed: _create,
+                          child: Loader(
+                              color: Theme.of(context).colorScheme.surface),
+                          onPressed: () {},
                         );
-                      }),
-                  OutlinedButtonApp(
-                    text: AppLocalizations.of(context)!.cancel,
-                    onPressed: _back,
-                  ),
-                ],
-              ),
+                      }
+                      return ElevatedButtonApp(
+                        text: AppLocalizations.of(context)!.edit,
+                        onPressed: _create,
+                      );
+                    }),
+                OutlinedButtonApp(
+                  text: AppLocalizations.of(context)!.cancel,
+                  onPressed: _back,
+                ),
+              ],
             ),
           ),
+        ),
       );
 }

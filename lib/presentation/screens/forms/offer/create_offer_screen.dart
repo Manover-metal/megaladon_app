@@ -12,8 +12,7 @@ import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
-import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
-import 'package:megaladon/presentation/widgets/snackbars/success_snackbar.dart';
+import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
 
 class CreateOfferScreen extends StatefulWidget {
   const CreateOfferScreen({required this.orderId, super.key});
@@ -51,17 +50,27 @@ class _CreateOfferScreenState extends State<CreateOfferScreen> {
 
   void _listenerForm(BuildContext context, CreateOfferFormState state) {
     if (state.formState == EnumFormState.success) {
-      showSuccessSnackBar(context, AppLocalizations.of(context)!.responseSent);
+      CustomSnackBar.success(
+        Text(AppLocalizations.of(context)!.responseSent),
+      ).view(context);
       context.router.pop();
     } else if (state.formState == EnumFormState.error) {
       if (state.error != null) {
-        showErrorSnackBar(context, state.error!.messages[0]);
+        CustomSnackBar.error(
+          Text(
+            state.error?.messages.isNotEmpty == true
+                ? state.error!.messages.first
+                : AppLocalizations.of(context)!.unknown_error,
+          ),
+        ).view(context);
       }
     }
     if (state.status) {
       for (final element in state.props) {
         if (element is FormzInput && element.isNotValid) {
-          return showErrorSnackBar(context, element.error.toString());
+          return CustomSnackBar.error(
+            Text(element.error.toString()),
+          ).view(context);
         }
       }
     }
@@ -92,54 +101,54 @@ class _CreateOfferScreenState extends State<CreateOfferScreen> {
             title: AppLocalizations.of(context)!
                 .responseToOrderId(widget.orderId.toString())),
         body: SingleChildScrollView(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFieldApp(
-                    label: AppLocalizations.of(context)!.time_to_work,
-                    icon: const Icon(Icons.watch_later_outlined),
-                    controller: _dateController,
-                  ),
-                  NumberFieldApp(
-                    label: AppLocalizations.of(context)!.price,
-                    icon: const Icon(Icons.credit_card),
-                    controller: _priceController,
-                  ),
-                  TextFieldApp(
-                    label: AppLocalizations.of(context)!.description_field,
-                    icon: const Icon(Icons.message),
-                    controller: _descriptionController,
-                  ),
-                  CityPicker(
-                      label: AppLocalizations.of(context)!.city,
-                      icon: const Icon(Icons.place),
-                      controller: _cityController),
-                  BlocConsumer<CreateOfferFormCubit, CreateOfferFormState>(
-                      listener: _listenerForm,
-                      builder: (context, state) {
-                        if (state.formState == EnumFormState.fetch) {
-                          return ElevatedButtonApp(
-                            child: Loader(
-                                color: Theme.of(context).colorScheme.surface),
-                            onPressed: () {},
-                          );
-                        }
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 20,
+                ),
+                TextFieldApp(
+                  label: AppLocalizations.of(context)!.time_to_work,
+                  icon: const Icon(Icons.watch_later_outlined),
+                  controller: _dateController,
+                ),
+                NumberFieldApp(
+                  label: AppLocalizations.of(context)!.price,
+                  icon: const Icon(Icons.credit_card),
+                  controller: _priceController,
+                ),
+                TextFieldApp(
+                  label: AppLocalizations.of(context)!.description_field,
+                  icon: const Icon(Icons.message),
+                  controller: _descriptionController,
+                ),
+                CityPicker(
+                    label: AppLocalizations.of(context)!.city,
+                    icon: const Icon(Icons.place),
+                    controller: _cityController),
+                BlocConsumer<CreateOfferFormCubit, CreateOfferFormState>(
+                    listener: _listenerForm,
+                    builder: (context, state) {
+                      if (state.formState == EnumFormState.fetch) {
                         return ElevatedButtonApp(
-                          text: AppLocalizations.of(context)!.respond,
-                          onPressed: _create,
+                          child: Loader(
+                              color: Theme.of(context).colorScheme.surface),
+                          onPressed: () {},
                         );
-                      }),
-                  OutlinedButtonApp(
-                    text: AppLocalizations.of(context)!.cancel,
-                    onPressed: _back,
-                  )
-                ],
-              ),
+                      }
+                      return ElevatedButtonApp(
+                        text: AppLocalizations.of(context)!.respond,
+                        onPressed: _create,
+                      );
+                    }),
+                OutlinedButtonApp(
+                  text: AppLocalizations.of(context)!.cancel,
+                  onPressed: _back,
+                )
+              ],
             ),
           ),
+        ),
       );
 }

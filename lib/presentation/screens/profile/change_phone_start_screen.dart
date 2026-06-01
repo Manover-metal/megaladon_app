@@ -8,7 +8,7 @@ import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/phone_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
-import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
+import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class ChangePhoneStartScreen extends StatefulWidget {
@@ -59,7 +59,13 @@ class _ChangePhoneStartScreenState extends State<ChangePhoneStartScreen> {
         state.status == ChangePhoneStatus.initial2) {
       context.router.popAndPush(const ChangePhoneEndRoute());
     } else if (state.status == ChangePhoneStatus.error) {
-      return showErrorSnackBar(context, state.error!.messages[0]);
+      return CustomSnackBar.error(
+        Text(
+          state.error?.messages.isNotEmpty == true
+              ? state.error!.messages.first
+              : AppLocalizations.of(context)!.unknown_error,
+        ),
+      ).view(context);
     }
   }
 

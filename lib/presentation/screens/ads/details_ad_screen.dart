@@ -15,7 +15,7 @@ import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
-import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
+import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 import 'package:megaladon/presentation/widgets/tiles/user_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -94,11 +94,13 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
       ]));
     } else if (state is AdvertDeleteError) {
       context.router.pop();
-      showErrorSnackBar(
-          context,
+      CustomSnackBar.error(
+        Text(
           state.error.messages.isNotEmpty
               ? state.error.messages.first
-              : AppLocalizations.of(context)!.unknown_error);
+              : AppLocalizations.of(context)!.unknown_error,
+        ),
+      ).view(context);
     }
   }
 
@@ -110,8 +112,8 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(70),
             child: BlocBuilder<AuthBloc, AuthState>(
-              builder: (context, authState) =>
-                  BlocBuilder<AdvertScreenDetailsCubit, AdvertScreenDetailsState>(
+              builder: (context, authState) => BlocBuilder<
+                  AdvertScreenDetailsCubit, AdvertScreenDetailsState>(
                 builder: (context, state) {
                   if (state is AdvertScreenDetailsSuccess) {
                     return HeaderAppBar(
@@ -132,50 +134,48 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
             ),
           ),
           body: SingleChildScrollView(
-                child: Container(
-                    constraints: BoxConstraints(
-                        minHeight: MediaQuery.of(context).size.height),
-                    child: BlocBuilder<AdvertScreenDetailsCubit,
-                        AdvertScreenDetailsState>(
-                      builder: (context, state) {
-                        if (state is AdvertScreenDetailsSuccess) {
-                          return Column(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 20),
-                                child: Column(
-                                  children: [
-                                    Text(state.advert.title),
-                                    Text(state.advert.description),
-                                    const SizedBox(
-                                      height: 20,
-                                    ),
-                                    if (state.advert.media.isEmpty)
-                                      SubTitleApp(AppLocalizations.of(context)!
-                                          .no_attached_files)
-                                    else ...[
-                                      SubTitleApp(AppLocalizations.of(context)!
-                                          .attached_files),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      ...state.advert.media
-                                          .map((e) => ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                child: Container(
-                                                  width: double.infinity,
-                                                  constraints:
-                                                      const BoxConstraints(
-                                                          minHeight: 100),
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .secondary,
-                                                  child: CachedNetworkImage(
-                                                    imageUrl: e.url,
-                                                    progressIndicatorBuilder: (context,
-                                                            url,
+            child: Container(
+                constraints: BoxConstraints(
+                    minHeight: MediaQuery.of(context).size.height),
+                child: BlocBuilder<AdvertScreenDetailsCubit,
+                    AdvertScreenDetailsState>(
+                  builder: (context, state) {
+                    if (state is AdvertScreenDetailsSuccess) {
+                      return Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Column(
+                              children: [
+                                Text(state.advert.title),
+                                Text(state.advert.description),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                if (state.advert.media.isEmpty)
+                                  SubTitleApp(AppLocalizations.of(context)!
+                                      .no_attached_files)
+                                else ...[
+                                  SubTitleApp(AppLocalizations.of(context)!
+                                      .attached_files),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  ...state.advert.media
+                                      .map((e) => ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: Container(
+                                              width: double.infinity,
+                                              constraints: const BoxConstraints(
+                                                  minHeight: 100),
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .secondary,
+                                              child: CachedNetworkImage(
+                                                imageUrl: e.url,
+                                                progressIndicatorBuilder:
+                                                    (context, url,
                                                             downloadProgress) =>
                                                         Icon(
                                                             Icons
@@ -185,83 +185,81 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                                                                     .size
                                                                     .width /
                                                                 10),
-                                                    errorWidget: (context, url,
-                                                            error) =>
-                                                        Icon(
-                                                            Icons.error_outline,
-                                                            size: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width /
-                                                                10),
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                ),
-                                              ))
-                                          .toList()
-                                    ],
-                                  ],
+                                                errorWidget: (context, url,
+                                                        error) =>
+                                                    Icon(Icons.error_outline,
+                                                        size: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width /
+                                                            10),
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ))
+                                      .toList()
+                                ],
+                              ],
+                            ),
+                          ),
+                          const Divider(thickness: 1),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(AppLocalizations.of(context)!
+                                    .priceUpToAmount(
+                                        state.advert.price.toString())),
+                                const SizedBox(
+                                  height: 10,
                                 ),
-                              ),
-                              const Divider(thickness: 1),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 20),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(AppLocalizations.of(context)!
-                                        .priceUpToAmount(
-                                            state.advert.price.toString())),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    UserTile(user: state.advert.user!),
-                                    const SizedBox(height: 20),
-                                    BlocBuilder<AuthBloc, AuthState>(
-                                      builder: (context, stateUser) {
-                                        if (stateUser is AuthLoginState) {
-                                          return Column(
-                                            children: [
-                                              if (state.advert.user!.id !=
-                                                  stateUser
-                                                      .auth.user.value!.id) ...[
-                                                ElevatedButtonApp(
-                                                  text: AppLocalizations.of(
-                                                          context)!
+                                UserTile(user: state.advert.user!),
+                                const SizedBox(height: 20),
+                                BlocBuilder<AuthBloc, AuthState>(
+                                  builder: (context, stateUser) {
+                                    if (stateUser is AuthLoginState) {
+                                      return Column(
+                                        children: [
+                                          if (state.advert.user!.id !=
+                                              stateUser
+                                                  .auth.user.value!.id) ...[
+                                            ElevatedButtonApp(
+                                              text:
+                                                  AppLocalizations.of(context)!
                                                       .call,
-                                                  onPressed: _call(state
-                                                      .advert.additionalPhone!),
-                                                ),
-                                                OutlinedButtonApp(
-                                                    onPressed: _toChat,
-                                                    text: AppLocalizations.of(
-                                                            context)!
-                                                        .ask_a_question_in_the_chat),
-                                              ]
-                                            ],
-                                          );
-                                        } else {
-                                          return Container();
-                                        }
-                                      },
-                                    ),
-                                  ],
+                                              onPressed: _call(state
+                                                  .advert.additionalPhone!),
+                                            ),
+                                            OutlinedButtonApp(
+                                                onPressed: _toChat,
+                                                text: AppLocalizations.of(
+                                                        context)!
+                                                    .ask_a_question_in_the_chat),
+                                          ]
+                                        ],
+                                      );
+                                    } else {
+                                      return Container();
+                                    }
+                                  },
                                 ),
-                              )
-                            ],
-                          );
-                        } else if (state is AdvertScreenDetailsLoader) {
-                          return const Loader(
-                            padding: 10,
-                          );
-                        } else if (state is AdvertScreenDetailsError) {
-                          return ErrorMessage(error: state.error);
-                        }
-                        return Container();
-                      },
-                    )),
-              ),
-            ),
+                              ],
+                            ),
+                          )
+                        ],
+                      );
+                    } else if (state is AdvertScreenDetailsLoader) {
+                      return const Loader(
+                        padding: 10,
+                      );
+                    } else if (state is AdvertScreenDetailsError) {
+                      return ErrorMessage(error: state.error);
+                    }
+                    return Container();
+                  },
+                )),
+          ),
+        ),
       );
 }

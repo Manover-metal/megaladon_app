@@ -4,8 +4,7 @@ import 'package:megaladon/data/models/dictionary/subscribe_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/subscribe/subscribe_cubit.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
-import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
-import 'package:megaladon/presentation/widgets/snackbars/success_snackbar.dart';
+import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
 import 'package:megaladon/presentation/widgets/tiles/data_tile.dart';
 
 class SubscribeCard extends StatelessWidget {
@@ -18,14 +17,15 @@ class SubscribeCard extends StatelessWidget {
         listener: (context, state) {
           final l10n = AppLocalizations.of(context)!;
           if (state is SubscribeSuccess) {
-            showSuccessSnackBar(
-                context, l10n.subscribed_for_days(state.subscribe.duration));
+            CustomSnackBar.success(
+              Text(l10n.subscribed_for_days(state.subscribe.duration)),
+            ).view(context);
           } else if (state is SubscribeError) {
-            showErrorSnackBar(
-                context,
-                state.error.messages.isNotEmpty
-                    ? state.error.messages.first
-                    : l10n.unknown_error);
+            CustomSnackBar.error(
+              Text(state.error.messages.isNotEmpty
+                  ? state.error.messages.first
+                  : l10n.unknown_error),
+            ).view(context);
           }
         },
         child: _SubscribeCardBody(subscribe: subscribe),

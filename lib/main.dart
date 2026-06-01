@@ -9,6 +9,7 @@ import 'package:megaladon/core/fb_notification/index.dart';
 import 'package:megaladon/core/get.dart';
 import 'package:megaladon/core/isar/index.dart';
 import 'package:megaladon/core/themes/dark.dart';
+import 'package:megaladon/data/repositories/review_repository.dart';
 import 'package:megaladon/firebase_options.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
@@ -45,6 +46,7 @@ import 'package:megaladon/logic/screens/orders/delete/order_delete_cubit.dart';
 import 'package:megaladon/logic/screens/orders/details/order_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/orders/main/order_screen_main_cubit.dart';
 import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
+import 'package:megaladon/logic/screens/orders/review/review_cubit.dart';
 import 'package:megaladon/logic/screens/profile/change_executor/change_executor_bloc.dart';
 import 'package:megaladon/logic/screens/profile/change_password/change_password_cubit.dart';
 import 'package:megaladon/logic/screens/profile/change_phone/change_phone_cubit.dart';
@@ -162,6 +164,8 @@ class App extends StatelessWidget {
                   lazy: false, create: (context) => ChatCubit(authBloc)),
               BlocProvider<SubscribeCubit>(
                   create: (context) => SubscribeCubit()),
+              BlocProvider<ReviewCubit>(
+                  create: (context) => ReviewCubit(ReviewRepository())),
               BlocProvider<OrderDeleteCubit>(
                   create: (context) => OrderDeleteCubit()),
               BlocProvider<AddFavoriteCubit>(

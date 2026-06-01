@@ -13,8 +13,11 @@ class IndexPeriodPickerController extends ValueNotifier<IndexPeriod> {
 }
 
 class IndexPeriodPicker extends StatefulWidget {
-  const IndexPeriodPicker(
-      {required this.label, required this.controller, super.key, });
+  const IndexPeriodPicker({
+    required this.label,
+    required this.controller,
+    super.key,
+  });
   final String label;
   final IndexPeriodPickerController controller;
 
@@ -99,7 +102,9 @@ class _IndexPeriodPickerState extends State<IndexPeriodPicker> {
                   ),
                   child: Row(
                     children: [
-                      Expanded(child: Text(period.localize(AppLocalizations.of(context)!))),
+                      Expanded(
+                          child: Text(
+                              period.localize(AppLocalizations.of(context)!))),
                       const Icon(Icons.keyboard_arrow_down_outlined),
                     ],
                   ),

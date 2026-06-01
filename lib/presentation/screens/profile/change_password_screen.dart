@@ -7,8 +7,7 @@ import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/password_field.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
-import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
-import 'package:megaladon/presentation/widgets/snackbars/success_snackbar.dart';
+import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
@@ -59,11 +58,18 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
   dynamic _listenerForm(BuildContext context, ChangePasswordState state) {
     if (state.status == ChangePasswordStatus.success) {
-      showSuccessSnackBar(
-          context, AppLocalizations.of(context)!.password_changed_successfully);
+      CustomSnackBar.success(
+        Text(AppLocalizations.of(context)!.password_changed_successfully),
+      ).view(context);
       context.router.navigate(const InitialRouter(children: [ProfileRouter()]));
     } else if (state.status == ChangePasswordStatus.error) {
-      return showErrorSnackBar(context, state.error!.messages[0]);
+      CustomSnackBar.error(
+        Text(
+          state.error?.messages.isNotEmpty == true
+              ? state.error!.messages.first
+              : AppLocalizations.of(context)!.unknown_error,
+        ),
+      ).view(context);
     }
   }
 

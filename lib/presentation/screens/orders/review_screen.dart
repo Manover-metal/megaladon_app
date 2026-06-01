@@ -1,15 +1,14 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:megaladon/data/models/error_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/order_model.dart';
-import 'package:megaladon/data/repositories/review_repository.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
+import 'package:megaladon/logic/screens/orders/review/review_cubit.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/picker/star_picker.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
-import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
+import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
 import 'package:megaladon/presentation/widgets/tiles/executor_tile.dart';
 
 class ReviewScreen extends StatefulWidget {
@@ -23,10 +22,6 @@ class ReviewScreen extends StatefulWidget {
 class _ReviewScreenState extends State<ReviewScreen> {
   late StarPickerController controller;
 
-  void _back() {
-    context.router.pop();
-  }
-
   @override
   void initState() {
     controller = StarPickerController();
@@ -39,53 +34,58 @@ class _ReviewScreenState extends State<ReviewScreen> {
     super.dispose();
   }
 
-  void _review() {
-    ReviewRepository.review(widget.order.id, controller.value).then((value) {
-      _back();
-    }).catchError((error) {
-      if (error is DioException) {
-        showErrorSnackBar(context, ErrorModel.parseDio(error).messages[0]);
-      } else {
-        showErrorSnackBar(context, ErrorModel.nothing.messages[0]);
-      }
-    });
-  }
+  void _back() => context.router.pop();
+
+  void _submit() =>
+      context.read<ReviewCubit>().submit(widget.order.id, controller.value);
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: HeaderAppBar(
+  Widget build(BuildContext context) => BlocListener<ReviewCubit, ReviewState>(
+        listener: (context, state) {
+          if (state is ReviewSuccess) {
+            _back();
+          } else if (state is ReviewError) {
+            CustomSnackBar.error(
+              Text(
+                state.error.messages.isNotEmpty
+                    ? state.error.messages.first
+                    : AppLocalizations.of(context)!.unknown_error,
+              ),
+            ).view(context);
+          }
+        },
+        child: Scaffold(
+          appBar: HeaderAppBar(
             isBack: true,
             title: AppLocalizations.of(context)!
-                .feedbackOnOrderId(widget.order.id.toString())),
-        body: SingleChildScrollView(
-            child: Container(
+                .feedbackOnOrderId(widget.order.id.toString()),
+          ),
+          body: SingleChildScrollView(
+            child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 children: [
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  const SizedBox(height: 20),
                   if (widget.order.executor != null) ...[
-                    ExecutorTile(
-                      executor: widget.order.executor!,
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    ExecutorTile(executor: widget.order.executor!),
+                    const SizedBox(height: 20),
                   ],
                   StarPicker(controller: controller),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  ElevatedButtonApp(
+                  const SizedBox(height: 20),
+                  BlocBuilder<ReviewCubit, ReviewState>(
+                    builder: (context, state) => ElevatedButtonApp(
                       text: AppLocalizations.of(context)!.leave_feedback,
-                      onPressed: _review),
+                      onPressed: state is ReviewLoading ? null : _submit,
+                    ),
+                  ),
                   OutlinedButtonApp(
-                      text: AppLocalizations.of(context)!.back,
-                      onPressed: _back)
+                    text: AppLocalizations.of(context)!.back,
+                    onPressed: _back,
+                  ),
                 ],
               ),
             ),
           ),
+        ),
       );
 }

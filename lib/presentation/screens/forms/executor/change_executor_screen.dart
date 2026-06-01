@@ -15,7 +15,7 @@ import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/form/multi_picker/service_type_multi_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
-import 'package:megaladon/presentation/widgets/snackbars/error_snackbar.dart';
+import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class ChangeExecutorScreen extends StatefulWidget {
@@ -57,7 +57,9 @@ class _ChangeExecutorScreenState extends State<ChangeExecutorScreen> {
     if (state.status) {
       for (final element in state.props) {
         if (element is FormzInput && element.isNotValid) {
-          return showErrorSnackBar(context, element.error.toString());
+          return CustomSnackBar.error(
+            Text(element.error.toString()),
+          ).view(context);
         }
       }
     }
@@ -70,7 +72,11 @@ class _ChangeExecutorScreenState extends State<ChangeExecutorScreen> {
           context.router
               .navigate(const InitialRouter(children: [ProfileRouter()]));
         } else if (state is ChangeExecutorError && isListener) {
-          showErrorSnackBar(context, state.error.messages[0]);
+          CustomSnackBar.error(
+            Text(state.error.messages.isNotEmpty
+                ? state.error.messages.first
+                : AppLocalizations.of(context)!.unknown_error),
+          ).view(context);
         }
       };
 
@@ -100,7 +106,9 @@ class _ChangeExecutorScreenState extends State<ChangeExecutorScreen> {
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       // Location services are disabled
-      showErrorSnackBar(context, 'Отключенена геопозиция');
+      CustomSnackBar.error(
+        const Text('Отключенена геопозиция'),
+      ).view(context);
       return null;
     }
 
@@ -109,15 +117,17 @@ class _ChangeExecutorScreenState extends State<ChangeExecutorScreen> {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        showErrorSnackBar(
-            context, 'Отключенено разрешение на получение геопозиция');
+        CustomSnackBar.error(
+          const Text('Отключенено разрешение на получение геопозиция'),
+        ).view(context);
         return null;
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
-      showErrorSnackBar(
-          context, 'Отключенено разрешение на получение геопозиция');
+      CustomSnackBar.error(
+        const Text('Отключенено разрешение на получение геопозиция'),
+      ).view(context);
       return null;
     }
 
