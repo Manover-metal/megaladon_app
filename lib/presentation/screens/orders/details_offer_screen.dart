@@ -79,22 +79,12 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
       BlocListener<AddFavoriteCubit, AddFavoriteState>(
         listener: _listenFavorite,
         child: Scaffold(
+          appBar: HeaderAppBar(
+              isBack: true,
+              title: AppLocalizations.of(context)!.artists_suggestion),
           body: BlocListener<OrderScreenDetailsCubit, OrderScreenDetailsState>(
             listener: _listenOrder,
-            child: SafeArea(
-              child: NestedScrollView(
-                headerSliverBuilder: (context, innerBoxIsScrolled) => [
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: HeaderAppBar(
-                          isBack: true,
-                          title:
-                              AppLocalizations.of(context)!.artists_suggestion),
-                    ),
-                  )
-                ],
-                body: SingleChildScrollView(
+            child: SingleChildScrollView(
                   child: Container(
                     constraints: BoxConstraints(
                         minHeight: MediaQuery.of(context).size.height),
@@ -179,8 +169,6 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
                     ),
                   ),
                 ),
-              ),
-            ),
           ),
         ),
       );

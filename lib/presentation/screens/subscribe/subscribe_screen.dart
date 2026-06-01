@@ -65,20 +65,11 @@ class _SubscribeScreenState extends State<SubscribeScreen>
         builder: (context, authState) => DefaultTabController(
           length: _countFace(),
           child: Scaffold(
-            body: SafeArea(
-              child: NestedScrollView(
-                headerSliverBuilder: (context, isBool) => [
-                  SliverToBoxAdapter(
-                      child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: HeaderAppBar(
-                            isMenu: true,
-                            title: AppLocalizations.of(context)!.subscriptions),
-                      ),
-                    ],
-                  )),
+            appBar: HeaderAppBar(
+                isMenu: true,
+                title: AppLocalizations.of(context)!.subscriptions),
+            body: NestedScrollView(
+              headerSliverBuilder: (context, isBool) => [
                   SliverPersistentHeader(
                       delegate: TabBarDelegate(
                     TabBar(
@@ -155,7 +146,6 @@ class _SubscribeScreenState extends State<SubscribeScreen>
               ),
             ),
           ),
-        ),
       );
 }
 

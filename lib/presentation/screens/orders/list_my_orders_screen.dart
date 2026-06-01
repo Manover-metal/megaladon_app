@@ -114,31 +114,25 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen>
         builder: (context, authState) => DefaultTabController(
           length: _isExecutor() ? 2 : 1,
           child: Scaffold(
-            body: SafeArea(
-              child: NestedScrollView(
-                headerSliverBuilder: (context, isBool) => [
-                  SliverToBoxAdapter(
-                      child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child:
-                            BlocBuilder<OrderScreenMyCubit, OrderScreenMyState>(
-                          builder: (context, state) => HeaderAppBar(
-                            isMenu: true,
-                            title: AppLocalizations.of(context)!.my_orders,
-                            onTrailing: _onRefresh,
-                            trailing:
-                                state.status != OrderScreenMyStatus.loading
-                                    ? const Icon(
-                                        Icons.refresh,
-                                        size: 30,
-                                      )
-                                    : const CupertinoActivityIndicator(),
-                          ),
-                        ),
-                      ),
-                      Padding(
+            appBar: PreferredSize(
+              preferredSize: const Size.fromHeight(70),
+              child: BlocBuilder<OrderScreenMyCubit, OrderScreenMyState>(
+                builder: (context, state) => HeaderAppBar(
+                  isMenu: true,
+                  title: AppLocalizations.of(context)!.my_orders,
+                  onTrailing: _onRefresh,
+                  trailing: state.status != OrderScreenMyStatus.loading
+                      ? const Icon(Icons.refresh, size: 30)
+                      : const CupertinoActivityIndicator(),
+                ),
+              ),
+            ),
+            body: NestedScrollView(
+              headerSliverBuilder: (context, isBool) => [
+                SliverToBoxAdapter(
+                    child: Column(
+                  children: [
+                    Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Align(
                           alignment: Alignment.centerRight,
@@ -269,7 +263,6 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen>
               ),
             ),
           ),
-        ),
       );
 }
 

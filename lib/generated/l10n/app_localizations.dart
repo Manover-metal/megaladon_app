@@ -1605,6 +1605,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{amount} ₸'**
   String tenge_price(String amount);
+
+  /// No description provided for @last_3_days.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 3 days'**
+  String get last_3_days;
+
+  /// No description provided for @last_week.
+  ///
+  /// In en, this message translates to:
+  /// **'Last week'**
+  String get last_week;
+
+  /// No description provided for @last_month.
+  ///
+  /// In en, this message translates to:
+  /// **'Last month'**
+  String get last_month;
 }
 
 class _AppLocalizationsDelegate

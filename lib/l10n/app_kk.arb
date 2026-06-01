@@ -329,5 +329,8 @@
         "type": "String"
       }
     }
-  }
+  },
+  "last_3_days": "Соңғы 3 күн",
+  "last_week": "Соңғы апта",
+  "last_month": "Соңғы ай"
 }

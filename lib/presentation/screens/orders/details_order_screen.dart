@@ -130,39 +130,27 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
       BlocListener<OrderDeleteCubit, OrderDeleteState>(
         listener: _deleteListener,
         child: Scaffold(
-          body: SafeArea(
-            child: NestedScrollView(
-              headerSliverBuilder: (context, isBool) => [
-                BlocBuilder<OrderScreenDetailsCubit, OrderScreenDetailsState>(
-                    builder: (context, state) {
-                  if (state.status == OrderScreenDetailsStateStatus.success ||
-                      state.status ==
-                          OrderScreenDetailsStateStatus.errorMessage) {
-                    return SliverToBoxAdapter(
-                        child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: BlocBuilder<AuthBloc, AuthState>(
-                        builder: (context, authState) => HeaderAppBar(
-                            isBack: true,
-                            title: AppLocalizations.of(context)!
-                                .orderWithId(state.order!.id.toString()),
-                            onTrailing: (authState is AuthLoginState) &&
-                                    authState.auth.user.value?.id ==
-                                        state.order?.user?.id
-                                ? _onTrailing(state.order!)
-                                : null),
-                      ),
-                    ));
-                  } else {
-                    return const SliverToBoxAdapter(
-                        child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: HeaderAppBar(isBack: true),
-                    ));
-                  }
-                }),
-              ],
-              body: SingleChildScrollView(
+          appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(70),
+            child: BlocBuilder<OrderScreenDetailsCubit, OrderScreenDetailsState>(
+              builder: (context, state) =>
+                  BlocBuilder<AuthBloc, AuthState>(
+                builder: (context, authState) => HeaderAppBar(
+                    isBack: true,
+                    title: state.order != null
+                        ? AppLocalizations.of(context)!
+                            .orderWithId(state.order!.id.toString())
+                        : null,
+                    onTrailing: (authState is AuthLoginState) &&
+                            authState.auth.user.value?.id ==
+                                state.order?.user?.id &&
+                            state.order != null
+                        ? _onTrailing(state.order!)
+                        : null),
+              ),
+            ),
+          ),
+          body: SingleChildScrollView(
                 child: Container(
                   constraints: BoxConstraints(
                       minHeight: MediaQuery.of(context).size.height),
@@ -393,7 +381,5 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                 ),
               ),
             ),
-          ),
-        ),
       );
 }

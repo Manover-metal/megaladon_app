@@ -802,4 +802,13 @@ class AppLocalizationsKk extends AppLocalizations {
   String tenge_price(String amount) {
     return '$amount ₸';
   }
+
+  @override
+  String get last_3_days => 'Соңғы 3 күн';
+
+  @override
+  String get last_week => 'Соңғы апта';
+
+  @override
+  String get last_month => 'Соңғы ай';
 }

@@ -27,17 +27,8 @@ class _DetailsExecutorScreenState extends State<DetailsExecutorScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: SafeArea(
-          child: NestedScrollView(
-            headerSliverBuilder: (context, innerBoxIsScrolled) => [
-              const SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: HeaderAppBar(isBack: true),
-                ),
-              )
-            ],
-            body: SingleChildScrollView(
+        appBar: const HeaderAppBar(isBack: true),
+        body: SingleChildScrollView(
               child: Container(
                 constraints: BoxConstraints(
                     minHeight: MediaQuery.of(context).size.height),
@@ -101,7 +92,5 @@ class _DetailsExecutorScreenState extends State<DetailsExecutorScreen> {
                 ),
               ),
             ),
-          ),
-        ),
       );
 }

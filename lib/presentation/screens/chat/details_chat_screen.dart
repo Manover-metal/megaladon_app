@@ -67,109 +67,83 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: SafeArea(
-          child: Container(
-            child: Stack(
-              children: [
-                Container(
-                  constraints: BoxConstraints(
-                      minWidth: MediaQuery.of(context).size.width,
-                      minHeight: MediaQuery.of(context).size.height),
-                  child: CupertinoScrollbar(
-                    controller: _scrollController,
-                    child: SingleChildScrollView(
-                      controller: _scrollController,
-                      scrollDirection: Axis.vertical,
-                      child: BlocBuilder<AuthBloc, AuthState>(
-                        builder: (context, authState) =>
-                            BlocBuilder<ChatCubit, ChatState>(
-                          builder: (context, state) {
-                            var messages = state.chats
-                                .firstWhere(
-                                    (element) => element.id == widget.chat.id)
-                                .messages;
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: Column(
-                                children: [
-                                  const SizedBox(height: 120),
-                                  if (messages.isEmpty)
-                                    Text(AppLocalizations.of(context)!
-                                        .noMessagesInChat),
-                                  ...messages.map((e) {
-                                    var isMe = false;
-                                    if (authState is AuthLoginState) {
-                                      isMe = e.user?.id ==
-                                              authState.auth.user.value?.id ||
-                                          e.user?.id == null;
-                                    }
-                                    return message(context, e, isMe);
-                                  }).toList(),
-                                  if (state.loadingMessages[widget.chat.id] !=
-                                      null)
-                                    ...state.loadingMessages[widget.chat.id]!
-                                        .map((value) =>
-                                            message(context, value, true))
-                                        .toList(),
-                                  if (state.errorMessages[widget.chat.id] !=
-                                      null)
-                                    ...state.errorMessages[widget.chat.id]!
-                                        .map((value) =>
-                                            message(context, value, true, true))
-                                        .toList(),
-                                  const SizedBox(height: 120)
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
+        appBar: HeaderAppBar(
+            isBack: true, title: AppLocalizations.of(context)!.chat),
+        bottomNavigationBar: Container(
+          width: MediaQuery.of(context).size.width,
+          padding: const EdgeInsets.all(20),
+          color: Theme.of(context).colorScheme.surface,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Expanded(
+                  child: TextField(
+                controller: _textController,
+              )),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 5),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                      color: Theme.of(context).colorScheme.primary),
+                  borderRadius: BorderRadius.circular(20),
+                  color: Theme.of(context).colorScheme.tertiary,
                 ),
-                Positioned(
-                    top: 0,
-                    child: Container(
-                        padding:
-                            const EdgeInsets.only(top: 10, left: 20, right: 20),
-                        color: Theme.of(context).colorScheme.surface,
-                        width: MediaQuery.of(context).size.width,
-                        child: HeaderAppBar(
-                            isBack: true,
-                            title: AppLocalizations.of(context)!.chat))),
-                Positioned(
-                    bottom: 0,
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      padding: const EdgeInsets.all(20),
-                      color: Theme.of(context).colorScheme.surface,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Expanded(
-                              child: TextField(
-                            controller: _textController,
-                          )),
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 5),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Theme.of(context).colorScheme.primary),
-                              borderRadius: BorderRadius.circular(20),
-                              color: Theme.of(context).colorScheme.tertiary,
-                            ),
-                            child: IconButton(
-                                onPressed: _sendMessage,
-                                icon: Icon(
-                                  Icons.near_me_outlined,
-                                  color: Theme.of(context).colorScheme.primary,
-                                )),
-                          ),
-                        ],
-                      ),
-                    ))
-              ],
+                child: IconButton(
+                    onPressed: _sendMessage,
+                    icon: Icon(
+                      Icons.near_me_outlined,
+                      color: Theme.of(context).colorScheme.primary,
+                    )),
+              ),
+            ],
+          ),
+        ),
+        body: CupertinoScrollbar(
+          controller: _scrollController,
+          child: SingleChildScrollView(
+            controller: _scrollController,
+            scrollDirection: Axis.vertical,
+            child: BlocBuilder<AuthBloc, AuthState>(
+              builder: (context, authState) =>
+                  BlocBuilder<ChatCubit, ChatState>(
+                builder: (context, state) {
+                  var messages = state.chats
+                      .firstWhere(
+                          (element) => element.id == widget.chat.id)
+                      .messages;
+                  return Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      children: [
+                        if (messages.isEmpty)
+                          Text(AppLocalizations.of(context)!
+                              .noMessagesInChat),
+                        ...messages.map((e) {
+                          var isMe = false;
+                          if (authState is AuthLoginState) {
+                            isMe = e.user?.id ==
+                                    authState.auth.user.value?.id ||
+                                e.user?.id == null;
+                          }
+                          return message(context, e, isMe);
+                        }).toList(),
+                        if (state.loadingMessages[widget.chat.id] != null)
+                          ...state.loadingMessages[widget.chat.id]!
+                              .map((value) =>
+                                  message(context, value, true))
+                              .toList(),
+                        if (state.errorMessages[widget.chat.id] != null)
+                          ...state.errorMessages[widget.chat.id]!
+                              .map((value) =>
+                                  message(context, value, true, true))
+                              .toList(),
+                        const SizedBox(height: 20),
+                      ],
+                    ),
+                  );
+                },
+              ),
             ),
           ),
         ),

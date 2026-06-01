@@ -59,25 +59,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) => Scaffold(
         endDrawer: const DrawerProfile(),
-        body: SafeArea(
-          child: NestedScrollView(
-            headerSliverBuilder: (context, innerBoxIsScrolled) => [
-              BlocBuilder<ProfileScreenCubit, ProfileScreenState>(
-                builder: (context, state) => SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: HeaderAppBar(
-                        isMenu: true,
-                        title: AppLocalizations.of(context)!.profile,
-                        onTrailing:
-                            (state.status == ProfileScreenStatus.success)
-                                ? _context(context)
-                                : null),
-                  ),
-                ),
-              )
-            ],
-            body: RefreshIndicator(
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(70),
+          child: BlocBuilder<ProfileScreenCubit, ProfileScreenState>(
+            builder: (context, state) => HeaderAppBar(
+                isMenu: true,
+                title: AppLocalizations.of(context)!.profile,
+                onTrailing: (state.status == ProfileScreenStatus.success)
+                    ? _context(context)
+                    : null),
+          ),
+        ),
+        body: RefreshIndicator(
               onRefresh: _fetch,
               child: SingleChildScrollView(
                 child: Container(
@@ -369,7 +362,5 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
             ),
-          ),
-        ),
       );
 }

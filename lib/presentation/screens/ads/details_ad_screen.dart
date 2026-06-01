@@ -107,43 +107,31 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
       BlocListener<AdvertDeleteCubit, AdvertDeleteState>(
         listener: _deleteListener,
         child: Scaffold(
-          body: SafeArea(
-            child: NestedScrollView(
-              headerSliverBuilder: (context, isBool) => [
-                SliverToBoxAdapter(
-                    child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: BlocBuilder<AuthBloc, AuthState>(
-                        builder: (context, authState) => BlocBuilder<
-                            AdvertScreenDetailsCubit, AdvertScreenDetailsState>(
-                          builder: (context, state) {
-                            if (state is AdvertScreenDetailsSuccess) {
-                              return HeaderAppBar(
-                                isBack: true,
-                                title: state.advert.type == AdvertType.advert
-                                    ? AppLocalizations.of(context)!.ad
-                                    : AppLocalizations.of(context)!.service,
-                                onTrailing: (authState is AuthLoginState) &&
-                                        authState.auth.user.value?.id ==
-                                            state.advert.user?.id
-                                    ? _onTrailing(state.advert)
-                                    : null,
-                              );
-                            }
-                            return HeaderAppBar(
-                              isBack: true,
-                              onTrailing: _refresh,
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ],
-                )),
-              ],
-              body: SingleChildScrollView(
+          appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(70),
+            child: BlocBuilder<AuthBloc, AuthState>(
+              builder: (context, authState) =>
+                  BlocBuilder<AdvertScreenDetailsCubit, AdvertScreenDetailsState>(
+                builder: (context, state) {
+                  if (state is AdvertScreenDetailsSuccess) {
+                    return HeaderAppBar(
+                      isBack: true,
+                      title: state.advert.type == AdvertType.advert
+                          ? AppLocalizations.of(context)!.ad
+                          : AppLocalizations.of(context)!.service,
+                      onTrailing: (authState is AuthLoginState) &&
+                              authState.auth.user.value?.id ==
+                                  state.advert.user?.id
+                          ? _onTrailing(state.advert)
+                          : null,
+                    );
+                  }
+                  return HeaderAppBar(isBack: true, onTrailing: _refresh);
+                },
+              ),
+            ),
+          ),
+          body: SingleChildScrollView(
                 child: Container(
                     constraints: BoxConstraints(
                         minHeight: MediaQuery.of(context).size.height),
@@ -275,7 +263,5 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                     )),
               ),
             ),
-          ),
-        ),
       );
 }

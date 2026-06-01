@@ -53,17 +53,15 @@ class _ReviewScreenState extends State<ReviewScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: SafeArea(
-          child: SingleChildScrollView(
+        appBar: HeaderAppBar(
+            isBack: true,
+            title: AppLocalizations.of(context)!
+                .feedbackOnOrderId(widget.order.id.toString())),
+        body: SingleChildScrollView(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 children: [
-                  HeaderAppBar(
-                    isBack: true,
-                    title: AppLocalizations.of(context)!
-                        .feedbackOnOrderId(widget.order.id.toString()),
-                  ),
                   const SizedBox(
                     height: 20,
                   ),
@@ -89,6 +87,5 @@ class _ReviewScreenState extends State<ReviewScreen> {
               ),
             ),
           ),
-        ),
       );
 }

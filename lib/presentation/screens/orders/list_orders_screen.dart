@@ -69,30 +69,25 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: SafeArea(
-          child: NestedScrollView(
-            headerSliverBuilder: (context, isBool) => [
-              SliverToBoxAdapter(
-                  child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child:
-                        BlocBuilder<OrderScreenMainCubit, OrderScreenMainState>(
-                      builder: (context, state) => HeaderAppBar(
-                        isMenu: true,
-                        title: AppLocalizations.of(context)!.orders,
-                        onTrailing: _onRefresh,
-                        trailing: state.status != OrderScreenMainStatus.loading
-                            ? const Icon(
-                                Icons.refresh,
-                                size: 30,
-                              )
-                            : const CupertinoActivityIndicator(),
-                      ),
-                    ),
-                  ),
-                  Padding(
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(70),
+          child: BlocBuilder<OrderScreenMainCubit, OrderScreenMainState>(
+            builder: (context, state) => HeaderAppBar(
+              isMenu: true,
+              title: AppLocalizations.of(context)!.orders,
+              onTrailing: _onRefresh,
+              trailing: state.status != OrderScreenMainStatus.loading
+                  ? const Icon(Icons.refresh, size: 30)
+                  : const CupertinoActivityIndicator(),
+            ),
+          ),
+        ),
+        body: NestedScrollView(
+          headerSliverBuilder: (context, isBool) => [
+            SliverToBoxAdapter(
+                child: Column(
+              children: [
+                Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -150,6 +145,5 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
               ),
             ),
           ),
-        ),
       );
 }

@@ -66,31 +66,25 @@ class _ListStoresScreenState extends State<ListStoresScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: SafeArea(
-          child: NestedScrollView(
-            headerSliverBuilder: (context, isBool) => [
-              SliverToBoxAdapter(
-                  child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    //
-                    child:
-                        BlocBuilder<StoreScreenMainCubit, StoreScreenMainState>(
-                      builder: (context, state) => HeaderAppBar(
-                        isMenu: true,
-                        title: AppLocalizations.of(context)!.theshops,
-                        onTrailing: _onRefresh,
-                        trailing: state.status != StoreScreenMainStatus.loading
-                            ? const Icon(
-                                Icons.refresh,
-                                size: 30,
-                              )
-                            : const CupertinoActivityIndicator(),
-                      ),
-                    ),
-                  ),
-                  Padding(
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(70),
+          child: BlocBuilder<StoreScreenMainCubit, StoreScreenMainState>(
+            builder: (context, state) => HeaderAppBar(
+              isMenu: true,
+              title: AppLocalizations.of(context)!.theshops,
+              onTrailing: _onRefresh,
+              trailing: state.status != StoreScreenMainStatus.loading
+                  ? const Icon(Icons.refresh, size: 30)
+                  : const CupertinoActivityIndicator(),
+            ),
+          ),
+        ),
+        body: NestedScrollView(
+          headerSliverBuilder: (context, isBool) => [
+            SliverToBoxAdapter(
+                child: Column(
+              children: [
+                Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Align(
                       alignment: Alignment.centerRight,
@@ -142,6 +136,5 @@ class _ListStoresScreenState extends State<ListStoresScreen> {
               ),
             ),
           ),
-        ),
       );
 }

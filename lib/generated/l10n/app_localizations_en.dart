@@ -801,4 +801,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String tenge_price(String amount) {
     return '$amount ₸';
   }
+
+  @override
+  String get last_3_days => 'Last 3 days';
+
+  @override
+  String get last_week => 'Last week';
+
+  @override
+  String get last_month => 'Last month';
 }

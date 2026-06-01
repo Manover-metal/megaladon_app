@@ -114,16 +114,14 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: SafeArea(
-          child: SingleChildScrollView(
+        appBar: HeaderAppBar(
+            isBack: true,
+            title: AppLocalizations.of(context)!.change_order),
+        body: SingleChildScrollView(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 children: [
-                  HeaderAppBar(
-                    isBack: true,
-                    title: AppLocalizations.of(context)!.change_order,
-                  ),
                   const SizedBox(height: 30),
                   OrderCategoryPicker(
                       label: AppLocalizations.of(context)!.category,
@@ -171,6 +169,5 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
               ),
             ),
           ),
-        ),
       );
 }

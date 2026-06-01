@@ -111,22 +111,16 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: SafeArea(
-          child: SingleChildScrollView(
+        appBar: HeaderAppBar(
+            isBack: true,
+            title: widget.type == AdvertType.advert
+                ? AppLocalizations.of(context)!.creating_an_ad
+                : AppLocalizations.of(context)!.creating_an_service),
+        body: SingleChildScrollView(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 children: [
-                  if (widget.type == AdvertType.advert)
-                    HeaderAppBar(
-                      isBack: true,
-                      title: AppLocalizations.of(context)!.creating_an_ad,
-                    )
-                  else if (widget.type == AdvertType.service)
-                    HeaderAppBar(
-                        isBack: true,
-                        title:
-                            AppLocalizations.of(context)!.creating_an_service),
                   const SizedBox(height: 30),
                   TextFieldApp(
                       controller: _titleController,
@@ -187,6 +181,5 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
               ),
             ),
           ),
-        ),
       );
 }

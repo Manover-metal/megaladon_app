@@ -14,7 +14,7 @@ class IndexPeriodPickerController extends ValueNotifier<IndexPeriod> {
 
 class IndexPeriodPicker extends StatefulWidget {
   const IndexPeriodPicker(
-      {required this.label, required this.controller, super.key});
+      {required this.label, required this.controller, super.key, });
   final String label;
   final IndexPeriodPickerController controller;
 
@@ -90,7 +90,7 @@ class _IndexPeriodPickerState extends State<IndexPeriodPicker> {
                   width: double.infinity,
                   padding: const EdgeInsets.all(13),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.onSurface,
+                    color: Theme.of(context).colorScheme.tertiary,
                     border: Border.all(
                       color: Theme.of(context).colorScheme.primary,
                       width: 0.5,
@@ -99,7 +99,7 @@ class _IndexPeriodPickerState extends State<IndexPeriodPicker> {
                   ),
                   child: Row(
                     children: [
-                      Expanded(child: Text(period.toString())),
+                      Expanded(child: Text(period.localize(AppLocalizations.of(context)!))),
                       const Icon(Icons.keyboard_arrow_down_outlined),
                     ],
                   ),

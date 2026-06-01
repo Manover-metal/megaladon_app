@@ -36,20 +36,11 @@ class _ListMyExecutorsScreenState extends State<ListMyExecutorsScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: SafeArea(
-            child: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: HeaderAppBar(
-                  isMenu: true,
-                  title: AppLocalizations.of(context)!.executor,
-                ),
-              ),
-            )
-          ],
-          body: RefreshIndicator(
+        appBar: HeaderAppBar(
+          isMenu: true,
+          title: AppLocalizations.of(context)!.executor,
+        ),
+        body: RefreshIndicator(
             onRefresh: _fetch,
             child: CupertinoScrollbar(
               controller: _scrollController,
@@ -88,6 +79,5 @@ class _ListMyExecutorsScreenState extends State<ListMyExecutorsScreen> {
               ),
             ),
           ),
-        )),
       );
 }

@@ -84,6 +84,7 @@ class _SplashScreenState extends State<SplashScreen> {
           ProfileRouter(),
         ],
         bottomNavigationBuilder: (context, tabsRouter) => SafeArea(
+          top: false,
           child: Stack(
             alignment: Alignment.bottomCenter,
             children: [
@@ -185,14 +186,21 @@ class Tab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => InkWell(
+        borderRadius: BorderRadius.circular(100),
         onTap: click,
         onDoubleTap: doubleClick,
-        child: Icon(
-          icon,
-          color: isActive
-              ? Theme.of(context).colorScheme.primary
-              : Theme.of(context).colorScheme.onSecondary,
-          size: isActive ? 30 : 25,
+        child: Ink(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(100),
+          ),
+          padding: const EdgeInsets.all(10),
+          child: Icon(
+            icon,
+            color: isActive
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).colorScheme.onSecondary,
+            size: 25,
+          ),
         ),
       );
 }

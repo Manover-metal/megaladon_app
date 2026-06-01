@@ -87,16 +87,15 @@ class _CreateOfferScreenState extends State<CreateOfferScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: SafeArea(
-          child: SingleChildScrollView(
+        appBar: HeaderAppBar(
+            isBack: true,
+            title: AppLocalizations.of(context)!
+                .responseToOrderId(widget.orderId.toString())),
+        body: SingleChildScrollView(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 children: [
-                  HeaderAppBar(
-                      isBack: true,
-                      title: AppLocalizations.of(context)!
-                          .responseToOrderId(widget.orderId.toString())),
                   const SizedBox(
                     height: 20,
                   ),
@@ -142,6 +141,5 @@ class _CreateOfferScreenState extends State<CreateOfferScreen> {
               ),
             ),
           ),
-        ),
       );
 }

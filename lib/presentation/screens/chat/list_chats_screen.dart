@@ -36,19 +36,11 @@ class _ListChatsScreenState extends State<ListChatsScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: SafeArea(
-          child: NestedScrollView(
-            headerSliverBuilder: (context, isBool) => [
-              SliverToBoxAdapter(
-                  child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: HeaderAppBar(
-                  isMenu: true,
-                  title: AppLocalizations.of(context)!.chats,
-                ),
-              )),
-            ],
-            body: RefreshIndicator(
+        appBar: HeaderAppBar(
+          isMenu: true,
+          title: AppLocalizations.of(context)!.chats,
+        ),
+        body: RefreshIndicator(
               color: Colors.white,
               onRefresh: _refresh,
               child: CupertinoScrollbar(
@@ -79,7 +71,5 @@ class _ListChatsScreenState extends State<ListChatsScreen> {
                 ),
               ),
             ),
-          ),
-        ),
       );
 }

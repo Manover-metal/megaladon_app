@@ -112,15 +112,14 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: SafeArea(
-          child: SingleChildScrollView(
+        appBar: HeaderAppBar(
+            isBack: true,
+            title: AppLocalizations.of(context)!.create_an_order),
+        body: SingleChildScrollView(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 children: [
-                  HeaderAppBar(
-                      isBack: true,
-                      title: AppLocalizations.of(context)!.create_an_order),
                   const SizedBox(height: 30),
 
                   OrderCategoryPicker(
@@ -177,6 +176,5 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
               ),
             ),
           ),
-        ),
       );
 }

@@ -104,30 +104,19 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: SafeArea(
-          child: NestedScrollView(
-            headerSliverBuilder: (context, isBool) => [
-              BlocBuilder<StoreScreenDetailsCubit, StoreScreenDetailsState>(
-                  builder: (context, state) {
-                if (state is StoreScreenDetailsSuccess) {
-                  return SliverToBoxAdapter(
-                      child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: HeaderAppBar(
-                        isBack: true,
-                        title: state.store.name,
-                        onTrailing: _onTrailing),
-                  ));
-                } else {
-                  return const SliverToBoxAdapter(
-                      child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: HeaderAppBar(isBack: true),
-                  ));
-                }
-              }),
-            ],
-            body: SingleChildScrollView(
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(70),
+          child: BlocBuilder<StoreScreenDetailsCubit, StoreScreenDetailsState>(
+            builder: (context, state) => HeaderAppBar(
+                isBack: true,
+                title: state is StoreScreenDetailsSuccess
+                    ? state.store.name
+                    : null,
+                onTrailing:
+                    state is StoreScreenDetailsSuccess ? _onTrailing : null),
+          ),
+        ),
+        body: SingleChildScrollView(
               child: Container(
                 constraints: BoxConstraints(
                     minHeight: MediaQuery.of(context).size.height),
@@ -219,8 +208,6 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
                 ),
               ),
             ),
-          ),
-        ),
       );
 }
 

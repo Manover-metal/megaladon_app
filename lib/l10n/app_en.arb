@@ -573,5 +573,11 @@
         "type": "String"
       }
     }
-  }
+  },
+  "last_3_days": "Last 3 days",
+  "@last_3_days": {},
+  "last_week": "Last week",
+  "@last_week": {},
+  "last_month": "Last month",
+  "@last_month": {}
 }

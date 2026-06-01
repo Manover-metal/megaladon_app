@@ -29,8 +29,7 @@ class SettingsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: HeaderAppBar(isMenu: true, title: l10n.settings),
-      body: SafeArea(
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
@@ -68,7 +67,6 @@ class SettingsScreen extends StatelessWidget {
                 const SizedBox(height: 50),
               ],
             ),
-          ),
         ),
       ),
     );

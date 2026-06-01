@@ -6,7 +6,6 @@ import 'package:megaladon/presentation/widgets/text/title.dart';
 class HeaderAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HeaderAppBar(
       {super.key,
-      this.padding = const EdgeInsets.only(bottom: 30, top: 10),
       this.isMenu = false,
       this.isBack = false,
       this.onTrailing,
@@ -15,62 +14,41 @@ class HeaderAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool isBack;
   final bool isMenu;
   final String? title;
-
   final VoidCallback? onTrailing;
-
-  final EdgeInsets padding;
   final Widget? trailing;
 
   @override
-  Size get preferredSize => const Size.fromHeight(70);
-
-  Null Function() _back(BuildContext context) => () {
-        context.router.pop();
-      };
-
-  Null Function() _showDrawer(BuildContext context) => () {
-        getItApp.get<GlobalKey<ScaffoldState>>().currentState?.openDrawer();
-      };
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
   @override
-  Widget build(BuildContext context) => Container(
-        padding: padding,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            if (isMenu)
-              GestureDetector(
-                onTap: _showDrawer(context),
-                child: const Icon(
-                  Icons.menu,
-                  size: 30,
-                ),
+  Widget build(BuildContext context) => AppBar(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        leading: isMenu
+            ? IconButton(
+                icon: const Icon(Icons.menu, size: 30),
+                onPressed: () => getItApp
+                    .get<GlobalKey<ScaffoldState>>()
+                    .currentState
+                    ?.openDrawer(),
               )
-            else if (isBack)
-              GestureDetector(
-                onTap: _back(context),
-                child: const Icon(
-                  Icons.arrow_back_ios,
-                  size: 30,
-                ),
-              )
-            else
-              Container(),
-            Expanded(child: TitleApp(title ?? '')),
-            if (onTrailing != null)
-              GestureDetector(
-                onTap: onTrailing,
-                child: (trailing == null)
-                    ? const Icon(
-                        Icons.more_horiz,
-                        size: 30,
-                      )
-                    : trailing,
-              )
-            else
-              Container(width: 30)
-          ],
-        ),
+            : isBack
+                ? IconButton(
+                    icon: const Icon(Icons.arrow_back_ios, size: 30),
+                    onPressed: () => context.router.pop(),
+                  )
+                : null,
+        title: TitleApp(title ?? ''),
+        actions: [
+          if (onTrailing != null)
+            GestureDetector(
+              onTap: onTrailing,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 16),
+                child: trailing ?? const Icon(Icons.more_horiz, size: 30),
+              ),
+            ),
+        ],
       );
 }
