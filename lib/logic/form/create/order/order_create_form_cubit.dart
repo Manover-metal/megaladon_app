@@ -83,7 +83,7 @@ class OrderCreateFormCubit extends Cubit<OrderCreateFormState> {
               priceMax: int.tryParse(state.priceMax.value),
               priceRecommended: int.tryParse(state.priceRecommended.value),
               categoryId: state.category.value,
-              cityId: state.city.value,
+              cityId: state.city.value!,
               files: files))
           .then((value) async {
         print('s');

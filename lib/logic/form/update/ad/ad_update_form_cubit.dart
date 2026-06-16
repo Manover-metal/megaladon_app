@@ -29,17 +29,17 @@ class AdUpdateFormCubit extends Cubit<AdUpdateFormState> {
     required String title,
     required String description,
     required String price,
-    required CityModel city,
-    required AdvertCategoryModel category,
+    required CityModel? city,
+    required AdvertCategoryModel? category,
     required String phone,
     required List<PlatformFile> media,
     required AdvertType type,
   }) {
     var titleForm = TitleFormModel.dirty(title);
-    var priceForm = PriceFormModel.dirty(price, false);
+    var priceForm = PriceFormModel.dirty(price);
     var descriptionForm = DescriptionFormModel.dirty(description);
-    var cityForm = CityFormModel.dirty(city.id);
-    var categoryForm = AdvertCategoryFormModel.dirty(category.id);
+    var cityForm = CityFormModel.dirty(city?.id);
+    var categoryForm = AdvertCategoryFormModel.dirty(category?.id);
     var phoneForm = PhoneFormModel.dirty(phone, false);
 
     var status = Formz.validate([
@@ -85,15 +85,17 @@ class AdUpdateFormCubit extends Cubit<AdUpdateFormState> {
               title: state.title.value,
               description: state.title.value,
               price: int.tryParse(state.price.value),
-              categoryId: state.category.value,
-              cityId: state.city.value,
+              categoryId: state.category.value!,
+              cityId: state.city.value!,
               additionalPhone: state.phone.value,
               media: files,
               type: state.type,
             ))
         .then((value) {
       emit(state.copyWith(formState: EnumFormState.success));
-    }).catchError((error) {
+    }).catchError((error, stackTrace) {
+      print(error);
+      print(stackTrace);
       if (error is DioException) {
         if (error.response?.statusCode == 403) {
           authBloc.add(AuthLogoutEvent());

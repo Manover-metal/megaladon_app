@@ -22,7 +22,7 @@ class StoreIndexRequestParams {
       'last': last.name,
       'desc': desc ? 1 : 0,
       // 'sort': sort.name,
-      'city_id': city?.id == CityModel.nothing.id ? null : city?.id,
+      'city_id': city?.id,
     };
     return data;
   }

@@ -20,27 +20,20 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
     required String password,
     required String passwordConfirmation,
   }) {
-    var oldPasswordForm = PasswordFormModel.dirty(password);
+    var oldPasswordForm = PasswordFormModel.dirty(oldPassword);
     var passwordForm = PasswordFormModel.dirty(password);
     var passwordConfirmationForm =
         PasswordConfirmationFormModel.dirty(password, passwordConfirmation);
 
     final status = Formz.validate(
         [passwordForm, passwordConfirmationForm, oldPasswordForm]);
-    if (!status) {
-      if (passwordForm.isNotValid)
-        emit(ChangePasswordState(
-            error: ErrorModel([passwordForm.error.toString()]),
-            status: ChangePasswordStatus.error));
-      if (passwordConfirmationForm.isNotValid)
-        emit(ChangePasswordState(
-            error: ErrorModel([passwordConfirmationForm.error.toString()]),
-            status: ChangePasswordStatus.error));
-      if (oldPasswordForm.isNotValid)
-        emit(ChangePasswordState(
-            error: ErrorModel([oldPasswordForm.error.toString()]),
-            status: ChangePasswordStatus.error));
-    }
+
+    emit(state.copyWith(
+      oldPassword: oldPasswordForm,
+      password: passwordForm,
+      passwordConfirmation: passwordConfirmationForm,
+      status: ChangePasswordStatus.initial,
+    ));
 
     return status;
   }
@@ -52,22 +45,21 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
   }) async {
     if (state.status == ChangePasswordStatus.loading) return;
 
-    emit(const ChangePasswordState(status: ChangePasswordStatus.loading));
+    emit(state.copyWith(status: ChangePasswordStatus.loading));
     await _repository
         .changePassword(oldPassword, password, passwordConfirmation)
         .then((value) {
-      print(value);
-      emit(const ChangePasswordState(status: ChangePasswordStatus.success));
-    }).catchError((error) {
+      emit(state.copyWith(status: ChangePasswordStatus.success));
+    }).catchError((Object error) {
       if (error is DioException) {
         if (error.response?.statusCode == 403) {
           authBloc.add(AuthLogoutEvent());
         }
-        emit(ChangePasswordState(
+        emit(state.copyWith(
             error: ErrorModel.parseDio(error),
             status: ChangePasswordStatus.error));
       } else {
-        emit(ChangePasswordState(
+        emit(state.copyWith(
             error: ErrorModel.nothing, status: ChangePasswordStatus.error));
       }
     });

@@ -31,8 +31,9 @@ class ServiceTypeMultiPickerController
   @override
   void dispose() {
     for (final value in value) {
-      value.removeListener(_listener);
-      value.dispose();
+      value
+        ..removeListener(_listener)
+        ..dispose();
     }
     super.dispose();
   }

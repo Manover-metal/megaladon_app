@@ -3,7 +3,7 @@ class OrderCategoryModel {
   final int id;
   final String name;
 
-  static OrderCategoryModel fromJson(data) {
+  static OrderCategoryModel fromJson(Map<String, dynamic> data) {
     try {
       return OrderCategoryModel(
         id: data['id'] as int,

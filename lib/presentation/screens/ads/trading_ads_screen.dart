@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/screens/advert/main/advert_screen_main_cubit.dart';
+import 'package:megaladon/logic/screens/service/main/service_screen_main_cubit.dart';
 import 'package:megaladon/presentation/screens/orders/list_my_orders_screen.dart';
 import 'package:megaladon/presentation/widgets/bottom_sheet/filters/filter_ad_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/card/ad_card.dart';
@@ -26,8 +27,8 @@ class _TradingAdsScreenState extends State<TradingAdsScreen>
   late TabController _tabController;
 
   Future _onRefresh() async {
-    await context.read<AdvertScreenMainCubit>().fetchAdvert();
-    await context.read<AdvertScreenMainCubit>().fetchService();
+    await context.read<AdvertScreenMainCubit>().fetch();
+    await context.read<ServiceScreenMainCubit>().fetch();
   }
 
   Future<void> _showFilter() async {
@@ -39,8 +40,8 @@ class _TradingAdsScreenState extends State<TradingAdsScreen>
         elevation: 100,
         builder: (_) => const FilterAdBottomSheet());
     if (result != null) {
-      context.read<AdvertScreenMainCubit>().fetchAdvert();
-      context.read<AdvertScreenMainCubit>().fetchService();
+      context.read<AdvertScreenMainCubit>().fetch();
+      context.read<ServiceScreenMainCubit>().fetch();
     }
   }
 
@@ -50,7 +51,7 @@ class _TradingAdsScreenState extends State<TradingAdsScreen>
       final cubit = context.read<AdvertScreenMainCubit>();
       if (cubit.state.status != AdverScreenMainStatus.loading) {
         var params = cubit.state.params;
-        cubit.fetchAdvert(
+        cubit.fetch(
             params: params.copyWith(
                 startRow: params.startRow + params.rowsPerPage));
       }
@@ -60,10 +61,10 @@ class _TradingAdsScreenState extends State<TradingAdsScreen>
   void _listenerServiceScroll() {
     if (_scrollServiceController.position.maxScrollExtent <
         _scrollServiceController.position.pixels) {
-      final cubit = context.read<AdvertScreenMainCubit>();
-      if (cubit.state.status != AdverScreenMainStatus.loading) {
+      final cubit = context.read<ServiceScreenMainCubit>();
+      if (cubit.state.status != ServiceScreenMainStatus.loading) {
         var params = cubit.state.params;
-        cubit.fetchService(
+        cubit.fetch(
             params: params.copyWith(
                 startRow: params.startRow + params.rowsPerPage));
       }
@@ -163,17 +164,18 @@ class _TradingAdsScreenState extends State<TradingAdsScreen>
                         constraints: BoxConstraints(
                             minHeight: MediaQuery.of(context).size.height),
                         padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: BlocBuilder<AdvertScreenMainCubit,
-                            AdvertScreenMainState>(
+                        child: BlocBuilder<ServiceScreenMainCubit,
+                            ServiceScreenMainState>(
                           builder: (context, state) => Column(
                             children: [
                               ...state.services
                                   .map((advert) => AdCard(advert: advert))
                                   .toList(),
-                              if (state.status == AdverScreenMainStatus.loading)
+                              if (state.status ==
+                                  ServiceScreenMainStatus.loading)
                                 const Loader(padding: 10)
                               else if (state.status ==
-                                  AdverScreenMainStatus.error)
+                                  ServiceScreenMainStatus.error)
                                 ErrorMessage(error: state.error!)
                               else if (state.stock)
                                 StockMessage(

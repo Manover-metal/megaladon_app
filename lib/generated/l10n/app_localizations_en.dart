@@ -102,6 +102,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get choose_city => 'Choose city';
 
   @override
+  String get city_selection_title => 'Select a city';
+
+  @override
+  String get company_type_selection_title => 'Select a type';
+
+  @override
+  String get search => 'Search';
+
+  @override
   String get desired_budget => 'Desired budget (optional)';
 
   @override
@@ -510,6 +519,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get language => 'Language';
 
   @override
+  String get theme => 'Theme';
+
+  @override
+  String get theme_dark => 'Dark';
+
+  @override
+  String get theme_light => 'Light';
+
+  @override
+  String get theme_system => 'System';
+
+  @override
   String get about_the_application => 'About the application';
 
   @override
@@ -810,4 +831,91 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get last_month => 'Last month';
+
+  @override
+  String get form_error_bin_empty => 'BIN/IIN is not filled';
+
+  @override
+  String get form_error_bin_min => 'BIN/IIN is not fully filled';
+
+  @override
+  String get form_error_bin_max => 'BIN/IIN maximum 12 digits';
+
+  @override
+  String get form_error_date_offer_empty => 'Work time is not filled';
+
+  @override
+  String get form_error_description_empty => 'Description is empty';
+
+  @override
+  String get form_error_description_limit =>
+      'Description exceeds 1000 characters';
+
+  @override
+  String get form_error_email_empty => 'Email is empty';
+
+  @override
+  String get form_error_email_invalid => 'Not a valid email';
+
+  @override
+  String get form_error_expired_at_empty => 'Response relevance is not filled';
+
+  @override
+  String get form_error_lat_empty => 'Latitude is not filled';
+
+  @override
+  String get form_error_lat_min => 'Latitude cannot be less than -90°';
+
+  @override
+  String get form_error_lat_max => 'Latitude cannot be greater than +90°';
+
+  @override
+  String get form_error_lon_empty => 'Longitude is not filled';
+
+  @override
+  String get form_error_lon_min => 'Longitude cannot be less than -180°';
+
+  @override
+  String get form_error_lon_max => 'Longitude cannot be greater than 180°';
+
+  @override
+  String get form_error_name_empty => 'Name is empty';
+
+  @override
+  String get form_error_password_empty => 'Password is empty';
+
+  @override
+  String get form_error_password_min =>
+      'Password must be at least 8 characters';
+
+  @override
+  String get form_error_password_confirmation_not_match =>
+      'Passwords do not match';
+
+  @override
+  String get form_error_phone_empty => 'Phone number is empty';
+
+  @override
+  String get form_error_pincode_empty => 'Code is empty';
+
+  @override
+  String get form_error_pincode_min => 'Code must be 6 characters';
+
+  @override
+  String get form_error_price_empty => 'Fill in the price';
+
+  @override
+  String get form_error_title_empty => 'Title is empty';
+
+  @override
+  String get form_error_city_empty => 'Select city';
+
+  @override
+  String get form_error_company_type_empty => 'Select type';
+
+  @override
+  String get form_error_advert_category_empty => 'Select category';
+
+  @override
+  String get form_error_order_category_empty => 'Select category';
 }

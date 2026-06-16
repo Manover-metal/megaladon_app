@@ -1,4 +1,3 @@
-import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/dictionary/service_type_model.dart';
 
 class ChangeExecutorRequestParams {
@@ -8,14 +7,10 @@ class ChangeExecutorRequestParams {
       required this.fullAddress,
       required this.lon,
       required this.lat,
-      required this.city,
-      required this.description,
       this.services = const []});
   final String name;
   final String bin;
   final String fullAddress;
-  final String description;
-  final CityModel city;
   final double lon;
   final double lat;
   final List<ServiceTypeModel> services;
@@ -28,8 +23,6 @@ class ChangeExecutorRequestParams {
       'lon': lon,
       'lat': lat,
       'services': services.map((e) => e.id).toList(),
-      'description': description,
-      'city_id': city.id
     };
     return data;
   }

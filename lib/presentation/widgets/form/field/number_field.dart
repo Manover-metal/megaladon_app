@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class NumberFieldApp extends StatelessWidget {
-  const NumberFieldApp({super.key, this.controller, this.label, this.icon});
+  const NumberFieldApp(
+      {super.key, this.controller, this.label, this.icon, this.errorText});
   final TextEditingController? controller;
   final String? label;
   final Widget? icon;
+  final String? errorText;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -24,7 +26,10 @@ class NumberFieldApp extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.tertiary,
                 border: Border.all(
-                    color: Theme.of(context).colorScheme.primary, width: 0.5),
+                    color: errorText != null
+                        ? Theme.of(context).colorScheme.error
+                        : Theme.of(context).colorScheme.primary,
+                    width: 0.5),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: TextField(
@@ -39,6 +44,15 @@ class NumberFieldApp extends StatelessWidget {
                 ),
               ),
             ),
+            if (errorText != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 4, left: 4),
+                child: Text(
+                  errorText!,
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.error, fontSize: 12),
+                ),
+              ),
           ],
         ),
       );

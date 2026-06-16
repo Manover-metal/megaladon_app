@@ -6,12 +6,14 @@ class DictionaryState extends Equatable {
       this.orderCategories = const [],
       this.advertCategories = const [],
       this.serviceTypes = const [],
+      this.companyTypes = const [],
       this.subscribesStore = const [],
       this.subscribesExecutor = const []});
   final List<CityModel> cities;
   final List<OrderCategoryModel> orderCategories;
   final List<AdvertCategoryModel> advertCategories;
   final List<ServiceTypeModel> serviceTypes;
+  final List<CompanyTypeModel> companyTypes;
   final List<SubscribeModel> subscribesStore;
   final List<SubscribeModel> subscribesExecutor;
 
@@ -20,6 +22,7 @@ class DictionaryState extends Equatable {
           List<OrderCategoryModel>? orderCategories,
           List<AdvertCategoryModel>? advertCategories,
           List<ServiceTypeModel>? serviceTypes,
+          List<CompanyTypeModel>? companyTypes,
           List<SubscribeModel>? subscribesStore,
           List<SubscribeModel>? subscribesExecutor}) =>
       DictionaryState(
@@ -27,6 +30,7 @@ class DictionaryState extends Equatable {
           orderCategories: orderCategories ?? this.orderCategories,
           advertCategories: advertCategories ?? this.advertCategories,
           serviceTypes: serviceTypes ?? this.serviceTypes,
+          companyTypes: companyTypes ?? this.companyTypes,
           subscribesExecutor: subscribesExecutor ?? this.subscribesExecutor,
           subscribesStore: subscribesStore ?? this.subscribesStore);
 
@@ -36,6 +40,7 @@ class DictionaryState extends Equatable {
         orderCategories,
         advertCategories,
         serviceTypes,
+        companyTypes,
         subscribesExecutor,
         subscribesStore
       ];

@@ -27,7 +27,7 @@ class OrderIndexRequestParams {
       'last': last.name,
       'desc': desc ? 1 : 0,
       'sortBy': sort.name,
-      'city_id': city?.id == CityModel.nothing.id ? null : city?.id,
+      'city_id': city?.id,
       'category':
           category?.id == OrderCategoryModel.nothing.id ? null : category?.id
     };

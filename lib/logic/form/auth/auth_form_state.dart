@@ -3,8 +3,8 @@ part of 'auth_form_cubit.dart';
 class AuthFormState extends Equatable {
   const AuthFormState(
       {this.status = false,
-      this.phone = const PhoneFormModel.dirty(''),
-      this.password = const PasswordFormModel.dirty(''),
+      this.phone = const PhoneFormModel.pure(),
+      this.password = const PasswordFormModel.pure(),
       this.countTry = 0});
   final bool status;
   final PhoneFormModel phone;

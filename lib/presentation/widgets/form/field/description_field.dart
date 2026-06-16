@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 
 class DescriptionFieldApp extends StatelessWidget {
   const DescriptionFieldApp(
-      {super.key, this.controller, this.label, this.icon});
+      {super.key, this.controller, this.label, this.icon, this.errorText});
   final TextEditingController? controller;
   final String? label;
   final Widget? icon;
+  final String? errorText;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -24,7 +25,10 @@ class DescriptionFieldApp extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.tertiary,
                 border: Border.all(
-                    color: Theme.of(context).colorScheme.primary, width: 0.5),
+                    color: errorText != null
+                        ? Theme.of(context).colorScheme.error
+                        : Theme.of(context).colorScheme.primary,
+                    width: 0.5),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: TextField(
@@ -38,6 +42,15 @@ class DescriptionFieldApp extends StatelessWidget {
                 ),
               ),
             ),
+            if (errorText != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 4, left: 4),
+                child: Text(
+                  errorText!,
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.error, fontSize: 12),
+                ),
+              ),
           ],
         ),
       );

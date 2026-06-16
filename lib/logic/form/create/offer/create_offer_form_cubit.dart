@@ -23,12 +23,12 @@ class CreateOfferFormCubit extends Cubit<CreateOfferFormState> {
   bool checkCreate({
     required String description,
     required String price,
-    required CityModel city,
+    required CityModel? city,
     required String date,
   }) {
     var descriptionForm = DescriptionFormModel.dirty(description);
     var priceFormModel = PriceFormModel.dirty(price);
-    var cityForm = CityFormModel.dirty(city.id);
+    var cityForm = CityFormModel.dirty(city?.id);
     var dateForm = DateOfferFormModel.dirty(date);
 
     var status =
@@ -54,7 +54,7 @@ class CreateOfferFormCubit extends Cubit<CreateOfferFormState> {
               OfferCreateRequestParams(
                 comment: state.description.value,
                 price: state.price.value,
-                cityId: state.city.value,
+                cityId: state.city.value!,
                 date: state.date.value,
               ))
           .then((value) {

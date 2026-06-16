@@ -56,10 +56,6 @@ class _DetailsExecutorScreenState extends State<DetailsExecutorScreen> {
                           DataTile(
                               title: AppLocalizations.of(context)!.rating,
                               data: state.executor.rating ?? '0'),
-                          if (state.executor.city != null)
-                            DataTile(
-                                title: AppLocalizations.of(context)!.city,
-                                data: state.executor.city!.name),
                           if (state.executor.fullAddress != null)
                             DataTile(
                                 title: AppLocalizations.of(context)!.address,
@@ -69,11 +65,6 @@ class _DetailsExecutorScreenState extends State<DetailsExecutorScreen> {
                                 title: AppLocalizations.of(context)!
                                     .the_number_of_orders,
                                 data: state.executor.countOrders.toString()),
-                          if (state.executor.description != null)
-                            DataTile(
-                                title:
-                                    AppLocalizations.of(context)!.description,
-                                data: state.executor.description ?? ''),
                           const Divider(thickness: 1),
                         ],
                       );

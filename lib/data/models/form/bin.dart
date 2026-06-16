@@ -1,19 +1,21 @@
 import 'package:formz/formz.dart';
+import 'package:megaladon/data/models/form/localizable_error.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 
-enum BinValidationError {
+enum BinValidationError implements LocalizableError {
   empty,
   min,
   max;
 
   @override
-  String toString() {
+  String localize(AppLocalizations l10n) {
     switch (this) {
       case BinValidationError.empty:
-        return 'BIN/IIN is not filled';
+        return l10n.form_error_bin_empty;
       case BinValidationError.min:
-        return 'BIN/INN is not fully filled';
+        return l10n.form_error_bin_min;
       case BinValidationError.max:
-        return 'BIN/INN maximum 12 digits';
+        return l10n.form_error_bin_max;
     }
   }
 }

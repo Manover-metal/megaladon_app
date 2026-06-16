@@ -1,14 +1,18 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:megaladon/core/dio/index.dart';
 import 'package:megaladon/core/dio/interceptors/auth_interceptors.dart';
-import 'package:megaladon/core/isar/index.dart';
+import 'package:megaladon/core/locale_storage/locale_storage.dart';
 import 'package:megaladon/data/models/auth/auth_model.dart';
-import 'package:megaladon/data/models/executor_model.dart';
-import 'package:megaladon/data/models/store_model.dart';
-import 'package:megaladon/data/models/user_model.dart';
 
 class AuthRepository {
+  AuthRepository({required this.localeStorage});
+
   AuthInterceptor? interceptor;
+  final LocaleStorage localeStorage;
+
+  static const _authKey = 'auth';
 
   Future<AuthModel> login(
           {required String phone, required String password}) async =>
@@ -30,12 +34,6 @@ class AuthRepository {
                 logout();
               }
             }
-            // if(error.statusCode == 403) {
-            //
-            // }
-
-            // logout();
-            // return error;
           });
 
   Future confirmRegister({required String phone, required String code}) async =>
@@ -53,57 +51,20 @@ class AuthRepository {
           data: {'phone': phone}).then((value) => value);
 
   Future<AuthModel?> read() async {
-    var auth = await IsarService.I.authModels.get(1);
-    if (auth != null) {
+    final json = await localeStorage.getString(_authKey);
+    if (json == null) return null;
+    try {
+      final auth = AuthModel.fromJson(jsonDecode(json) as Map<String, dynamic>);
       _addInterceptor(auth);
+      return auth;
+    } catch (e) {
+      return null;
     }
-    return auth;
   }
 
-  Future<void> write(
-    AuthModel auth,
-  ) async {
+  Future<void> write(AuthModel auth) async {
     _addInterceptor(auth);
-    await IsarService.I.writeTxn(() async {
-      await IsarService.I.authModels.put(auth);
-      if (auth.user.value != null) {
-        await IsarService.I.userModels.put(auth.user.value!);
-        await auth.user.save();
-      }
-
-      if (auth.executor.value != null) {
-        await IsarService.I.executorModels.put(auth.executor.value!);
-        await auth.executor.save();
-      }
-      if (auth.store.value != null) {
-        await IsarService.I.storeModels.put(auth.store.value!);
-        await auth.store.save();
-      }
-    });
-  }
-
-  Future<void> addUser(AuthModel auth, UserModel user) async {
-    await IsarService.I.writeTxn(() async {
-      await IsarService.I.authModels.put(auth);
-      await IsarService.I.userModels.put(user);
-      await auth.user.save();
-    });
-  }
-
-  Future<void> addExecutor(AuthModel auth, ExecutorModel executor) async {
-    await IsarService.I.writeTxn(() async {
-      await IsarService.I.authModels.put(auth);
-      await IsarService.I.executorModels.put(executor);
-      await auth.executor.save();
-    });
-  }
-
-  Future<void> addStore(AuthModel auth, StoreModel store) async {
-    await IsarService.I.writeTxn(() async {
-      await IsarService.I.authModels.put(auth);
-      await IsarService.I.storeModels.put(store);
-      await auth.store.save();
-    });
+    await localeStorage.setString(_authKey, jsonEncode(auth.toJson()));
   }
 
   void _addInterceptor(AuthModel auth) {
@@ -112,8 +73,6 @@ class AuthRepository {
   }
 
   Future<void> delete() async {
-    await IsarService.I.writeTxn(() async {
-      await IsarService.I.authModels.clear();
-    });
+    await localeStorage.remove(_authKey);
   }
 }

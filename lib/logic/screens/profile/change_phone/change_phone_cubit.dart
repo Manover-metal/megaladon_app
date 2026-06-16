@@ -27,16 +27,12 @@ class ChangePhoneCubit extends Cubit<ChangePhoneState> {
     var passwordForm = PasswordFormModel.dirty(password);
 
     final status = Formz.validate([passwordForm, phoneForm]);
-    if (!status) {
-      if (passwordForm.isNotValid)
-        emit(ChangePhoneState(
-            error: ErrorModel([passwordForm.error.toString()]),
-            status: ChangePhoneStatus.error));
-      if (phoneForm.isNotValid)
-        emit(ChangePhoneState(
-            error: ErrorModel([phoneForm.error.toString()]),
-            status: ChangePhoneStatus.error));
-    }
+
+    emit(state.copyWith(
+      phone: phoneForm,
+      password: passwordForm,
+      status: ChangePhoneStatus.initial,
+    ));
 
     return status;
   }
@@ -49,16 +45,12 @@ class ChangePhoneCubit extends Cubit<ChangePhoneState> {
     var pincodeForm = PincodeFormModel.dirty(code);
 
     final status = Formz.validate([pincodeForm, phoneForm]);
-    if (!status) {
-      if (pincodeForm.isNotValid)
-        emit(ChangePhoneState(
-            error: ErrorModel([pincodeForm.error.toString()]),
-            status: ChangePhoneStatus.error));
-      if (phoneForm.isNotValid)
-        emit(ChangePhoneState(
-            error: ErrorModel([phoneForm.error.toString()]),
-            status: ChangePhoneStatus.error));
-    }
+
+    emit(state.copyWith(
+      phone: phoneForm,
+      code: pincodeForm,
+      status: ChangePhoneStatus.initial2,
+    ));
 
     return status;
   }
@@ -69,21 +61,21 @@ class ChangePhoneCubit extends Cubit<ChangePhoneState> {
   }) async {
     if (state.status == ChangePhoneStatus.loading) return;
 
-    emit(const ChangePhoneState(status: ChangePhoneStatus.loading));
+    emit(state.copyWith(status: ChangePhoneStatus.loading));
     await _repository
         .changePhoneStepStart(phone: phone, password: password)
         .then((value) {
-      emit(const ChangePhoneState(status: ChangePhoneStatus.success));
-    }).catchError((error) {
+      emit(state.copyWith(status: ChangePhoneStatus.success));
+    }).catchError((Object error) {
       if (error is DioException) {
         if (error.response?.statusCode == 403) {
           authBloc.add(AuthLogoutEvent());
         }
-        emit(ChangePhoneState(
+        emit(state.copyWith(
             error: ErrorModel.parseDio(error),
             status: ChangePhoneStatus.error));
       } else {
-        emit(ChangePhoneState(
+        emit(state.copyWith(
             error: ErrorModel.nothing, status: ChangePhoneStatus.error));
       }
     });
@@ -95,22 +87,22 @@ class ChangePhoneCubit extends Cubit<ChangePhoneState> {
   }) async {
     if (state.status == ChangePhoneStatus.loading2) return;
 
-    emit(const ChangePhoneState(status: ChangePhoneStatus.loading2));
+    emit(state.copyWith(status: ChangePhoneStatus.loading2));
     await _repository
         .changePhoneStepEnd(phone: phone, code: code)
         .then((value) {
-      profileCubit.updateData(profileCubit.state.user!.id);
-      emit(const ChangePhoneState(status: ChangePhoneStatus.success2));
-    }).catchError((error) {
+      profileCubit.updateData();
+      emit(state.copyWith(status: ChangePhoneStatus.success2));
+    }).catchError((Object error) {
       if (error is DioException) {
         if (error.response?.statusCode == 403) {
           authBloc.add(AuthLogoutEvent());
         }
-        emit(ChangePhoneState(
+        emit(state.copyWith(
             error: ErrorModel.parseDio(error),
             status: ChangePhoneStatus.error2));
       } else {
-        emit(ChangePhoneState(
+        emit(state.copyWith(
             error: ErrorModel.nothing, status: ChangePhoneStatus.error2));
       }
     });

@@ -6,14 +6,14 @@ class StoreRepository {
   Future<List<StoreModel>> index(StoreIndexRequestParams params) => ApiService.I
       .get('/store', queryParameters: params.toData())
       .then((value) =>
-          StoreModel.listFromJsonMini(value.data['list'] as List<dynamic>));
+          StoreModel.fromJsonList(value.data['list'] as List<dynamic>));
 
   Future<StoreModel> info(int id) => ApiService.I
       .get(
         '/store/$id',
       )
       .then((value) =>
-          StoreModel.fromJsonFull(value.data['store'] as Map<String, dynamic>));
+          StoreModel.fromJson(value.data['store'] as Map<String, dynamic>));
 
   Future createPrice() => ApiService.I
       .post(

@@ -51,12 +51,13 @@ class ContactModel {
   final ContactType type;
   final String? contactName;
 
-  static ContactModel fromJson(data) {
+  static ContactModel fromJson(Map<String, dynamic> data) {
     print(data);
     return ContactModel(
         type: ContactType.parse(data['type'] as String),
         value: data['value'] as String,
-        contactName: data['contact_name'] as String?);
+        contactName:
+            data['contact_name'] as String? ?? data['name'] as String?);
   }
 
   static List<ContactModel> fromJsonList(List<dynamic> data) => data
@@ -66,4 +67,10 @@ class ContactModel {
 
   static ContactModel get nothing =>
       ContactModel(value: '', contactName: '', type: ContactType.phone);
+
+  Map<String, dynamic> toJson() => {
+        'type': type.name,
+        'value': value,
+        'contact_name': contactName,
+      };
 }

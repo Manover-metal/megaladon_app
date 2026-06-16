@@ -86,15 +86,25 @@ class _ChangePhoneStartScreenState extends State<ChangePhoneStartScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  PhoneField(
-                    icon: const Icon(Icons.phone),
-                    label: AppLocalizations.of(context)!.new_phone,
-                    controller: _newPhone,
-                  ),
-                  TextFieldApp(
-                    icon: const Icon(Icons.lock),
-                    label: AppLocalizations.of(context)!.your_password,
-                    controller: _password,
+                  BlocBuilder<ChangePhoneCubit, ChangePhoneState>(
+                    builder: (context, state) => Column(
+                      children: [
+                        PhoneField(
+                          icon: const Icon(Icons.phone),
+                          label: AppLocalizations.of(context)!.new_phone,
+                          controller: _newPhone,
+                          errorText: state.phone.displayError
+                              ?.localize(AppLocalizations.of(context)!),
+                        ),
+                        TextFieldApp(
+                          icon: const Icon(Icons.lock),
+                          label: AppLocalizations.of(context)!.your_password,
+                          controller: _password,
+                          errorText: state.password.displayError
+                              ?.localize(AppLocalizations.of(context)!),
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(
                     height: 25,

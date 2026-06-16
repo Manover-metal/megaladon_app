@@ -21,14 +21,14 @@ class ChangeStoreFormCubit extends Cubit<ChangeStoreFormState> {
     required String bin,
     required String lat,
     required String lon,
-    required CityModel city,
+    required CityModel? city,
     required List<ContactModel> contacts,
   }) {
     var nameForm = NameFormModel.dirty(name);
     var binForm = BinFormModel.dirty(bin);
     var latForm = LatFormModel.dirty(lat);
     var lonForm = LonFormModel.dirty(lon);
-    var cityForm = CityFormModel.dirty(city.id);
+    var cityForm = CityFormModel.dirty(city?.id);
     var contactsForm = MultiContactFormModel.dirty(contacts);
 
     final status = Formz.validate(

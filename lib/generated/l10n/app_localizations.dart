@@ -286,6 +286,24 @@ abstract class AppLocalizations {
   /// **'Choose city'**
   String get choose_city;
 
+  /// No description provided for @city_selection_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a city'**
+  String get city_selection_title;
+
+  /// No description provided for @company_type_selection_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a type'**
+  String get company_type_selection_title;
+
+  /// No description provided for @search.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get search;
+
   /// No description provided for @desired_budget.
   ///
   /// In en, this message translates to:
@@ -1054,6 +1072,30 @@ abstract class AppLocalizations {
   /// **'Language'**
   String get language;
 
+  /// No description provided for @theme.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get theme;
+
+  /// No description provided for @theme_dark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get theme_dark;
+
+  /// No description provided for @theme_light.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get theme_light;
+
+  /// No description provided for @theme_system.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get theme_system;
+
   /// No description provided for @about_the_application.
   ///
   /// In en, this message translates to:
@@ -1623,6 +1665,174 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Last month'**
   String get last_month;
+
+  /// No description provided for @form_error_bin_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'BIN/IIN is not filled'**
+  String get form_error_bin_empty;
+
+  /// No description provided for @form_error_bin_min.
+  ///
+  /// In en, this message translates to:
+  /// **'BIN/IIN is not fully filled'**
+  String get form_error_bin_min;
+
+  /// No description provided for @form_error_bin_max.
+  ///
+  /// In en, this message translates to:
+  /// **'BIN/IIN maximum 12 digits'**
+  String get form_error_bin_max;
+
+  /// No description provided for @form_error_date_offer_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Work time is not filled'**
+  String get form_error_date_offer_empty;
+
+  /// No description provided for @form_error_description_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Description is empty'**
+  String get form_error_description_empty;
+
+  /// No description provided for @form_error_description_limit.
+  ///
+  /// In en, this message translates to:
+  /// **'Description exceeds 1000 characters'**
+  String get form_error_description_limit;
+
+  /// No description provided for @form_error_email_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Email is empty'**
+  String get form_error_email_empty;
+
+  /// No description provided for @form_error_email_invalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Not a valid email'**
+  String get form_error_email_invalid;
+
+  /// No description provided for @form_error_expired_at_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Response relevance is not filled'**
+  String get form_error_expired_at_empty;
+
+  /// No description provided for @form_error_lat_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Latitude is not filled'**
+  String get form_error_lat_empty;
+
+  /// No description provided for @form_error_lat_min.
+  ///
+  /// In en, this message translates to:
+  /// **'Latitude cannot be less than -90°'**
+  String get form_error_lat_min;
+
+  /// No description provided for @form_error_lat_max.
+  ///
+  /// In en, this message translates to:
+  /// **'Latitude cannot be greater than +90°'**
+  String get form_error_lat_max;
+
+  /// No description provided for @form_error_lon_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Longitude is not filled'**
+  String get form_error_lon_empty;
+
+  /// No description provided for @form_error_lon_min.
+  ///
+  /// In en, this message translates to:
+  /// **'Longitude cannot be less than -180°'**
+  String get form_error_lon_min;
+
+  /// No description provided for @form_error_lon_max.
+  ///
+  /// In en, this message translates to:
+  /// **'Longitude cannot be greater than 180°'**
+  String get form_error_lon_max;
+
+  /// No description provided for @form_error_name_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Name is empty'**
+  String get form_error_name_empty;
+
+  /// No description provided for @form_error_password_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Password is empty'**
+  String get form_error_password_empty;
+
+  /// No description provided for @form_error_password_min.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 8 characters'**
+  String get form_error_password_min;
+
+  /// No description provided for @form_error_password_confirmation_not_match.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get form_error_password_confirmation_not_match;
+
+  /// No description provided for @form_error_phone_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number is empty'**
+  String get form_error_phone_empty;
+
+  /// No description provided for @form_error_pincode_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Code is empty'**
+  String get form_error_pincode_empty;
+
+  /// No description provided for @form_error_pincode_min.
+  ///
+  /// In en, this message translates to:
+  /// **'Code must be 6 characters'**
+  String get form_error_pincode_min;
+
+  /// No description provided for @form_error_price_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Fill in the price'**
+  String get form_error_price_empty;
+
+  /// No description provided for @form_error_title_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Title is empty'**
+  String get form_error_title_empty;
+
+  /// No description provided for @form_error_city_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Select city'**
+  String get form_error_city_empty;
+
+  /// No description provided for @form_error_company_type_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Select type'**
+  String get form_error_company_type_empty;
+
+  /// No description provided for @form_error_advert_category_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Select category'**
+  String get form_error_advert_category_empty;
+
+  /// No description provided for @form_error_order_category_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Select category'**
+  String get form_error_order_category_empty;
 }
 
 class _AppLocalizationsDelegate

@@ -86,10 +86,12 @@ class _MyAdsScreenState extends State<MyAdsScreen>
 
   @override
   void dispose() {
-    _scrollAdvertController.removeListener(_listenerAdvertScroll);
-    _scrollAdvertController.dispose();
-    _scrollServiceController.removeListener(_listenerServiceScroll);
-    _scrollServiceController.dispose();
+    _scrollAdvertController
+      ..removeListener(_listenerAdvertScroll)
+      ..dispose();
+    _scrollServiceController
+      ..removeListener(_listenerServiceScroll)
+      ..dispose();
     super.dispose();
   }
 

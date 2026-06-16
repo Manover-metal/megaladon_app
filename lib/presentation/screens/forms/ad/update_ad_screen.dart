@@ -2,10 +2,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:megaladon/core/icons/icons.dart';
 import 'package:megaladon/data/models/advert_model.dart';
 import 'package:megaladon/data/models/dictionary/advert_type.dart';
 import 'package:megaladon/data/models/enum_form_state.dart';
+import 'package:megaladon/data/models/form/localizable_error.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/form/update/ad/ad_update_form_cubit.dart';
 import 'package:megaladon/logic/screens/orders/details/order_screen_details_cubit.dart';
@@ -55,22 +57,26 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
   bool _checkForm() {
     var form = context.read<AdUpdateFormCubit>();
     return form.checkUpdate(
-        title: _titleController.value.text,
-        description: _descriptionController.value.text,
-        price: _priceController.value.text,
-        category: _advertCategoryController.value,
-        city: _cityController.value,
-        phone: _phoneController.value.text,
-        media: _imageController.value,
-        type: widget.type);
+      title: _titleController.value.text,
+      description: _descriptionController.value.text,
+      price: _priceController.value.text,
+      category: _advertCategoryController.value,
+      city: _cityController.value,
+      phone: _phoneController.value.text,
+      media: _imageController.value,
+      type: widget.type,
+    );
   }
 
   dynamic _listenerForm(BuildContext context, AdUpdateFormState state) {
-    if (state.status) {
+    if (!state.status) {
       for (final element in state.props) {
         if (element is FormzInput && element.isNotValid) {
+          final err = element.error;
           return CustomSnackBar.error(
-            Text(element.error.toString()),
+            Text(err is LocalizableError
+                ? err.localize(AppLocalizations.of(context)!)
+                : err.toString()),
           ).view(context);
         }
       }
@@ -95,6 +101,11 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
       }
     }
   }
+
+  final phoneMaskFormatter = MaskTextInputFormatter(
+      mask: '+7 (###) ###-##-##',
+      filter: {'#': RegExp('[0-9]')},
+      type: MaskAutoCompletionType.lazy);
 
   @override
   void initState() {
@@ -136,49 +147,67 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
             child: Column(
               children: [
                 const SizedBox(height: 30),
-                TextFieldApp(
-                    controller: _titleController,
-                    label: AppLocalizations.of(context)!.name_field,
-                    icon: const Icon(Icons.edit)),
-                AdvertCategoryPicker(
-                    label: AppLocalizations.of(context)!.select_a_category,
-                    controller: _advertCategoryController),
-                CityPicker(
-                    label: AppLocalizations.of(context)!.choose_city,
-                    controller: _cityController),
-                DescriptionFieldApp(
-                  label:
-                      AppLocalizations.of(context)!.description_of_your_offer,
-                  controller: _descriptionController,
-                  icon: const Icon(IconPack.description),
-                ),
-                NumberFieldApp(
-                  label: AppLocalizations.of(context)!.price,
-                  controller: _priceController,
-                  icon: const Icon(Icons.money_sharp),
-                ),
-                PhoneField(
-                  controller: _phoneController,
-                  label: AppLocalizations.of(context)!.additional_Phone,
-                  icon: const Icon(Icons.phone),
-                ),
-                ImageMultiPicker(controller: _imageController),
-                // BlocConsumer(builder: builder, listener: listener)
                 BlocConsumer<AdUpdateFormCubit, AdUpdateFormState>(
                     listener: _listenerForm,
-                    builder: (context, state) {
-                      if (state.formState == EnumFormState.fetch) {
-                        return ElevatedButtonApp(
-                          child: Loader(
-                              color: Theme.of(context).colorScheme.surface),
-                          onPressed: () {},
-                        );
-                      }
-                      return ElevatedButtonApp(
-                        text: AppLocalizations.of(context)!.edit,
-                        onPressed: _create,
-                      );
-                    }),
+                    builder: (context, state) => Column(
+                          children: [
+                            TextFieldApp(
+                              controller: _titleController,
+                              label: AppLocalizations.of(context)!.name_field,
+                              icon: const Icon(Icons.edit),
+                              errorText: state.title.displayError
+                                  ?.localize(AppLocalizations.of(context)!),
+                            ),
+                            AdvertCategoryPicker(
+                                label: AppLocalizations.of(context)!
+                                    .select_a_category,
+                                controller: _advertCategoryController,
+                                errorText: state.category.displayError
+                                    ?.localize(AppLocalizations.of(context)!)),
+                            CityPicker(
+                                label:
+                                    AppLocalizations.of(context)!.choose_city,
+                                controller: _cityController,
+                                errorText: state.city.displayError
+                                    ?.localize(AppLocalizations.of(context)!)),
+                            DescriptionFieldApp(
+                              label: AppLocalizations.of(context)!
+                                  .description_of_your_offer,
+                              controller: _descriptionController,
+                              icon: const Icon(IconPack.description),
+                              errorText: state.description.displayError
+                                  ?.localize(AppLocalizations.of(context)!),
+                            ),
+                            NumberFieldApp(
+                              label: AppLocalizations.of(context)!.price,
+                              controller: _priceController,
+                              icon: const Icon(Icons.money_sharp),
+                              errorText: state.price.displayError
+                                  ?.localize(AppLocalizations.of(context)!),
+                            ),
+                            PhoneField(
+                              controller: _phoneController,
+                              label: AppLocalizations.of(context)!
+                                  .additional_Phone,
+                              icon: const Icon(Icons.phone),
+                              errorText: state.phone.displayError
+                                  ?.localize(AppLocalizations.of(context)!),
+                            ),
+                            ImageMultiPicker(controller: _imageController),
+                            if (state.formState == EnumFormState.fetch)
+                              ElevatedButtonApp(
+                                child: Loader(
+                                    color:
+                                        Theme.of(context).colorScheme.surface),
+                                onPressed: () {},
+                              )
+                            else
+                              ElevatedButtonApp(
+                                text: AppLocalizations.of(context)!.edit,
+                                onPressed: _create,
+                              ),
+                          ],
+                        )),
                 OutlinedButtonApp(
                   text: AppLocalizations.of(context)!.cancel,
                   onPressed: _back,

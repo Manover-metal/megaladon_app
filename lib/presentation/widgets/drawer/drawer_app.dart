@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
+import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
@@ -155,19 +156,19 @@ class DrawerApp extends StatelessWidget {
                 },
               ),
               const Spacer(),
-              BlocBuilder<AuthBloc, AuthState>(
+              BlocBuilder<ProfileScreenCubit, ProfileScreenState>(
                 builder: (context, state) => Padding(
                   padding: const EdgeInsets.all(20),
                   child: Column(
                     children: [
                       if (state is AuthLoginState) ...[
-                        if (state.auth.executor.value == null)
+                        if (state.user?.executor == null)
                           ElevatedButtonApp(
                             text: AppLocalizations.of(context)!
                                 .artist_registration,
                             onPressed: _registerExecutor(context),
                           ),
-                        if (state.auth.store.value == null)
+                        if (state.user?.store == null)
                           ElevatedButtonApp(
                             text:
                                 AppLocalizations.of(context)!.shop_registration,

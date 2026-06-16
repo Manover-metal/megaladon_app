@@ -6,9 +6,9 @@ import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/dictionary/dictionary_cubit.dart';
 
 class AdvertCategoryPickerController
-    extends ValueNotifier<AdvertCategoryModel> {
+    extends ValueNotifier<AdvertCategoryModel?> {
   AdvertCategoryPickerController({AdvertCategoryModel? category})
-      : super(category ?? AdvertCategoryModel.nothing);
+      : super(category);
 
   void _changeAdvertCategory(AdvertCategoryModel category) {
     value = category;
@@ -18,9 +18,13 @@ class AdvertCategoryPickerController
 
 class AdvertCategoryPicker extends StatefulWidget {
   const AdvertCategoryPicker(
-      {required this.label, required this.controller, super.key});
+      {required this.label,
+      required this.controller,
+      super.key,
+      this.errorText});
   final String label;
   final AdvertCategoryPickerController controller;
+  final String? errorText;
 
   @override
   State<AdvertCategoryPicker> createState() => _AdvertCategoryPickerState();
@@ -34,7 +38,7 @@ class _AdvertCategoryPickerState extends State<AdvertCategoryPicker> {
     if (advertCategories.isEmpty) return;
 
     var initialIndex = advertCategories.indexWhere(
-      (c) => c.id == widget.controller.value.id,
+      (c) => c.id == widget.controller.value?.id,
     );
     if (initialIndex < 0) initialIndex = 0;
 
@@ -102,18 +106,30 @@ class _AdvertCategoryPickerState extends State<AdvertCategoryPicker> {
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.tertiary,
                     border: Border.all(
-                      color: Theme.of(context).colorScheme.primary,
+                      color: widget.errorText != null
+                          ? Theme.of(context).colorScheme.error
+                          : Theme.of(context).colorScheme.primary,
                       width: 0.5,
                     ),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Row(
                     children: [
-                      Expanded(child: Text(advertCategory.name)),
+                      Expanded(child: Text(advertCategory?.name ?? '')),
                       const Icon(Icons.keyboard_arrow_down_outlined),
                     ],
                   ),
                 ),
+                if (widget.errorText != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4, left: 4),
+                    child: Text(
+                      widget.errorText!,
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.error,
+                          fontSize: 12),
+                    ),
+                  ),
               ],
             ),
           ),

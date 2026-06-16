@@ -1,12 +1,8 @@
-import 'package:isar/isar.dart';
 import 'package:megaladon/core/utils/parser.dart';
 import 'package:megaladon/data/models/contact_model.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/dictionary/file_model.dart';
 
-part 'store_model.g.dart';
-
-@collection
 class StoreModel {
   StoreModel({
     required this.id,
@@ -23,45 +19,29 @@ class StoreModel {
     this.city,
   });
 
-  final Id id;
+  final int id;
   final String fullAddress;
 
   final String? name;
-  final int? bin;
+  final String? bin;
   final String? rating;
   final String? photo;
   final double? lat;
   final double? lon;
   final bool hasPhone;
-
-  @ignore
   final List<FileModel> prices;
-
-  @ignore
   final CityModel? city;
-
-  @ignore
   final List<ContactModel>? contacts;
 
-  static StoreModel fromJsonMini(Map<String, dynamic> data) => StoreModel(
-      id: data['id'] as int,
-      name: data['name'] as String?,
-      hasPhone: false,
-      rating: data['rating'] as String?,
-      fullAddress: data['full_address'] as String,
-      photo: data['photo_url'] as String?,
-      city: data['city'] != null
-          ? CityModel.fromJson(data['city'] as Map<String, dynamic>)
-          : null);
-
-  static StoreModel fromJsonFull(Map<String, dynamic> data) {
+  static StoreModel fromJson(Map<String, dynamic> data) {
     var contacts = data['contacts'] != null
         ? ContactModel.fromJsonList(data['contacts'] as List<dynamic>)
         : null;
+
     return StoreModel(
         id: data['id'] as int,
         rating: data['rating'] as String?,
-        bin: Parser.toInt(data['bin']),
+        bin: data['bin'] as String?,
         fullAddress: data['full_address'] as String,
         photo: data['photo_url'] as String?,
         name: data['name'] as String?,
@@ -80,17 +60,23 @@ class StoreModel {
             : null);
   }
 
-  static StoreModel? fromJsonFullOrNull(Map<String, dynamic>? data) {
-    if (data == null) return null;
-    try {
-      return StoreModel.fromJsonFull(data);
-    } catch (e) {
-      return null;
-    }
-  }
+  static StoreModel? fromJsonOrNull(Map<String, dynamic>? data) => StoreModel.fromJson(data as Map<String, dynamic>);
 
-  static List<StoreModel> listFromJsonMini(List<dynamic> data) => data
-      .map<StoreModel>(
-          (item) => StoreModel.fromJsonMini(item as Map<String, dynamic>))
+  static List<StoreModel> fromJsonList(List<dynamic> list) => list
+      .map((value) => StoreModel.fromJson(value as Map<String, dynamic>))
       .toList();
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'bin': bin,
+        'full_address': fullAddress,
+        'photo_url': photo,
+        'rating': rating,
+        'lat': lat,
+        'lon': lon,
+        'prices': prices.map((p) => p.toJson()).toList(),
+        'city': city?.toJson(),
+        'contacts': contacts?.map((c) => c.toJson()).toList(),
+      };
 }

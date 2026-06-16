@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
+import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/presentation/widgets/bottom_sheet/filters/filter_order_my_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/card/order_card.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
@@ -104,7 +105,7 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen>
   }
 
   bool _isExecutor() {
-    final a = context.read<AuthBloc>().hasExecutor();
+    final a = context.read<ProfileScreenCubit>().hasExecutor();
     print(a);
     return a;
   }

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/dictionary/dictionary_cubit.dart';
+import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/presentation/widgets/card/subscribe_card.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 
@@ -45,9 +46,9 @@ class _SubscribeScreenState extends State<SubscribeScreen>
     super.dispose();
   }
 
-  bool _isExecutor() => context.read<AuthBloc>().hasExecutor();
+  bool _isExecutor() => context.read<ProfileScreenCubit>().hasExecutor();
 
-  bool _isStore() => context.read<AuthBloc>().hasStore();
+  bool _isStore() => context.read<ProfileScreenCubit>().hasStore();
 
   int _countFace() {
     var countFace = 0;

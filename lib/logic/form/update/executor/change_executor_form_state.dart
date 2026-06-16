@@ -9,7 +9,6 @@ class ChangeExecutorFormState extends Equatable {
       this.lat = const LatFormModel.pure(),
       this.lon = const LonFormModel.pure(),
       this.services = const MultiServiceTypeFormModel.pure(),
-      this.description = const DescriptionFormModel.pure(),
       this.countTry = 0});
   final bool status;
   final NameFormModel name;
@@ -19,11 +18,10 @@ class ChangeExecutorFormState extends Equatable {
   final LonFormModel lon;
   final MultiServiceTypeFormModel services;
   final int countTry;
-  final DescriptionFormModel description;
 
   @override
   List<Object?> get props =>
-      [status, name, city, bin, lat, lon, services, description, countTry];
+      [status, name, city, bin, lat, lon, services, countTry];
 
   ChangeExecutorFormState copyWith(
           {bool? status,
@@ -33,7 +31,6 @@ class ChangeExecutorFormState extends Equatable {
           LatFormModel? lat,
           LonFormModel? lon,
           MultiServiceTypeFormModel? services,
-          DescriptionFormModel? description,
           int? countTry}) =>
       ChangeExecutorFormState(
           status: status ?? this.status,
@@ -43,6 +40,5 @@ class ChangeExecutorFormState extends Equatable {
           lat: lat ?? this.lat,
           lon: lon ?? this.lon,
           services: services ?? this.services,
-          countTry: countTry ?? this.countTry,
-          description: description ?? this.description);
+          countTry: countTry ?? this.countTry);
 }

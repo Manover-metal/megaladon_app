@@ -1,13 +1,15 @@
 import 'package:formz/formz.dart';
+import 'package:megaladon/data/models/form/localizable_error.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 
-enum PhoneValidationError {
+enum PhoneValidationError implements LocalizableError {
   empty;
 
   @override
-  String toString() {
+  String localize(AppLocalizations l10n) {
     switch (this) {
       case PhoneValidationError.empty:
-        return 'Phone number is empty';
+        return l10n.form_error_phone_empty;
     }
   }
 }

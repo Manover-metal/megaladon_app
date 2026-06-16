@@ -5,6 +5,7 @@ class RegisterStoreFormState extends Equatable {
       {this.status = false,
       this.name = const NameFormModel.pure(),
       this.city = const CityFormModel.pure(),
+      this.type = const CompanyTypeFormModel.pure(),
       this.bin = const BinFormModel.pure(),
       this.lat = const LatFormModel.pure(),
       this.lon = const LonFormModel.pure(),
@@ -13,6 +14,7 @@ class RegisterStoreFormState extends Equatable {
   final bool status;
   final NameFormModel name;
   final CityFormModel city;
+  final CompanyTypeFormModel type;
   final BinFormModel bin;
   final LatFormModel lat;
   final LonFormModel lon;
@@ -21,12 +23,13 @@ class RegisterStoreFormState extends Equatable {
 
   @override
   List<Object?> get props =>
-      [status, name, city, bin, lat, lon, contacts, countTry];
+      [status, name, city, type, bin, lat, lon, contacts, countTry];
 
   RegisterStoreFormState copyWith(
           {bool? status,
           NameFormModel? name,
           CityFormModel? city,
+          CompanyTypeFormModel? type,
           BinFormModel? bin,
           LatFormModel? lat,
           LonFormModel? lon,
@@ -36,6 +39,7 @@ class RegisterStoreFormState extends Equatable {
         status: status ?? this.status,
         name: name ?? this.name,
         city: city ?? this.city,
+        type: type ?? this.type,
         bin: bin ?? this.bin,
         lat: lat ?? this.lat,
         lon: lon ?? this.lon,

@@ -102,6 +102,15 @@ class AppLocalizationsRu extends AppLocalizations {
   String get choose_city => 'Выберите город';
 
   @override
+  String get city_selection_title => 'Выбор города';
+
+  @override
+  String get company_type_selection_title => 'Выбор типа';
+
+  @override
+  String get search => 'Поиск';
+
+  @override
   String get desired_budget => 'Желаемый бюджет (не обязательно)';
 
   @override
@@ -153,7 +162,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get services => 'Услуги';
 
   @override
-  String get service => 'Сервис';
+  String get service => 'Услуга';
 
   @override
   String get subscription => 'Подписка';
@@ -328,7 +337,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get edit_ad => 'Изменить объявление';
 
   @override
-  String get editService => 'Изменить сервис';
+  String get editService => 'Изменить услуга';
 
   @override
   String get response_to_order => 'Отклик на заказ №';
@@ -510,6 +519,18 @@ class AppLocalizationsRu extends AppLocalizations {
   String get language => 'Язык';
 
   @override
+  String get theme => 'Тема';
+
+  @override
+  String get theme_dark => 'Тёмная';
+
+  @override
+  String get theme_light => 'Светлая';
+
+  @override
+  String get theme_system => 'Системная';
+
+  @override
   String get about_the_application => 'О приложении';
 
   @override
@@ -611,7 +632,7 @@ class AppLocalizationsRu extends AppLocalizations {
       'Контакты не полностью заполнены';
 
   @override
-  String get add_at_least_one_service => 'Добавьте минимум один сервис';
+  String get add_at_least_one_service => 'Добавьте минимум один услуга';
 
   @override
   String get category_is_not_filled_out => 'Категория не заполнена';
@@ -811,4 +832,90 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get last_month => 'Последний месяц';
+
+  @override
+  String get form_error_bin_empty => 'БИН/ИИН не заполнен';
+
+  @override
+  String get form_error_bin_min => 'БИН/ИИН заполнен не полностью';
+
+  @override
+  String get form_error_bin_max => 'БИН/ИИН максимум 12 цифр';
+
+  @override
+  String get form_error_date_offer_empty => 'Время работы не заполнено';
+
+  @override
+  String get form_error_description_empty => 'Описание не заполнено';
+
+  @override
+  String get form_error_description_limit => 'Описание превышает 1000 символов';
+
+  @override
+  String get form_error_email_empty => 'Email не заполнен';
+
+  @override
+  String get form_error_email_invalid => 'Некорректный email';
+
+  @override
+  String get form_error_expired_at_empty => 'Актуальность отклика не заполнена';
+
+  @override
+  String get form_error_lat_empty => 'Широта не заполнена';
+
+  @override
+  String get form_error_lat_min => 'Широта не может быть меньше -90°';
+
+  @override
+  String get form_error_lat_max => 'Широта не может быть больше +90°';
+
+  @override
+  String get form_error_lon_empty => 'Долгота не заполнена';
+
+  @override
+  String get form_error_lon_min => 'Долгота не может быть меньше -180°';
+
+  @override
+  String get form_error_lon_max => 'Долгота не может быть больше 180°';
+
+  @override
+  String get form_error_name_empty => 'Имя не заполнено';
+
+  @override
+  String get form_error_password_empty => 'Пароль не заполнен';
+
+  @override
+  String get form_error_password_min =>
+      'Пароль должен содержать минимум 8 символов';
+
+  @override
+  String get form_error_password_confirmation_not_match =>
+      'Пароли не совпадают';
+
+  @override
+  String get form_error_phone_empty => 'Номер телефона не заполнен';
+
+  @override
+  String get form_error_pincode_empty => 'Код не заполнен';
+
+  @override
+  String get form_error_pincode_min => 'Код должен содержать 6 символов';
+
+  @override
+  String get form_error_price_empty => 'Заполните цену';
+
+  @override
+  String get form_error_title_empty => 'Заголовок не заполнен';
+
+  @override
+  String get form_error_city_empty => 'Выберите город';
+
+  @override
+  String get form_error_company_type_empty => 'Выберите тип';
+
+  @override
+  String get form_error_advert_category_empty => 'Выберите категорию';
+
+  @override
+  String get form_error_order_category_empty => 'Выберите категорию';
 }

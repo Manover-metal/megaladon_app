@@ -1,16 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
-import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/dictionary/dictionary_cubit.dart';
+import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_selection_screen.dart';
 
-class CityPickerController extends ValueNotifier<CityModel> {
-  CityPickerController({CityModel? city}) : super(city ?? CityModel.nothing);
+class CityPickerController extends ValueNotifier<CityModel?> {
+  CityPickerController({CityModel? city}) : super(city);
 
   void _changeCity(CityModel city) {
-    print(city.id);
-    print(city.name);
     value = city;
     notifyListeners();
   }
@@ -18,10 +15,15 @@ class CityPickerController extends ValueNotifier<CityModel> {
 
 class CityPicker extends StatefulWidget {
   const CityPicker(
-      {required this.label, required this.controller, super.key, this.icon});
+      {required this.label,
+      required this.controller,
+      super.key,
+      this.icon,
+      this.errorText});
   final String label;
   final CityPickerController controller;
   final Widget? icon;
+  final String? errorText;
 
   @override
   State<CityPicker> createState() => _CityPickerState();
@@ -33,57 +35,18 @@ class _CityPickerState extends State<CityPicker> {
 
     if (cities.isEmpty) return;
 
-    for (final c in cities) {
-      print(c.name);
-    }
-
-    var initialIndex =
-        cities.indexWhere((c) => c.id == widget.controller.value.id);
-    if (initialIndex < 0) initialIndex = 0;
-
-    var selectedIndex = initialIndex;
-
-    await showCupertinoModalPopup<void>(
-      context: context,
-      builder: (ctx) => Container(
-        height: MediaQuery.of(ctx).size.height / 3.5 + 44,
-        color: Colors.black,
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CupertinoButton(
-                  child: Text(AppLocalizations.of(context)!.cancel),
-                  onPressed: () => Navigator.of(ctx).pop(),
-                ),
-                CupertinoButton(
-                  child: Text(AppLocalizations.of(context)!.select),
-                  onPressed: () {
-                    widget.controller._changeCity(cities[selectedIndex]);
-                    Navigator.of(ctx).pop();
-                  },
-                ),
-              ],
-            ),
-            Expanded(
-              child: CupertinoPicker(
-                scrollController:
-                    FixedExtentScrollController(initialItem: initialIndex),
-                itemExtent: 50,
-                looping: true,
-                onSelectedItemChanged: (index) => selectedIndex = index,
-                children: cities
-                    .map((c) => Center(
-                        child: Text(c.name,
-                            style: const TextStyle(color: Colors.white))))
-                    .toList(),
-              ),
-            ),
-          ],
+    final result = await Navigator.of(context).push<CityModel>(
+      MaterialPageRoute(
+        builder: (_) => CitySelectionScreen(
+          cities: cities,
+          selected: widget.controller.value,
         ),
       ),
     );
+
+    if (result != null) {
+      widget.controller._changeCity(result);
+    }
   }
 
   @override
@@ -107,18 +70,30 @@ class _CityPickerState extends State<CityPicker> {
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.tertiary,
                     border: Border.all(
-                      color: Theme.of(context).colorScheme.primary,
+                      color: widget.errorText != null
+                          ? Theme.of(context).colorScheme.error
+                          : Theme.of(context).colorScheme.primary,
                       width: 0.5,
                     ),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Row(
                     children: [
-                      Expanded(child: Text(city.name)),
+                      Expanded(child: Text(city?.name ?? '')),
                       const Icon(Icons.keyboard_arrow_down_outlined),
                     ],
                   ),
                 ),
+                if (widget.errorText != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4, left: 4),
+                    child: Text(
+                      widget.errorText!,
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.error,
+                          fontSize: 12),
+                    ),
+                  ),
               ],
             ),
           ),

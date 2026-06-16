@@ -109,13 +109,6 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
                                 ExecutorTile(
                                   executor: state.offer.executor!,
                                 ),
-                                if (state.offer.executor?.description != null)
-                                  DataTile(
-                                    title: AppLocalizations.of(context)!
-                                        .description2,
-                                    data:
-                                        state.offer.executor?.description ?? '',
-                                  ),
                                 Align(
                                   child: TextButton(
                                     onPressed:

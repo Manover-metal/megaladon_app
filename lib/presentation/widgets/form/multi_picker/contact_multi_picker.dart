@@ -29,8 +29,9 @@ class ContactTypeMultiPickerController
   @override
   void dispose() {
     for (final value in value) {
-      value.removeListener(_listener);
-      value.dispose();
+      value
+        ..removeListener(_listener)
+        ..dispose();
     }
     super.dispose();
   }
@@ -65,6 +66,7 @@ class _ContactTypeMultiPickerState extends State<ContactTypeMultiPicker> {
                 itemBuilder: (context, item) => Container(
                       margin: const EdgeInsets.symmetric(vertical: 20),
                       child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
                             child: ContactTypePicker(
@@ -72,11 +74,14 @@ class _ContactTypeMultiPickerState extends State<ContactTypeMultiPicker> {
                               controller: widget.controller.value[item],
                             ),
                           ),
-                          IconButton(
-                            onPressed: _removeByIndex(item),
-                            icon: Icon(
-                              Icons.remove_circle_outline_rounded,
-                              color: Theme.of(context).colorScheme.error,
+                          Padding(
+                            padding: const EdgeInsets.only(top: 32),
+                            child: IconButton(
+                              onPressed: _removeByIndex(item),
+                              icon: Icon(
+                                Icons.remove_circle_outline_rounded,
+                                color: Theme.of(context).colorScheme.error,
+                              ),
                             ),
                           )
                         ],

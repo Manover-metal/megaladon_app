@@ -87,15 +87,25 @@ class _ChangePhoneEndScreenState extends State<ChangePhoneEndScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  PhoneField(
-                    icon: const Icon(Icons.phone),
-                    label: AppLocalizations.of(context)!.old_phone,
-                    controller: _newPhone,
-                  ),
-                  TextFieldApp(
-                    icon: const Icon(Icons.lock),
-                    label: AppLocalizations.of(context)!.code,
-                    controller: _code,
+                  BlocBuilder<ChangePhoneCubit, ChangePhoneState>(
+                    builder: (context, state) => Column(
+                      children: [
+                        PhoneField(
+                          icon: const Icon(Icons.phone),
+                          label: AppLocalizations.of(context)!.old_phone,
+                          controller: _newPhone,
+                          errorText: state.phone.displayError
+                              ?.localize(AppLocalizations.of(context)!),
+                        ),
+                        TextFieldApp(
+                          icon: const Icon(Icons.lock),
+                          label: AppLocalizations.of(context)!.code,
+                          controller: _code,
+                          errorText: state.code.displayError
+                              ?.localize(AppLocalizations.of(context)!),
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(
                     height: 25,

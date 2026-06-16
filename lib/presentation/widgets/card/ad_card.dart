@@ -27,7 +27,7 @@ class AdCard extends StatelessWidget {
             ),
             padding: const EdgeInsets.all(10),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (advert.media.isNotEmpty)
                   ClipRRect(
@@ -51,35 +51,64 @@ class AdCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                const SizedBox(
-                  height: 10,
+                const SizedBox(height: 10),
+                Text(
+                  advert.title,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(fontWeight: FontWeight.w600),
                 ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Column(
-                    children: [
-                      Text(advert.title),
+                const SizedBox(height: 4),
+                Text(
+                  advert.description,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).colorScheme.secondary),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    if (advert.category != null) ...[
+                      Icon(Icons.category_outlined,
+                          size: 14,
+                          color: Theme.of(context).colorScheme.secondary),
+                      const SizedBox(width: 4),
                       Text(
-                        advert.description,
-                        maxLines: 3,
+                        advert.category!.name,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Theme.of(context).colorScheme.secondary,
+                            fontSize: 13),
+                      ),
+                      const SizedBox(width: 12),
+                    ],
+                    if (advert.city != null) ...[
+                      Icon(Icons.location_on_outlined,
+                          size: 14,
+                          color: Theme.of(context).colorScheme.secondary),
+                      const SizedBox(width: 4),
+                      Text(
+                        advert.city!.name,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Theme.of(context).colorScheme.secondary,
+                            fontSize: 13),
                       ),
                     ],
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    AppLocalizations.of(context)!
+                        .tenge_price(advert.price.toString()),
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        color: ColorSchemeApp.success.color,
+                        fontWeight: FontWeight.w600),
                   ),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  AppLocalizations.of(context)!
-                      .tenge_price(advert.price.toString()),
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      color: ColorSchemeApp.success.color,
-                      fontWeight: FontWeight.w600),
-                  textAlign: TextAlign.right,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
+                const SizedBox(height: 4),
               ],
             ),
           ),

@@ -102,6 +102,15 @@ class AppLocalizationsKk extends AppLocalizations {
   String get choose_city => 'Қаланы таңдау';
 
   @override
+  String get city_selection_title => 'Қала таңдау';
+
+  @override
+  String get company_type_selection_title => 'Түрін таңдау';
+
+  @override
+  String get search => 'Іздеу';
+
+  @override
   String get desired_budget => 'Қажетті бюджет (міндетті емес)';
 
   @override
@@ -153,7 +162,7 @@ class AppLocalizationsKk extends AppLocalizations {
   String get services => 'Қызметтер';
 
   @override
-  String get service => 'Сервис (Қызмет)';
+  String get service => 'Услуга (Қызмет)';
 
   @override
   String get subscription => 'Жазылу';
@@ -328,7 +337,7 @@ class AppLocalizationsKk extends AppLocalizations {
   String get edit_ad => 'Хабарландыруды өзгерту';
 
   @override
-  String get editService => 'Сервисті өзгерту';
+  String get editService => 'Услугаті өзгерту';
 
   @override
   String get response_to_order => '№ тапсырысына жауап';
@@ -508,6 +517,18 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get language => 'Тіл';
+
+  @override
+  String get theme => 'Тема';
+
+  @override
+  String get theme_dark => 'Қараңғы';
+
+  @override
+  String get theme_light => 'Жарық';
+
+  @override
+  String get theme_system => 'Жүйелік';
 
   @override
   String get about_the_application => 'Қосымша туралы';
@@ -811,4 +832,90 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get last_month => 'Соңғы ай';
+
+  @override
+  String get form_error_bin_empty => 'БСН/ЖСН толтырылмаған';
+
+  @override
+  String get form_error_bin_min => 'БСН/ЖСН толық толтырылмаған';
+
+  @override
+  String get form_error_bin_max => 'БСН/ЖСН ең көбі 12 сан';
+
+  @override
+  String get form_error_date_offer_empty => 'Жұмыс уақыты толтырылмаған';
+
+  @override
+  String get form_error_description_empty => 'Сипаттама толтырылмаған';
+
+  @override
+  String get form_error_description_limit => 'Сипаттама 1000 таңбадан асады';
+
+  @override
+  String get form_error_email_empty => 'Email толтырылмаған';
+
+  @override
+  String get form_error_email_invalid => 'Жарамсыз email';
+
+  @override
+  String get form_error_expired_at_empty =>
+      'Өтінімнің өзектілігі толтырылмаған';
+
+  @override
+  String get form_error_lat_empty => 'Ендік толтырылмаған';
+
+  @override
+  String get form_error_lat_min => 'Ендік -90°-тан аз болмауы тиіс';
+
+  @override
+  String get form_error_lat_max => 'Ендік +90°-тан көп болмауы тиіс';
+
+  @override
+  String get form_error_lon_empty => 'Бойлық толтырылмаған';
+
+  @override
+  String get form_error_lon_min => 'Бойлық -180°-тан аз болмауы тиіс';
+
+  @override
+  String get form_error_lon_max => 'Бойлық 180°-тан көп болмауы тиіс';
+
+  @override
+  String get form_error_name_empty => 'Аты толтырылмаған';
+
+  @override
+  String get form_error_password_empty => 'Құпия сөз толтырылмаған';
+
+  @override
+  String get form_error_password_min => 'Құпия сөз кемінде 8 таңба болуы тиіс';
+
+  @override
+  String get form_error_password_confirmation_not_match =>
+      'Құпия сөздер сәйкес келмейді';
+
+  @override
+  String get form_error_phone_empty => 'Телефон нөмірі толтырылмаған';
+
+  @override
+  String get form_error_pincode_empty => 'Код толтырылмаған';
+
+  @override
+  String get form_error_pincode_min => 'Код 6 таңба болуы тиіс';
+
+  @override
+  String get form_error_price_empty => 'Бағаны толтырыңыз';
+
+  @override
+  String get form_error_title_empty => 'Тақырып толтырылмаған';
+
+  @override
+  String get form_error_city_empty => 'Қаланы таңдаңыз';
+
+  @override
+  String get form_error_company_type_empty => 'Түрін таңдаңыз';
+
+  @override
+  String get form_error_advert_category_empty => 'Санатты таңдаңыз';
+
+  @override
+  String get form_error_order_category_empty => 'Санатты таңдаңыз';
 }

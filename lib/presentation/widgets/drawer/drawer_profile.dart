@@ -25,14 +25,14 @@ class DrawerProfile extends StatelessWidget {
                       text: AppLocalizations.of(context)!.change_password,
                       page: const ChangePasswordRoute()),
                 ],
-                if (state.executor != null) ...[
+                if (state.user?.executor != null) ...[
                   DrawerRouteTile(
                       text: AppLocalizations.of(context)!.change_executor,
                       page: const InitialRouter(children: [
                         ProfileRouter(children: [ChangeExecutorRoute()])
                       ])),
                 ],
-                if (state.store != null) ...[
+                if (state.user?.store != null) ...[
                   DrawerRouteTile(
                       text: AppLocalizations.of(context)!.change_store,
                       page: const InitialRouter(children: [

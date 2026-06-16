@@ -1,19 +1,21 @@
 import 'package:formz/formz.dart';
+import 'package:megaladon/data/models/form/localizable_error.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 
-enum LatValidationError {
+enum LatValidationError implements LocalizableError {
   empty,
   min,
   max;
 
   @override
-  String toString() {
+  String localize(AppLocalizations l10n) {
     switch (this) {
       case LatValidationError.empty:
-        return 'Latitude is not filled';
+        return l10n.form_error_lat_empty;
       case LatValidationError.min:
-        return 'Latitude cannot be less than -90°';
+        return l10n.form_error_lat_min;
       case LatValidationError.max:
-        return 'Latitude cannot be greater than +90°';
+        return l10n.form_error_lat_max;
     }
   }
 }

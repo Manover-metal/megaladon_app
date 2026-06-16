@@ -3,18 +3,22 @@ class AdvertCategoryModel {
   final int id;
   final String name;
 
-  static AdvertCategoryModel fromJson(data) {
-    try {
-      return AdvertCategoryModel(
-        id: data['id'] as int,
-        name: data['title'] as String,
-      );
-    } catch (e) {
-      return AdvertCategoryModel.nothing;
+  static AdvertCategoryModel fromJson(Map<String, dynamic> data) {
+    late final String name;
+
+    if (data['title'] is String) {
+      name = data['title'] as String;
+    } else if (data['name'] is String) {
+      name = data['name'] as String;
     }
+
+    return AdvertCategoryModel(
+      id: data['id'] as int,
+      name: name,
+    );
   }
 
-  static List<AdvertCategoryModel> listFromJson(data) => (data as List)
+  static List<AdvertCategoryModel> listFromJson(List<dynamic> data) => data
       .map<AdvertCategoryModel>(
           (item) => AdvertCategoryModel.fromJson(item as Map<String, dynamic>))
       .toList();

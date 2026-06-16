@@ -90,20 +90,33 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  PasswordFieldApp(
-                    icon: const Icon(Icons.lock),
-                    label: AppLocalizations.of(context)!.your_password,
-                    controller: _oldPassword,
-                  ),
-                  PasswordFieldApp(
-                    icon: const Icon(Icons.lock),
-                    label: AppLocalizations.of(context)!.choose_password,
-                    controller: _password,
-                  ),
-                  PasswordFieldApp(
-                    icon: const Icon(Icons.lock),
-                    label: AppLocalizations.of(context)!.confirm_the_password,
-                    controller: _passwordConfirmation,
+                  BlocBuilder<ChangePasswordCubit, ChangePasswordState>(
+                    builder: (context, state) => Column(
+                      children: [
+                        PasswordFieldApp(
+                          icon: const Icon(Icons.lock),
+                          label: AppLocalizations.of(context)!.your_password,
+                          controller: _oldPassword,
+                          errorText: state.oldPassword.displayError
+                              ?.localize(AppLocalizations.of(context)!),
+                        ),
+                        PasswordFieldApp(
+                          icon: const Icon(Icons.lock),
+                          label: AppLocalizations.of(context)!.choose_password,
+                          controller: _password,
+                          errorText: state.password.displayError
+                              ?.localize(AppLocalizations.of(context)!),
+                        ),
+                        PasswordFieldApp(
+                          icon: const Icon(Icons.lock),
+                          label: AppLocalizations.of(context)!
+                              .confirm_the_password,
+                          controller: _passwordConfirmation,
+                          errorText: state.passwordConfirmation.displayError
+                              ?.localize(AppLocalizations.of(context)!),
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(
                     height: 25,

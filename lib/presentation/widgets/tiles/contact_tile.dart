@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:megaladon/data/models/contact_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
+import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 
 class ContactTile extends StatelessWidget {
   const ContactTile({required this.contact, super.key});
@@ -9,28 +10,18 @@ class ContactTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.only(bottom: 5),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Column(
           children: [
-            Expanded(
-              child: Text(
-                contact.type.localize(AppLocalizations.of(context)!),
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(fontSize: 18),
-              ),
+            TextFieldApp(
+              label: contact.type.localize(AppLocalizations.of(context)!),
+              value: contact.value,
+              readOnly: true,
             ),
-            Expanded(
-              child: Text(
-                contact.value,
-                textAlign: TextAlign.right,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(fontSize: 18),
+            if (contact.contactName != null)
+              TextFieldApp(
+                value: contact.contactName,
+                readOnly: true,
               ),
-            )
           ],
         ),
       );

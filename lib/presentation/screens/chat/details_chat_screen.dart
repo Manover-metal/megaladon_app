@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/chat/chat_model.dart';
 import 'package:megaladon/data/models/chat/message_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
-import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/screens/chats/chat_cubit.dart';
+import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 
 class DetailsChatScreen extends StatefulWidget {
@@ -103,7 +103,7 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
           child: SingleChildScrollView(
             controller: _scrollController,
             scrollDirection: Axis.vertical,
-            child: BlocBuilder<AuthBloc, AuthState>(
+            child: BlocBuilder<ProfileScreenCubit, ProfileScreenState>(
               builder: (context, authState) =>
                   BlocBuilder<ChatCubit, ChatState>(
                 builder: (context, state) {
@@ -117,12 +117,8 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
                         if (messages.isEmpty)
                           Text(AppLocalizations.of(context)!.noMessagesInChat),
                         ...messages.map((e) {
-                          var isMe = false;
-                          if (authState is AuthLoginState) {
-                            isMe =
-                                e.user?.id == authState.auth.user.value?.id ||
-                                    e.user?.id == null;
-                          }
+                          var isMe = e.user?.id == authState.user?.id ||
+                              e.user?.id == null;
                           return message(context, e, isMe);
                         }).toList(),
                         if (state.loadingMessages[widget.chat.id] != null)
@@ -181,18 +177,13 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
                           child: SizedBox(
                             height: 40,
                             width: 40,
-                            child: BlocBuilder<AuthBloc, AuthState>(
+                            child: BlocBuilder<ProfileScreenCubit,
+                                ProfileScreenState>(
                               builder: (context, state) {
-                                var photo = '';
-                                if (state is AuthLoginState) {
-                                  photo = (isMe
-                                          ? state.auth.user.value?.photo
-                                          : message.user?.photo) ??
-                                      '';
-                                } else {
-                                  photo = message.user?.photo ?? '';
-                                }
-                                print(photo);
+                                var photo = (isMe
+                                        ? state.user?.photo
+                                        : message.user?.photo) ??
+                                    '';
                                 return CachedNetworkImage(
                                   imageUrl: photo,
                                   fadeInDuration: Duration.zero,
@@ -214,17 +205,12 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
                           ),
                         ),
                         const SizedBox(width: 10),
-                        BlocBuilder<AuthBloc, AuthState>(
+                        BlocBuilder<ProfileScreenCubit, ProfileScreenState>(
                           builder: (context, state) {
-                            var name = '';
-                            if (state is AuthLoginState) {
-                              name = (isMe
-                                      ? state.auth.user.value?.name
-                                      : message.user?.name) ??
-                                  '';
-                            } else {
-                              name = message.user?.name ?? '';
-                            }
+                            var name = (isMe
+                                    ? state.user?.name
+                                    : message.user?.name) ??
+                                '';
                             return Text(
                               name,
                               style: const TextStyle(

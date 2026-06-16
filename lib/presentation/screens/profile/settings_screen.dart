@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/locale/locale_cubit.dart';
+import 'package:megaladon/logic/theme/theme_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
@@ -22,10 +23,22 @@ class SettingsScreen extends StatelessWidget {
     ]));
   }
 
+  String _themeName(ThemeMode mode, AppLocalizations l10n) {
+    switch (mode) {
+      case ThemeMode.dark:
+        return l10n.theme_dark;
+      case ThemeMode.light:
+        return l10n.theme_light;
+      case ThemeMode.system:
+        return l10n.theme_system;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final currentLocale = context.read<LocaleCubit>().state;
+    final currentTheme = context.read<ThemeCubit>().state;
 
     return Scaffold(
       appBar: HeaderAppBar(isMenu: true, title: l10n.settings),
@@ -60,6 +73,29 @@ class SettingsScreen extends StatelessWidget {
                   ),
                 ],
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(child: Text(l10n.theme)),
+                  Expanded(
+                    child: DropdownButton<ThemeMode>(
+                      isExpanded: true,
+                      value: currentTheme,
+                      items: ThemeMode.values
+                          .map((mode) => DropdownMenuItem(
+                                value: mode,
+                                child: Text(_themeName(mode, l10n)),
+                              ))
+                          .toList(),
+                      onChanged: (mode) {
+                        if (mode != null) {
+                          context.read<ThemeCubit>().change(mode);
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
               OutlinedButtonApp(
                 text: l10n.about_the_application,
                 onPressed: () => _toAbout(context),
@@ -71,27 +107,4 @@ class SettingsScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-class SwitchExample extends StatefulWidget {
-  const SwitchExample({super.key});
-
-  @override
-  State<SwitchExample> createState() => _SwitchExampleState();
-}
-
-class _SwitchExampleState extends State<SwitchExample> {
-  bool light = true;
-
-  @override
-  Widget build(BuildContext context) => Switch(
-        // This bool value toggles the switch.
-        value: light,
-        onChanged: (value) {
-          // This is called when the user toggles the switch.
-          setState(() {
-            light = value;
-          });
-        },
-      );
 }

@@ -7,8 +7,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:megaladon/core/dio/index.dart';
 import 'package:megaladon/core/fb_notification/index.dart';
 import 'package:megaladon/core/get.dart';
-import 'package:megaladon/core/isar/index.dart';
 import 'package:megaladon/core/themes/dark.dart';
+import 'package:megaladon/core/themes/light.dart';
 import 'package:megaladon/data/repositories/review_repository.dart';
 import 'package:megaladon/firebase_options.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
@@ -53,10 +53,12 @@ import 'package:megaladon/logic/screens/profile/change_phone/change_phone_cubit.
 import 'package:megaladon/logic/screens/profile/change_photo/change_photo_cubit.dart';
 import 'package:megaladon/logic/screens/profile/change_store/change_store_bloc.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
+import 'package:megaladon/logic/screens/service/main/service_screen_main_cubit.dart';
 import 'package:megaladon/logic/screens/store/details/store_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/store/main/store_screen_main_cubit.dart';
 import 'package:megaladon/logic/screens/store/rate/rate_store_cubit.dart';
 import 'package:megaladon/logic/subscribe/subscribe_cubit.dart';
+import 'package:megaladon/logic/theme/theme_cubit.dart';
 import 'package:megaladon/presentation/routing/guards/auth_guard.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 
@@ -73,8 +75,6 @@ void main() async {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await dotenv.load(fileName: '.env');
   await initializeGetIt();
-
-  await IsarService.initialize();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -88,14 +88,14 @@ class App extends StatelessWidget {
   App({super.key});
   final RegisterExecutorBloc registerExecutorBloc = RegisterExecutorBloc();
   final RegisterStoreBloc registerStoreBloc = RegisterStoreBloc();
-  late AuthBloc authBloc = AuthBloc(registerStoreBloc, registerExecutorBloc)
-    ..add(AuthInitialEvent());
+  late AuthBloc authBloc = AuthBloc()..add(AuthInitialEvent());
   late ProfileScreenCubit profileCubit = ProfileScreenCubit(authBloc);
 
   @override
   Widget build(BuildContext context) => MultiBlocProvider(
         providers: [
           BlocProvider<LocaleCubit>(create: (_) => LocaleCubit()),
+          BlocProvider<ThemeCubit>(create: (_) => ThemeCubit()),
           BlocProvider<RegisterExecutorBloc>(
             create: (context) => registerExecutorBloc,
           ),
@@ -137,6 +137,8 @@ class App extends StatelessWidget {
                   create: (context) => OrderScreenDetailsCubit()),
               BlocProvider<AdvertScreenDetailsCubit>(
                   create: (context) => AdvertScreenDetailsCubit()),
+              BlocProvider<ServiceScreenMainCubit>(
+                  create: (context) => ServiceScreenMainCubit()),
               BlocProvider<StoreScreenMainCubit>(
                   create: (context) => StoreScreenMainCubit()),
               BlocProvider<StoreScreenDetailsCubit>(
@@ -230,27 +232,30 @@ class _AppStateState extends State<AppState> {
 
   @override
   Widget build(BuildContext context) => BlocBuilder<LocaleCubit, Locale>(
-        builder: (context, locale) => MaterialApp.router(
-          locale: locale,
-          builder: (context, child) {
-            final data = MediaQuery.of(context);
-            return MediaQuery(
-              data: data.copyWith(textScaler: const TextScaler.linear(1)),
-              child: child ?? const SizedBox.shrink(),
-            );
-          },
-          debugShowCheckedModeBanner: false,
-          routerDelegate: _appRouter.delegate(),
-          routeInformationParser: _appRouter.defaultRouteParser(),
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: AppLocalizations.supportedLocales,
-          darkTheme: themeDark,
-          themeMode: ThemeMode.dark,
+        builder: (context, locale) => BlocBuilder<ThemeCubit, ThemeMode>(
+          builder: (context, themeMode) => MaterialApp.router(
+            locale: locale,
+            builder: (context, child) {
+              final data = MediaQuery.of(context);
+              return MediaQuery(
+                data: data.copyWith(textScaler: const TextScaler.linear(1)),
+                child: child ?? const SizedBox.shrink(),
+              );
+            },
+            debugShowCheckedModeBanner: false,
+            routerDelegate: _appRouter.delegate(),
+            routeInformationParser: _appRouter.defaultRouteParser(),
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: AppLocalizations.supportedLocales,
+            theme: themeLight,
+            darkTheme: themeDark,
+            themeMode: themeMode,
+          ),
         ),
       );
 }

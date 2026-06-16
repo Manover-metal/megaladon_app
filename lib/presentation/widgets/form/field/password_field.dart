@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 class PasswordFieldApp extends StatefulWidget {
-  const PasswordFieldApp({super.key, this.controller, this.label, this.icon});
+  const PasswordFieldApp(
+      {super.key, this.controller, this.label, this.icon, this.errorText});
   final TextEditingController? controller;
   final String? label;
   final Widget? icon;
+  final String? errorText;
 
   @override
   State<PasswordFieldApp> createState() => _PasswordFieldAppState();
@@ -30,7 +32,10 @@ class _PasswordFieldAppState extends State<PasswordFieldApp> {
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.tertiary,
                 border: Border.all(
-                    color: Theme.of(context).colorScheme.primary, width: 0.5),
+                    color: widget.errorText != null
+                        ? Theme.of(context).colorScheme.error
+                        : Theme.of(context).colorScheme.primary,
+                    width: 0.5),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Row(
@@ -58,6 +63,15 @@ class _PasswordFieldAppState extends State<PasswordFieldApp> {
                 ],
               ),
             ),
+            if (widget.errorText != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 4, left: 4),
+                child: Text(
+                  widget.errorText!,
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.error, fontSize: 12),
+                ),
+              ),
           ],
         ),
       );

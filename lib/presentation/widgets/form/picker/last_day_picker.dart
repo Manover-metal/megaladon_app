@@ -64,7 +64,8 @@ class _IndexPeriodPickerState extends State<IndexPeriodPicker> {
                 itemExtent: 36,
                 onSelectedItemChanged: (index) => selectedIndex = index,
                 children: periods
-                    .map((p) => Center(child: Text(p.toString())))
+                    .map((p) => Center(
+                        child: Text(p.localize(AppLocalizations.of(context)!))))
                     .toList(),
               ),
             ),

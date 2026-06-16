@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:megaladon/data/models/form/localizable_error.dart';
 import 'package:megaladon/data/models/request/params/register/register_user_request_params.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/form/register/register_user/register_user_form_cubit.dart';
@@ -44,7 +45,8 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
       for (final element in state.props) {
         if (element is FormzInput && element.isNotValid) {
           return CustomSnackBar.error(
-            Text(element.error.toString()),
+            Text((element.error as LocalizableError)
+                .localize(AppLocalizations.of(context)!)),
           ).view(context);
         }
       }
@@ -76,7 +78,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
               phone: _phoneController.value.text,
               password: _passwordController.value.text,
               passwordConfirmation: _passwordVerifyController.value.text,
-              city: _cityController.value)));
+              city: _cityController.value!)));
     }
   }
 
@@ -122,30 +124,47 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  TextFieldApp(
-                    icon: const Icon(Icons.person_add_alt_1),
-                    label: AppLocalizations.of(context)!.what_is_your_name,
-                    controller: _nameController,
-                  ),
-                  PhoneField(
-                    icon: const Icon(Icons.phone),
-                    label: AppLocalizations.of(context)!.your_phone_number,
-                    controller: _phoneController,
-                  ),
-                  PasswordFieldApp(
-                    icon: const Icon(Icons.lock),
-                    label: AppLocalizations.of(context)!.choose_password,
-                    controller: _passwordController,
-                  ),
-                  PasswordFieldApp(
-                    icon: const Icon(Icons.lock),
-                    label: AppLocalizations.of(context)!.confirm_the_password,
-                    controller: _passwordVerifyController,
-                  ),
-                  CityPicker(
-                    icon: const Icon(Icons.location_city),
-                    label: AppLocalizations.of(context)!.choose_city,
-                    controller: _cityController,
+                  BlocBuilder<RegisterUserFormCubit, RegisterUserFormState>(
+                    builder: (context, formState) => Column(
+                      children: [
+                        TextFieldApp(
+                          icon: const Icon(Icons.person_add_alt_1),
+                          label:
+                              AppLocalizations.of(context)!.what_is_your_name,
+                          controller: _nameController,
+                          errorText: formState.name.displayError
+                              ?.localize(AppLocalizations.of(context)!),
+                        ),
+                        PhoneField(
+                          icon: const Icon(Icons.phone),
+                          label:
+                              AppLocalizations.of(context)!.your_phone_number,
+                          controller: _phoneController,
+                          errorText: formState.phone.displayError
+                              ?.localize(AppLocalizations.of(context)!),
+                        ),
+                        PasswordFieldApp(
+                          icon: const Icon(Icons.lock),
+                          label: AppLocalizations.of(context)!.choose_password,
+                          controller: _passwordController,
+                          errorText: formState.password.displayError
+                              ?.localize(AppLocalizations.of(context)!),
+                        ),
+                        PasswordFieldApp(
+                          icon: const Icon(Icons.lock),
+                          label: AppLocalizations.of(context)!
+                              .confirm_the_password,
+                          controller: _passwordVerifyController,
+                          errorText: formState.passwordConfirmation.displayError
+                              ?.localize(AppLocalizations.of(context)!),
+                        ),
+                        CityPicker(
+                          icon: const Icon(Icons.location_city),
+                          label: AppLocalizations.of(context)!.choose_city,
+                          controller: _cityController,
+                        ),
+                      ],
+                    ),
                   ),
                   BlocBuilder<RegisterUserBloc, RegisterUserState>(
                     builder: (context, state) {

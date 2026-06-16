@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:megaladon/data/models/enum_form_state.dart';
+import 'package:megaladon/data/models/form/localizable_error.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/form/create/offer/create_offer_form_cubit.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
@@ -65,11 +66,14 @@ class _CreateOfferScreenState extends State<CreateOfferScreen> {
         ).view(context);
       }
     }
-    if (state.status) {
+    if (!state.status) {
       for (final element in state.props) {
         if (element is FormzInput && element.isNotValid) {
+          final err = element.error;
           return CustomSnackBar.error(
-            Text(element.error.toString()),
+            Text(err is LocalizableError
+                ? err.localize(AppLocalizations.of(context)!)
+                : err.toString()),
           ).view(context);
         }
       }
@@ -108,40 +112,52 @@ class _CreateOfferScreenState extends State<CreateOfferScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                TextFieldApp(
-                  label: AppLocalizations.of(context)!.time_to_work,
-                  icon: const Icon(Icons.watch_later_outlined),
-                  controller: _dateController,
-                ),
-                NumberFieldApp(
-                  label: AppLocalizations.of(context)!.price,
-                  icon: const Icon(Icons.credit_card),
-                  controller: _priceController,
-                ),
-                TextFieldApp(
-                  label: AppLocalizations.of(context)!.description_field,
-                  icon: const Icon(Icons.message),
-                  controller: _descriptionController,
-                ),
-                CityPicker(
-                    label: AppLocalizations.of(context)!.city,
-                    icon: const Icon(Icons.place),
-                    controller: _cityController),
                 BlocConsumer<CreateOfferFormCubit, CreateOfferFormState>(
                     listener: _listenerForm,
-                    builder: (context, state) {
-                      if (state.formState == EnumFormState.fetch) {
-                        return ElevatedButtonApp(
-                          child: Loader(
-                              color: Theme.of(context).colorScheme.surface),
-                          onPressed: () {},
-                        );
-                      }
-                      return ElevatedButtonApp(
-                        text: AppLocalizations.of(context)!.respond,
-                        onPressed: _create,
-                      );
-                    }),
+                    builder: (context, state) => Column(
+                          children: [
+                            TextFieldApp(
+                              label: AppLocalizations.of(context)!.time_to_work,
+                              icon: const Icon(Icons.watch_later_outlined),
+                              controller: _dateController,
+                              errorText: state.date.displayError
+                                  ?.localize(AppLocalizations.of(context)!),
+                            ),
+                            NumberFieldApp(
+                              label: AppLocalizations.of(context)!.price,
+                              icon: const Icon(Icons.credit_card),
+                              controller: _priceController,
+                              errorText: state.price.displayError
+                                  ?.localize(AppLocalizations.of(context)!),
+                            ),
+                            TextFieldApp(
+                              label: AppLocalizations.of(context)!
+                                  .description_field,
+                              icon: const Icon(Icons.message),
+                              controller: _descriptionController,
+                              errorText: state.description.displayError
+                                  ?.localize(AppLocalizations.of(context)!),
+                            ),
+                            CityPicker(
+                                label: AppLocalizations.of(context)!.city,
+                                icon: const Icon(Icons.place),
+                                controller: _cityController,
+                                errorText: state.city.displayError
+                                    ?.localize(AppLocalizations.of(context)!)),
+                            if (state.formState == EnumFormState.fetch)
+                              ElevatedButtonApp(
+                                child: Loader(
+                                    color:
+                                        Theme.of(context).colorScheme.surface),
+                                onPressed: () {},
+                              )
+                            else
+                              ElevatedButtonApp(
+                                text: AppLocalizations.of(context)!.respond,
+                                onPressed: _create,
+                              ),
+                          ],
+                        )),
                 OutlinedButtonApp(
                   text: AppLocalizations.of(context)!.cancel,
                   onPressed: _back,

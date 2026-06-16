@@ -51,7 +51,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
     if (state.pincode.isNotValid) {
       CustomSnackBar.error(
         Text(
-          state.pincode.error.toString(),
+          state.pincode.error!.localize(AppLocalizations.of(context)!),
         ),
       ).view(context);
     }

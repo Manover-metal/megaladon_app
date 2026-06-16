@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/dictionary/advert_type.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
+import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/message/auth_message.dart';
@@ -24,53 +25,53 @@ class AddAnythingBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         color: Theme.of(context).colorScheme.surface,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: BlocBuilder<AuthBloc, AuthState>(
-          builder: (context, state) {
-            if (state is AuthLoginState) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TitleApp(AppLocalizations.of(context)!.create),
-                  const Divider(
-                    thickness: 1,
-                    height: 20,
-                  ),
-                  BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-                    return Visibility(
-                      visible: state is AuthLoginState &&
-                          state.auth.executor.value != null,
-                      child: ElevatedButtonApp(
-                        text: AppLocalizations.of(context)!.service,
-                        onPressed: _createAdvert(context, AdvertType.service),
-                      ),
-                    );
-                    return Container();
-                  }),
-                  ElevatedButtonApp(
-                    text: AppLocalizations.of(context)!.ad,
-                    onPressed: _createAdvert(context, AdvertType.advert),
-                  ),
-                  ElevatedButtonApp(
-                    text: AppLocalizations.of(context)!.order2,
-                    onPressed: _createOrder(context),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                ],
-              );
-            } else {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  AuthMessage(
-                    continueText:
-                        AppLocalizations.of(context)!.to_create_an_ad_or_order,
-                  ),
-                ],
-              );
-            }
-          },
+        child: SafeArea(
+          child: BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              if (state is AuthLoginState) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TitleApp(AppLocalizations.of(context)!.create),
+                    const Divider(
+                      thickness: 1,
+                      height: 20,
+                    ),
+                    BlocBuilder<ProfileScreenCubit, ProfileScreenState>(
+                        builder: (context, state) => Visibility(
+                              visible: state.user?.executor != null,
+                              child: ElevatedButtonApp(
+                                text: AppLocalizations.of(context)!.service,
+                                onPressed:
+                                    _createAdvert(context, AdvertType.service),
+                              ),
+                            )),
+                    ElevatedButtonApp(
+                      text: AppLocalizations.of(context)!.ad,
+                      onPressed: _createAdvert(context, AdvertType.advert),
+                    ),
+                    ElevatedButtonApp(
+                      text: AppLocalizations.of(context)!.order2,
+                      onPressed: _createOrder(context),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                  ],
+                );
+              } else {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    AuthMessage(
+                      continueText: AppLocalizations.of(context)!
+                          .to_create_an_ad_or_order,
+                    ),
+                  ],
+                );
+              }
+            },
+          ),
         ),
       );
 }

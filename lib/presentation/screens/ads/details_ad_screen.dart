@@ -9,6 +9,7 @@ import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/screens/advert/delete/advert_delete_cubit.dart';
 import 'package:megaladon/logic/screens/advert/details/advert_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/chats/chat_cubit.dart';
+import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
@@ -111,7 +112,7 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
         child: Scaffold(
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(70),
-            child: BlocBuilder<AuthBloc, AuthState>(
+            child: BlocBuilder<ProfileScreenCubit, ProfileScreenState>(
               builder: (context, authState) => BlocBuilder<
                   AdvertScreenDetailsCubit, AdvertScreenDetailsState>(
                 builder: (context, state) {
@@ -121,9 +122,7 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                       title: state.advert.type == AdvertType.advert
                           ? AppLocalizations.of(context)!.ad
                           : AppLocalizations.of(context)!.service,
-                      onTrailing: (authState is AuthLoginState) &&
-                              authState.auth.user.value?.id ==
-                                  state.advert.user?.id
+                      onTrailing: authState.user?.id == state.advert.user?.id
                           ? _onTrailing(state.advert)
                           : null,
                     );
@@ -216,14 +215,14 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                                 ),
                                 UserTile(user: state.advert.user!),
                                 const SizedBox(height: 20),
-                                BlocBuilder<AuthBloc, AuthState>(
+                                BlocBuilder<ProfileScreenCubit,
+                                    ProfileScreenState>(
                                   builder: (context, stateUser) {
                                     if (stateUser is AuthLoginState) {
                                       return Column(
                                         children: [
                                           if (state.advert.user!.id !=
-                                              stateUser
-                                                  .auth.user.value!.id) ...[
+                                              stateUser.user?.id) ...[
                                             ElevatedButtonApp(
                                               text:
                                                   AppLocalizations.of(context)!

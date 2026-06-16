@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:megaladon/core/icons/icons.dart';
 import 'package:megaladon/data/models/enum_form_state.dart';
+import 'package:megaladon/data/models/form/localizable_error.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/form/create/order/order_create_form_cubit.dart';
 import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
@@ -53,18 +54,21 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
         title: _titleController.value.text,
         description: _descriptionController.value.text,
         category: _orderCategoryController.value,
-        city: _cityController.value,
+        city: _cityController.value!,
         priceMax: _priceMaxController.value.text,
         priceRecommended: _priceRecommendedController.value.text,
         files: _fileController.value);
   }
 
   void _listenerForm(BuildContext context, OrderCreateFormState state) {
-    if (state.status) {
+    if (!state.status) {
       for (final element in state.props) {
         if (element is FormzInput && element.isNotValid) {
+          final err = element.error;
           return CustomSnackBar.error(
-            Text(element.error.toString()),
+            Text(err is LocalizableError
+                ? err.localize(AppLocalizations.of(context)!)
+                : err.toString()),
           ).view(context);
         }
       }
@@ -128,53 +132,76 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
             child: Column(
               children: [
                 const SizedBox(height: 30),
-
-                OrderCategoryPicker(
-                  label: AppLocalizations.of(context)!.select_a_category,
-                  controller: _orderCategoryController,
+                BlocBuilder<OrderCreateFormCubit, OrderCreateFormState>(
+                  builder: (context, state) => Column(
+                    children: [
+                      OrderCategoryPicker(
+                        label: AppLocalizations.of(context)!.select_a_category,
+                        controller: _orderCategoryController,
+                        errorText: state.category.displayError
+                            ?.localize(AppLocalizations.of(context)!),
+                      ),
+                      CityPicker(
+                        label: AppLocalizations.of(context)!.choose_city,
+                        controller: _cityController,
+                        errorText: state.city.displayError
+                            ?.localize(AppLocalizations.of(context)!),
+                      ),
+                    ],
+                  ),
                 ),
-                CityPicker(
-                    label: AppLocalizations.of(context)!.choose_city,
-                    controller: _cityController),
-                TextFieldApp(
-                  controller: _titleController,
-                  label: AppLocalizations.of(context)!.header,
-                  icon: const Icon(IconPack.job_description_kwo7og605c2l),
-                ),
-                DescriptionFieldApp(
-                  label: AppLocalizations.of(context)!.description_of_work,
-                  controller: _descriptionController,
-                  icon: const Icon(IconPack.description),
-                ),
-                NumberFieldApp(
-                  label: AppLocalizations.of(context)!.desired_budget,
-                  controller: _priceMaxController,
-                  icon: const Icon(Icons.money_sharp),
-                ),
-                NumberFieldApp(
-                  label: AppLocalizations.of(context)!.allowed_budget,
-                  controller: _priceRecommendedController,
-                  icon: const Icon(Icons.money_sharp),
-                ),
-                FileMultiPicker(controller: _fileController),
-                const SizedBox(height: 30),
-                // BlocConsumer(builder: builder, listener: listener)
                 BlocConsumer<OrderCreateFormCubit, OrderCreateFormState>(
                     listener: _listenerForm,
-                    builder: (context, state) {
-                      print(state.formState);
-                      if (state.formState == EnumFormState.fetch) {
-                        return ElevatedButtonApp(
-                          child: Loader(
-                              color: Theme.of(context).colorScheme.surface),
-                          onPressed: () {},
-                        );
-                      }
-                      return ElevatedButtonApp(
-                        text: AppLocalizations.of(context)!.create,
-                        onPressed: _create,
-                      );
-                    }),
+                    builder: (context, state) => Column(
+                          children: [
+                            TextFieldApp(
+                              controller: _titleController,
+                              label: AppLocalizations.of(context)!.header,
+                              icon: const Icon(
+                                  IconPack.job_description_kwo7og605c2l),
+                              errorText: state.title.displayError
+                                  ?.localize(AppLocalizations.of(context)!),
+                            ),
+                            DescriptionFieldApp(
+                              label: AppLocalizations.of(context)!
+                                  .description_of_work,
+                              controller: _descriptionController,
+                              icon: const Icon(IconPack.description),
+                              errorText: state.description.displayError
+                                  ?.localize(AppLocalizations.of(context)!),
+                            ),
+                            NumberFieldApp(
+                              label:
+                                  AppLocalizations.of(context)!.desired_budget,
+                              controller: _priceMaxController,
+                              icon: const Icon(Icons.money_sharp),
+                              errorText: state.priceMax.displayError
+                                  ?.localize(AppLocalizations.of(context)!),
+                            ),
+                            NumberFieldApp(
+                              label:
+                                  AppLocalizations.of(context)!.allowed_budget,
+                              controller: _priceRecommendedController,
+                              icon: const Icon(Icons.money_sharp),
+                              errorText: state.priceRecommended.displayError
+                                  ?.localize(AppLocalizations.of(context)!),
+                            ),
+                            FileMultiPicker(controller: _fileController),
+                            const SizedBox(height: 30),
+                            if (state.formState == EnumFormState.fetch)
+                              ElevatedButtonApp(
+                                child: Loader(
+                                    color:
+                                        Theme.of(context).colorScheme.surface),
+                                onPressed: () {},
+                              )
+                            else
+                              ElevatedButtonApp(
+                                text: AppLocalizations.of(context)!.create,
+                                onPressed: _create,
+                              ),
+                          ],
+                        )),
                 OutlinedButtonApp(
                   text: AppLocalizations.of(context)!.cancel,
                   onPressed: _back,

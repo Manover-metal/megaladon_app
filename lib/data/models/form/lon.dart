@@ -1,19 +1,21 @@
 import 'package:formz/formz.dart';
+import 'package:megaladon/data/models/form/localizable_error.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 
-enum LonValidationError {
+enum LonValidationError implements LocalizableError {
   empty,
   min,
   max;
 
   @override
-  String toString() {
+  String localize(AppLocalizations l10n) {
     switch (this) {
       case LonValidationError.empty:
-        return 'Longitude is not filled';
+        return l10n.form_error_lon_empty;
       case LonValidationError.min:
-        return 'Longitude cannot be less than -180°';
+        return l10n.form_error_lon_min;
       case LonValidationError.max:
-        return 'Longitude cannot be greater than 180°';
+        return l10n.form_error_lon_max;
     }
   }
 }

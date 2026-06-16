@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:megaladon/data/models/form/localizable_error.dart';
 import 'package:megaladon/data/models/request/params/register/register_store_request_params.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/form/register/register_store/register_store_form_cubit.dart';
@@ -13,6 +14,7 @@ import 'package:megaladon/presentation/widgets/form/field/number_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/form/multi_picker/contact_multi_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
+import 'package:megaladon/presentation/widgets/form/picker/dictionary/type_picker.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
@@ -28,6 +30,7 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
   late TextEditingController _nameController;
   late TextEditingController _binController;
   late CityPickerController _cityPickerController;
+  late TypePickerController _typePickerController;
   late TextEditingController _fullAddressController;
   late ContactTypeMultiPickerController _contactController;
 
@@ -42,7 +45,8 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
                   lat: position.latitude,
                   lon: position.longitude,
                   fullAddress: _fullAddressController.value.text,
-                  city: _cityPickerController.value,
+                  city: _cityPickerController.value!,
+                  type: _typePickerController.value!,
                   contacts: _contactController.value
                       .map((e) => e.getData())
                       .toList()),
@@ -52,11 +56,14 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
   }
 
   dynamic _listenerForm(BuildContext context, RegisterStoreFormState state) {
-    if (state.status) {
+    if (!state.status) {
       for (final element in state.props) {
         if (element is FormzInput && element.isNotValid) {
+          final err = element.error;
           return CustomSnackBar.error(
-            Text(element.error.toString()),
+            Text(err is LocalizableError
+                ? err.localize(AppLocalizations.of(context)!)
+                : err.toString()),
           ).view(context);
         }
       }
@@ -131,6 +138,7 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
           lat: position.latitude.toString(),
           lon: position.longitude.toString(),
           city: _cityPickerController.value,
+          type: _typePickerController.value,
           contacts: _contactController.value.map((e) => e.getData()).toList());
     } else {
       return false;
@@ -143,6 +151,7 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
     _fullAddressController = TextEditingController();
     _binController = TextEditingController();
     _cityPickerController = CityPickerController();
+    _typePickerController = TypePickerController();
     _contactController = ContactTypeMultiPickerController();
     super.initState();
   }
@@ -153,14 +162,15 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
     _fullAddressController.dispose();
     _binController.dispose();
     _cityPickerController.dispose();
+    _typePickerController.dispose();
     _contactController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: SafeArea(
-          child: SingleChildScrollView(
+        body: SingleChildScrollView(
+          child: SafeArea(
             child: Container(
               padding: const EdgeInsets.all(20),
               child: MultiBlocListener(
@@ -178,26 +188,44 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    TextFieldApp(
-                      label: AppLocalizations.of(context)!.names,
-                      icon: const Icon(Icons.person_add_alt_1),
-                      controller: _nameController,
-                    ),
-                    NumberFieldApp(
-                      label: AppLocalizations.of(context)!.bIN,
-                      icon: const Icon(Icons.wallet),
-                      controller: _binController,
-                    ),
-                    TextFieldApp(
-                      label: AppLocalizations.of(context)!.full_address,
-                      icon: const Icon(Icons.maps_home_work_outlined),
-                      controller: _fullAddressController,
-                    ),
-                    CityPicker(
-                        label: AppLocalizations.of(context)!.city,
-                        controller: _cityPickerController),
-                    ContactTypeMultiPicker(
-                      controller: _contactController,
+                    BlocBuilder<RegisterStoreFormCubit, RegisterStoreFormState>(
+                      builder: (context, formState) => Column(
+                        children: [
+                          TextFieldApp(
+                            label: AppLocalizations.of(context)!.names,
+                            icon: const Icon(Icons.person_add_alt_1),
+                            controller: _nameController,
+                            errorText: formState.name.displayError
+                                ?.localize(AppLocalizations.of(context)!),
+                          ),
+                          TypePicker(
+                              label: AppLocalizations.of(context)!.type,
+                              controller: _typePickerController,
+                              icon: const Icon(Icons.storefront),
+                              errorText: formState.type.displayError
+                                  ?.localize(AppLocalizations.of(context)!)),
+                          NumberFieldApp(
+                            label: AppLocalizations.of(context)!.bIN,
+                            icon: const Icon(Icons.wallet),
+                            controller: _binController,
+                            errorText: formState.bin.displayError
+                                ?.localize(AppLocalizations.of(context)!),
+                          ),
+                          TextFieldApp(
+                            label: AppLocalizations.of(context)!.full_address,
+                            icon: const Icon(Icons.maps_home_work_outlined),
+                            controller: _fullAddressController,
+                          ),
+                          CityPicker(
+                              label: AppLocalizations.of(context)!.city,
+                              controller: _cityPickerController,
+                              errorText: formState.city.displayError
+                                  ?.localize(AppLocalizations.of(context)!)),
+                          ContactTypeMultiPicker(
+                            controller: _contactController,
+                          ),
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 20),
                     BlocBuilder<RegisterStoreBloc, RegisterStoreState>(

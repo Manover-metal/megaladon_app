@@ -13,13 +13,13 @@ class RegisterRepository {
       RegisterExecutorRequestParams params) async {
     final result = await ApiService.I
         .post('/auth/register-executor', data: params.toData());
-    return ExecutorModel.fromJson(result.data['executor']);
+    return ExecutorModel.fromJson(
+        result.data['executor'] as Map<String, dynamic>);
   }
 
   Future<StoreModel> registerStore(RegisterStoreRequestParams params) async {
     final result =
         await ApiService.I.post('/auth/register-store', data: params.toData());
-    return StoreModel.fromJsonMini(
-        result.data['store'] as Map<String, dynamic>);
+    return StoreModel.fromJson(result.data['store'] as Map<String, dynamic>);
   }
 }

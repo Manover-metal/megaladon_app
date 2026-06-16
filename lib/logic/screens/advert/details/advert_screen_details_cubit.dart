@@ -18,7 +18,9 @@ class AdvertScreenDetailsCubit extends Cubit<AdvertScreenDetailsState> {
     emit(AdvertScreenDetailsLoader());
     return await _repository.info(id).then((value) {
       emit(AdvertScreenDetailsSuccess(advert: value));
-    }).catchError((error) {
+    }).catchError((error, stackTrace) {
+      print(error);
+      print(stackTrace);
       if (error is DioException) {
         emit(AdvertScreenDetailsError(ErrorModel.parseDio(error)));
       } else {

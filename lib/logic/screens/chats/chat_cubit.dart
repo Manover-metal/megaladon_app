@@ -131,27 +131,27 @@ class ChatCubit extends Cubit<ChatState> {
 
   Future<void> _connectUser() async {
     print('connectUser');
-    if (authBloc.state is AuthLoginState) {
-      print('connectUser 2');
+    // if (authBloc.state is AuthLoginState) {
+    //   print('connectUser 2');
 
-      await PusherService.instance.subscribe(
-          channelName:
-              'userChats.${(authBloc.state as AuthLoginState).auth.user.value!.id}',
-          onEvent: _eventUser,
-          onSubscriptionError: (e) {
-            print(e);
-          },
-          onSubscriptionSucceeded: (e) {
-            print(e);
-          },
-          onMemberAdded: (member) {
-            print('Member added: $member');
-          },
-          onMemberRemoved: (member) {
-            print('Member removed: $member');
-          });
-      await PusherService.instance.connect();
-    }
+    //   await PusherService.instance.subscribe(
+    //       channelName:
+    //           'userChats.${(authBloc.state as AuthLoginState).auth.user.id}',
+    //       onEvent: _eventUser,
+    //       onSubscriptionError: (e) {
+    //         print(e);
+    //       },
+    //       onSubscriptionSucceeded: (e) {
+    //         print(e);
+    //       },
+    //       onMemberAdded: (member) {
+    //         print('Member added: $member');
+    //       },
+    //       onMemberRemoved: (member) {
+    //         print('Member removed: $member');
+    //       });
+    //   await PusherService.instance.connect();
+    // }
   }
 
   void _eventUser(event) {

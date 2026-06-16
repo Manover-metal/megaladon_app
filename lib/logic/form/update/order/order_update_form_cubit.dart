@@ -82,11 +82,13 @@ class OrderUpdateFormCubit extends Cubit<OrderUpdateFormState> {
                 priceMax: int.tryParse(state.priceMax.value),
                 priceRecommended: int.tryParse(state.priceRecommended.value),
                 categoryId: state.category.value,
-                cityId: state.city.value,
+                cityId: state.city.value!,
                 files: files))
         .then((value) {
       emit(state.copyWith(formState: EnumFormState.success));
-    }).catchError((error) {
+    }).catchError((error, stackTrace) {
+      print(error);
+      print(stackTrace);
       if (error is DioException) {
         if (error.response?.statusCode == 403) {
           authBloc.add(AuthLogoutEvent());

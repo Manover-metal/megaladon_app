@@ -1,13 +1,15 @@
 import 'package:formz/formz.dart';
+import 'package:megaladon/data/models/form/localizable_error.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 
-enum PasswordConfirmationValidationError {
+enum PasswordConfirmationValidationError implements LocalizableError {
   notMatch;
 
   @override
-  String toString() {
+  String localize(AppLocalizations l10n) {
     switch (this) {
       case PasswordConfirmationValidationError.notMatch:
-        return 'Passwords do not match';
+        return l10n.form_error_password_confirmation_not_match;
     }
   }
 }

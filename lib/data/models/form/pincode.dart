@@ -1,16 +1,18 @@
 import 'package:formz/formz.dart';
+import 'package:megaladon/data/models/form/localizable_error.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 
-enum PincodeValidationError {
+enum PincodeValidationError implements LocalizableError {
   empty,
   min;
 
   @override
-  String toString() {
+  String localize(AppLocalizations l10n) {
     switch (this) {
       case PincodeValidationError.empty:
-        return 'Code is empty';
+        return l10n.form_error_pincode_empty;
       case PincodeValidationError.min:
-        return 'Code is 6 characters';
+        return l10n.form_error_pincode_min;
     }
   }
 }

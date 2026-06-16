@@ -103,7 +103,7 @@ class OrderModel extends Equatable {
           ? UserModel.fromJson(data['user'] as Map<String, dynamic>)
           : null,
       executor: data['executor'] != null
-          ? ExecutorModel.fromJsonMini(data['executor'] as Map<String, dynamic>)
+          ? ExecutorModel.fromJson(data['executor'] as Map<String, dynamic>)
           : null,
       category: data['category'] != null
           ? OrderCategoryModel.fromJson(

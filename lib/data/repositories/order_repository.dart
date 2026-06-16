@@ -32,10 +32,8 @@ class OrderRepository {
       .post('/order/create', data: params.toData())
       .then((value) => value.data);
 
-  Future<OrderModel> update(int id, OrderUpdateRequestParams params) =>
-      ApiService.I.post('/order/$id/update', data: params.toData()).then(
-          (value) => OrderModel.fromJsonFull(
-              value.data['order'] as Map<String, dynamic>));
+  Future<void> update(int id, OrderUpdateRequestParams params) =>
+      ApiService.I.post('/order/$id/update', data: params.toData());
 
   Future complete(int id) =>
       ApiService.I.post('/order/$id/complete').then((value) => value.data);

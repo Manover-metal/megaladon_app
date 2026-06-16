@@ -18,43 +18,34 @@ class ProfileScreenCubit extends Cubit<ProfileScreenState> {
   final UserRepository _repository = UserRepository();
   final AuthBloc authBloc;
 
-  void _listen(state) {
+  void _listen(AuthState state) {
     if (state is AuthLoginState) {
-      fetch(id: state.auth.user.value!.id);
+      fetch();
     } else if (state is AuthInitial || state is AuthLogoutState) {
       emit(const ProfileScreenState(status: ProfileScreenStatus.notAuth));
     }
   }
 
-  Future fetch({required int id}) async {
+  Future fetch() async {
     emit(const ProfileScreenState(status: ProfileScreenStatus.loading));
-    return updateData(id);
+    return updateData();
   }
+
+  bool hasExecutor() => state.user?.executor != null;
+
+  bool hasStore() => state.user?.store != null;
 
   // hoverChangePrice() {
   //   emit(state.copyWith(isUpdatePrice: !state.isUpdatePrice));
   // }
 
-  Future updateData(int id) async =>
-      await _repository.profile(id).then((value) {
-        var user = UserModel.fromJson(value['user'] as Map<String, dynamic>);
-        print(value['user']['executor']);
-        print(value['user']['store']);
-
-        var executor = value['user']['executor'] != null
-            ? ExecutorModel.fromJson(
-                value['user']['executor'] as Map<String, dynamic>)
-            : null;
-        var store = value['user']['store'] != null
-            ? StoreModel.fromJsonFull(
-                value['user']['store'] as Map<String, dynamic>)
-            : null;
-        emit(ProfileScreenState(
-            status: ProfileScreenStatus.success,
-            user: user,
-            executor: executor,
-            store: store));
-      }).catchError((error) {
+  Future updateData() async => await _repository.profile().then((value) {
+        emit(
+          ProfileScreenState(status: ProfileScreenStatus.success, user: value),
+        );
+      }).catchError((error, stackTrace) {
+        print(error);
+        print(stackTrace);
         if (error is DioException) {
           if (error.response?.statusCode == 403) {
             authBloc.add(AuthLogoutEvent());

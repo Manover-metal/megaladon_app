@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/screens/advert/main/advert_screen_main_cubit.dart';
+import 'package:megaladon/logic/screens/service/main/service_screen_main_cubit.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/number_field.dart';
 import 'package:megaladon/presentation/widgets/form/picker/last_day_picker.dart';
@@ -25,12 +26,14 @@ class _FilterAdBottomSheetState extends State<FilterAdBottomSheet> {
 
     final from = int.tryParse(_fromController.value.text);
     final before = int.tryParse(_beforeController.value.text);
-    context.read<AdvertScreenMainCubit>().changeParams(params.copyWith(
-          startRow: 0,
-          priceMin: from,
-          priceMax: before,
-          last: _indexPeriodPickerController.value,
-        ));
+    final newParams = params.copyWith(
+      startRow: 0,
+      priceMin: from,
+      priceMax: before,
+      last: _indexPeriodPickerController.value,
+    );
+    context.read<AdvertScreenMainCubit>().changeParams(newParams);
+    context.read<ServiceScreenMainCubit>().changeParams(newParams);
 
     context.router.pop(true);
   }

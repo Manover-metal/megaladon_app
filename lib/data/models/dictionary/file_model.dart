@@ -19,4 +19,6 @@ class FileModel {
       .map<FileModel>(
           (item) => FileModel.fromJson(item as Map<String, dynamic>))
       .toList();
+
+  Map<String, dynamic> toJson() => {'id': id, 'url': url, 'active': active};
 }

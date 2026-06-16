@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:megaladon/data/models/form/localizable_error.dart';
 import 'package:megaladon/data/models/request/params/update/change_store_request_params.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/form/update/store/change_store_form_cubit.dart';
@@ -43,7 +44,7 @@ class _ChangeStoreScreenState extends State<ChangeStoreScreen> {
                   lat: position.latitude,
                   lon: position.longitude,
                   fullAddress: _fullAddressController.value.text,
-                  city: _cityPickerController.value,
+                  city: _cityPickerController.value!,
                   contacts: _contactController.value
                       .map((e) => e.getData())
                       .toList()),
@@ -93,11 +94,14 @@ class _ChangeStoreScreenState extends State<ChangeStoreScreen> {
   }
 
   dynamic _listenerForm(BuildContext context, ChangeStoreFormState state) {
-    if (state.status) {
+    if (!state.status) {
       for (final element in state.props) {
         if (element is FormzInput && element.isNotValid) {
+          final err = element.error;
           return CustomSnackBar.error(
-            Text(element.error.toString()),
+            Text(err is LocalizableError
+                ? err.localize(AppLocalizations.of(context)!)
+                : err.toString()),
           ).view(context);
         }
       }
@@ -141,13 +145,14 @@ class _ChangeStoreScreenState extends State<ChangeStoreScreen> {
   @override
   void initState() {
     var state = context.read<ProfileScreenCubit>().state;
-    _nameController = TextEditingController(text: state.store?.name);
+    _nameController = TextEditingController(text: state.user?.store?.name);
     _fullAddressController =
-        TextEditingController(text: state.store?.fullAddress);
-    _binController = TextEditingController(text: state.store?.bin.toString());
-    _cityPickerController = CityPickerController(city: state.store?.city);
+        TextEditingController(text: state.user?.store?.fullAddress);
+    _binController =
+        TextEditingController(text: state.user?.store?.bin.toString());
+    _cityPickerController = CityPickerController(city: state.user?.store?.city);
     _contactController =
-        ContactTypeMultiPickerController(contacts: state.store?.contacts);
+        ContactTypeMultiPickerController(contacts: state.user?.store?.contacts);
     super.initState();
   }
 
@@ -182,26 +187,38 @@ class _ChangeStoreScreenState extends State<ChangeStoreScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    TextFieldApp(
-                      label: AppLocalizations.of(context)!.names,
-                      icon: const Icon(Icons.person_add_alt_1),
-                      controller: _nameController,
-                    ),
-                    NumberFieldApp(
-                      label: AppLocalizations.of(context)!.bIN,
-                      icon: const Icon(Icons.wallet),
-                      controller: _binController,
-                    ),
-                    TextFieldApp(
-                      label: AppLocalizations.of(context)!.full_address,
-                      icon: const Icon(Icons.maps_home_work_outlined),
-                      controller: _fullAddressController,
-                    ),
-                    CityPicker(
-                        label: AppLocalizations.of(context)!.city,
-                        controller: _cityPickerController),
-                    ContactTypeMultiPicker(
-                      controller: _contactController,
+                    BlocBuilder<ChangeStoreFormCubit, ChangeStoreFormState>(
+                      builder: (context, formState) => Column(
+                        children: [
+                          TextFieldApp(
+                            label: AppLocalizations.of(context)!.names,
+                            icon: const Icon(Icons.person_add_alt_1),
+                            controller: _nameController,
+                            errorText: formState.name.displayError
+                                ?.localize(AppLocalizations.of(context)!),
+                          ),
+                          NumberFieldApp(
+                            label: AppLocalizations.of(context)!.bIN,
+                            icon: const Icon(Icons.wallet),
+                            controller: _binController,
+                            errorText: formState.bin.displayError
+                                ?.localize(AppLocalizations.of(context)!),
+                          ),
+                          TextFieldApp(
+                            label: AppLocalizations.of(context)!.full_address,
+                            icon: const Icon(Icons.maps_home_work_outlined),
+                            controller: _fullAddressController,
+                          ),
+                          CityPicker(
+                              label: AppLocalizations.of(context)!.city,
+                              controller: _cityPickerController,
+                              errorText: formState.city.displayError
+                                  ?.localize(AppLocalizations.of(context)!)),
+                          ContactTypeMultiPicker(
+                            controller: _contactController,
+                          ),
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 20),
                     BlocBuilder<ChangeStoreBloc, ChangeStoreState>(

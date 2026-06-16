@@ -24,7 +24,7 @@ class ChangeExecutorBloc
     if (state is ChangeExecutorLoading) return;
     emit(ChangeExecutorLoading());
     await _repository.changeExecutor(event.params).then((value) {
-      profileCubit.updateData(profileCubit.state.user!.id);
+      profileCubit.updateData();
       emit(ChangeExecutorSuccess());
     }).catchError((error) {
       if (error is DioException) {

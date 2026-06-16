@@ -1,13 +1,15 @@
 import 'package:formz/formz.dart';
+import 'package:megaladon/data/models/form/localizable_error.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 
-enum NameValidationError {
+enum NameValidationError implements LocalizableError {
   empty;
 
   @override
-  String toString() {
+  String localize(AppLocalizations l10n) {
     switch (this) {
       case NameValidationError.empty:
-        return 'Name is empty';
+        return l10n.form_error_name_empty;
     }
   }
 }

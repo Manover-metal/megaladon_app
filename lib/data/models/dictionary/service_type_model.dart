@@ -7,7 +7,7 @@ class ServiceTypeModel {
     try {
       return ServiceTypeModel(
         id: data['id'] as int,
-        name: data['name'] as String,
+        name: (data['name'] ?? data['title']) as String,
       );
     } catch (e) {
       return ServiceTypeModel.nothing;
@@ -20,4 +20,6 @@ class ServiceTypeModel {
       .toList();
 
   static ServiceTypeModel get nothing => ServiceTypeModel(id: -1, name: '');
+
+  Map<String, dynamic> toJson() => {'id': id, 'name': name};
 }

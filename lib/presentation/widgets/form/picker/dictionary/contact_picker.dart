@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/data/models/contact_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
+import 'package:megaladon/presentation/widgets/form/field/phone_field.dart';
+import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 
 class ContactTypePickerController extends ValueNotifier<ContactType> {
   ContactTypePickerController({ContactModel? type})
@@ -176,23 +178,38 @@ class _ContactTypePickerState extends State<ContactTypePicker> {
               ),
             ),
             const SizedBox(height: 10),
-            TextField(
-              controller: widget.controller._valueController,
-              decoration: InputDecoration(
-                labelText: widget.controller.value.toString(),
-                labelStyle: const TextStyle(fontSize: 18),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-              ),
-            ),
-            const SizedBox(height: 10),
+            Builder(builder: (context) {
+              switch (widget.controller.value) {
+                case ContactType.phone:
+                  return PhoneField(
+                    controller: widget.controller._valueController,
+                    label: widget.controller.value
+                        .localize(AppLocalizations.of(context)!),
+                  );
+                case ContactType.home_phone:
+                  return PhoneField(
+                    controller: widget.controller._valueController,
+                    label: widget.controller.value
+                        .localize(AppLocalizations.of(context)!),
+                  );
+                case ContactType.site:
+                  return TextFieldApp(
+                    controller: widget.controller._valueController,
+                    label: widget.controller.value
+                        .localize(AppLocalizations.of(context)!),
+                  );
+                case ContactType.email:
+                  return TextFieldApp(
+                    controller: widget.controller._valueController,
+                    label: widget.controller.value
+                        .localize(AppLocalizations.of(context)!),
+                  );
+              }
+            }),
             if (widget.controller._nameController != null)
-              TextField(
+              TextFieldApp(
                 controller: widget.controller._nameController,
-                decoration: InputDecoration(
-                  labelText: AppLocalizations.of(context)!.contact_name,
-                  labelStyle: const TextStyle(fontSize: 18),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-                ),
+                label: AppLocalizations.of(context)!.contact_name,
               ),
           ],
         ),

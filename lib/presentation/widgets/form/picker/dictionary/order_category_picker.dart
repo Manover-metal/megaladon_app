@@ -17,9 +17,13 @@ class OrderCategoryPickerController extends ValueNotifier<OrderCategoryModel> {
 
 class OrderCategoryPicker extends StatefulWidget {
   const OrderCategoryPicker(
-      {required this.label, required this.controller, super.key});
+      {required this.label,
+      required this.controller,
+      super.key,
+      this.errorText});
   final String label;
   final OrderCategoryPickerController controller;
+  final String? errorText;
 
   @override
   State<OrderCategoryPicker> createState() => _OrderCategoryPickerState();
@@ -101,7 +105,9 @@ class _OrderCategoryPickerState extends State<OrderCategoryPicker> {
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.tertiary,
                     border: Border.all(
-                      color: Theme.of(context).colorScheme.primary,
+                      color: widget.errorText != null
+                          ? Theme.of(context).colorScheme.error
+                          : Theme.of(context).colorScheme.primary,
                       width: 0.5,
                     ),
                     borderRadius: BorderRadius.circular(10),
@@ -113,6 +119,16 @@ class _OrderCategoryPickerState extends State<OrderCategoryPicker> {
                     ],
                   ),
                 ),
+                if (widget.errorText != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4, left: 4),
+                    child: Text(
+                      widget.errorText!,
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.error,
+                          fontSize: 12),
+                    ),
+                  ),
               ],
             ),
           ),

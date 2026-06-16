@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:megaladon/data/models/form/localizable_error.dart';
 import 'package:megaladon/data/models/request/params/register/register_executor_request_params.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/form/register/register_executor/register_executor_form_cubit.dart';
@@ -12,7 +13,6 @@ import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/number_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/form/multi_picker/service_type_multi_picker.dart';
-import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
@@ -29,8 +29,6 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
   late TextEditingController _binController;
   late TextEditingController _fullAddressController;
   late ServiceTypeMultiPickerController _serviceController;
-  late CityPickerController _cityController;
-  late TextEditingController _descriptionController;
 
   Future<void> _register() async {
     if (await _checkForm()) {
@@ -44,20 +42,21 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
                   lon: position.longitude,
                   fullAddress: _fullAddressController.value.text,
                   services:
-                      _serviceController.value.map((e) => e.value).toList(),
-                  description: _descriptionController.value.text,
-                  city: _cityController.value),
+                      _serviceController.value.map((e) => e.value).toList()),
             ));
       }
     }
   }
 
   dynamic _listenerForm(BuildContext context, RegisterExecutorFormState state) {
-    if (state.status) {
+    if (!state.status) {
       for (final element in state.props) {
         if (element is FormzInput && element.isNotValid) {
+          final err = element.error;
           return CustomSnackBar.error(
-            Text(element.error.toString()),
+            Text(err is LocalizableError
+                ? err.localize(AppLocalizations.of(context)!)
+                : err.toString()),
           ).view(context);
         }
       }
@@ -84,7 +83,7 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
     var position = await getLocation();
 
     if (position != null) {
-      if(!mounted) return false;
+      if (!mounted) return false;
       var form = context.read<RegisterExecutorFormCubit>();
       return form.checkRegisterForm(
           name: _nameController.value.text,
@@ -92,8 +91,6 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
           bin: _binController.value.text,
           lat: position.latitude.toString(),
           lon: position.longitude.toString(),
-          city: _cityController.value,
-          description: _descriptionController.value.text,
           services: _serviceController.value.map((e) => e.value).toList());
     } else {
       return false;
@@ -147,8 +144,6 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
     _fullAddressController = TextEditingController();
     _binController = TextEditingController();
     _serviceController = ServiceTypeMultiPickerController();
-    _cityController = CityPickerController();
-    _descriptionController = TextEditingController();
     super.initState();
   }
 
@@ -158,8 +153,6 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
     _fullAddressController.dispose();
     _binController.dispose();
     _serviceController.dispose();
-    _descriptionController.dispose();
-    _cityController.dispose();
     super.dispose();
   }
 
@@ -184,32 +177,34 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    TextFieldApp(
-                      label: AppLocalizations.of(context)!.name,
-                      icon: const Icon(Icons.person_add_alt_1),
-                      controller: _nameController,
+                    BlocBuilder<RegisterExecutorFormCubit,
+                        RegisterExecutorFormState>(
+                      builder: (context, formState) => Column(
+                        children: [
+                          TextFieldApp(
+                            label: AppLocalizations.of(context)!.name,
+                            icon: const Icon(Icons.person_add_alt_1),
+                            controller: _nameController,
+                            errorText: formState.name.displayError
+                                ?.localize(AppLocalizations.of(context)!),
+                          ),
+                          NumberFieldApp(
+                            label: AppLocalizations.of(context)!.bIN,
+                            icon: const Icon(Icons.wallet),
+                            controller: _binController,
+                            errorText: formState.bin.displayError
+                                ?.localize(AppLocalizations.of(context)!),
+                          ),
+                          TextFieldApp(
+                            label: AppLocalizations.of(context)!.full_address,
+                            icon: const Icon(Icons.maps_home_work_outlined),
+                            controller: _fullAddressController,
+                          ),
+                          ServiceTypeMultiPicker(
+                              serviceTypeControllers: _serviceController),
+                        ],
+                      ),
                     ),
-                    TextFieldApp(
-                      label: AppLocalizations.of(context)!.description,
-                      icon: const Icon(Icons.description),
-                      controller: _descriptionController,
-                    ),
-                    NumberFieldApp(
-                      label: AppLocalizations.of(context)!.bIN,
-                      icon: const Icon(Icons.wallet),
-                      controller: _binController,
-                    ),
-                    CityPicker(
-                        label: AppLocalizations.of(context)!.city,
-                        controller: _cityController,
-                        icon: const Icon(Icons.location_city)),
-                    TextFieldApp(
-                      label: AppLocalizations.of(context)!.full_address,
-                      icon: const Icon(Icons.maps_home_work_outlined),
-                      controller: _fullAddressController,
-                    ),
-                    ServiceTypeMultiPicker(
-                        serviceTypeControllers: _serviceController),
                     const SizedBox(height: 20),
                     BlocBuilder<RegisterExecutorBloc, RegisterExecutorState>(
                       builder: (context, state) {

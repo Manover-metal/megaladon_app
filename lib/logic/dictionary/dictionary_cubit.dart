@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:megaladon/data/models/dictionary/advert_category_model.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
+import 'package:megaladon/data/models/dictionary/company_type_model.dart';
 import 'package:megaladon/data/models/dictionary/order_category_model.dart';
 import 'package:megaladon/data/models/dictionary/service_type_model.dart';
 import 'package:megaladon/data/models/dictionary/subscribe_model.dart';
@@ -18,6 +19,7 @@ class DictionaryCubit extends Cubit<DictionaryState> {
     await fetchAdvertCategories();
     await fetchOrderCategories();
     await fetchServiceTypes();
+    await fetchCompanyTypes();
     await fetchSubscribesStore();
     await fetchSubscribesExecutor();
   }
@@ -54,6 +56,14 @@ class DictionaryCubit extends Cubit<DictionaryState> {
       emit(state.copyWith(serviceTypes: value));
     }).catchError((err) {
       emit(state.copyWith(serviceTypes: []));
+    });
+  }
+
+  Future<void> fetchCompanyTypes() async {
+    await _repository.getCompanyTypes().then((value) {
+      emit(state.copyWith(companyTypes: value));
+    }).catchError((err) {
+      emit(state.copyWith(companyTypes: []));
     });
   }
 

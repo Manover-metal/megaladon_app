@@ -11,6 +11,7 @@ import 'package:megaladon/logic/screens/orders/delete/order_delete_cubit.dart';
 import 'package:megaladon/logic/screens/orders/details/order_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/orders/main/order_screen_main_cubit.dart';
 import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
+import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
@@ -141,16 +142,16 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
             preferredSize: const Size.fromHeight(70),
             child:
                 BlocBuilder<OrderScreenDetailsCubit, OrderScreenDetailsState>(
-              builder: (context, state) => BlocBuilder<AuthBloc, AuthState>(
+              builder: (context, state) =>
+                  BlocBuilder<ProfileScreenCubit, ProfileScreenState>(
                 builder: (context, authState) => HeaderAppBar(
                     isBack: true,
                     title: state.order != null
                         ? AppLocalizations.of(context)!
                             .orderWithId(state.order!.id.toString())
                         : null,
-                    onTrailing: (authState is AuthLoginState) &&
-                            authState.auth.user.value?.id ==
-                                state.order?.user?.id &&
+                    onTrailing: authState.user?.id == null &&
+                            authState.user?.id == state.order?.user?.id &&
                             state.order != null
                         ? _onTrailing(state.order!)
                         : null),
@@ -272,10 +273,11 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                               const SizedBox(
                                 height: 20,
                               ),
-                              BlocBuilder<AuthBloc, AuthState>(
+                              BlocBuilder<ProfileScreenCubit,
+                                  ProfileScreenState>(
                                 builder: (context, stateUser) {
                                   if (stateUser is AuthLoginState) {
-                                    var user = stateUser.auth.user.value;
+                                    var user = stateUser.user;
                                     print(order.executor);
                                     return Column(
                                       children: [
@@ -295,8 +297,7 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                           ),
                                         ],
                                         if (order.user?.id != user?.id &&
-                                            stateUser.auth.executor.value !=
-                                                null &&
+                                            stateUser.user?.executor != null &&
                                             order.status ==
                                                 OrderStatus.active) ...[
                                           ElevatedButtonApp(
