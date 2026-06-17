@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:megaladon/data/models/dictionary/service_type_model.dart';
 import 'package:megaladon/data/models/form/localizable_error.dart';
 import 'package:megaladon/data/models/request/params/register/register_executor_request_params.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
@@ -12,7 +13,7 @@ import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/number_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
-import 'package:megaladon/presentation/widgets/form/multi_picker/service_type_multi_picker.dart';
+import 'package:megaladon/presentation/widgets/form/multi_picker/order_category_multi_picker.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
@@ -28,7 +29,7 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
   late TextEditingController _nameController;
   late TextEditingController _binController;
   late TextEditingController _fullAddressController;
-  late ServiceTypeMultiPickerController _serviceController;
+  late OrderCategoryMultiPickerController _serviceController;
 
   Future<void> _register() async {
     if (await _checkForm()) {
@@ -41,8 +42,10 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
                   lat: position.latitude,
                   lon: position.longitude,
                   fullAddress: _fullAddressController.value.text,
-                  services:
-                      _serviceController.value.map((e) => e.value).toList()),
+                  services: _serviceController.value
+                      .map((e) =>
+                          ServiceTypeModel(id: e.value.id, name: e.value.name))
+                      .toList()),
             ));
       }
     }
@@ -91,7 +94,9 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
           bin: _binController.value.text,
           lat: position.latitude.toString(),
           lon: position.longitude.toString(),
-          services: _serviceController.value.map((e) => e.value).toList());
+          services: _serviceController.value
+              .map((e) => ServiceTypeModel(id: e.value.id, name: e.value.name))
+              .toList());
     } else {
       return false;
     }
@@ -143,7 +148,7 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
     _nameController = TextEditingController();
     _fullAddressController = TextEditingController();
     _binController = TextEditingController();
-    _serviceController = ServiceTypeMultiPickerController();
+    _serviceController = OrderCategoryMultiPickerController();
     super.initState();
   }
 
@@ -200,8 +205,8 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
                             icon: const Icon(Icons.maps_home_work_outlined),
                             controller: _fullAddressController,
                           ),
-                          ServiceTypeMultiPicker(
-                              serviceTypeControllers: _serviceController),
+                          OrderCategoryMultiPicker(
+                              controllers: _serviceController),
                         ],
                       ),
                     ),

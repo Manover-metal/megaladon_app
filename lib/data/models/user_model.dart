@@ -32,8 +32,8 @@ class UserModel {
           ? CityModel.fromJson(data['city'] as Map<String, dynamic>)
           : null,
       executor: ExecutorModel.fromJsonOrNull(
-          data['executor'] as Map<String, dynamic>),
-      store: StoreModel.fromJsonOrNull(data['store'] as Map<String, dynamic>));
+          data['executor'] as Map<String, dynamic>?),
+      store: StoreModel.fromJsonOrNull(data['store'] as Map<String, dynamic>?));
 
   Map<String, dynamic> toJson() => {
         'id': id,

@@ -82,7 +82,7 @@ class AdCreateFormCubit extends Cubit<AdCreateFormState> {
       return _repository
           .create(AdvertCreateRequestParams(
               title: state.title.value,
-              description: state.title.value,
+              description: state.description.value,
               price: int.tryParse(state.price.value),
               categoryId: state.category.value!,
               cityId: state.city.value!,

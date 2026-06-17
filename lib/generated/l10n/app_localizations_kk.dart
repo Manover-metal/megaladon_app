@@ -261,6 +261,9 @@ class AppLocalizationsKk extends AppLocalizations {
   String get my_announcement => 'Менің хабарландыруларым';
 
   @override
+  String get my_executor => 'Менің орындаушыларым';
+
+  @override
   String get ads => 'Хабарландырулар';
 
   @override
@@ -567,6 +570,12 @@ class AppLocalizationsKk extends AppLocalizations {
   String get price_to => 'Дейін: ';
 
   @override
+  String get from => 'Бастап';
+
+  @override
+  String get to => 'Дейін';
+
+  @override
   String get last_period => ' Соңғы кезеңде';
 
   @override
@@ -599,6 +608,9 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get add_service => 'Қызмет санатын қосыңыз';
+
+  @override
+  String get add_order_category => 'Тапсырыс санатын қосу';
 
   @override
   String get select => 'таңдау';
@@ -774,6 +786,12 @@ class AppLocalizationsKk extends AppLocalizations {
   String get contact => 'Контакт';
 
   @override
+  String get contacts => 'Байланыстар';
+
+  @override
+  String get failed_to_open_contact => 'Байланысты ашу мүмкін болмады';
+
+  @override
   String get artist2 => 'Орындаушы: ';
 
   @override
@@ -799,6 +817,9 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get service_category => 'Қызмет санаты';
+
+  @override
+  String get order_category => 'Тапсырыс санаты';
 
   @override
   String get period => 'Кезең';

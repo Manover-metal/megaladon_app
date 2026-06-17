@@ -30,6 +30,8 @@ class ExpiredAtFieldApp extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: TextField(
+                onTapOutside: (_) =>
+                    FocusManager.instance.primaryFocus?.unfocus(),
                 controller: controller,
                 inputFormatters: [maskFormatter],
                 style: Theme.of(context).textTheme.bodyMedium,

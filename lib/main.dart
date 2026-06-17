@@ -54,6 +54,7 @@ import 'package:megaladon/logic/screens/profile/change_photo/change_photo_cubit.
 import 'package:megaladon/logic/screens/profile/change_store/change_store_bloc.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/logic/screens/service/main/service_screen_main_cubit.dart';
+import 'package:megaladon/logic/screens/service/my/service_screen_my_cubit.dart';
 import 'package:megaladon/logic/screens/store/details/store_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/store/main/store_screen_main_cubit.dart';
 import 'package:megaladon/logic/screens/store/rate/rate_store_cubit.dart';
@@ -124,6 +125,8 @@ class App extends StatelessWidget {
                   create: (context) => AdvertScreenMainCubit()),
               BlocProvider<AdvertScreenMyCubit>(
                   create: (context) => AdvertScreenMyCubit(authBloc)),
+              BlocProvider<ServiceScreenMyCubit>(
+                  create: (context) => ServiceScreenMyCubit(authBloc)),
               BlocProvider<OrderScreenMainCubit>(
                   create: (context) => OrderScreenMainCubit()),
               BlocProvider<ExecutorScreenMyCubit>(
@@ -135,8 +138,11 @@ class App extends StatelessWidget {
                   create: (context) => OrderScreenMyCubit(authBloc)),
               BlocProvider<OrderScreenDetailsCubit>(
                   create: (context) => OrderScreenDetailsCubit()),
+              BlocProvider<AdUpdateFormCubit>(
+                  create: (context) => AdUpdateFormCubit(authBloc)),
               BlocProvider<AdvertScreenDetailsCubit>(
-                  create: (context) => AdvertScreenDetailsCubit()),
+                  create: (context) => AdvertScreenDetailsCubit(
+                      context.read<AdUpdateFormCubit>())),
               BlocProvider<ServiceScreenMainCubit>(
                   create: (context) => ServiceScreenMainCubit()),
               BlocProvider<StoreScreenMainCubit>(
@@ -158,8 +164,6 @@ class App extends StatelessWidget {
                   create: (context) => OrderCreateFormCubit(authBloc)),
               BlocProvider<CreateOfferFormCubit>(
                   create: (context) => CreateOfferFormCubit(authBloc)),
-              BlocProvider<AdUpdateFormCubit>(
-                  create: (context) => AdUpdateFormCubit(authBloc)),
               BlocProvider<OrderUpdateFormCubit>(
                   create: (context) => OrderUpdateFormCubit(authBloc)),
               BlocProvider<ChatCubit>(

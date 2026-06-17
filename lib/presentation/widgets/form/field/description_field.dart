@@ -32,6 +32,8 @@ class DescriptionFieldApp extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: TextField(
+                onTapOutside: (_) =>
+                    FocusManager.instance.primaryFocus?.unfocus(),
                 maxLines: 5,
                 controller: controller,
                 style: Theme.of(context).textTheme.bodyMedium,

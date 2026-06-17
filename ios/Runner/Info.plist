@@ -112,5 +112,16 @@
     <string>This app needs access to location when open.</string>
     <key>NSLocationAlwaysUsageDescription</key>
     <string>This app needs access to location when in the background.</string>
+
+    <!-- URL schemes the app needs to query/open via url_launcher (tel, mailto, web) -->
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>tel</string>
+        <string>telprompt</string>
+        <string>mailto</string>
+        <string>sms</string>
+        <string>https</string>
+        <string>http</string>
+    </array>
 </dict>
 </plist>

@@ -261,6 +261,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get my_announcement => 'My announcements';
 
   @override
+  String get my_executor => 'My executors';
+
+  @override
   String get ads => 'Ads';
 
   @override
@@ -567,6 +570,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get price_to => 'To: ';
 
   @override
+  String get from => 'From';
+
+  @override
+  String get to => 'To';
+
+  @override
   String get last_period => 'For the last period';
 
   @override
@@ -598,6 +607,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get add_service => 'Add category service';
+
+  @override
+  String get add_order_category => 'Add order category';
 
   @override
   String get select => 'Select';
@@ -773,6 +785,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get contact => 'Contact';
 
   @override
+  String get contacts => 'Contacts';
+
+  @override
+  String get failed_to_open_contact => 'Couldn\'t open contact';
+
+  @override
   String get artist2 => 'Artist: ';
 
   @override
@@ -798,6 +816,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get service_category => 'Service category';
+
+  @override
+  String get order_category => 'Order category';
 
   @override
   String get period => 'Period';

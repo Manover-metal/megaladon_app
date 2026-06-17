@@ -38,7 +38,7 @@ class _ListMyExecutorsScreenState extends State<ListMyExecutorsScreen> {
   Widget build(BuildContext context) => Scaffold(
         appBar: HeaderAppBar(
           isMenu: true,
-          title: AppLocalizations.of(context)!.executor,
+          title: AppLocalizations.of(context)!.my_executor,
         ),
         body: RefreshIndicator(
           onRefresh: _fetch,

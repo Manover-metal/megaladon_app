@@ -37,8 +37,8 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final currentLocale = context.read<LocaleCubit>().state;
-    final currentTheme = context.read<ThemeCubit>().state;
+    final currentLocale = context.watch<LocaleCubit>().state;
+    final currentTheme = context.watch<ThemeCubit>().state;
 
     return Scaffold(
       appBar: HeaderAppBar(isMenu: true, title: l10n.settings),

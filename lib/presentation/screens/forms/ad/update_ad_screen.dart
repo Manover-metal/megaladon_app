@@ -10,7 +10,6 @@ import 'package:megaladon/data/models/enum_form_state.dart';
 import 'package:megaladon/data/models/form/localizable_error.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/form/update/ad/ad_update_form_cubit.dart';
-import 'package:megaladon/logic/screens/orders/details/order_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
@@ -83,7 +82,6 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
     }
     if (state.formState == EnumFormState.success) {
       context.read<OrderScreenMyCubit>().refresh();
-      context.read<OrderScreenDetailsCubit>().fetch(id: widget.advert.id);
       context.router
           .popUntil((route) => route.settings.name == InitialRouter.name);
       context.router.navigate(InitialRouter(children: [

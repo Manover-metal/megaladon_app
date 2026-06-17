@@ -74,32 +74,30 @@ class _FilterAdBottomSheetState extends State<FilterAdBottomSheet> {
               thickness: 1,
               height: 20,
             ),
-            IntrinsicHeight(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 10),
-                    child: Text(AppLocalizations.of(context)!.price_from,
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontWeight: FontWeight.w700)),
-                  ),
-                  Expanded(
-                      child: NumberFieldApp(
-                    controller: _fromController,
-                  )),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Text(AppLocalizations.of(context)!.price_to,
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontWeight: FontWeight.w700)),
-                  ),
-                  Expanded(
-                      child: NumberFieldApp(controller: _beforeController)),
-                ],
+            Align(
+              alignment: Alignment.centerLeft,
+              child: SubTitleApp(
+                AppLocalizations.of(context)!.price,
+                textAlign: TextAlign.left,
               ),
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: NumberFieldApp(
+                    controller: _fromController,
+                    label: AppLocalizations.of(context)!.from,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: NumberFieldApp(
+                    controller: _beforeController,
+                    label: AppLocalizations.of(context)!.to,
+                  ),
+                ),
+              ],
             ),
             Row(
               children: [

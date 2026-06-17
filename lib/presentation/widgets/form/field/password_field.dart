@@ -42,6 +42,8 @@ class _PasswordFieldAppState extends State<PasswordFieldApp> {
                 children: [
                   Expanded(
                     child: TextField(
+                      onTapOutside: (_) =>
+                          FocusManager.instance.primaryFocus?.unfocus(),
                       controller: widget.controller,
                       obscureText: _obscure,
                       style: Theme.of(context).textTheme.bodyMedium,

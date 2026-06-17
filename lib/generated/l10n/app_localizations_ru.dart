@@ -261,6 +261,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get my_announcement => 'Мои объявления';
 
   @override
+  String get my_executor => 'Мои исполнители';
+
+  @override
   String get ads => 'Объявления';
 
   @override
@@ -337,7 +340,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get edit_ad => 'Изменить объявление';
 
   @override
-  String get editService => 'Изменить услуга';
+  String get editService => 'Изменить услугу';
 
   @override
   String get response_to_order => 'Отклик на заказ №';
@@ -568,6 +571,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get price_to => 'До: ';
 
   @override
+  String get from => 'От';
+
+  @override
+  String get to => 'До';
+
+  @override
   String get last_period => 'За последний период';
 
   @override
@@ -599,6 +608,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get add_service => 'Добавить категорию услуг';
+
+  @override
+  String get add_order_category => 'Добавить категорию заказа';
 
   @override
   String get select => 'Выбрать';
@@ -774,6 +786,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get contact => 'Контакт';
 
   @override
+  String get contacts => 'Контакты';
+
+  @override
+  String get failed_to_open_contact => 'Не удалось открыть контакт';
+
+  @override
   String get artist2 => 'Иполнитель: ';
 
   @override
@@ -799,6 +817,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get service_category => 'Категория услуг';
+
+  @override
+  String get order_category => 'Категория заказа';
 
   @override
   String get period => 'Период';

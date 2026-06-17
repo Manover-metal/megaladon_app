@@ -3,7 +3,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/core/icons/icons.dart';
-import 'package:megaladon/data/models/contact_model.dart';
 import 'package:megaladon/data/models/store_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/screens/store/details/store_screen_details_cubit.dart';
@@ -20,7 +19,6 @@ import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 import 'package:megaladon/presentation/widgets/tiles/contact_tile.dart';
 import 'package:megaladon/presentation/widgets/tiles/data_tile.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class DetailsStoreScreen extends StatefulWidget {
   const DetailsStoreScreen({required this.storeId, super.key});
@@ -32,20 +30,6 @@ class DetailsStoreScreen extends StatefulWidget {
 
 class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
   late StarPickerController _starController;
-
-  Null Function() _call(StoreModel store) => () {
-        String? phone;
-
-        store.contacts?.forEach((element) {
-          if (element.type == ContactType.home_phone ||
-              element.type == ContactType.phone) {
-            phone = element.value;
-          }
-        });
-        if (phone != null) {
-          launchUrl(Uri(scheme: 'tel', path: phone));
-        }
-      };
 
   @override
   void initState() {
@@ -119,76 +103,88 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
           child: Container(
             constraints:
                 BoxConstraints(minHeight: MediaQuery.of(context).size.height),
-            padding: const EdgeInsets.symmetric(horizontal: 20),
             child:
                 BlocBuilder<StoreScreenDetailsCubit, StoreScreenDetailsState>(
               builder: (context, state) {
                 if (state is StoreScreenDetailsSuccess) {
                   return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
-                        child: Container(
-                          width: MediaQuery.of(context).size.width / 3,
-                          height: MediaQuery.of(context).size.width / 3,
-                          color: Theme.of(context).colorScheme.secondary,
-                          child: CachedNetworkImage(
-                            imageUrl: state.store.photo ?? '',
-                            progressIndicatorBuilder:
-                                (context, url, downloadProgress) => Icon(
-                                    IconPack.market,
-                                    size:
-                                        MediaQuery.of(context).size.width / 5),
-                            errorWidget: (context, url, error) => Icon(
-                                IconPack.market,
-                                size: MediaQuery.of(context).size.width / 5),
-                            fit: BoxFit.cover,
-                          ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).splashColor
+                        ),
+                        child: CachedNetworkImage(
+                          imageUrl: state.store.photo ?? '',
+                          progressIndicatorBuilder:
+                              (context, url, downloadProgress) => Icon(
+                                  IconPack.market,
+                                  size:
+                                      MediaQuery.of(context).size.width / 5),
+                          errorWidget: (context, url, error) => Icon(
+                              IconPack.market,
+                              size: MediaQuery.of(context).size.width / 5),
+                          fit: BoxFit.cover,
+                          height: MediaQuery.of(context).size.height * 0.25,
+                          width: double.infinity,
                         ),
                       ),
-                      TextButton(
-                          onPressed: _rateStore(state.store),
-                          child: Text(AppLocalizations.of(context)!.rate)),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      DataTile(
-                          title: AppLocalizations.of(context)!.address2,
-                          data: state.store.fullAddress),
-                      if (state.store.city != null)
-                        DataTile(
-                            title: AppLocalizations.of(context)!.city2,
-                            data: state.store.city!.name),
-                      if (state.store.bin != null)
-                        DataTile(
-                            title: AppLocalizations.of(context)!.bIN2,
-                            data: state.store.bin.toString()),
-                      ...state.store.contacts!
-                          .map((contact) => ContactTile(contact: contact))
-                          .toList(),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      if (state.store.prices.isEmpty)
-                        SubTitleApp(AppLocalizations.of(context)!.no_price_list)
-                      else ...[
-                        SubTitleApp(AppLocalizations.of(context)!.price_list),
+                      Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                        
+                        Align(
+                          alignment: Alignment.center,
+                          child: TextButton(
+                              onPressed: _rateStore(state.store),
+                              child: Text(AppLocalizations.of(context)!.rate)),
+                        ),
                         const SizedBox(
-                          height: 10,
+                          height: 20,
                         ),
-                        FileDownloadList(files: state.store.prices),
-                      ],
-                      const SizedBox(
-                        height: 20,
+                        DataTile(
+                            title: AppLocalizations.of(context)!.address2,
+                            data: state.store.fullAddress),
+                        if (state.store.city != null)
+                          DataTile(
+                              title: AppLocalizations.of(context)!.city2,
+                              data: state.store.city!.name),
+                        if (state.store.bin != null)
+                          DataTile(
+                              title: AppLocalizations.of(context)!.bIN2,
+                              data: state.store.bin.toString()),
+                        if (state.store.contacts?.isNotEmpty ?? false) ...[
+                          const SizedBox(height: 20),
+                          SubTitleApp(AppLocalizations.of(context)!.contacts),
+                          const SizedBox(height: 10),
+                          
+                          for (int i = 0;
+                              i < state.store.contacts!.length;
+                              i++) ...[
+                            if (i > 0) const Divider(height: 1),
+                            ContactTile(contact: state.store.contacts![i]),
+                          ],
+                        ],
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        if (state.store.prices.isEmpty)
+                          SubTitleApp(AppLocalizations.of(context)!.no_price_list)
+                        else ...[
+                          SubTitleApp(AppLocalizations.of(context)!.price_list),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          FileDownloadList(files: state.store.prices),
+                        ],
+                        const SizedBox(
+                          height: 20,
+                        ),
+                          ],
+                        ),
                       ),
-                      if (state.store.hasPhone)
-                        ElevatedButtonApp(
-                          text: AppLocalizations.of(context)!.call,
-                          onPressed: _call(state.store),
-                        ),
                     ],
                   );
                 } else if (state is StoreScreenDetailsLoader) {
@@ -266,7 +262,10 @@ class _RateStoreModalState extends State<RateStoreModal> {
               const SizedBox(height: 10),
               ElevatedButtonApp(
                   onPressed: _rate,
-                  child: Text(AppLocalizations.of(context)!.send))
+                  child: Text(AppLocalizations.of(context)!.send)),
+              SizedBox(
+                height: MediaQuery.of(context).viewPadding.bottom,
+              )
             ],
           ),
         ),

@@ -71,7 +71,7 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                     ),
                     const SizedBox(height: 5),
                     ElevatedButtonApp(
-                      onPressed: _toDelete(advert),
+                      onPressed: _toDelete(advert, context),
                       child: Text(AppLocalizations.of(context)!.delete),
                     )
                   ],
@@ -83,7 +83,8 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
             .navigate(UpdateAdRoute(advert: advert, type: advert.type));
       };
 
-  Null Function() _toDelete(AdvertModel advert) => () {
+  Null Function() _toDelete(AdvertModel advert, BuildContext context) => () {
+        context.router.pop();
         context.read<AdvertDeleteCubit>().delete(advert.id);
       };
 

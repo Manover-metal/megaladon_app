@@ -8,7 +8,11 @@ import 'package:megaladon/data/models/enum_form_state.dart';
 import 'package:megaladon/data/models/form/localizable_error.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/form/create/ad/ad_create_form_cubit.dart';
+import 'package:megaladon/logic/screens/advert/main/advert_screen_main_cubit.dart';
+import 'package:megaladon/logic/screens/advert/my/advert_screen_my_cubit.dart';
 import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
+import 'package:megaladon/logic/screens/service/main/service_screen_main_cubit.dart';
+import 'package:megaladon/logic/screens/service/my/service_screen_my_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
@@ -79,6 +83,13 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
     }
     if (state.formState == EnumFormState.success) {
       context.read<OrderScreenMyCubit>().refresh();
+      if (state.type == AdvertType.service) {
+        context.read<ServiceScreenMainCubit>().fetch();
+        context.read<ServiceScreenMyCubit>().fetch();
+      } else {
+        context.read<AdvertScreenMainCubit>().fetch();
+        context.read<AdvertScreenMyCubit>().fetch();
+      }
       context.router
           .popUntil((route) => route.settings.name == InitialRouter.name);
       context.router.navigate(const InitialRouter(children: [

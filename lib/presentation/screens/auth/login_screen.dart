@@ -35,8 +35,10 @@ class _LoginScreenState extends State<LoginScreen> {
       context
           .read<AuthBloc>()
           .add(AuthLoginEvent(_phone.value.text, _password.value.text));
+      return;
     }
   }
+
 
   @override
   void initState() {
@@ -78,14 +80,17 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  dynamic _listenerForm(BuildContext context, AuthFormState state) {
+  void _listenerForm(BuildContext context, AuthFormState state) {
     if (!state.status) {
       for (final element in state.props) {
         if (element is FormzInput && element.isNotValid) {
-          return CustomSnackBar.error(
-            Text((element.error as LocalizableError)
-                .localize(AppLocalizations.of(context)!)),
+          final err = element.error;
+          CustomSnackBar.error(
+            Text(err is LocalizableError
+                ? err.localize(AppLocalizations.of(context)!)
+                : AppLocalizations.of(context)!.unknown_error),
           ).view(context);
+          return;
         }
       }
     }
@@ -93,15 +98,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: SafeArea(
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            child: MultiBlocListener(
-              listeners: [
-                BlocListener<AuthBloc, AuthState>(listener: _listenerAuth),
-                BlocListener<AuthFormCubit, AuthFormState>(
-                    listener: _listenerForm)
-              ],
+        body: Container(
+          padding: const EdgeInsets.all(20),
+          child: MultiBlocListener(
+            listeners: [
+              BlocListener<AuthBloc, AuthState>(listener: _listenerAuth),
+              BlocListener<AuthFormCubit, AuthFormState>(
+                  listener: _listenerForm)
+            ],
+            child: SafeArea(
               child: Column(
                 children: [
                   const Spacer(),

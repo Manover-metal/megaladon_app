@@ -109,12 +109,22 @@ class CustomSnackBar extends SnackBar {
       );
 
   void view(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      this,
-      snackBarAnimationStyle: const AnimationStyle(
-        duration: Duration(milliseconds: 500), // Show animation duration
-        reverseDuration: Duration(milliseconds: 300), // Hide animation duration
-      ),
-    );
+    final messenger = ScaffoldMessenger.maybeOf(context);
+    if (messenger == null) return;
+    try {
+      messenger
+        ..hideCurrentSnackBar()
+        ..showSnackBar(
+          this,
+          snackBarAnimationStyle: const AnimationStyle(
+            duration: Duration(milliseconds: 500), // Show animation duration
+            reverseDuration:
+                Duration(milliseconds: 300), // Hide animation duration
+          ),
+        );
+    } catch (_) {
+      // Игнорируем редкую гонку, когда Scaffold демонтируется во время
+      // перехода между экранами (ScaffoldMessenger._updateScaffolds).
+    }
   }
 }

@@ -592,6 +592,12 @@ abstract class AppLocalizations {
   /// **'My announcements'**
   String get my_announcement;
 
+  /// No description provided for @my_executor.
+  ///
+  /// In en, this message translates to:
+  /// **'My executors'**
+  String get my_executor;
+
   /// No description provided for @ads.
   ///
   /// In en, this message translates to:
@@ -1162,6 +1168,18 @@ abstract class AppLocalizations {
   /// **'To: '**
   String get price_to;
 
+  /// No description provided for @from.
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get from;
+
+  /// No description provided for @to.
+  ///
+  /// In en, this message translates to:
+  /// **'To'**
+  String get to;
+
   /// No description provided for @last_period.
   ///
   /// In en, this message translates to:
@@ -1227,6 +1245,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add category service'**
   String get add_service;
+
+  /// No description provided for @add_order_category.
+  ///
+  /// In en, this message translates to:
+  /// **'Add order category'**
+  String get add_order_category;
 
   /// No description provided for @select.
   ///
@@ -1558,6 +1582,18 @@ abstract class AppLocalizations {
   /// **'Contact'**
   String get contact;
 
+  /// No description provided for @contacts.
+  ///
+  /// In en, this message translates to:
+  /// **'Contacts'**
+  String get contacts;
+
+  /// No description provided for @failed_to_open_contact.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open contact'**
+  String get failed_to_open_contact;
+
   /// No description provided for @artist2.
   ///
   /// In en, this message translates to:
@@ -1611,6 +1647,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Service category'**
   String get service_category;
+
+  /// No description provided for @order_category.
+  ///
+  /// In en, this message translates to:
+  /// **'Order category'**
+  String get order_category;
 
   /// No description provided for @period.
   ///

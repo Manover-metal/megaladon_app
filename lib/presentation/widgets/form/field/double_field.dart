@@ -28,6 +28,8 @@ class DoubleFieldApp extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: TextField(
+                onTapOutside: (_) =>
+                    FocusManager.instance.primaryFocus?.unfocus(),
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'(\d|\.)'))
                 ],

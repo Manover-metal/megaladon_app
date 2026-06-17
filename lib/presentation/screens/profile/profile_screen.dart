@@ -81,81 +81,85 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           var executor = state.user?.executor;
                           var store = state.user?.store;
                           return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              BlocConsumer<ChangePhotoCubit, ChangePhotoState>(
-                                listener: _photoListener,
-                                builder: (context, state) => SizedBox(
-                                  width: MediaQuery.of(context).size.width / 3,
-                                  height: MediaQuery.of(context).size.width / 3,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(100),
-                                    clipBehavior: Clip.hardEdge,
-                                    child: Stack(
-                                      alignment: Alignment.bottomCenter,
-                                      children: [
-                                        Container(
-                                          width: double.infinity,
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              3,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .secondary,
-                                          child: state.status ==
-                                                  PhotoStatus.bytes
-                                              ? Image.memory(
-                                                  state.imageData!,
-                                                  fit: BoxFit.cover,
-                                                )
-                                              : CachedNetworkImage(
-                                                  imageUrl: state.url ?? '',
-                                                  fadeInDuration: Duration.zero,
-                                                  progressIndicatorBuilder: (context,
-                                                          url,
-                                                          downloadProgress) =>
-                                                      Icon(Icons.person,
-                                                          size: MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .width /
-                                                              4),
-                                                  errorWidget: (context, url,
-                                                          error) =>
-                                                      Icon(Icons.person,
-                                                          size: MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .width /
-                                                              4),
-                                                  fit: BoxFit.cover,
+                              Align(
+                                alignment: Alignment.center,
+                                child: BlocConsumer<ChangePhotoCubit, ChangePhotoState>(
+                                  listener: _photoListener,
+                                  builder: (context, state) => SizedBox(
+                                    width: MediaQuery.of(context).size.width / 3,
+                                    height: MediaQuery.of(context).size.width / 3,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(100),
+                                      clipBehavior: Clip.hardEdge,
+                                      child: Stack(
+                                        alignment: Alignment.bottomCenter,
+                                        children: [
+                                          Container(
+                                            width: double.infinity,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                3,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .secondary,
+                                            child: state.status ==
+                                                    PhotoStatus.bytes
+                                                ? Image.memory(
+                                                    state.imageData!,
+                                                    fit: BoxFit.cover,
+                                                  )
+                                                : CachedNetworkImage(
+                                                    imageUrl: state.url ?? '',
+                                                    fadeInDuration: Duration.zero,
+                                                    progressIndicatorBuilder: (context,
+                                                            url,
+                                                            downloadProgress) =>
+                                                        Icon(Icons.person,
+                                                            size: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width /
+                                                                4),
+                                                    errorWidget: (context, url,
+                                                            error) =>
+                                                        Icon(Icons.person,
+                                                            size: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width /
+                                                                4),
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                          ),
+                                          Align(
+                                              alignment: Alignment.bottomCenter,
+                                              child: GestureDetector(
+                                                onTap: _changePhoto,
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        const BorderRadius
+                                                            .vertical(
+                                                            bottom:
+                                                                Radius.circular(
+                                                                    1000)),
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .surface
+                                                        .withValues(alpha: 0.5),
+                                                  ),
+                                                  padding:
+                                                      const EdgeInsets.symmetric(
+                                                          vertical: 3),
+                                                  width: double.infinity,
+                                                  child: const Icon(Icons.edit),
                                                 ),
-                                        ),
-                                        Align(
-                                            alignment: Alignment.bottomCenter,
-                                            child: GestureDetector(
-                                              onTap: _changePhoto,
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      const BorderRadius
-                                                          .vertical(
-                                                          bottom:
-                                                              Radius.circular(
-                                                                  1000)),
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .surface
-                                                      .withValues(alpha: 0.5),
-                                                ),
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 3),
-                                                width: double.infinity,
-                                                child: const Icon(Icons.edit),
-                                              ),
-                                            ))
-                                      ],
+                                              ))
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -181,11 +185,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     value: AppLocalizations.of(context)!
                                         .cityName(user.city?.name ?? '')),
                               if (executor != null) ...[
-                                const Divider(thickness: 1),
+                                 const SizedBox(
+                                  height: 20,
+                                ),
                                 TitleApp(
                                     AppLocalizations.of(context)!.artist_data),
                                 const SizedBox(
-                                  height: 20,
+                                  height: 8,
                                 ),
                                 TextFieldApp(
                                     readOnly: true,
@@ -214,11 +220,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       value: executor.countOrders.toString()),
                               ],
                               if (store != null) ...[
-                                const Divider(thickness: 1),
+                               const SizedBox(
+                                  height: 20,
+                                ),
                                 TitleApp(
                                     AppLocalizations.of(context)!.store_data),
                                 const SizedBox(
-                                  height: 20,
+                                  height: 8,
                                 ),
                                 TextFieldApp(
                                     readOnly: true,
@@ -326,7 +334,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 const SizedBox(
                                   height: 20,
                                 ),
-                                const Divider(thickness: 1),
                               ],
                               ProfileRouteTile(
                                   text: AppLocalizations.of(context)!

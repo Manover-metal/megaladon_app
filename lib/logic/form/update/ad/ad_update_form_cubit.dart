@@ -83,7 +83,7 @@ class AdUpdateFormCubit extends Cubit<AdUpdateFormState> {
             id,
             AdvertUpdateRequestParams(
               title: state.title.value,
-              description: state.title.value,
+              description: state.description.value,
               price: int.tryParse(state.price.value),
               categoryId: state.category.value!,
               cityId: state.city.value!,

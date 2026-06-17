@@ -16,6 +16,7 @@ import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/form/multi_picker/contact_multi_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
+import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
@@ -168,6 +169,10 @@ class _ChangeStoreScreenState extends State<ChangeStoreScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+        appBar: HeaderAppBar(
+          isBack: true,
+          title: AppLocalizations.of(context)!.change_store,
+        ),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Container(
@@ -183,10 +188,6 @@ class _ChangeStoreScreenState extends State<ChangeStoreScreen> {
                 ],
                 child: Column(
                   children: [
-                    TitleApp(AppLocalizations.of(context)!.shop_registration),
-                    const SizedBox(
-                      height: 20,
-                    ),
                     BlocBuilder<ChangeStoreFormCubit, ChangeStoreFormState>(
                       builder: (context, formState) => Column(
                         children: [

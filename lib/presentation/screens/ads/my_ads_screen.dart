@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
-import 'package:megaladon/logic/screens/advert/main/advert_screen_main_cubit.dart';
 import 'package:megaladon/logic/screens/advert/my/advert_screen_my_cubit.dart';
+import 'package:megaladon/logic/screens/service/my/service_screen_my_cubit.dart';
 import 'package:megaladon/presentation/screens/orders/list_my_orders_screen.dart';
 import 'package:megaladon/presentation/widgets/bottom_sheet/filters/filter_ad_my_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/card/ad_card.dart';
@@ -27,8 +27,8 @@ class _MyAdsScreenState extends State<MyAdsScreen>
   late TabController _tabController;
 
   Future _onRefresh() async {
-    await context.read<AdvertScreenMyCubit>().fetchService();
-    await context.read<AdvertScreenMyCubit>().fetchAdvert();
+    await context.read<ServiceScreenMyCubit>().fetch();
+    await context.read<AdvertScreenMyCubit>().fetch();
   }
 
   Future<void> _showFilter() async {
@@ -40,8 +40,8 @@ class _MyAdsScreenState extends State<MyAdsScreen>
         elevation: 100,
         builder: (_) => const FilterMyAdBottomSheet());
     if (result != null) {
-      context.read<AdvertScreenMyCubit>().fetchService();
-      context.read<AdvertScreenMyCubit>().fetchAdvert();
+      context.read<ServiceScreenMyCubit>().fetch();
+      context.read<AdvertScreenMyCubit>().fetch();
     }
   }
 
@@ -49,9 +49,9 @@ class _MyAdsScreenState extends State<MyAdsScreen>
     if (_scrollAdvertController.position.maxScrollExtent <
         _scrollAdvertController.position.pixels) {
       final cubit = context.read<AdvertScreenMyCubit>();
-      if (cubit.state.status != AdverScreenMainStatus.loading) {
+      if (cubit.state.status != AdverScreenMyMainStatus.loading) {
         var params = cubit.state.params;
-        cubit.fetchAdvert(
+        cubit.fetch(
             params: params.copyWith(
                 startRow: params.startRow + params.rowsPerPage));
       }
@@ -61,10 +61,10 @@ class _MyAdsScreenState extends State<MyAdsScreen>
   void _listenerServiceScroll() {
     if (_scrollServiceController.position.maxScrollExtent <
         _scrollServiceController.position.pixels) {
-      final cubit = context.read<AdvertScreenMyCubit>();
-      if (cubit.state.status != AdverScreenMainStatus.loading) {
+      final cubit = context.read<ServiceScreenMyCubit>();
+      if (cubit.state.status != ServiceScreenMyStatus.loading) {
         var params = cubit.state.params;
-        cubit.fetchService(
+        cubit.fetch(
             params: params.copyWith(
                 startRow: params.startRow + params.rowsPerPage));
       }
@@ -102,13 +102,18 @@ class _MyAdsScreenState extends State<MyAdsScreen>
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(70),
             child: BlocBuilder<AdvertScreenMyCubit, AdvertScreenMyState>(
-              builder: (context, state) => HeaderAppBar(
-                isMenu: true,
-                title: AppLocalizations.of(context)!.my_announcement,
-                onTrailing: _onRefresh,
-                trailing: state.status != AdverScreenMyMainStatus.loading
-                    ? const Icon(Icons.refresh, size: 30)
-                    : const CupertinoActivityIndicator(),
+              builder: (context, advertState) =>
+                  BlocBuilder<ServiceScreenMyCubit, ServiceScreenMyState>(
+                builder: (context, serviceState) => HeaderAppBar(
+                  isMenu: true,
+                  title: AppLocalizations.of(context)!.my_announcement,
+                  onTrailing: _onRefresh,
+                  trailing: advertState.status !=
+                              AdverScreenMyMainStatus.loading &&
+                          serviceState.status != ServiceScreenMyStatus.loading
+                      ? const Icon(Icons.refresh, size: 30)
+                      : const CupertinoActivityIndicator(),
+                ),
               ),
             ),
           ),
@@ -164,28 +169,24 @@ class _MyAdsScreenState extends State<MyAdsScreen>
                         constraints: BoxConstraints(
                             minHeight: MediaQuery.of(context).size.height),
                         padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Column(
-                          children: [
-                            BlocBuilder<AdvertScreenMyCubit,
-                                AdvertScreenMyState>(
-                              builder: (context, state) => Column(
-                                children: [
-                                  ...state.services
-                                      .map((advert) => AdCard(advert: advert))
-                                      .toList(),
-                                  if (state.status ==
-                                      AdverScreenMyMainStatus.loading)
-                                    const Loader(padding: 10)
-                                  else if (state.status ==
-                                      AdverScreenMyMainStatus.error)
-                                    ErrorMessage(error: state.error!)
-                                  else if (state.stock)
-                                    StockMessage(
-                                        name: AppLocalizations.of(context)!.ads)
-                                ],
-                              ),
-                            )
-                          ],
+                        child: BlocBuilder<ServiceScreenMyCubit,
+                            ServiceScreenMyState>(
+                          builder: (context, state) => Column(
+                            children: [
+                              ...state.services
+                                  .map((advert) => AdCard(advert: advert))
+                                  .toList(),
+                              if (state.status == ServiceScreenMyStatus.loading)
+                                const Loader(padding: 10)
+                              else if (state.status ==
+                                  ServiceScreenMyStatus.error)
+                                ErrorMessage(error: state.error!)
+                              else if (state.stock)
+                                StockMessage(
+                                    name:
+                                        AppLocalizations.of(context)!.services)
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -201,28 +202,24 @@ class _MyAdsScreenState extends State<MyAdsScreen>
                         constraints: BoxConstraints(
                             minHeight: MediaQuery.of(context).size.height),
                         padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Column(
-                          children: [
-                            BlocBuilder<AdvertScreenMyCubit,
-                                AdvertScreenMyState>(
-                              builder: (context, state) => Column(
-                                children: [
-                                  ...state.adverts
-                                      .map((advert) => AdCard(advert: advert))
-                                      .toList(),
-                                  if (state.status ==
-                                      AdverScreenMyMainStatus.loading)
-                                    const Loader(padding: 10)
-                                  else if (state.status ==
-                                      AdverScreenMyMainStatus.error)
-                                    ErrorMessage(error: state.error!)
-                                  else if (state.stock)
-                                    StockMessage(
-                                        name: AppLocalizations.of(context)!.ads)
-                                ],
-                              ),
-                            )
-                          ],
+                        child: BlocBuilder<AdvertScreenMyCubit,
+                            AdvertScreenMyState>(
+                          builder: (context, state) => Column(
+                            children: [
+                              ...state.adverts
+                                  .map((advert) => AdCard(advert: advert))
+                                  .toList(),
+                              if (state.status ==
+                                  AdverScreenMyMainStatus.loading)
+                                const Loader(padding: 10)
+                              else if (state.status ==
+                                  AdverScreenMyMainStatus.error)
+                                ErrorMessage(error: state.error!)
+                              else if (state.stock)
+                                StockMessage(
+                                    name: AppLocalizations.of(context)!.ads)
+                            ],
+                          ),
                         ),
                       ),
                     ),

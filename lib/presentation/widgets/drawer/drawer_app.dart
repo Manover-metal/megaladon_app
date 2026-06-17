@@ -89,7 +89,8 @@ class DrawerApp extends StatelessWidget {
                                   ),
                                 ),
                                 DrawerRouteTile(
-                                  text: AppLocalizations.of(context)!.executor,
+                                  text:
+                                      AppLocalizations.of(context)!.my_executor,
                                   page: const InitialRouter(
                                     children: [
                                       OrderRouter(

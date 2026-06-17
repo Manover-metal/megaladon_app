@@ -1,22 +1,22 @@
+import 'dart:io';
+
 import 'package:megaladon/core/dio/index.dart';
-import 'package:open_file_plus/open_file_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class DownloadService {
-  static Future<void> download(
-      {required String url, Function(int, int)? callback}) async {
-    var hasPermission = await _requestWritePermission();
-    if (!hasPermission) return;
+  static Future<File?> download(
+      {required String url, void Function(int, int)? callback}) async {
+    final hasPermission = await _requestWritePermission();
+    if (!hasPermission) return null;
 
-    var dir = await getApplicationDocumentsDirectory();
+    final dir = await getApplicationDocumentsDirectory();
+    final fileName = url.split('/').last;
+    final savePath = '${dir.path}/$fileName';
 
-    var fileName = url.split('/').last;
+    await ApiService.I.download(url, savePath, onReceiveProgress: callback);
 
-    await ApiService.I
-        .download(url, '${dir.path}/$fileName', onReceiveProgress: callback);
-
-    OpenFile.open('${dir.path}/$fileName');
+    return File(savePath);
   }
 
   static Future<bool> _requestWritePermission() async {

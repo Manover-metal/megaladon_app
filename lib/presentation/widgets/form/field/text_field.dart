@@ -44,6 +44,8 @@ class TextFieldApp extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: TextField(
+                onTapOutside: (_) =>
+                    FocusManager.instance.primaryFocus?.unfocus(),
                 controller: controller ??
                     (value != null ? TextEditingController(text: value) : null),
                 readOnly: readOnly,

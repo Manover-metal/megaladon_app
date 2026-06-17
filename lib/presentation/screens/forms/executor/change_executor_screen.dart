@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:megaladon/data/models/dictionary/order_category_model.dart';
+import 'package:megaladon/data/models/dictionary/service_type_model.dart';
 import 'package:megaladon/data/models/form/localizable_error.dart';
 import 'package:megaladon/data/models/request/params/update/change_executor_request_params.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
@@ -13,8 +15,9 @@ import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/number_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
-import 'package:megaladon/presentation/widgets/form/multi_picker/service_type_multi_picker.dart';
+import 'package:megaladon/presentation/widgets/form/multi_picker/order_category_multi_picker.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
+import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
@@ -29,7 +32,7 @@ class _ChangeExecutorScreenState extends State<ChangeExecutorScreen> {
   late TextEditingController _nameController;
   late TextEditingController _binController;
   late TextEditingController _fullAddressController;
-  late ServiceTypeMultiPickerController _serviceController;
+  late OrderCategoryMultiPickerController _serviceController;
 
   Future<void> _register() async {
     if (await _checkForm()) {
@@ -43,8 +46,10 @@ class _ChangeExecutorScreenState extends State<ChangeExecutorScreen> {
                 lat: position.latitude,
                 lon: position.longitude,
                 fullAddress: _fullAddressController.value.text,
-                services:
-                    _serviceController.value.map((e) => e.value).toList()),
+                services: _serviceController.value
+                    .map((e) =>
+                        ServiceTypeModel(id: e.value.id, name: e.value.name))
+                    .toList()),
           ));
     }
   }
@@ -89,7 +94,9 @@ class _ChangeExecutorScreenState extends State<ChangeExecutorScreen> {
           bin: _binController.value.text,
           lat: position.latitude.toString(),
           lon: position.longitude.toString(),
-          services: _serviceController.value.map((e) => e.value).toList());
+          services: _serviceController.value
+              .map((e) => ServiceTypeModel(id: e.value.id, name: e.value.name))
+              .toList());
     } else {
       return false;
     }
@@ -143,8 +150,10 @@ class _ChangeExecutorScreenState extends State<ChangeExecutorScreen> {
     _fullAddressController =
         TextEditingController(text: state.user?.executor?.fullAddress);
     _binController = TextEditingController(text: state.user?.executor?.bin);
-    _serviceController = ServiceTypeMultiPickerController(
-        services: state.user?.executor?.services);
+    _serviceController = OrderCategoryMultiPickerController(
+        categories: state.user?.executor?.services
+            .map((s) => OrderCategoryModel(id: s.id, name: s.name))
+            .toList());
     super.initState();
   }
 
@@ -159,6 +168,10 @@ class _ChangeExecutorScreenState extends State<ChangeExecutorScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+        appBar: HeaderAppBar(
+          isBack: true,
+          title: AppLocalizations.of(context)!.change_executor,
+        ),
         body: MultiBlocListener(
           listeners: [
             BlocListener<ChangeExecutorFormCubit, ChangeExecutorFormState>(
@@ -174,11 +187,6 @@ class _ChangeExecutorScreenState extends State<ChangeExecutorScreen> {
                 padding: const EdgeInsets.all(20),
                 child: Column(
                   children: [
-                    TitleApp(
-                        AppLocalizations.of(context)!.change_artist_details),
-                    const SizedBox(
-                      height: 20,
-                    ),
                     BlocBuilder<ChangeExecutorFormCubit,
                         ChangeExecutorFormState>(
                       builder: (context, formState) => Column(
@@ -202,8 +210,8 @@ class _ChangeExecutorScreenState extends State<ChangeExecutorScreen> {
                             icon: const Icon(Icons.maps_home_work_outlined),
                             controller: _fullAddressController,
                           ),
-                          ServiceTypeMultiPicker(
-                              serviceTypeControllers: _serviceController),
+                          OrderCategoryMultiPicker(
+                              controllers: _serviceController),
                         ],
                       ),
                     ),

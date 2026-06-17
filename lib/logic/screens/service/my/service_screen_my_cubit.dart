@@ -8,10 +8,10 @@ import 'package:megaladon/data/models/request/params/index/advert_index_request_
 import 'package:megaladon/data/repositories/advert_repository.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 
-part 'advert_screen_my_state.dart';
+part 'service_screen_my_state.dart';
 
-class AdvertScreenMyCubit extends Cubit<AdvertScreenMyState> {
-  AdvertScreenMyCubit(this.authBloc) : super(const AdvertScreenMyState()) {
+class ServiceScreenMyCubit extends Cubit<ServiceScreenMyState> {
+  ServiceScreenMyCubit(this.authBloc) : super(const ServiceScreenMyState()) {
     _listenAuth(authBloc.state);
     authBloc.stream.listen(_listenAuth);
   }
@@ -22,44 +22,44 @@ class AdvertScreenMyCubit extends Cubit<AdvertScreenMyState> {
     if (stateAuth is AuthLoginState) {
       fetch();
     } else {
-      emit(const AdvertScreenMyState());
+      emit(const ServiceScreenMyState());
     }
   }
 
   Future fetch({AdvertIndexRequestParams? params}) async {
-    if (state.status == AdverScreenMyMainStatus.loading && state.error == null)
+    if (state.status == ServiceScreenMyStatus.loading && state.error == null)
       return;
 
     var mainParams = params ?? state.params;
     emit(state.copyWith(
-        status: AdverScreenMyMainStatus.loading,
+        status: ServiceScreenMyStatus.loading,
         error: null,
-        adverts: state.adverts));
+        services: state.services));
 
-    return await _repository.indexMy(mainParams.copyWith(
-      type: AdvertType.advert,
-    )).then((value) {
+    return await _repository
+        .indexMy(mainParams, AdvertType.service)
+        .then((value) {
       if (mainParams.startRow == 0) {
         emit(state.copyWith(
-            adverts: value,
+            services: value,
             params: mainParams,
-            status: AdverScreenMyMainStatus.success,
+            status: ServiceScreenMyStatus.success,
             stock: value.length < mainParams.rowsPerPage));
       } else {
         emit(state.copyWith(
-            status: AdverScreenMyMainStatus.success,
-            adverts: [...state.adverts, ...value],
+            status: ServiceScreenMyStatus.success,
+            services: [...state.services, ...value],
             params: mainParams,
             stock: value.length < mainParams.rowsPerPage));
       }
     }).catchError((error) {
       if (error is DioException) {
         emit(state.copyWith(
-            status: AdverScreenMyMainStatus.error,
+            status: ServiceScreenMyStatus.error,
             error: ErrorModel.parseDio(error)));
       } else {
         emit(state.copyWith(
-            status: AdverScreenMyMainStatus.error, error: ErrorModel.nothing));
+            status: ServiceScreenMyStatus.error, error: ErrorModel.nothing));
       }
     });
   }

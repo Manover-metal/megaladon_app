@@ -60,7 +60,7 @@ class StoreModel {
             : null);
   }
 
-  static StoreModel? fromJsonOrNull(Map<String, dynamic>? data) => StoreModel.fromJson(data as Map<String, dynamic>);
+  static StoreModel? fromJsonOrNull(Map<String, dynamic>? data) => data == null ? null : StoreModel.fromJson(data as Map<String, dynamic>);
 
   static List<StoreModel> fromJsonList(List<dynamic> list) => list
       .map((value) => StoreModel.fromJson(value as Map<String, dynamic>))
