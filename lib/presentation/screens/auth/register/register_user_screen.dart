@@ -37,7 +37,8 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
         name: _nameController.value.text,
         phone: _phoneController.value.text,
         password: _passwordController.value.text,
-        passwordConfirmation: _passwordVerifyController.value.text);
+        passwordConfirmation: _passwordVerifyController.value.text,
+        city: _cityController.value?.id);
   }
 
   dynamic _listenerForm(BuildContext context, RegisterUserFormState state) {
@@ -84,7 +85,6 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
 
   @override
   void initState() {
-    _listenRegister(false)(context, context.read<RegisterUserBloc>().state);
     _nameController = TextEditingController();
     _phoneController = TextEditingController(text: '+7');
     _passwordController = TextEditingController();
@@ -162,6 +162,8 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                           icon: const Icon(Icons.location_city),
                           label: AppLocalizations.of(context)!.choose_city,
                           controller: _cityController,
+                          errorText: formState.city.displayError
+                              ?.localize(AppLocalizations.of(context)!),
                         ),
                       ],
                     ),
