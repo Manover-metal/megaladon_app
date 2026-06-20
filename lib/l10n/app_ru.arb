@@ -35,6 +35,8 @@
   "company_type_selection_title": "Выбор типа",
   "search": "Поиск",
   "desired_budget": "Желаемый бюджет (не обязательно)",
+  "execution_days_label": "Срок исполнения в днях",
+  "form_error_execution_days_empty": "Укажите срок исполнения в днях",
   "allowed_budget": "Допустимый бюджет (не обязательно)",
   "attach_files": "Прикрепить файлы:",
   "add_file": "Добавить файл",
@@ -172,6 +174,12 @@
   "@desiredBudgetUpToAmount": {
     "placeholders": {
       "amount": {"type": "String"}
+    }
+  },
+  "executionDaysValue": "Срок исполнения: {days} дн.",
+  "@executionDaysValue": {
+    "placeholders": {
+      "days": {"type": "String"}
     }
   },
   "valid_to": "Допустимый: до ",

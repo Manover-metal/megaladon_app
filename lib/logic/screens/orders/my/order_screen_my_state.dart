@@ -8,7 +8,7 @@ class OrderScreenMyState extends Equatable {
       this.orders = const [],
       this.ordersResponded = const [],
       this.error,
-      this.params = const OrderIndexRequestParams(),
+      this.params = const OrderIndexRequestParams(statuses: OrderStatus.values),
       this.stock = false,
       this.stockResponded = false});
   final OrderScreenMyStatus status;

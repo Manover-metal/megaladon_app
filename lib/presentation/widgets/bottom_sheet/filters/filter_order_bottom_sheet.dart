@@ -33,7 +33,7 @@ class _FilterOrderBottomSheetState extends State<FilterOrderBottomSheet> {
     var params = context.read<OrderScreenMainCubit>().state.params;
     final city = _cityPickerController.value;
     final category = _orderCategoryPickerController.value;
-    context.read<OrderScreenMainCubit>().changeParams(params.copyWith(
+    context.read<OrderScreenMainCubit>().changeParams(params.copyWithNull(
         startRow: 0,
         last: _indexPeriodPickerController.value,
         city: city,
@@ -78,6 +78,7 @@ class _FilterOrderBottomSheetState extends State<FilterOrderBottomSheet> {
                   child: CityPicker(
                     label: AppLocalizations.of(context)!.city,
                     controller: _cityPickerController,
+                    withNull: true,
                   ),
                 )
               ],
@@ -88,6 +89,7 @@ class _FilterOrderBottomSheetState extends State<FilterOrderBottomSheet> {
                   child: OrderCategoryPicker(
                     label: AppLocalizations.of(context)!.category,
                     controller: _orderCategoryPickerController,
+                    withNull: true,
                   ),
                 )
               ],

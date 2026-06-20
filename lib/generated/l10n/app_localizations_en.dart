@@ -114,6 +114,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get desired_budget => 'Desired budget (optional)';
 
   @override
+  String get execution_days_label => 'Execution period (in days)';
+
+  @override
+  String get form_error_execution_days_empty =>
+      'Specify the execution period in days';
+
+  @override
   String get allowed_budget => 'Allowed budget (optional)';
 
   @override
@@ -417,6 +424,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String desiredBudgetUpToAmount(String amount) {
     return 'Desired budget: up to $amount ₸';
+  }
+
+  @override
+  String executionDaysValue(String days) {
+    return 'Execution period: $days days';
   }
 
   @override

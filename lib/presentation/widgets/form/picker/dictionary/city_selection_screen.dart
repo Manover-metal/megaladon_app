@@ -4,15 +4,27 @@ import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 
+/// Result of [CitySelectionScreen]. A `null` screen result means the user
+/// cancelled (back), while a non-null result with `city == null` means the
+/// user explicitly chose "no city" (only possible when `withNull` is true).
+class CitySelectionResult {
+  const CitySelectionResult(this.city);
+  final CityModel? city;
+}
+
 class CitySelectionScreen extends StatefulWidget {
   const CitySelectionScreen({
     required this.cities,
     super.key,
     this.selected,
+    this.withNull = false,
   });
 
   final List<CityModel> cities;
   final CityModel? selected;
+
+  /// When true, an "all / not selected" option is shown that clears the value.
+  final bool withNull;
 
   @override
   State<CitySelectionScreen> createState() => _CitySelectionScreenState();
@@ -21,12 +33,15 @@ class CitySelectionScreen extends StatefulWidget {
 class _CitySelectionScreenState extends State<CitySelectionScreen> {
   late List<CityModel> _filtered;
   CityModel? _selected;
+  // True when the user explicitly picked the "all" option (clear).
+  bool _clear = false;
 
   @override
   void initState() {
     super.initState();
     _filtered = widget.cities;
     _selected = widget.selected;
+    _clear = widget.withNull && widget.selected == null;
   }
 
   void _onSearch(String query) {
@@ -57,10 +72,33 @@ class _CitySelectionScreenState extends State<CitySelectionScreen> {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: _filtered.length,
+              itemCount: _filtered.length + (widget.withNull ? 1 : 0),
               itemBuilder: (context, index) {
-                final city = _filtered[index];
-                final isSelected = city.id == _selected?.id;
+                if (widget.withNull && index == 0) {
+                  return ListTile(
+                    title: Text(
+                      l10n.all,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    selected: _clear,
+                    selectedTileColor: Theme.of(context)
+                        .colorScheme
+                        .primary
+                        .withValues(alpha: 0.1),
+                    trailing: _clear
+                        ? Icon(
+                            Icons.check,
+                            color: Theme.of(context).colorScheme.primary,
+                          )
+                        : null,
+                    onTap: () => setState(() {
+                      _clear = true;
+                      _selected = null;
+                    }),
+                  );
+                }
+                final city = _filtered[index - (widget.withNull ? 1 : 0)];
+                final isSelected = !_clear && city.id == _selected?.id;
                 return ListTile(
                   title: Text(
                     city.name,
@@ -77,7 +115,10 @@ class _CitySelectionScreenState extends State<CitySelectionScreen> {
                           color: Theme.of(context).colorScheme.primary,
                         )
                       : null,
-                  onTap: () => setState(() => _selected = city),
+                  onTap: () => setState(() {
+                    _clear = false;
+                    _selected = city;
+                  }),
                 );
               },
             ),
@@ -88,9 +129,10 @@ class _CitySelectionScreenState extends State<CitySelectionScreen> {
               child: SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: _selected == null
+                  onPressed: (_selected == null && !_clear)
                       ? null
-                      : () => Navigator.of(context).pop(_selected),
+                      : () => Navigator.of(context)
+                          .pop(CitySelectionResult(_selected)),
                   child: Text(l10n.select),
                 ),
               ),

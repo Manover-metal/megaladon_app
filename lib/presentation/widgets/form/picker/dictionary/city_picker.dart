@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/dictionary/dictionary_cubit.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_selection_screen.dart';
 
 class CityPickerController extends ValueNotifier<CityModel?> {
   CityPickerController({CityModel? city}) : super(city);
 
-  void _changeCity(CityModel city) {
+  void _changeCity(CityModel? city) {
     value = city;
     notifyListeners();
   }
@@ -19,11 +20,15 @@ class CityPicker extends StatefulWidget {
       required this.controller,
       super.key,
       this.icon,
-      this.errorText});
+      this.errorText,
+      this.withNull = false});
   final String label;
   final CityPickerController controller;
   final Widget? icon;
   final String? errorText;
+
+  /// When true, the selection screen lets the user clear the city ("all").
+  final bool withNull;
 
   @override
   State<CityPicker> createState() => _CityPickerState();
@@ -35,17 +40,18 @@ class _CityPickerState extends State<CityPicker> {
 
     if (cities.isEmpty) return;
 
-    final result = await Navigator.of(context).push<CityModel>(
+    final result = await Navigator.of(context).push<CitySelectionResult>(
       MaterialPageRoute(
         builder: (_) => CitySelectionScreen(
           cities: cities,
           selected: widget.controller.value,
+          withNull: widget.withNull,
         ),
       ),
     );
 
     if (result != null) {
-      widget.controller._changeCity(result);
+      widget.controller._changeCity(result.city);
     }
   }
 
@@ -79,7 +85,11 @@ class _CityPickerState extends State<CityPicker> {
                   ),
                   child: Row(
                     children: [
-                      Expanded(child: Text(city?.name ?? '')),
+                      Expanded(
+                          child: Text(city?.name ??
+                              (widget.withNull
+                                  ? AppLocalizations.of(context)!.all
+                                  : ''))),
                       const Icon(Icons.keyboard_arrow_down_outlined),
                     ],
                   ),

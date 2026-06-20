@@ -35,7 +35,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
 
   late CityPickerController _cityController;
   late TextEditingController _priceMaxController;
-  late TextEditingController _priceRecommendedController;
+  late TextEditingController _executionDaysController;
   late FileMultiPickerController _fileController;
 
   void _back() {
@@ -56,7 +56,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
         category: _orderCategoryController.value,
         city: _cityController.value!,
         priceMax: _priceMaxController.value.text,
-        priceRecommended: _priceRecommendedController.value.text,
+        executionDays: _executionDaysController.value.text,
         files: _fileController.value);
   }
 
@@ -103,7 +103,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
     _titleController = TextEditingController();
     _cityController = CityPickerController();
     _priceMaxController = TextEditingController();
-    _priceRecommendedController = TextEditingController();
+    _executionDaysController = TextEditingController();
     _descriptionController = TextEditingController();
     _fileController = FileMultiPickerController();
 
@@ -117,7 +117,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
     _cityController.dispose();
     _descriptionController.dispose();
     _priceMaxController.dispose();
-    _priceRecommendedController.dispose();
+    _executionDaysController.dispose();
     _fileController.dispose();
     super.dispose();
   }
@@ -179,11 +179,11 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                                   ?.localize(AppLocalizations.of(context)!),
                             ),
                             NumberFieldApp(
-                              label:
-                                  AppLocalizations.of(context)!.allowed_budget,
-                              controller: _priceRecommendedController,
-                              icon: const Icon(Icons.money_sharp),
-                              errorText: state.priceRecommended.displayError
+                              label: AppLocalizations.of(context)!
+                                  .execution_days_label,
+                              controller: _executionDaysController,
+                              icon: const Icon(Icons.calendar_today),
+                              errorText: state.executionDays.displayError
                                   ?.localize(AppLocalizations.of(context)!),
                             ),
                             FileMultiPicker(controller: _fileController),

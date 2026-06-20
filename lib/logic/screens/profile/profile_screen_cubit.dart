@@ -39,25 +39,26 @@ class ProfileScreenCubit extends Cubit<ProfileScreenState> {
   //   emit(state.copyWith(isUpdatePrice: !state.isUpdatePrice));
   // }
 
-  Future updateData() async => await _repository.profile().then((value) {
-        emit(
-          ProfileScreenState(status: ProfileScreenStatus.success, user: value),
-        );
-      }).catchError((error, stackTrace) {
-        print(error);
-        print(stackTrace);
-        if (error is DioException) {
-          if (error.response?.statusCode == 403) {
+  Future<void> updateData() async {
+    try {
+      final result = await _repository.profile();
+      emit(
+        ProfileScreenState(status: ProfileScreenStatus.success, user: result),
+      );
+    } catch(err) {
+        if (err is DioException) {
+          if (err.response?.statusCode == 403) {
             authBloc.add(AuthLogoutEvent());
             emit(const ProfileScreenState(status: ProfileScreenStatus.notAuth));
           } else {
             emit(ProfileScreenState(
                 status: ProfileScreenStatus.error,
-                error: ErrorModel.parseDio(error)));
+                error: ErrorModel.parseDio(err)));
           }
         } else {
           emit(ProfileScreenState(
               status: ProfileScreenStatus.error, error: ErrorModel.nothing));
         }
-      });
+    }
+  }
 }

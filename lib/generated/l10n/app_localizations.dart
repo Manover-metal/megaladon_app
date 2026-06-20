@@ -310,6 +310,18 @@ abstract class AppLocalizations {
   /// **'Desired budget (optional)'**
   String get desired_budget;
 
+  /// No description provided for @execution_days_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Execution period (in days)'**
+  String get execution_days_label;
+
+  /// No description provided for @form_error_execution_days_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Specify the execution period in days'**
+  String get form_error_execution_days_empty;
+
   /// No description provided for @allowed_budget.
   ///
   /// In en, this message translates to:
@@ -891,6 +903,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Desired budget: up to {amount} ₸'**
   String desiredBudgetUpToAmount(String amount);
+
+  /// No description provided for @executionDaysValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Execution period: {days} days'**
+  String executionDaysValue(String days);
 
   /// No description provided for @valid_to.
   ///

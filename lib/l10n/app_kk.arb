@@ -35,6 +35,8 @@
   "company_type_selection_title": "Түрін таңдау",
   "search": "Іздеу",
   "desired_budget": "Қажетті бюджет (міндетті емес)",
+  "execution_days_label": "Орындау мерзімі (күнмен)",
+  "form_error_execution_days_empty": "Орындау мерзімін күнмен көрсетіңіз",
   "allowed_budget": "Рұқсат етілген бюджет (міндетті емес)",
   "attach_files": "Файлдарды тіркеу:",
   "add_file": "Файлды қосу",
@@ -172,6 +174,12 @@
   "@desiredBudgetUpToAmount": {
     "placeholders": {
       "amount": {"type": "String"}
+    }
+  },
+  "executionDaysValue": "Орындау мерзімі: {days} күн",
+  "@executionDaysValue": {
+    "placeholders": {
+      "days": {"type": "String"}
     }
   },
   "valid_to": "Рұқсат етілген: дейін",

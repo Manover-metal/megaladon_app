@@ -37,7 +37,7 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
 
   late CityPickerController _cityController;
   late TextEditingController _priceMaxController;
-  late TextEditingController _priceRecommendedController;
+  late TextEditingController _executionDaysController;
   late FileMultiPickerController _fileController;
 
   void _back() {
@@ -58,7 +58,7 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
         category: _orderCategoryController.value,
         city: _cityController.value!,
         priceMax: _priceMaxController.value.text,
-        priceRecommended: _priceRecommendedController.value.text,
+        executionDays: _executionDaysController.value.text,
         files: _fileController.value);
   }
 
@@ -102,8 +102,8 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
     _cityController = CityPickerController(city: widget.order.city);
     _priceMaxController =
         TextEditingController(text: widget.order.priceMax.toString());
-    _priceRecommendedController =
-        TextEditingController(text: widget.order.priceRecommended.toString());
+    _executionDaysController = TextEditingController(
+        text: widget.order.executionDays?.toString() ?? '');
     _descriptionController =
         TextEditingController(text: widget.order.description);
     _fileController = FileMultiPickerController();
@@ -117,7 +117,7 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
     _cityController.dispose();
     _descriptionController.dispose();
     _priceMaxController.dispose();
-    _priceRecommendedController.dispose();
+    _executionDaysController.dispose();
     _fileController.dispose();
     super.dispose();
   }
@@ -169,10 +169,10 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
                                   ?.localize(AppLocalizations.of(context)!),
                             ),
                             NumberFieldApp(
-                              label:
-                                  AppLocalizations.of(context)!.allowed_budget,
-                              controller: _priceRecommendedController,
-                              errorText: state.priceRecommended.displayError
+                              label: AppLocalizations.of(context)!
+                                  .execution_days_label,
+                              controller: _executionDaysController,
+                              errorText: state.executionDays.displayError
                                   ?.localize(AppLocalizations.of(context)!),
                             ),
                             FileMultiPicker(controller: _fileController),

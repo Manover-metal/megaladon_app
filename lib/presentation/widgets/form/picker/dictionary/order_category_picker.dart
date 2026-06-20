@@ -20,21 +20,34 @@ class OrderCategoryPicker extends StatefulWidget {
       {required this.label,
       required this.controller,
       super.key,
-      this.errorText});
+      this.errorText,
+      this.withNull = false});
   final String label;
   final OrderCategoryPickerController controller;
   final String? errorText;
+
+  /// When true, an "all" option is prepended so the category can be cleared.
+  final bool withNull;
 
   @override
   State<OrderCategoryPicker> createState() => _OrderCategoryPickerState();
 }
 
 class _OrderCategoryPickerState extends State<OrderCategoryPicker> {
+  String _displayName(BuildContext context, OrderCategoryModel category) =>
+      widget.withNull && category.id == OrderCategoryModel.nothing.id
+          ? AppLocalizations.of(context)!.all
+          : category.name;
+
   Future<void> _handleClick() async {
-    final orderCategories =
+    final dictionaryCategories =
         context.read<DictionaryCubit>().state.orderCategories;
 
-    if (orderCategories.isEmpty) return;
+    if (dictionaryCategories.isEmpty) return;
+
+    final orderCategories = widget.withNull
+        ? [OrderCategoryModel.nothing, ...dictionaryCategories]
+        : dictionaryCategories;
 
     var initialIndex = orderCategories.indexWhere(
       (c) => c.id == widget.controller.value.id,
@@ -74,7 +87,7 @@ class _OrderCategoryPickerState extends State<OrderCategoryPicker> {
                 itemExtent: 36,
                 onSelectedItemChanged: (index) => selectedIndex = index,
                 children: orderCategories
-                    .map((c) => Center(child: Text(c.name)))
+                    .map((c) => Center(child: Text(_displayName(context, c))))
                     .toList(),
               ),
             ),
@@ -114,7 +127,8 @@ class _OrderCategoryPickerState extends State<OrderCategoryPicker> {
                   ),
                   child: Row(
                     children: [
-                      Expanded(child: Text(orderCategory.name)),
+                      Expanded(
+                          child: Text(_displayName(context, orderCategory))),
                       const Icon(Icons.keyboard_arrow_down_outlined),
                     ],
                   ),

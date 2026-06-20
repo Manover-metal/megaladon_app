@@ -10,6 +10,7 @@ import 'package:megaladon/data/models/error_model.dart';
 import 'package:megaladon/data/models/form/description.dart';
 import 'package:megaladon/data/models/form/dictionary/city.dart';
 import 'package:megaladon/data/models/form/dictionary/order_category.dart';
+import 'package:megaladon/data/models/form/execution_days.dart';
 import 'package:megaladon/data/models/form/price.dart';
 import 'package:megaladon/data/models/form/title.dart';
 import 'package:megaladon/data/models/request/params/update/order_update_request_params.dart';
@@ -27,15 +28,14 @@ class OrderUpdateFormCubit extends Cubit<OrderUpdateFormState> {
       {required String title,
       required String description,
       required String priceMax,
-      required String priceRecommended,
+      required String executionDays,
       required CityModel city,
       required OrderCategoryModel category,
       required List<PlatformFile> files}) {
     var titleForm = TitleFormModel.dirty(title);
     var descriptionForm = DescriptionFormModel.dirty(description);
     var priceMaxFormModel = PriceFormModel.dirty(priceMax, false);
-    var priceRecommendedFormModel =
-        PriceFormModel.dirty(priceRecommended, false);
+    var executionDaysForm = ExecutionDaysFormModel.dirty(executionDays);
     var cityForm = CityFormModel.dirty(city.id);
     var categoryForm = OrderCategoryFormModel.dirty(category.id);
 
@@ -45,7 +45,7 @@ class OrderUpdateFormCubit extends Cubit<OrderUpdateFormState> {
       cityForm,
       categoryForm,
       priceMaxFormModel,
-      priceRecommendedFormModel
+      executionDaysForm,
     ]);
 
     var stateNew = state.copyWith(
@@ -56,7 +56,7 @@ class OrderUpdateFormCubit extends Cubit<OrderUpdateFormState> {
         city: cityForm,
         category: categoryForm,
         priceMax: priceMaxFormModel,
-        priceRecommended: priceRecommendedFormModel,
+        executionDays: executionDaysForm,
         files: files);
     emit(stateNew);
     return stateNew.status;
@@ -78,9 +78,9 @@ class OrderUpdateFormCubit extends Cubit<OrderUpdateFormState> {
             id,
             OrderUpdateRequestParams(
                 title: state.title.value,
-                description: state.title.value,
+                description: state.description.value,
                 priceMax: int.tryParse(state.priceMax.value),
-                priceRecommended: int.tryParse(state.priceRecommended.value),
+                executionDays: int.tryParse(state.executionDays.value),
                 categoryId: state.category.value,
                 cityId: state.city.value!,
                 files: files))

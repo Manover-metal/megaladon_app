@@ -70,6 +70,10 @@
   "@search": {},
   "desired_budget": "Desired budget (optional)",
   "@desired_budget": {},
+  "execution_days_label": "Execution period (in days)",
+  "@execution_days_label": {},
+  "form_error_execution_days_empty": "Specify the execution period in days",
+  "@form_error_execution_days_empty": {},
   "allowed_budget": "Allowed budget (optional)",
   "@allowed_budget": {},
   "attach_files": "Attach files",
@@ -300,6 +304,12 @@
   "@desiredBudgetUpToAmount": {
     "placeholders": {
       "amount": {"type": "String"}
+    }
+  },
+  "executionDaysValue": "Execution period: {days} days",
+  "@executionDaysValue": {
+    "placeholders": {
+      "days": {"type": "String"}
     }
   },
   "valid_to": "Valid to: ",

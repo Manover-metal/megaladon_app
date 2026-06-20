@@ -18,6 +18,7 @@ class OrderModel extends Equatable {
       required this.countOffers,
       this.priceRecommended,
       this.priceMax,
+      this.executionDays,
       this.user,
       this.executor,
       this.files = const [],
@@ -34,6 +35,7 @@ class OrderModel extends Equatable {
 
   final String? priceRecommended;
   final String? priceMax;
+  final int? executionDays;
   final UserModel? user;
   final OrderCategoryModel? category;
   final ExecutorModel? executor;
@@ -56,6 +58,9 @@ class OrderModel extends Equatable {
         statusName: data['status'] as String,
         createdAt: data['created_at'] as String,
         countOffers: data['count_offers'] as int,
+        executionDays: data['execution_days'] != null
+            ? Parser.toInt(data['execution_days'])
+            : null,
         user: data['user'] != null
             ? UserModel.fromJson(data['user'] as Map<String, dynamic>)
             : null,
@@ -94,6 +99,9 @@ class OrderModel extends Equatable {
           : null,
       priceMax:
           data['price_max'] != null ? Parser.toPrice(data['price_max']) : null,
+      executionDays: data['execution_days'] != null
+          ? Parser.toInt(data['execution_days'])
+          : null,
       statusName: data['status'] as String,
       createdAt: data['created_at'] as String,
       countOffers: data['count_offers'] as int,
@@ -133,6 +141,7 @@ class OrderModel extends Equatable {
         countOffers,
         priceRecommended,
         priceMax,
+        executionDays,
         user,
         executor,
         files,

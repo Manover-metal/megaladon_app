@@ -114,6 +114,13 @@ class AppLocalizationsKk extends AppLocalizations {
   String get desired_budget => 'Қажетті бюджет (міндетті емес)';
 
   @override
+  String get execution_days_label => 'Орындау мерзімі (күнмен)';
+
+  @override
+  String get form_error_execution_days_empty =>
+      'Орындау мерзімін күнмен көрсетіңіз';
+
+  @override
   String get allowed_budget => 'Рұқсат етілген бюджет (міндетті емес)';
 
   @override
@@ -417,6 +424,11 @@ class AppLocalizationsKk extends AppLocalizations {
   @override
   String desiredBudgetUpToAmount(String amount) {
     return 'Қажетті бюджет: дейін $amount ₸';
+  }
+
+  @override
+  String executionDaysValue(String days) {
+    return 'Орындау мерзімі: $days күн';
   }
 
   @override

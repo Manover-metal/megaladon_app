@@ -30,7 +30,9 @@ class DictionaryCubit extends Cubit<DictionaryState> {
         print(c.name);
       }
       emit(state.copyWith(cities: value));
-    }).catchError((err) {
+    }).catchError((Object err, StackTrace stackTrace) {
+      print(err);
+      print(stackTrace);
       emit(state.copyWith(cities: []));
     });
   }
@@ -38,7 +40,10 @@ class DictionaryCubit extends Cubit<DictionaryState> {
   Future<void> fetchOrderCategories() async {
     await _repository.getOrderCategories().then((value) {
       emit(state.copyWith(orderCategories: value));
-    }).catchError((err) {
+    }).catchError((Object err, StackTrace stackTrace) {
+      print(err);
+      print(stackTrace);
+
       emit(state.copyWith(orderCategories: []));
     });
   }
@@ -46,7 +51,10 @@ class DictionaryCubit extends Cubit<DictionaryState> {
   Future<void> fetchAdvertCategories() async {
     await _repository.getAdvertCategories().then((value) {
       emit(state.copyWith(advertCategories: value));
-    }).catchError((err) {
+    }).catchError((Object err, StackTrace stackTrace) {
+      print(err);
+      print(stackTrace);
+
       emit(state.copyWith(advertCategories: []));
     });
   }
@@ -54,7 +62,10 @@ class DictionaryCubit extends Cubit<DictionaryState> {
   Future<void> fetchServiceTypes() async {
     await _repository.getServiceTypes().then((value) {
       emit(state.copyWith(serviceTypes: value));
-    }).catchError((err) {
+    }).catchError((Object err, StackTrace stackTrace) {
+      print(err);
+      print(stackTrace);
+
       emit(state.copyWith(serviceTypes: []));
     });
   }
@@ -62,7 +73,10 @@ class DictionaryCubit extends Cubit<DictionaryState> {
   Future<void> fetchCompanyTypes() async {
     await _repository.getCompanyTypes().then((value) {
       emit(state.copyWith(companyTypes: value));
-    }).catchError((err) {
+    }).catchError((Object err, StackTrace stackTrace) {
+      print(err);
+      print(stackTrace);
+
       emit(state.copyWith(companyTypes: []));
     });
   }
@@ -72,8 +86,9 @@ class DictionaryCubit extends Cubit<DictionaryState> {
       print(value);
 
       emit(state.copyWith(subscribesStore: value));
-    }).catchError((err) {
+    }).catchError((Object err, StackTrace stackTrace) {
       print(err);
+      print(stackTrace);
 
       emit(state.copyWith(subscribesStore: []));
     });
@@ -83,8 +98,9 @@ class DictionaryCubit extends Cubit<DictionaryState> {
     await _repository.getSubscribeExecutor().then((value) {
       print(value);
       emit(state.copyWith(subscribesExecutor: value));
-    }).catchError((err) {
+    }).catchError((Object err, StackTrace stackTrace) {
       print(err);
+      print(stackTrace);
 
       emit(state.copyWith(subscribesExecutor: []));
     });

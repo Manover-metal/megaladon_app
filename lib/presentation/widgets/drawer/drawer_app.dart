@@ -162,8 +162,7 @@ class DrawerApp extends StatelessWidget {
                   padding: const EdgeInsets.all(20),
                   child: Column(
                     children: [
-                      if (state is AuthLoginState) ...[
-                        if (state.user?.executor == null)
+                     if (state.user?.executor == null)
                           ElevatedButtonApp(
                             text: AppLocalizations.of(context)!
                                 .artist_registration,
@@ -175,7 +174,6 @@ class DrawerApp extends StatelessWidget {
                                 AppLocalizations.of(context)!.shop_registration,
                             onPressed: _registerStore(context),
                           ),
-                      ],
                     ],
                   ),
                 ),

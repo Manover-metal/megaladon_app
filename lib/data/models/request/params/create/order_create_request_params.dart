@@ -8,11 +8,13 @@ class OrderCreateRequestParams {
       required this.cityId,
       required this.files,
       this.priceRecommended,
-      this.priceMax});
+      this.priceMax,
+      this.executionDays});
   final String title;
   final String description;
   final int? priceRecommended;
   final int? priceMax;
+  final int? executionDays;
   final int categoryId;
   final int cityId;
   final List<MultipartFile> files;
@@ -23,6 +25,7 @@ class OrderCreateRequestParams {
       'description': description,
       'price_recommended': priceRecommended,
       'price_max': priceMax,
+      'execution_days': executionDays,
       'category_id': categoryId,
       'city_id': cityId,
     });

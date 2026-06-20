@@ -23,6 +23,7 @@ import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 import 'package:megaladon/presentation/widgets/tiles/executor_tile.dart';
 import 'package:megaladon/presentation/widgets/tiles/user_tile.dart';
+import 'package:share_plus/share_plus.dart';
 
 class DetailsOrderScreen extends StatefulWidget {
   const DetailsOrderScreen({required this.orderId, super.key});
@@ -52,11 +53,24 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
   // }
 
   Future<void> Function() _download(FileModel file) => () async {
-        await DownloadService.download(
-            url: file.url,
-            callback: (prog, gres) {
-              print('$prog, $gres');
-            });
+         try {
+          final downloadFile = await DownloadService.download(
+              url: file.url,
+              callback: (prog, gres) {
+                print('$prog, $gres');
+              });
+
+          if (downloadFile == null) return;
+
+          await SharePlus.instance.share(
+            ShareParams(files: [XFile(downloadFile.path)]),
+          );
+        } catch (_) {
+          if (!mounted) return;
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Не удалось загрузить файл')),
+          );
+        }
       };
 
   Null Function() _edit(OrderModel order) => () {
@@ -270,6 +284,10 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                       order.priceMax.toString())),
                               Text(AppLocalizations.of(context)!.validToAmount(
                                   order.priceRecommended.toString())),
+                              if (order.executionDays != null)
+                                Text(AppLocalizations.of(context)!
+                                    .executionDaysValue(
+                                        order.executionDays.toString())),
                               const SizedBox(
                                 height: 20,
                               ),

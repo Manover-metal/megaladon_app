@@ -8,7 +8,7 @@ class OrderUpdateFormState extends Equatable {
       this.category = const OrderCategoryFormModel.pure(),
       this.city = const CityFormModel.pure(),
       this.priceMax = const PriceFormModel.pure(),
-      this.priceRecommended = const PriceFormModel.pure(),
+      this.executionDays = const ExecutionDaysFormModel.pure(),
       this.countTry = 0,
       this.formState = EnumFormState.filled,
       this.files = const [],
@@ -17,7 +17,7 @@ class OrderUpdateFormState extends Equatable {
   final DescriptionFormModel description;
   final TitleFormModel title;
   final PriceFormModel priceMax;
-  final PriceFormModel priceRecommended;
+  final ExecutionDaysFormModel executionDays;
   final OrderCategoryFormModel category;
   final CityFormModel city;
   final int countTry;
@@ -32,7 +32,7 @@ class OrderUpdateFormState extends Equatable {
         title,
         category,
         priceMax,
-        priceRecommended,
+        executionDays,
         city,
         countTry,
         files,
@@ -45,7 +45,7 @@ class OrderUpdateFormState extends Equatable {
           DescriptionFormModel? description,
           TitleFormModel? title,
           PriceFormModel? priceMax,
-          PriceFormModel? priceRecommended,
+          ExecutionDaysFormModel? executionDays,
           OrderCategoryFormModel? category,
           CityFormModel? city,
           int? countTry,
@@ -57,7 +57,7 @@ class OrderUpdateFormState extends Equatable {
           description: description ?? this.description,
           title: title ?? this.title,
           priceMax: priceMax ?? this.priceMax,
-          priceRecommended: priceRecommended ?? this.priceRecommended,
+          executionDays: executionDays ?? this.executionDays,
           category: category ?? this.category,
           city: city ?? this.city,
           countTry: countTry ?? this.countTry,
