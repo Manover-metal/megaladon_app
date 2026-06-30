@@ -9,6 +9,24 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get pushNotificationsTitle => 'Push notifications';
+
+  @override
+  String get pushNotificationsOn => 'Notifications enabled';
+
+  @override
+  String get pushNotificationsOff => 'Notifications disabled';
+
+  @override
+  String get pushNotificationsLoading => 'Loading…';
+
+  @override
+  String get pushNotificationsLoadError => 'Failed to load status';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
   String get main_screen => 'Main';
 
   @override
@@ -82,6 +100,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get rating => 'Rating ';
+
+  @override
+  String get noRatings => 'No ratings';
 
   @override
   String get location => 'Location';

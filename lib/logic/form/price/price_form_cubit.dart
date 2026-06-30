@@ -18,7 +18,7 @@ class PriceFormCubit extends Cubit<PriceFormState> {
       _checkUpdate();
     });
   }
-  
+
   final PriceController _repository = PriceController();
   final ProfileScreenCubit profileCubit;
   final AuthBloc authBloc;

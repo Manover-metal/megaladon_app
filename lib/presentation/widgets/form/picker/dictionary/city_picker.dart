@@ -35,23 +35,34 @@ class CityPicker extends StatefulWidget {
 }
 
 class _CityPickerState extends State<CityPicker> {
-  Future<void> _handleClick() async {
-    final cities = context.read<DictionaryCubit>().state.cities;
+  // Защита от множественных нажатий: не открываем экран выбора повторно,
+  // пока предыдущий ещё открыт. Иначе rapid-тапы пушат несколько экранов с
+  // текстовым полем и ловим ассерт системного контекстного меню.
+  bool _isOpening = false;
 
+  Future<void> _handleClick() async {
+    if (_isOpening) return;
+
+    final cities = context.read<DictionaryCubit>().state.cities;
     if (cities.isEmpty) return;
 
-    final result = await Navigator.of(context).push<CitySelectionResult>(
-      MaterialPageRoute(
-        builder: (_) => CitySelectionScreen(
-          cities: cities,
-          selected: widget.controller.value,
-          withNull: widget.withNull,
+    _isOpening = true;
+    try {
+      final result = await Navigator.of(context).push<CitySelectionResult>(
+        MaterialPageRoute(
+          builder: (_) => CitySelectionScreen(
+            cities: cities,
+            selected: widget.controller.value,
+            withNull: widget.withNull,
+          ),
         ),
-      ),
-    );
+      );
 
-    if (result != null) {
-      widget.controller._changeCity(result.city);
+      if (result != null) {
+        widget.controller._changeCity(result.city);
+      }
+    } finally {
+      if (mounted) _isOpening = false;
     }
   }
 

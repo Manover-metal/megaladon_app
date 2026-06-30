@@ -53,7 +53,9 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
           stock: my.length < mainParams.rowsPerPage,
         ));
       }
-    }).catchError((error) {
+    }).catchError((error, stackTrace) {
+      print(error);
+      print(stackTrace);
       if (error is DioException) {
         if (error.response?.statusCode == 403) {
           authBloc.add(AuthLogoutEvent());

@@ -19,12 +19,14 @@ class OrderScreenDetailsCubit extends Cubit<OrderScreenDetailsState> {
     return await _fetch(id);
   }
 
-  Future complete() async {
+  Future<void> complete() async {
     if (state.status == OrderScreenDetailsStateStatus.success) {
       return await _repository
           .complete(state.order!.id)
           .then((value) async => await _fetch(state.order!.id))
-          .catchError((error) {
+          .catchError((error, stackTrace) {
+        print(error);
+        print(stackTrace);
         if (error is DioException) {
           emit(state.copyWith(
               status: OrderScreenDetailsStateStatus.errorMessage,
@@ -34,10 +36,8 @@ class OrderScreenDetailsCubit extends Cubit<OrderScreenDetailsState> {
               status: OrderScreenDetailsStateStatus.errorMessage,
               errorMessage: ErrorModel.nothing));
         }
-        return Future.error(false);
       });
     }
-    return Future.error(false);
   }
 
   Future acceptOffer({required int orderId, required int offerId}) async =>
@@ -62,7 +62,9 @@ class OrderScreenDetailsCubit extends Cubit<OrderScreenDetailsState> {
           order: value,
           status: OrderScreenDetailsStateStatus.success,
         ));
-      }).catchError((error) {
+      }).catchError((error, stackTrace) {
+        print(error);
+        print(stackTrace);
         if (error is DioException) {
           emit(state.copyWith(
               status: OrderScreenDetailsStateStatus.error,

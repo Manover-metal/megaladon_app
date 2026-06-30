@@ -29,14 +29,14 @@ class OrderCreateFormCubit extends Cubit<OrderCreateFormState> {
       required String description,
       required String priceMax,
       required String executionDays,
-      required CityModel city,
+      required CityModel? city,
       required OrderCategoryModel category,
       required List<PlatformFile> files}) {
     var titleForm = TitleFormModel.dirty(title);
     var descriptionForm = DescriptionFormModel.dirty(description);
     var priceMaxFormModel = PriceFormModel.dirty(priceMax, false);
     var executionDaysForm = ExecutionDaysFormModel.dirty(executionDays);
-    var cityForm = CityFormModel.dirty(city.id);
+    var cityForm = CityFormModel.dirty(city?.id);
     var categoryForm = OrderCategoryFormModel.dirty(category.id);
 
     var status = Formz.validate([

@@ -56,7 +56,7 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
         title: _titleController.value.text,
         description: _descriptionController.value.text,
         category: _orderCategoryController.value,
-        city: _cityController.value!,
+        city: _cityController.value,
         priceMax: _priceMaxController.value.text,
         executionDays: _executionDaysController.value.text,
         files: _fileController.value);
@@ -127,75 +127,79 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
         appBar: HeaderAppBar(
             isBack: true, title: AppLocalizations.of(context)!.change_order),
         body: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                const SizedBox(height: 30),
-                BlocBuilder<OrderUpdateFormCubit, OrderUpdateFormState>(
-                  builder: (context, state) => OrderCategoryPicker(
-                    label: AppLocalizations.of(context)!.category,
-                    controller: _orderCategoryController,
-                    errorText: state.category.displayError
-                        ?.localize(AppLocalizations.of(context)!),
+          child: SafeArea(
+            top: false,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  const SizedBox(height: 30),
+                  BlocBuilder<OrderUpdateFormCubit, OrderUpdateFormState>(
+                    builder: (context, state) => OrderCategoryPicker(
+                      label: AppLocalizations.of(context)!.category,
+                      controller: _orderCategoryController,
+                      errorText: state.category.displayError
+                          ?.localize(AppLocalizations.of(context)!),
+                    ),
                   ),
-                ),
-                BlocConsumer<OrderUpdateFormCubit, OrderUpdateFormState>(
-                    listener: _listenerForm,
-                    builder: (context, state) => Column(
-                          children: [
-                            TextFieldApp(
-                              controller: _titleController,
-                              label: AppLocalizations.of(context)!.header,
-                              errorText: state.title.displayError
-                                  ?.localize(AppLocalizations.of(context)!),
-                            ),
-                            CityPicker(
-                                label: AppLocalizations.of(context)!.city,
-                                controller: _cityController,
-                                errorText: state.city.displayError
-                                    ?.localize(AppLocalizations.of(context)!)),
-                            DescriptionFieldApp(
-                              label: AppLocalizations.of(context)!.store_data,
-                              controller: _descriptionController,
-                              errorText: state.description.displayError
-                                  ?.localize(AppLocalizations.of(context)!),
-                            ),
-                            NumberFieldApp(
-                              label:
-                                  AppLocalizations.of(context)!.desired_budget,
-                              controller: _priceMaxController,
-                              errorText: state.priceMax.displayError
-                                  ?.localize(AppLocalizations.of(context)!),
-                            ),
-                            NumberFieldApp(
-                              label: AppLocalizations.of(context)!
-                                  .execution_days_label,
-                              controller: _executionDaysController,
-                              errorText: state.executionDays.displayError
-                                  ?.localize(AppLocalizations.of(context)!),
-                            ),
-                            FileMultiPicker(controller: _fileController),
-                            const SizedBox(height: 30),
-                            if (state.formState == EnumFormState.fetch)
-                              ElevatedButtonApp(
-                                child: Loader(
-                                    color:
-                                        Theme.of(context).colorScheme.surface),
-                                onPressed: () {},
-                              )
-                            else
-                              ElevatedButtonApp(
-                                text: AppLocalizations.of(context)!.edit,
-                                onPressed: _create,
+                  BlocConsumer<OrderUpdateFormCubit, OrderUpdateFormState>(
+                      listener: _listenerForm,
+                      builder: (context, state) => Column(
+                            children: [
+                              TextFieldApp(
+                                controller: _titleController,
+                                label: AppLocalizations.of(context)!.header,
+                                errorText: state.title.displayError
+                                    ?.localize(AppLocalizations.of(context)!),
                               ),
-                          ],
-                        )),
-                OutlinedButtonApp(
-                  text: AppLocalizations.of(context)!.cancel,
-                  onPressed: _back,
-                ),
-              ],
+                              CityPicker(
+                                  label: AppLocalizations.of(context)!.city,
+                                  controller: _cityController,
+                                  errorText: state.city.displayError?.localize(
+                                      AppLocalizations.of(context)!)),
+                              DescriptionFieldApp(
+                                label: AppLocalizations.of(context)!.store_data,
+                                controller: _descriptionController,
+                                errorText: state.description.displayError
+                                    ?.localize(AppLocalizations.of(context)!),
+                              ),
+                              NumberFieldApp(
+                                label: AppLocalizations.of(context)!
+                                    .desired_budget,
+                                controller: _priceMaxController,
+                                errorText: state.priceMax.displayError
+                                    ?.localize(AppLocalizations.of(context)!),
+                              ),
+                              NumberFieldApp(
+                                label: AppLocalizations.of(context)!
+                                    .execution_days_label,
+                                controller: _executionDaysController,
+                                errorText: state.executionDays.displayError
+                                    ?.localize(AppLocalizations.of(context)!),
+                              ),
+                              FileMultiPicker(controller: _fileController),
+                              const SizedBox(height: 30),
+                              if (state.formState == EnumFormState.fetch)
+                                ElevatedButtonApp(
+                                  child: Loader(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .surface),
+                                  onPressed: () {},
+                                )
+                              else
+                                ElevatedButtonApp(
+                                  text: AppLocalizations.of(context)!.edit,
+                                  onPressed: _create,
+                                ),
+                            ],
+                          )),
+                  OutlinedButtonApp(
+                    text: AppLocalizations.of(context)!.cancel,
+                    onPressed: _back,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

@@ -45,20 +45,20 @@ class ProfileScreenCubit extends Cubit<ProfileScreenState> {
       emit(
         ProfileScreenState(status: ProfileScreenStatus.success, user: result),
       );
-    } catch(err) {
-        if (err is DioException) {
-          if (err.response?.statusCode == 403) {
-            authBloc.add(AuthLogoutEvent());
-            emit(const ProfileScreenState(status: ProfileScreenStatus.notAuth));
-          } else {
-            emit(ProfileScreenState(
-                status: ProfileScreenStatus.error,
-                error: ErrorModel.parseDio(err)));
-          }
+    } catch (err) {
+      if (err is DioException) {
+        if (err.response?.statusCode == 403) {
+          authBloc.add(AuthLogoutEvent());
+          emit(const ProfileScreenState(status: ProfileScreenStatus.notAuth));
         } else {
           emit(ProfileScreenState(
-              status: ProfileScreenStatus.error, error: ErrorModel.nothing));
+              status: ProfileScreenStatus.error,
+              error: ErrorModel.parseDio(err)));
         }
+      } else {
+        emit(ProfileScreenState(
+            status: ProfileScreenStatus.error, error: ErrorModel.nothing));
+      }
     }
   }
 }

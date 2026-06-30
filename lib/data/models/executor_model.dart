@@ -17,7 +17,7 @@ class ExecutorModel {
 
   final int id;
   final String name;
-  final String? rating;
+  final int? rating;
   final String? bin;
   final double? lat;
   final double? lon;
@@ -29,7 +29,7 @@ class ExecutorModel {
   static ExecutorModel fromJson(Map<String, dynamic> data) => ExecutorModel(
         id: data['id'] as int,
         name: data['name'] as String,
-        rating: data['rating'] as String?,
+        rating: Parser.toInt(data['rating'] as dynamic),
         bin: data['bin'] as String?,
         photo: data['photo_url'] as String?,
         lat: Parser.toDouble(data['lat']),

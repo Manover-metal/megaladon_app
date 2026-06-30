@@ -9,6 +9,24 @@ class AppLocalizationsRu extends AppLocalizations {
   AppLocalizationsRu([String locale = 'ru']) : super(locale);
 
   @override
+  String get pushNotificationsTitle => 'Пуш-уведомления';
+
+  @override
+  String get pushNotificationsOn => 'Уведомления включены';
+
+  @override
+  String get pushNotificationsOff => 'Уведомления отключены';
+
+  @override
+  String get pushNotificationsLoading => 'Загрузка…';
+
+  @override
+  String get pushNotificationsLoadError => 'Не удалось загрузить статус';
+
+  @override
+  String get retry => 'Повторить';
+
+  @override
   String get main_screen => 'Главная';
 
   @override
@@ -82,6 +100,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get rating => 'Рейтинг ';
+
+  @override
+  String get noRatings => 'Нет оценок';
 
   @override
   String get location => 'Местоположение';

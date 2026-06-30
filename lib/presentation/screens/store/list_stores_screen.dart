@@ -59,8 +59,9 @@ class _ListStoresScreenState extends State<ListStoresScreen> {
 
   @override
   void dispose() {
-    _scrollController.removeListener(_listenerScroll);
-    _scrollController.dispose();
+    _scrollController
+      ..removeListener(_listenerScroll)
+      ..dispose();
     super.dispose();
   }
 

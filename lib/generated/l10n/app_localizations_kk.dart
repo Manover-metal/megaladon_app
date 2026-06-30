@@ -9,6 +9,24 @@ class AppLocalizationsKk extends AppLocalizations {
   AppLocalizationsKk([String locale = 'kk']) : super(locale);
 
   @override
+  String get pushNotificationsTitle => 'Push-хабарламалар';
+
+  @override
+  String get pushNotificationsOn => 'Хабарламалар қосулы';
+
+  @override
+  String get pushNotificationsOff => 'Хабарламалар өшірулі';
+
+  @override
+  String get pushNotificationsLoading => 'Жүктелуде…';
+
+  @override
+  String get pushNotificationsLoadError => 'Күйді жүктеу мүмкін болмады';
+
+  @override
+  String get retry => 'Қайталау';
+
+  @override
   String get main_screen => 'Басты';
 
   @override
@@ -82,6 +100,9 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get rating => 'Рейтинг';
+
+  @override
+  String get noRatings => 'Бағалар жоқ';
 
   @override
   String get location => 'Орналасқан жері';

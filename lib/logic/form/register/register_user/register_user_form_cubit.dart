@@ -25,8 +25,13 @@ class RegisterUserFormCubit extends Cubit<RegisterUserFormState> {
     var phoneForm = PhoneFormModel.dirty(phone);
     var cityForm = CityFormModel.dirty(city);
 
-    var status = Formz.validate(
-        [passwordForm, phoneForm, passwordConfirmationForm, nameForm, cityForm]);
+    var status = Formz.validate([
+      passwordForm,
+      phoneForm,
+      passwordConfirmationForm,
+      nameForm,
+      cityForm
+    ]);
 
     var stateNew = state.copyWith(
         name: nameForm,

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
@@ -23,27 +24,48 @@ class ChangePhotoCubit extends Cubit<ChangePhotoState> {
 
   Future<void> changePhoto() async {
     final result = await ImageService.getImage();
-    if (result == null) return;
+    if (result == null) {
+      log('changePhoto: выбор изображения отменён', name: 'ChangePhoto');
+      return;
+    }
 
-    var file = result.files[0];
+    final file = result.files[0];
+
+    // На некоторых платформах path может быть null (только bytes) — тогда
+    // MultipartFile.fromFile падал бы и запрос вообще не уходил (без логов).
+    if (file.path == null) {
+      log('changePhoto: у выбранного файла нет path', name: 'ChangePhoto');
+      emit(const ChangePhotoState(status: PhotoStatus.error, error: null));
+      return;
+    }
 
     emit(ChangePhotoState(imageData: file.bytes, status: PhotoStatus.bytes));
 
-    var data = FormData.fromMap({
-      'photo': await MultipartFile.fromFile(file.path!, filename: file.name)
-    });
-    _repository.changePhoto(data).catchError((error) {
-      if (error is DioException) {
-        if (error.response?.statusCode == 403) {
-          authBloc.add(AuthLogoutEvent());
-        }
-        emit(ChangePhotoState(
-            status: PhotoStatus.error, error: ErrorModel.parseDio(error)));
-      } else {
-        emit(ChangePhotoState(
-            status: PhotoStatus.error, error: ErrorModel.nothing));
+    try {
+      final data = FormData.fromMap({
+        'photo': await MultipartFile.fromFile(file.path!, filename: file.name),
+      });
+      log('changePhoto: отправка ${file.name} (${file.size} байт)',
+          name: 'ChangePhoto');
+      await _repository.changePhoto(data);
+      log('changePhoto: успех, обновляю профиль', name: 'ChangePhoto');
+      // Перечитываем профиль, чтобы новое фото отразилось в UI: после fetch()
+      // _listenProfile получит свежий photo и переключит состояние на url.
+      await profileCubit.fetch();
+    } on DioException catch (error) {
+      log('changePhoto: DioException ${error.response?.statusCode} ${error.message}',
+          name: 'ChangePhoto', error: error);
+      if (error.response?.statusCode == 403) {
+        authBloc.add(AuthLogoutEvent());
       }
-    });
+      emit(ChangePhotoState(
+          status: PhotoStatus.error, error: ErrorModel.parseDio(error)));
+    } catch (e, st) {
+      log('changePhoto: непредвиденная ошибка $e',
+          name: 'ChangePhoto', error: e, stackTrace: st);
+      emit(ChangePhotoState(
+          status: PhotoStatus.error, error: ErrorModel.nothing));
+    }
   }
 
   void _listenProfile(ProfileScreenState profileState) {

@@ -100,6 +100,42 @@ abstract class AppLocalizations {
     Locale('ru')
   ];
 
+  /// No description provided for @pushNotificationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Push notifications'**
+  String get pushNotificationsTitle;
+
+  /// No description provided for @pushNotificationsOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications enabled'**
+  String get pushNotificationsOn;
+
+  /// No description provided for @pushNotificationsOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications disabled'**
+  String get pushNotificationsOff;
+
+  /// No description provided for @pushNotificationsLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading…'**
+  String get pushNotificationsLoading;
+
+  /// No description provided for @pushNotificationsLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load status'**
+  String get pushNotificationsLoadError;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
   /// No description provided for @main_screen.
   ///
   /// In en, this message translates to:
@@ -249,6 +285,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Rating '**
   String get rating;
+
+  /// No description provided for @noRatings.
+  ///
+  /// In en, this message translates to:
+  /// **'No ratings'**
+  String get noRatings;
 
   /// No description provided for @location.
   ///

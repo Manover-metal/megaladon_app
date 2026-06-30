@@ -24,7 +24,7 @@ class StoreModel {
 
   final String? name;
   final String? bin;
-  final String? rating;
+  final int? rating;
   final String? photo;
   final double? lat;
   final double? lon;
@@ -40,7 +40,7 @@ class StoreModel {
 
     return StoreModel(
         id: data['id'] as int,
-        rating: data['rating'] as String?,
+        rating: Parser.toInt(data['rating']),
         bin: data['bin'] as String?,
         fullAddress: data['full_address'] as String,
         photo: data['photo_url'] as String?,
@@ -60,7 +60,8 @@ class StoreModel {
             : null);
   }
 
-  static StoreModel? fromJsonOrNull(Map<String, dynamic>? data) => data == null ? null : StoreModel.fromJson(data as Map<String, dynamic>);
+  static StoreModel? fromJsonOrNull(Map<String, dynamic>? data) =>
+      data == null ? null : StoreModel.fromJson(data);
 
   static List<StoreModel> fromJsonList(List<dynamic> list) => list
       .map((value) => StoreModel.fromJson(value as Map<String, dynamic>))

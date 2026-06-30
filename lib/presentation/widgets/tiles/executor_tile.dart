@@ -57,7 +57,9 @@ class ExecutorTile extends StatelessWidget {
                   ],
                   Text.rich(TextSpan(children: [
                     TextSpan(text: AppLocalizations.of(context)!.rating2),
-                    TextSpan(text: executor.rating ?? '0')
+                    TextSpan(
+                        text: executor.rating?.toString() ??
+                            AppLocalizations.of(context)!.noRatings)
                   ]))
                 ],
               ),

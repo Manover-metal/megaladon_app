@@ -87,6 +87,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _logout(AuthLogoutEvent event, Emitter emit) async {
     await _authRepository.logout();
-    emit(AuthInitial());
+    // AuthLogoutState (а не AuthInitial): отличает «осознанный выход» от
+    // «холодного старта». На него реагируют ChatCubit (_dispose),
+    // ProfileScreenCubit (notAuth) и навигация в SplashScreen (уход на логин).
+    emit(AuthLogoutState());
   }
 }

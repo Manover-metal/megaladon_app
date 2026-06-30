@@ -36,9 +36,11 @@ class AdvertScreenMyCubit extends Cubit<AdvertScreenMyState> {
         error: null,
         adverts: state.adverts));
 
-    return await _repository.indexMy(mainParams.copyWith(
+    return await _repository
+        .indexMy(mainParams.copyWith(
       type: AdvertType.advert,
-    )).then((value) {
+    ))
+        .then((value) {
       if (mainParams.startRow == 0) {
         emit(state.copyWith(
             adverts: value,

@@ -33,8 +33,10 @@ class DrawerApp extends StatelessWidget {
       };
 
   Null Function() _logout(BuildContext context) => () {
+        // Только диспатчим событие. Переход на логин делает реактивный
+        // BlocListener в SplashScreen после прихода AuthLogoutState — иначе
+        // ловим гонку с NotAuthGuard и ломаем стек навигации.
         context.read<AuthBloc>().add(AuthLogoutEvent());
-        context.router.replaceAll([const LoginRoute()]);
       };
 
   @override
@@ -162,18 +164,17 @@ class DrawerApp extends StatelessWidget {
                   padding: const EdgeInsets.all(20),
                   child: Column(
                     children: [
-                     if (state.user?.executor == null)
-                          ElevatedButtonApp(
-                            text: AppLocalizations.of(context)!
-                                .artist_registration,
-                            onPressed: _registerExecutor(context),
-                          ),
-                        if (state.user?.store == null)
-                          ElevatedButtonApp(
-                            text:
-                                AppLocalizations.of(context)!.shop_registration,
-                            onPressed: _registerStore(context),
-                          ),
+                      if (state.user?.executor == null)
+                        ElevatedButtonApp(
+                          text:
+                              AppLocalizations.of(context)!.artist_registration,
+                          onPressed: _registerExecutor(context),
+                        ),
+                      if (state.user?.store == null)
+                        ElevatedButtonApp(
+                          text: AppLocalizations.of(context)!.shop_registration,
+                          onPressed: _registerStore(context),
+                        ),
                     ],
                   ),
                 ),

@@ -140,77 +140,82 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
                 ? AppLocalizations.of(context)!.edit_ad
                 : AppLocalizations.of(context)!.editService),
         body: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                const SizedBox(height: 30),
-                BlocConsumer<AdUpdateFormCubit, AdUpdateFormState>(
-                    listener: _listenerForm,
-                    builder: (context, state) => Column(
-                          children: [
-                            TextFieldApp(
-                              controller: _titleController,
-                              label: AppLocalizations.of(context)!.name_field,
-                              icon: const Icon(Icons.edit),
-                              errorText: state.title.displayError
-                                  ?.localize(AppLocalizations.of(context)!),
-                            ),
-                            AdvertCategoryPicker(
-                                label: AppLocalizations.of(context)!
-                                    .select_a_category,
-                                controller: _advertCategoryController,
-                                errorText: state.category.displayError
-                                    ?.localize(AppLocalizations.of(context)!)),
-                            CityPicker(
-                                label:
-                                    AppLocalizations.of(context)!.choose_city,
-                                controller: _cityController,
-                                errorText: state.city.displayError
-                                    ?.localize(AppLocalizations.of(context)!)),
-                            DescriptionFieldApp(
-                              label: AppLocalizations.of(context)!
-                                  .description_of_your_offer,
-                              controller: _descriptionController,
-                              icon: const Icon(IconPack.description),
-                              errorText: state.description.displayError
-                                  ?.localize(AppLocalizations.of(context)!),
-                            ),
-                            NumberFieldApp(
-                              label: AppLocalizations.of(context)!.price,
-                              controller: _priceController,
-                              icon: const Icon(Icons.money_sharp),
-                              errorText: state.price.displayError
-                                  ?.localize(AppLocalizations.of(context)!),
-                            ),
-                            PhoneField(
-                              controller: _phoneController,
-                              label: AppLocalizations.of(context)!
-                                  .additional_Phone,
-                              icon: const Icon(Icons.phone),
-                              errorText: state.phone.displayError
-                                  ?.localize(AppLocalizations.of(context)!),
-                            ),
-                            ImageMultiPicker(controller: _imageController),
-                            if (state.formState == EnumFormState.fetch)
-                              ElevatedButtonApp(
-                                child: Loader(
-                                    color:
-                                        Theme.of(context).colorScheme.surface),
-                                onPressed: () {},
-                              )
-                            else
-                              ElevatedButtonApp(
-                                text: AppLocalizations.of(context)!.edit,
-                                onPressed: _create,
+          child: SafeArea(
+            top: false,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  const SizedBox(height: 30),
+                  BlocConsumer<AdUpdateFormCubit, AdUpdateFormState>(
+                      listener: _listenerForm,
+                      builder: (context, state) => Column(
+                            children: [
+                              TextFieldApp(
+                                controller: _titleController,
+                                label: AppLocalizations.of(context)!.name_field,
+                                icon: const Icon(Icons.edit),
+                                errorText: state.title.displayError
+                                    ?.localize(AppLocalizations.of(context)!),
                               ),
-                          ],
-                        )),
-                OutlinedButtonApp(
-                  text: AppLocalizations.of(context)!.cancel,
-                  onPressed: _back,
-                ),
-              ],
+                              AdvertCategoryPicker(
+                                  label: AppLocalizations.of(context)!
+                                      .select_a_category,
+                                  controller: _advertCategoryController,
+                                  errorText: state.category.displayError
+                                      ?.localize(
+                                          AppLocalizations.of(context)!)),
+                              CityPicker(
+                                  label:
+                                      AppLocalizations.of(context)!.choose_city,
+                                  controller: _cityController,
+                                  errorText: state.city.displayError?.localize(
+                                      AppLocalizations.of(context)!)),
+                              DescriptionFieldApp(
+                                label: AppLocalizations.of(context)!
+                                    .description_of_your_offer,
+                                controller: _descriptionController,
+                                icon: const Icon(IconPack.description),
+                                errorText: state.description.displayError
+                                    ?.localize(AppLocalizations.of(context)!),
+                              ),
+                              NumberFieldApp(
+                                label: AppLocalizations.of(context)!.price,
+                                controller: _priceController,
+                                icon: const Icon(Icons.money_sharp),
+                                errorText: state.price.displayError
+                                    ?.localize(AppLocalizations.of(context)!),
+                              ),
+                              PhoneField(
+                                controller: _phoneController,
+                                label: AppLocalizations.of(context)!
+                                    .additional_Phone,
+                                icon: const Icon(Icons.phone),
+                                errorText: state.phone.displayError
+                                    ?.localize(AppLocalizations.of(context)!),
+                              ),
+                              ImageMultiPicker(controller: _imageController),
+                              if (state.formState == EnumFormState.fetch)
+                                ElevatedButtonApp(
+                                  child: Loader(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .surface),
+                                  onPressed: () {},
+                                )
+                              else
+                                ElevatedButtonApp(
+                                  text: AppLocalizations.of(context)!.edit,
+                                  onPressed: _create,
+                                ),
+                            ],
+                          )),
+                  OutlinedButtonApp(
+                    text: AppLocalizations.of(context)!.cancel,
+                    onPressed: _back,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

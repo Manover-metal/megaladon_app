@@ -42,6 +42,10 @@ class _PasswordFieldAppState extends State<PasswordFieldApp> {
                 children: [
                   Expanded(
                     child: TextField(
+                      contextMenuBuilder: (context, editableTextState) =>
+                          AdaptiveTextSelectionToolbar.editableText(
+                        editableTextState: editableTextState,
+                      ),
                       onTapOutside: (_) =>
                           FocusManager.instance.primaryFocus?.unfocus(),
                       controller: widget.controller,

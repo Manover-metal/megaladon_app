@@ -5,6 +5,7 @@ import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/locale/locale_cubit.dart';
 import 'package:megaladon/logic/theme/theme_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
+import 'package:megaladon/presentation/screens/settings/push_notification_tile.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 
@@ -95,6 +96,10 @@ class SettingsScreen extends StatelessWidget {
                     ),
                   ),
                 ],
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 8),
+                child: PushNotificationTile(),
               ),
               OutlinedButtonApp(
                 text: l10n.about_the_application,

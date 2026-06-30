@@ -54,7 +54,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
         title: _titleController.value.text,
         description: _descriptionController.value.text,
         category: _orderCategoryController.value,
-        city: _cityController.value!,
+        city: _cityController.value,
         priceMax: _priceMaxController.value.text,
         executionDays: _executionDaysController.value.text,
         files: _fileController.value);
@@ -127,86 +127,91 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
         appBar: HeaderAppBar(
             isBack: true, title: AppLocalizations.of(context)!.create_an_order),
         body: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                const SizedBox(height: 30),
-                BlocBuilder<OrderCreateFormCubit, OrderCreateFormState>(
-                  builder: (context, state) => Column(
-                    children: [
-                      OrderCategoryPicker(
-                        label: AppLocalizations.of(context)!.select_a_category,
-                        controller: _orderCategoryController,
-                        errorText: state.category.displayError
-                            ?.localize(AppLocalizations.of(context)!),
-                      ),
-                      CityPicker(
-                        label: AppLocalizations.of(context)!.choose_city,
-                        controller: _cityController,
-                        errorText: state.city.displayError
-                            ?.localize(AppLocalizations.of(context)!),
-                      ),
-                    ],
-                  ),
-                ),
-                BlocConsumer<OrderCreateFormCubit, OrderCreateFormState>(
-                    listener: _listenerForm,
+          child: SafeArea(
+            top: false,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  const SizedBox(height: 30),
+                  BlocBuilder<OrderCreateFormCubit, OrderCreateFormState>(
                     builder: (context, state) => Column(
-                          children: [
-                            TextFieldApp(
-                              controller: _titleController,
-                              label: AppLocalizations.of(context)!.header,
-                              icon: const Icon(
-                                  IconPack.job_description_kwo7og605c2l),
-                              errorText: state.title.displayError
-                                  ?.localize(AppLocalizations.of(context)!),
-                            ),
-                            DescriptionFieldApp(
-                              label: AppLocalizations.of(context)!
-                                  .description_of_work,
-                              controller: _descriptionController,
-                              icon: const Icon(IconPack.description),
-                              errorText: state.description.displayError
-                                  ?.localize(AppLocalizations.of(context)!),
-                            ),
-                            NumberFieldApp(
-                              label:
-                                  AppLocalizations.of(context)!.desired_budget,
-                              controller: _priceMaxController,
-                              icon: const Icon(Icons.money_sharp),
-                              errorText: state.priceMax.displayError
-                                  ?.localize(AppLocalizations.of(context)!),
-                            ),
-                            NumberFieldApp(
-                              label: AppLocalizations.of(context)!
-                                  .execution_days_label,
-                              controller: _executionDaysController,
-                              icon: const Icon(Icons.calendar_today),
-                              errorText: state.executionDays.displayError
-                                  ?.localize(AppLocalizations.of(context)!),
-                            ),
-                            FileMultiPicker(controller: _fileController),
-                            const SizedBox(height: 30),
-                            if (state.formState == EnumFormState.fetch)
-                              ElevatedButtonApp(
-                                child: Loader(
-                                    color:
-                                        Theme.of(context).colorScheme.surface),
-                                onPressed: () {},
-                              )
-                            else
-                              ElevatedButtonApp(
-                                text: AppLocalizations.of(context)!.create,
-                                onPressed: _create,
+                      children: [
+                        OrderCategoryPicker(
+                          label:
+                              AppLocalizations.of(context)!.select_a_category,
+                          controller: _orderCategoryController,
+                          errorText: state.category.displayError
+                              ?.localize(AppLocalizations.of(context)!),
+                        ),
+                        CityPicker(
+                          label: AppLocalizations.of(context)!.choose_city,
+                          controller: _cityController,
+                          errorText: state.city.displayError
+                              ?.localize(AppLocalizations.of(context)!),
+                        ),
+                      ],
+                    ),
+                  ),
+                  BlocConsumer<OrderCreateFormCubit, OrderCreateFormState>(
+                      listener: _listenerForm,
+                      builder: (context, state) => Column(
+                            children: [
+                              TextFieldApp(
+                                controller: _titleController,
+                                label: AppLocalizations.of(context)!.header,
+                                icon: const Icon(
+                                    IconPack.job_description_kwo7og605c2l),
+                                errorText: state.title.displayError
+                                    ?.localize(AppLocalizations.of(context)!),
                               ),
-                          ],
-                        )),
-                OutlinedButtonApp(
-                  text: AppLocalizations.of(context)!.cancel,
-                  onPressed: _back,
-                ),
-              ],
+                              DescriptionFieldApp(
+                                label: AppLocalizations.of(context)!
+                                    .description_of_work,
+                                controller: _descriptionController,
+                                icon: const Icon(IconPack.description),
+                                errorText: state.description.displayError
+                                    ?.localize(AppLocalizations.of(context)!),
+                              ),
+                              NumberFieldApp(
+                                label: AppLocalizations.of(context)!
+                                    .desired_budget,
+                                controller: _priceMaxController,
+                                icon: const Icon(Icons.money_sharp),
+                                errorText: state.priceMax.displayError
+                                    ?.localize(AppLocalizations.of(context)!),
+                              ),
+                              NumberFieldApp(
+                                label: AppLocalizations.of(context)!
+                                    .execution_days_label,
+                                controller: _executionDaysController,
+                                icon: const Icon(Icons.calendar_today),
+                                errorText: state.executionDays.displayError
+                                    ?.localize(AppLocalizations.of(context)!),
+                              ),
+                              FileMultiPicker(controller: _fileController),
+                              const SizedBox(height: 30),
+                              if (state.formState == EnumFormState.fetch)
+                                ElevatedButtonApp(
+                                  child: Loader(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .surface),
+                                  onPressed: () {},
+                                )
+                              else
+                                ElevatedButtonApp(
+                                  text: AppLocalizations.of(context)!.create,
+                                  onPressed: _create,
+                                ),
+                            ],
+                          )),
+                  OutlinedButtonApp(
+                    text: AppLocalizations.of(context)!.cancel,
+                    onPressed: _back,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

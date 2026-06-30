@@ -47,11 +47,10 @@ class ContactTile extends StatelessWidget {
     } catch (_) {
       opened = false;
     } finally {
-       if (!opened && context.mounted) {
+      if (!opened && context.mounted) {
         CustomSnackBar.error(Text(l10n.failed_to_open_contact)).view(context);
       }
     }
-   
   }
 
   @override
@@ -62,9 +61,12 @@ class ContactTile extends StatelessWidget {
       contentPadding: EdgeInsets.zero,
       onTap: () => _launch(context),
       leading: Icon(_icon, color: theme.colorScheme.primary),
-      title: Text(contact.value, style: const TextStyle(
-        fontSize: 16,
-      ),),
+      title: Text(
+        contact.value,
+        style: const TextStyle(
+          fontSize: 16,
+        ),
+      ),
       subtitle: name != null && name.isNotEmpty ? Text(name) : null,
       trailing: const Icon(Icons.chevron_right),
     );

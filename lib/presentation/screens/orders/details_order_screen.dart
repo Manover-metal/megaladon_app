@@ -6,7 +6,6 @@ import 'package:megaladon/core/download/download_service.dart';
 import 'package:megaladon/data/models/dictionary/file_model.dart';
 import 'package:megaladon/data/models/order_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
-import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/screens/orders/delete/order_delete_cubit.dart';
 import 'package:megaladon/logic/screens/orders/details/order_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/orders/main/order_screen_main_cubit.dart';
@@ -53,7 +52,7 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
   // }
 
   Future<void> Function() _download(FileModel file) => () async {
-         try {
+        try {
           final downloadFile = await DownloadService.download(
               url: file.url,
               callback: (prog, gres) {
@@ -294,9 +293,8 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                               BlocBuilder<ProfileScreenCubit,
                                   ProfileScreenState>(
                                 builder: (context, stateUser) {
-                                  if (stateUser is AuthLoginState) {
+                                  if (stateUser.user != null) {
                                     var user = stateUser.user;
-                                    print(order.executor);
                                     return Column(
                                       children: [
                                         if (order.user?.id != user?.id) ...[

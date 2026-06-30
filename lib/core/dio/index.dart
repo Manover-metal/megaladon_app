@@ -13,6 +13,9 @@ class ApiService {
     _dio = Dio();
     _dio.options.baseUrl = dotenv.env['BASE_URL']!;
     _dio.options.headers.addAll({'Accept': 'application/json'});
+    // Списки в query сериализуем как `key[]=a&key[]=b`, чтобы Laravel
+    // принимал их как массив (иначе список уходит одной строкой).
+    _dio.options.listFormat = ListFormat.multiCompatible;
     _languageInterceptor =
         LanguageInterceptor(WidgetsBinding.instance.platformDispatcher.locale);
     addInterceptors(_languageInterceptor);

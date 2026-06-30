@@ -36,7 +36,9 @@ class StoreScreenMainCubit extends Cubit<StoreScreenMainState> {
             params: mainParams,
             stock: value.length < mainParams.rowsPerPage));
       }
-    }).catchError((error) {
+    }).catchError((error, stackTrace) {
+      print(error);
+      print(stackTrace);
       if (error is DioException) {
         emit(state.copyWith(
             status: StoreScreenMainStatus.error,

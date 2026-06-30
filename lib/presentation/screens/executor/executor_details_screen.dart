@@ -50,12 +50,14 @@ class _DetailsExecutorScreenState extends State<DetailsExecutorScreen> {
                           DataTile(
                               title: AppLocalizations.of(context)!.organization,
                               data: state.executor.name),
-                          DataTile(
-                              title: AppLocalizations.of(context)!.bIN,
-                              data: state.executor.bin!),
-                          DataTile(
-                              title: AppLocalizations.of(context)!.rating,
-                              data: state.executor.rating ?? '0'),
+                          if (state.executor.bin != null)
+                            DataTile(
+                                title: AppLocalizations.of(context)!.bIN,
+                                data: state.executor.bin!),
+                          if (state.executor.rating != null)
+                            DataTile(
+                                title: AppLocalizations.of(context)!.rating,
+                                data: state.executor.rating.toString()),
                           if (state.executor.fullAddress != null)
                             DataTile(
                                 title: AppLocalizations.of(context)!.address,

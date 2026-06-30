@@ -5,11 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/core/icons/icons.dart';
 import 'package:megaladon/data/models/store_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
+import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/screens/store/details/store_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/store/rate/rate_store_cubit.dart';
-import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
-import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/picker/star_picker.dart';
 import 'package:megaladon/presentation/widgets/list/file_download_list.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
@@ -58,45 +57,16 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
     super.dispose();
   }
 
-  Null Function() _onTrailing() => () {
-        showModalBottomSheet(
-            useRootNavigator: true,
-            useSafeArea: true,
-            context: context,
-            builder: (context) => Container(
-                  color: Theme.of(context).colorScheme.surface,
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      OutlinedButtonApp(
-                        onPressed: _toUpdate,
-                        child: Text(AppLocalizations.of(context)!.update),
-                      ),
-                      const SizedBox(height: 5),
-                    ],
-                  ),
-                ));
-      };
-
-  void _toUpdate() {
-    context.router.navigate(const InitialRouter(children: [
-      ProfileRouter(children: [ChangeStoreRoute()])
-    ]));
-  }
-
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(70),
           child: BlocBuilder<StoreScreenDetailsCubit, StoreScreenDetailsState>(
             builder: (context, state) => HeaderAppBar(
-                isBack: true,
-                title: state is StoreScreenDetailsSuccess
-                    ? state.store.name
-                    : null,
-                onTrailing:
-                    state is StoreScreenDetailsSuccess ? _onTrailing : null),
+              isBack: true,
+              title:
+                  state is StoreScreenDetailsSuccess ? state.store.name : null,
+            ),
           ),
         ),
         body: SingleChildScrollView(
@@ -111,16 +81,14 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).splashColor
-                        ),
+                        decoration:
+                            BoxDecoration(color: Theme.of(context).splashColor),
                         child: CachedNetworkImage(
                           imageUrl: state.store.photo ?? '',
                           progressIndicatorBuilder:
                               (context, url, downloadProgress) => Icon(
                                   IconPack.market,
-                                  size:
-                                      MediaQuery.of(context).size.width / 5),
+                                  size: MediaQuery.of(context).size.width / 5),
                           errorWidget: (context, url, error) => Icon(
                               IconPack.market,
                               size: MediaQuery.of(context).size.width / 5),
@@ -134,54 +102,79 @@ class _DetailsStoreScreenState extends State<DetailsStoreScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                        
-                        Align(
-                          alignment: Alignment.center,
-                          child: TextButton(
-                              onPressed: _rateStore(state.store),
-                              child: Text(AppLocalizations.of(context)!.rate)),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        DataTile(
-                            title: AppLocalizations.of(context)!.address2,
-                            data: state.store.fullAddress),
-                        if (state.store.city != null)
-                          DataTile(
-                              title: AppLocalizations.of(context)!.city2,
-                              data: state.store.city!.name),
-                        if (state.store.bin != null)
-                          DataTile(
-                              title: AppLocalizations.of(context)!.bIN2,
-                              data: state.store.bin.toString()),
-                        if (state.store.contacts?.isNotEmpty ?? false) ...[
-                          const SizedBox(height: 20),
-                          SubTitleApp(AppLocalizations.of(context)!.contacts),
-                          const SizedBox(height: 10),
-                          
-                          for (int i = 0;
-                              i < state.store.contacts!.length;
-                              i++) ...[
-                            if (i > 0) const Divider(height: 1),
-                            ContactTile(contact: state.store.contacts![i]),
-                          ],
-                        ],
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        if (state.store.prices.isEmpty)
-                          SubTitleApp(AppLocalizations.of(context)!.no_price_list)
-                        else ...[
-                          SubTitleApp(AppLocalizations.of(context)!.price_list),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          FileDownloadList(files: state.store.prices),
-                        ],
-                        const SizedBox(
-                          height: 20,
-                        ),
+                            Align(
+                              alignment: Alignment.center,
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Icon(Icons.star,
+                                      color: Colors.amber, size: 20),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    '${AppLocalizations.of(context)!.rating2}${state.store.rating ?? AppLocalizations.of(context)!.noRatings}',
+                                    style:
+                                        Theme.of(context).textTheme.titleMedium,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            // Кнопку «Оценить» показываем только авторизованным.
+                            BlocBuilder<AuthBloc, AuthState>(
+                              builder: (context, authState) => authState.isAuth
+                                  ? Align(
+                                      alignment: Alignment.center,
+                                      child: TextButton(
+                                          onPressed: _rateStore(state.store),
+                                          child: Text(
+                                              AppLocalizations.of(context)!
+                                                  .rate)),
+                                    )
+                                  : const SizedBox.shrink(),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            DataTile(
+                                title: AppLocalizations.of(context)!.address2,
+                                data: state.store.fullAddress),
+                            if (state.store.city != null)
+                              DataTile(
+                                  title: AppLocalizations.of(context)!.city2,
+                                  data: state.store.city!.name),
+                            if (state.store.bin != null)
+                              DataTile(
+                                  title: AppLocalizations.of(context)!.bIN2,
+                                  data: state.store.bin.toString()),
+                            if (state.store.contacts?.isNotEmpty ?? false) ...[
+                              const SizedBox(height: 20),
+                              SubTitleApp(
+                                  AppLocalizations.of(context)!.contacts),
+                              const SizedBox(height: 10),
+                              for (int i = 0;
+                                  i < state.store.contacts!.length;
+                                  i++) ...[
+                                if (i > 0) const Divider(height: 1),
+                                ContactTile(contact: state.store.contacts![i]),
+                              ],
+                            ],
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            if (state.store.prices.isEmpty)
+                              SubTitleApp(
+                                  AppLocalizations.of(context)!.no_price_list)
+                            else ...[
+                              SubTitleApp(
+                                  AppLocalizations.of(context)!.price_list),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              FileDownloadList(files: state.store.prices),
+                            ],
+                            const SizedBox(
+                              height: 20,
+                            ),
                           ],
                         ),
                       ),

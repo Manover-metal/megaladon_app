@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.sanja.megaladon">
+    package="com.bangert.manover">
    <application
         android:label="Manover Metal"
         android:name="${applicationName}"

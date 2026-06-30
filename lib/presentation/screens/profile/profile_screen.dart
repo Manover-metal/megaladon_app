@@ -27,11 +27,13 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   Future _fetch() async {
+    // Профиль грузим только авторизованным. Для гостя ProfileScreenCubit уже
+    // выставляет notAuth (показывается AuthMessage). Если дёрнуть /user/profile
+    // без токена — придёт 403, и updateData() пошлёт AuthLogoutEvent, который
+    // теперь уводит на логин. Поэтому гостя здесь не трогаем.
     final state = context.read<AuthBloc>().state;
     if (state is AuthLoginState) {
-      return await context.read<ProfileScreenCubit>().fetch();
-    } else {
-      return await context.read<ProfileScreenCubit>().fetch();
+      return context.read<ProfileScreenCubit>().fetch();
     }
   }
 
@@ -85,11 +87,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             children: [
                               Align(
                                 alignment: Alignment.center,
-                                child: BlocConsumer<ChangePhotoCubit, ChangePhotoState>(
+                                child: BlocConsumer<ChangePhotoCubit,
+                                    ChangePhotoState>(
                                   listener: _photoListener,
                                   builder: (context, state) => SizedBox(
-                                    width: MediaQuery.of(context).size.width / 3,
-                                    height: MediaQuery.of(context).size.width / 3,
+                                    width:
+                                        MediaQuery.of(context).size.width / 3,
+                                    height:
+                                        MediaQuery.of(context).size.width / 3,
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(100),
                                       clipBehavior: Clip.hardEdge,
@@ -113,7 +118,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   )
                                                 : CachedNetworkImage(
                                                     imageUrl: state.url ?? '',
-                                                    fadeInDuration: Duration.zero,
+                                                    fadeInDuration:
+                                                        Duration.zero,
                                                     progressIndicatorBuilder: (context,
                                                             url,
                                                             downloadProgress) =>
@@ -151,9 +157,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                         .surface
                                                         .withValues(alpha: 0.5),
                                                   ),
-                                                  padding:
-                                                      const EdgeInsets.symmetric(
-                                                          vertical: 3),
+                                                  padding: const EdgeInsets
+                                                      .symmetric(vertical: 3),
                                                   width: double.infinity,
                                                   child: const Icon(Icons.edit),
                                                 ),
@@ -185,7 +190,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     value: AppLocalizations.of(context)!
                                         .cityName(user.city?.name ?? '')),
                               if (executor != null) ...[
-                                 const SizedBox(
+                                const SizedBox(
                                   height: 20,
                                 ),
                                 TitleApp(
@@ -205,7 +210,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 TextFieldApp(
                                     readOnly: true,
                                     label: AppLocalizations.of(context)!.rating,
-                                    value: executor.rating ?? '0'),
+                                    value: executor.rating?.toString() ??
+                                        AppLocalizations.of(context)!
+                                            .noRatings),
                                 if (executor.fullAddress != null)
                                   TextFieldApp(
                                       readOnly: true,
@@ -220,7 +227,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       value: executor.countOrders.toString()),
                               ],
                               if (store != null) ...[
-                               const SizedBox(
+                                const SizedBox(
                                   height: 20,
                                 ),
                                 TitleApp(
@@ -236,7 +243,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 TextFieldApp(
                                     readOnly: true,
                                     label: AppLocalizations.of(context)!.rating,
-                                    value: store.rating ?? '0'),
+                                    value: store.rating?.toString() ??
+                                        AppLocalizations.of(context)!
+                                            .noRatings),
                                 if (store.bin != null)
                                   TextFieldApp(
                                       readOnly: true,

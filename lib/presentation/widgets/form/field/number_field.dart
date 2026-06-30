@@ -33,6 +33,10 @@ class NumberFieldApp extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: TextField(
+                contextMenuBuilder: (context, editableTextState) =>
+                    AdaptiveTextSelectionToolbar.editableText(
+                  editableTextState: editableTextState,
+                ),
                 onTapOutside: (_) =>
                     FocusManager.instance.primaryFocus?.unfocus(),
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],

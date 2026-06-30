@@ -33,7 +33,8 @@ class StoreCard extends StatelessWidget {
                 ),
                 DataTile(
                     title: AppLocalizations.of(context)!.rating2,
-                    data: store.rating ?? '0'),
+                    data: store.rating?.toString() ??
+                        AppLocalizations.of(context)!.noRatings),
                 DataTile(
                     title: AppLocalizations.of(context)!.location2,
                     data: store.fullAddress),

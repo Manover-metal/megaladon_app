@@ -3,13 +3,25 @@ import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:megaladon/data/models/error_model.dart';
 import 'package:megaladon/data/models/order_model.dart';
+import 'package:megaladon/data/models/request/order_index_sort_enum.dart';
 import 'package:megaladon/data/models/request/params/index/order_index_request_params.dart';
 import 'package:megaladon/data/repositories/order_repository.dart';
 
 part 'order_screen_main_state.dart';
 
 class OrderScreenMainCubit extends Cubit<OrderScreenMainState> {
-  OrderScreenMainCubit() : super(const OrderScreenMainState());
+  // Список заказов (только этот экран) по умолчанию: показываем статусы
+  // active / hasExecutor / completed (это дефолт OrderIndexRequestParams.statuses)
+  // и автоматически сортируем по статусу по возрастанию — active → В работе →
+  // Выполнен (status 2 → 3 → 4). Другие списки заказов используют свои кубиты
+  // со своими дефолтами, поэтому изменение их не затрагивает.
+  OrderScreenMainCubit()
+      : super(const OrderScreenMainState(
+          params: OrderIndexRequestParams(
+            sort: OrderIndexSort.status,
+            desc: false,
+          ),
+        ));
   final OrderRepository _repository = OrderRepository();
 
   Future fetch({OrderIndexRequestParams? params}) async {

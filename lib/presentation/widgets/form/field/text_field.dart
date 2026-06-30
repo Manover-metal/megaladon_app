@@ -44,6 +44,14 @@ class TextFieldApp extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: TextField(
+                // Рисуем меню выделения средствами Flutter, а не системное
+                // SystemContextMenu (iOS) — оно роняет ассерт
+                // "_currentConnection != null" при пересборке, когда input-
+                // соединение уже закрыто.
+                contextMenuBuilder: (context, editableTextState) =>
+                    AdaptiveTextSelectionToolbar.editableText(
+                  editableTextState: editableTextState,
+                ),
                 onTapOutside: (_) =>
                     FocusManager.instance.primaryFocus?.unfocus(),
                 controller: controller ??

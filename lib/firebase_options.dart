@@ -51,20 +51,17 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDJpBfT3MZAjnuzpxvFTdWJBZUEIEjbSoQ',
-    appId: '1:262839631693:android:b73636f955273c9cda0104',
+    appId: '1:262839631693:android:43539a5b9cb8e220da0104',
     messagingSenderId: '262839631693',
     projectId: 'manover-metal',
-    storageBucket: 'manover-metal.appspot.com',
+    storageBucket: 'manover-metal.firebasestorage.app',
   );
-
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCniqTA-hJfH9LuzC-JHsg4CHeuH165EN0',
-    appId: '1:262839631693:ios:85f7230c4ea1b6a2da0104',
+    appId: '1:262839631693:ios:f9de9cd60211019ada0104',
     messagingSenderId: '262839631693',
     projectId: 'manover-metal',
-    storageBucket: 'manover-metal.appspot.com',
-    iosClientId:
-        '262839631693-83smfag975kgd9hl37b4endt8koq5nbc.apps.googleusercontent.com',
-    iosBundleId: 'com.sanja.megaladon',
+    storageBucket: 'manover-metal.firebasestorage.app',
+    iosBundleId: 'com.bangert.manover',
   );
 }

@@ -140,86 +140,91 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
                 ? AppLocalizations.of(context)!.creating_an_ad
                 : AppLocalizations.of(context)!.creating_an_service),
         body: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                const SizedBox(height: 30),
-                BlocConsumer<AdCreateFormCubit, AdCreateFormState>(
-                    listener: _listenerForm,
-                    builder: (context, state) => Column(
-                          children: [
-                            TextFieldApp(
-                              controller: _titleController,
-                              label: AppLocalizations.of(context)!.name_field,
-                              icon: const Icon(Icons.edit),
-                              errorText: state.title.displayError
-                                  ?.localize(AppLocalizations.of(context)!),
-                            ),
-                            AdvertCategoryPicker(
+          child: SafeArea(
+            top: false,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  const SizedBox(height: 30),
+                  BlocConsumer<AdCreateFormCubit, AdCreateFormState>(
+                      listener: _listenerForm,
+                      builder: (context, state) => Column(
+                            children: [
+                              TextFieldApp(
+                                controller: _titleController,
+                                label: AppLocalizations.of(context)!.name_field,
+                                icon: const Icon(Icons.edit),
+                                errorText: state.title.displayError
+                                    ?.localize(AppLocalizations.of(context)!),
+                              ),
+                              AdvertCategoryPicker(
+                                  label: AppLocalizations.of(context)!
+                                      .select_a_category,
+                                  controller: _advertCategoryController,
+                                  errorText: state.category.displayError
+                                      ?.localize(
+                                          AppLocalizations.of(context)!)),
+                              CityPicker(
+                                  label:
+                                      AppLocalizations.of(context)!.choose_city,
+                                  controller: _cityController,
+                                  errorText: state.city.displayError?.localize(
+                                      AppLocalizations.of(context)!)),
+                              DescriptionFieldApp(
                                 label: AppLocalizations.of(context)!
-                                    .select_a_category,
-                                controller: _advertCategoryController,
-                                errorText: state.category.displayError
-                                    ?.localize(AppLocalizations.of(context)!)),
-                            CityPicker(
-                                label:
-                                    AppLocalizations.of(context)!.choose_city,
-                                controller: _cityController,
-                                errorText: state.city.displayError
-                                    ?.localize(AppLocalizations.of(context)!)),
-                            DescriptionFieldApp(
-                              label: AppLocalizations.of(context)!
-                                  .description_of_your_offer,
-                              controller: _descriptionController,
-                              icon: const Icon(IconPack.description),
-                              errorText: state.description.displayError
-                                  ?.localize(AppLocalizations.of(context)!),
-                            ),
-                            NumberFieldApp(
-                              label: AppLocalizations.of(context)!.price,
-                              controller: _priceController,
-                              icon: const Icon(Icons.money_sharp),
-                              errorText: state.price.displayError
-                                  ?.localize(AppLocalizations.of(context)!),
-                            ),
-                            PhoneField(
-                              controller: _phoneController,
-                              label: AppLocalizations.of(context)!
-                                  .additional_Phone,
-                              icon: const Icon(Icons.phone),
-                              errorText: state.phone.displayError
-                                  ?.localize(AppLocalizations.of(context)!),
-                            ),
-                            ImageMultiPicker(controller: _imageController),
-                            const SizedBox(height: 20),
-                            if (state.formState == EnumFormState.fetch)
-                              ElevatedButtonApp(
-                                child: Loader(
-                                    color:
-                                        Theme.of(context).colorScheme.surface),
-                                onPressed: () {},
-                              )
-                            else if (widget.type == AdvertType.advert)
-                              ElevatedButtonApp(
-                                text: AppLocalizations.of(context)!.create_ad,
-                                onPressed: _create,
-                              )
-                            else if (widget.type == AdvertType.service)
-                              ElevatedButtonApp(
-                                text: AppLocalizations.of(context)!
-                                    .create_service,
-                                onPressed: _create,
-                              )
-                            else
-                              Container(),
-                          ],
-                        )),
-                OutlinedButtonApp(
-                  text: AppLocalizations.of(context)!.cancel,
-                  onPressed: _back,
-                ),
-              ],
+                                    .description_of_your_offer,
+                                controller: _descriptionController,
+                                icon: const Icon(IconPack.description),
+                                errorText: state.description.displayError
+                                    ?.localize(AppLocalizations.of(context)!),
+                              ),
+                              NumberFieldApp(
+                                label: AppLocalizations.of(context)!.price,
+                                controller: _priceController,
+                                icon: const Icon(Icons.money_sharp),
+                                errorText: state.price.displayError
+                                    ?.localize(AppLocalizations.of(context)!),
+                              ),
+                              PhoneField(
+                                controller: _phoneController,
+                                label: AppLocalizations.of(context)!
+                                    .additional_Phone,
+                                icon: const Icon(Icons.phone),
+                                errorText: state.phone.displayError
+                                    ?.localize(AppLocalizations.of(context)!),
+                              ),
+                              ImageMultiPicker(controller: _imageController),
+                              const SizedBox(height: 20),
+                              if (state.formState == EnumFormState.fetch)
+                                ElevatedButtonApp(
+                                  child: Loader(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .surface),
+                                  onPressed: () {},
+                                )
+                              else if (widget.type == AdvertType.advert)
+                                ElevatedButtonApp(
+                                  text: AppLocalizations.of(context)!.create_ad,
+                                  onPressed: _create,
+                                )
+                              else if (widget.type == AdvertType.service)
+                                ElevatedButtonApp(
+                                  text: AppLocalizations.of(context)!
+                                      .create_service,
+                                  onPressed: _create,
+                                )
+                              else
+                                Container(),
+                            ],
+                          )),
+                  OutlinedButtonApp(
+                    text: AppLocalizations.of(context)!.cancel,
+                    onPressed: _back,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
