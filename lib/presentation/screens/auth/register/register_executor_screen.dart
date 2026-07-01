@@ -9,6 +9,7 @@ import 'package:megaladon/data/models/request/params/register/register_executor_
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/form/register/register_executor/register_executor_form_cubit.dart';
 import 'package:megaladon/logic/register/register_executor/register_executor_bloc.dart';
+import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/number_field.dart';
@@ -66,11 +67,15 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
     }
   }
 
-  Null Function(BuildContext context, RegisterExecutorState state)
-      _listenRegister(bool isListener) => (context, state) {
+  void Function(BuildContext context, RegisterExecutorState state)
+      _listenRegister(bool isListener) => (context, state) async {
             if (state is RegisterExecutorSuccess) {
-              context.router
-                  .navigate(const InitialRouter(children: [ProfileRouter()]));
+              final router = context.router;
+              final profileCubit = context.read<ProfileScreenCubit>();
+              // Перечитываем профиль, чтобы появился executor и кнопка
+              // «зарегистрироваться исполнителем» исчезла.
+              await profileCubit.fetch();
+              router.navigate(const InitialRouter(children: [ProfileRouter()]));
             } else if (state is RegisterExecutorError && isListener) {
               CustomSnackBar.error(
                 Text(

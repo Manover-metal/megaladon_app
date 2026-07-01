@@ -8,6 +8,7 @@ import 'package:megaladon/data/models/request/params/register/register_store_req
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/form/register/register_store/register_store_form_cubit.dart';
 import 'package:megaladon/logic/register/register_store/register_store_bloc.dart';
+import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/number_field.dart';
@@ -70,12 +71,16 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
     }
   }
 
-  Null Function(BuildContext context, RegisterStoreState state) _listenRegister(
+  void Function(BuildContext context, RegisterStoreState state) _listenRegister(
           bool isListener) =>
-      (context, state) {
+      (context, state) async {
         if (state is RegisterStoreSuccess) {
-          context.router
-              .navigate(const InitialRouter(children: [ProfileRouter()]));
+          final router = context.router;
+          final profileCubit = context.read<ProfileScreenCubit>();
+          // Перечитываем профиль, чтобы появился store и кнопка
+          // «зарегистрировать магазин» исчезла.
+          await profileCubit.fetch();
+          router.navigate(const InitialRouter(children: [ProfileRouter()]));
         } else if (state is RegisterStoreError && isListener) {
           CustomSnackBar.error(
             Text(
