@@ -105,6 +105,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noRatings => 'No ratings';
 
   @override
+  String get comment_optional => 'Comment (optional)';
+
+  @override
   String get location => 'Location';
 
   @override

@@ -38,6 +38,7 @@
   "field_of_activity": "Сфера деятельности",
   "rating": "Рейтинг ",
   "noRatings": "Нет оценок",
+  "comment_optional": "Комментарий (необязательно)",
   "location": "Местоположение",
   "create_an_order": "Создание заказа",
   "select_a_category": "Выберите категорию",

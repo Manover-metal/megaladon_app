@@ -24,8 +24,9 @@ class ImageMultiPickerController extends ValueNotifier<List<PlatformFile>> {
 }
 
 class ImageMultiPicker extends StatefulWidget {
-  const ImageMultiPicker({required this.controller, super.key});
+  const ImageMultiPicker({required this.controller, this.maxCount, super.key});
   final ImageMultiPickerController controller;
+  final int? maxCount;
 
   @override
   State<ImageMultiPicker> createState() => _ImageMultiPickerState();
@@ -38,8 +39,17 @@ class _ImageMultiPickerState extends State<ImageMultiPicker> {
     final result = await ImageService.getImages();
 
     if (result != null) {
-      final files = result.files;
-      widget.controller._addFiles(files);
+      var files = result.files;
+      final max = widget.maxCount;
+      if (max != null) {
+        final remaining = max - widget.controller.value.length;
+        files = remaining <= 0
+            ? <PlatformFile>[]
+            : (files.length > remaining ? files.sublist(0, remaining) : files);
+      }
+      if (files.isNotEmpty) {
+        widget.controller._addFiles(files);
+      }
     }
   }
 

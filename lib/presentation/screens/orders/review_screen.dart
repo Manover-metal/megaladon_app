@@ -6,6 +6,8 @@ import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/screens/orders/review/review_cubit.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
+import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
+import 'package:megaladon/presentation/widgets/form/multi_picker/media_multi_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/star_picker.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
@@ -21,23 +23,32 @@ class ReviewScreen extends StatefulWidget {
 
 class _ReviewScreenState extends State<ReviewScreen> {
   late StarPickerController controller;
+  late ImageMultiPickerController imagesController;
+  final TextEditingController commentController = TextEditingController();
 
   @override
   void initState() {
     controller = StarPickerController();
+    imagesController = ImageMultiPickerController();
     super.initState();
   }
 
   @override
   void dispose() {
     controller.dispose();
+    imagesController.dispose();
+    commentController.dispose();
     super.dispose();
   }
 
   void _back() => context.router.pop();
 
-  void _submit() =>
-      context.read<ReviewCubit>().submit(widget.order.id, controller.value);
+  void _submit() => context.read<ReviewCubit>().submit(
+        widget.order.id,
+        controller.value,
+        commentController.text,
+        imagesController.value,
+      );
 
   @override
   Widget build(BuildContext context) => BlocListener<ReviewCubit, ReviewState>(
@@ -71,6 +82,17 @@ class _ReviewScreenState extends State<ReviewScreen> {
                     const SizedBox(height: 20),
                   ],
                   StarPicker(controller: controller),
+                  const SizedBox(height: 20),
+                  TextFieldApp(
+                    controller: commentController,
+                    label: AppLocalizations.of(context)!.comment_optional,
+                    maxLines: 4,
+                  ),
+                  const SizedBox(height: 10),
+                  ImageMultiPicker(
+                    controller: imagesController,
+                    maxCount: 5,
+                  ),
                   const SizedBox(height: 20),
                   BlocBuilder<ReviewCubit, ReviewState>(
                     builder: (context, state) => ElevatedButtonApp(

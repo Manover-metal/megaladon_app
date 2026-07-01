@@ -292,6 +292,12 @@ abstract class AppLocalizations {
   /// **'No ratings'**
   String get noRatings;
 
+  /// No description provided for @comment_optional.
+  ///
+  /// In en, this message translates to:
+  /// **'Comment (optional)'**
+  String get comment_optional;
+
   /// No description provided for @location.
   ///
   /// In en, this message translates to:

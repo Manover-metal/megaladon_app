@@ -105,6 +105,9 @@ class AppLocalizationsKk extends AppLocalizations {
   String get noRatings => 'Бағалар жоқ';
 
   @override
+  String get comment_optional => 'Пікір (міндетті емес)';
+
+  @override
   String get location => 'Орналасқан жері';
 
   @override

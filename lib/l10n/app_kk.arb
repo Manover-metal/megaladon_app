@@ -38,6 +38,7 @@
   "field_of_activity": "Қызмет саласы",
   "rating": "Рейтинг",
   "noRatings": "Бағалар жоқ",
+  "comment_optional": "Пікір (міндетті емес)",
   "location": "Орналасқан жері",
   "create_an_order": "Тапсырысты құру",
   "select_a_category": "Санатты (категорияны) таңдау",

@@ -64,6 +64,8 @@
   "@rating": {},
   "noRatings": "No ratings",
   "@noRatings": {},
+  "comment_optional": "Comment (optional)",
+  "@comment_optional": {},
   "location": "Location",
   "@location": {},
   "create_an_order": "Create an order",

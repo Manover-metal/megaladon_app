@@ -105,6 +105,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get noRatings => 'Нет оценок';
 
   @override
+  String get comment_optional => 'Комментарий (необязательно)';
+
+  @override
   String get location => 'Местоположение';
 
   @override

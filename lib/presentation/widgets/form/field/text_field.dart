@@ -10,6 +10,7 @@ class TextFieldApp extends StatelessWidget {
       this.value,
       this.readOnly = false,
       this.hintText,
+      this.maxLines = 1,
       this.onChanged});
   final TextEditingController? controller;
   final String? label;
@@ -18,6 +19,7 @@ class TextFieldApp extends StatelessWidget {
   final String? value;
   final bool readOnly;
   final String? hintText;
+  final int maxLines;
   final ValueChanged<String>? onChanged;
 
   @override
@@ -57,6 +59,7 @@ class TextFieldApp extends StatelessWidget {
                 controller: controller ??
                     (value != null ? TextEditingController(text: value) : null),
                 readOnly: readOnly,
+                maxLines: maxLines,
                 onChanged: onChanged,
                 style: Theme.of(context).textTheme.bodyMedium,
                 decoration: InputDecoration(
