@@ -21,7 +21,7 @@ class _ListStoresScreenState extends State<ListStoresScreen> {
   late ScrollController _scrollController;
 
   Future _onRefresh() async {
-    await context.read<StoreScreenMainCubit>().fetch();
+    await context.read<StoreScreenMainCubit>().refresh();
   }
 
   Future<void> _showFilter() async {

@@ -975,4 +975,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get form_error_order_category_empty => 'Select category';
+
+  @override
+  String get my_reviews => 'My Reviews';
+
+  @override
+  String get no_reviews_yet => 'No reviews yet';
+
+  @override
+  String get reviews => 'Reviews';
+
+  @override
+  String get store_reviews => 'Store reviews';
 }

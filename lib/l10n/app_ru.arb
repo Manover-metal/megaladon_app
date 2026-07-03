@@ -396,5 +396,9 @@
   "form_error_city_empty": "Выберите город",
   "form_error_company_type_empty": "Выберите тип",
   "form_error_advert_category_empty": "Выберите категорию",
-  "form_error_order_category_empty": "Выберите категорию"
+  "form_error_order_category_empty": "Выберите категорию",
+  "my_reviews": "Мои отзывы",
+  "no_reviews_yet": "Пока нет отзывов",
+  "reviews": "Отзывы",
+  "store_reviews": "Отзывы магазина"
 }

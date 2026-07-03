@@ -396,5 +396,9 @@
   "form_error_city_empty": "Қаланы таңдаңыз",
   "form_error_company_type_empty": "Түрін таңдаңыз",
   "form_error_advert_category_empty": "Санатты таңдаңыз",
-  "form_error_order_category_empty": "Санатты таңдаңыз"
+  "form_error_order_category_empty": "Санатты таңдаңыз",
+  "my_reviews": "Менің пікірлерім",
+  "no_reviews_yet": "Әзірге пікірлер жоқ",
+  "reviews": "Пікірлер",
+  "store_reviews": "Дүкен пікірлері"
 }

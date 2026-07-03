@@ -55,4 +55,9 @@ class AdvertScreenMainCubit extends Cubit<AdvertScreenMainState> {
   void changeParams(AdvertIndexRequestParams params) {
     emit(state.copyWith(params: params.copyWith(startRow: 0)));
   }
+
+  /// Обновление списка: сбрасываем пагинацию на первую страницу (startRow → 0),
+  /// сохраняя фильтры/сортировку. Иначе refresh после бесконечного скролла
+  /// уходит в ветку дозагрузки в [fetch].
+  Future<void> refresh() => fetch(params: state.params.copyWith(startRow: 0));
 }

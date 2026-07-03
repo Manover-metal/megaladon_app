@@ -36,11 +36,13 @@ import 'package:megaladon/presentation/screens/profile/about_screen.dart';
 import 'package:megaladon/presentation/screens/profile/change_password_screen.dart';
 import 'package:megaladon/presentation/screens/profile/change_phone_end_screen.dart';
 import 'package:megaladon/presentation/screens/profile/change_phone_start_screen.dart';
+import 'package:megaladon/presentation/screens/profile/my_reviews_screen.dart';
 import 'package:megaladon/presentation/screens/profile/profile_screen.dart';
 import 'package:megaladon/presentation/screens/profile/settings_screen.dart';
 import 'package:megaladon/presentation/screens/splash_screen.dart';
 import 'package:megaladon/presentation/screens/store/details_store_screen.dart';
 import 'package:megaladon/presentation/screens/store/list_stores_screen.dart';
+import 'package:megaladon/presentation/screens/store/store_my_reviews_screen.dart';
 import 'package:megaladon/presentation/screens/subscribe/subscribe_screen.dart';
 
 part 'router.gr.dart';
@@ -51,6 +53,8 @@ const List<AutoRoute> profile = [
   AutoRoute(page: ChangeExecutorScreen, guards: [AuthGuard]),
   AutoRoute(page: ChangeStoreScreen, guards: [AuthGuard]),
   AutoRoute(page: ListChatsScreen, guards: [AuthGuard]),
+  AutoRoute(page: MyReviewsScreen, guards: [AuthGuard]),
+  AutoRoute(page: StoreMyReviewsScreen, guards: [AuthGuard]),
   AutoRoute(page: AboutScreen),
 ];
 

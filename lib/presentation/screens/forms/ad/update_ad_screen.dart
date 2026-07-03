@@ -8,6 +8,7 @@ import 'package:megaladon/data/models/advert_model.dart';
 import 'package:megaladon/data/models/dictionary/advert_type.dart';
 import 'package:megaladon/data/models/enum_form_state.dart';
 import 'package:megaladon/data/models/form/localizable_error.dart';
+import 'package:megaladon/data/models/form/price_editing_controller.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/form/update/ad/ad_update_form_cubit.dart';
 import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
@@ -15,8 +16,8 @@ import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/description_field.dart';
-import 'package:megaladon/presentation/widgets/form/field/number_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/phone_field.dart';
+import 'package:megaladon/presentation/widgets/form/field/price_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/form/multi_picker/media_multi_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/advert_category_picker.dart';
@@ -40,7 +41,7 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
   late TextEditingController _descriptionController;
   late TextEditingController _phoneController;
   late CityPickerController _cityController;
-  late TextEditingController _priceController;
+  late PriceEditingController _priceController;
   late ImageMultiPickerController _imageController;
 
   void _back() {
@@ -58,7 +59,7 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
     return form.checkUpdate(
       title: _titleController.value.text,
       description: _descriptionController.value.text,
-      price: _priceController.value.text,
+      price: _priceController.number,
       category: _advertCategoryController.value,
       city: _cityController.value,
       phone: _phoneController.value.text,
@@ -111,8 +112,7 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
         AdvertCategoryPickerController(category: widget.advert.category);
     _titleController = TextEditingController(text: widget.advert.title);
     _cityController = CityPickerController(city: widget.advert.city);
-    _priceController =
-        TextEditingController(text: widget.advert.price.toString());
+    _priceController = PriceEditingController(value: widget.advert.price);
     _descriptionController =
         TextEditingController(text: widget.advert.description);
     _phoneController = TextEditingController(
@@ -179,7 +179,7 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
                                 errorText: state.description.displayError
                                     ?.localize(AppLocalizations.of(context)!),
                               ),
-                              NumberFieldApp(
+                              PriceFieldApp(
                                 label: AppLocalizations.of(context)!.price,
                                 controller: _priceController,
                                 icon: const Icon(Icons.money_sharp),

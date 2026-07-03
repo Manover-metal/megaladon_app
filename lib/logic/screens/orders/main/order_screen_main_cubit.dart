@@ -60,4 +60,11 @@ class OrderScreenMainCubit extends Cubit<OrderScreenMainState> {
   void changeParams(OrderIndexRequestParams params) {
     emit(state.copyWith(params: params.copyWith(startRow: 0)));
   }
+
+  /// Обновление списка: сбрасываем пагинацию на первую страницу
+  /// (startRow → 0, rowsPerPage → дефолт), сохраняя фильтры и сортировку.
+  /// Без сброса startRow refresh после бесконечного скролла уходит в ветку
+  /// дозагрузки в [fetch] вместо перезагрузки списка.
+  Future<void> refresh() =>
+      fetch(params: state.params.copyWith(startRow: 0, rowsPerPage: 15));
 }

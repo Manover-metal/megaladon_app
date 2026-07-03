@@ -36,8 +36,8 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
         routeData: routeData,
         child: DetailsChatScreen(
-          key: args.key,
           chat: args.chat,
+          key: args.key,
         ),
       );
     },
@@ -82,8 +82,8 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
         routeData: routeData,
         child: VerifyScreen(
-          key: args.key,
           phone: args.phone,
+          key: args.key,
         ),
       );
     },
@@ -92,8 +92,8 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
         routeData: routeData,
         child: CreateAdScreen(
-          key: args.key,
           type: args.type,
+          key: args.key,
         ),
       );
     },
@@ -108,9 +108,9 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
         routeData: routeData,
         child: UpdateAdScreen(
-          key: args.key,
           advert: args.advert,
           type: args.type,
+          key: args.key,
         ),
       );
     },
@@ -119,8 +119,8 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
         routeData: routeData,
         child: UpdateOrderScreen(
-          key: args.key,
           order: args.order,
+          key: args.key,
         ),
       );
     },
@@ -129,8 +129,8 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
         routeData: routeData,
         child: CreateOfferScreen(
-          key: args.key,
           orderId: args.orderId,
+          key: args.key,
         ),
       );
     },
@@ -193,8 +193,8 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
         routeData: routeData,
         child: DetailsOrderScreen(
-          key: args.key,
           orderId: args.orderId,
+          key: args.key,
         ),
       );
     },
@@ -209,8 +209,8 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
         routeData: routeData,
         child: DetailsExecutorScreen(
-          key: args.key,
           executorId: args.executorId,
+          key: args.key,
         ),
       );
     },
@@ -219,8 +219,8 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
         routeData: routeData,
         child: ListExecutorsScreen(
-          key: args.key,
           orderId: args.orderId,
+          key: args.key,
         ),
       );
     },
@@ -229,9 +229,9 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
         routeData: routeData,
         child: DetailsOfferScreen(
-          key: args.key,
           orderId: args.orderId,
           offerId: args.offerId,
+          key: args.key,
         ),
       );
     },
@@ -240,8 +240,8 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
         routeData: routeData,
         child: ReviewScreen(
-          key: args.key,
           order: args.order,
+          key: args.key,
         ),
       );
     },
@@ -262,8 +262,8 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
         routeData: routeData,
         child: DetailsStoreScreen(
-          key: args.key,
           storeId: args.storeId,
+          key: args.key,
         ),
       );
     },
@@ -278,8 +278,8 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
         routeData: routeData,
         child: DetailsAdScreen(
-          key: args.key,
           id: args.id,
+          key: args.key,
         ),
       );
     },
@@ -319,10 +319,26 @@ class _$AppRouter extends RootStackRouter {
         child: const ListChatsScreen(),
       );
     },
+    MyReviewsRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const MyReviewsScreen(),
+      );
+    },
+    StoreMyReviewsRoute.name: (routeData) {
+      final args = routeData.argsAs<StoreMyReviewsRouteArgs>();
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: StoreMyReviewsScreen(
+          storeId: args.storeId,
+          key: args.key,
+        ),
+      );
+    },
     AboutRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: AboutScreen(),
+        child: const AboutScreen(),
       );
     },
   };
@@ -470,6 +486,18 @@ class _$AppRouter extends RootStackRouter {
                   guards: [authGuard],
                 ),
                 RouteConfig(
+                  MyReviewsRoute.name,
+                  path: 'my-reviews-screen',
+                  parent: ProfileRouter.name,
+                  guards: [authGuard],
+                ),
+                RouteConfig(
+                  StoreMyReviewsRoute.name,
+                  path: 'store-my-reviews-screen',
+                  parent: ProfileRouter.name,
+                  guards: [authGuard],
+                ),
+                RouteConfig(
                   AboutRoute.name,
                   path: 'about-screen',
                   parent: ProfileRouter.name,
@@ -575,14 +603,14 @@ class InitialRouter extends PageRouteInfo<void> {
 /// [DetailsChatScreen]
 class DetailsChatRouter extends PageRouteInfo<DetailsChatRouterArgs> {
   DetailsChatRouter({
-    Key? key,
     required ChatModel chat,
+    Key? key,
   }) : super(
           DetailsChatRouter.name,
           path: '/details-chat-screen',
           args: DetailsChatRouterArgs(
-            key: key,
             chat: chat,
+            key: key,
           ),
         );
 
@@ -591,17 +619,17 @@ class DetailsChatRouter extends PageRouteInfo<DetailsChatRouterArgs> {
 
 class DetailsChatRouterArgs {
   const DetailsChatRouterArgs({
-    this.key,
     required this.chat,
+    this.key,
   });
-
-  final Key? key;
 
   final ChatModel chat;
 
+  final Key? key;
+
   @override
   String toString() {
-    return 'DetailsChatRouterArgs{key: $key, chat: $chat}';
+    return 'DetailsChatRouterArgs{chat: $chat, key: $key}';
   }
 }
 
@@ -681,14 +709,14 @@ class RegisterStoreRoute extends PageRouteInfo<void> {
 /// [VerifyScreen]
 class VerifyRoute extends PageRouteInfo<VerifyRouteArgs> {
   VerifyRoute({
-    Key? key,
     required String phone,
+    Key? key,
   }) : super(
           VerifyRoute.name,
           path: '/verify-screen',
           args: VerifyRouteArgs(
-            key: key,
             phone: phone,
+            key: key,
           ),
         );
 
@@ -697,17 +725,17 @@ class VerifyRoute extends PageRouteInfo<VerifyRouteArgs> {
 
 class VerifyRouteArgs {
   const VerifyRouteArgs({
-    this.key,
     required this.phone,
+    this.key,
   });
-
-  final Key? key;
 
   final String phone;
 
+  final Key? key;
+
   @override
   String toString() {
-    return 'VerifyRouteArgs{key: $key, phone: $phone}';
+    return 'VerifyRouteArgs{phone: $phone, key: $key}';
   }
 }
 
@@ -715,14 +743,14 @@ class VerifyRouteArgs {
 /// [CreateAdScreen]
 class CreateAdRoute extends PageRouteInfo<CreateAdRouteArgs> {
   CreateAdRoute({
-    Key? key,
     required AdvertType type,
+    Key? key,
   }) : super(
           CreateAdRoute.name,
           path: '/create-ad-screen',
           args: CreateAdRouteArgs(
-            key: key,
             type: type,
+            key: key,
           ),
         );
 
@@ -731,17 +759,17 @@ class CreateAdRoute extends PageRouteInfo<CreateAdRouteArgs> {
 
 class CreateAdRouteArgs {
   const CreateAdRouteArgs({
-    this.key,
     required this.type,
+    this.key,
   });
-
-  final Key? key;
 
   final AdvertType type;
 
+  final Key? key;
+
   @override
   String toString() {
-    return 'CreateAdRouteArgs{key: $key, type: $type}';
+    return 'CreateAdRouteArgs{type: $type, key: $key}';
   }
 }
 
@@ -761,16 +789,16 @@ class CreateOrderRoute extends PageRouteInfo<void> {
 /// [UpdateAdScreen]
 class UpdateAdRoute extends PageRouteInfo<UpdateAdRouteArgs> {
   UpdateAdRoute({
-    Key? key,
     required AdvertModel advert,
     required AdvertType type,
+    Key? key,
   }) : super(
           UpdateAdRoute.name,
           path: '/update-ad-screen',
           args: UpdateAdRouteArgs(
-            key: key,
             advert: advert,
             type: type,
+            key: key,
           ),
         );
 
@@ -779,20 +807,20 @@ class UpdateAdRoute extends PageRouteInfo<UpdateAdRouteArgs> {
 
 class UpdateAdRouteArgs {
   const UpdateAdRouteArgs({
-    this.key,
     required this.advert,
     required this.type,
+    this.key,
   });
-
-  final Key? key;
 
   final AdvertModel advert;
 
   final AdvertType type;
 
+  final Key? key;
+
   @override
   String toString() {
-    return 'UpdateAdRouteArgs{key: $key, advert: $advert, type: $type}';
+    return 'UpdateAdRouteArgs{advert: $advert, type: $type, key: $key}';
   }
 }
 
@@ -800,14 +828,14 @@ class UpdateAdRouteArgs {
 /// [UpdateOrderScreen]
 class UpdateOrderRoute extends PageRouteInfo<UpdateOrderRouteArgs> {
   UpdateOrderRoute({
-    Key? key,
     required OrderModel order,
+    Key? key,
   }) : super(
           UpdateOrderRoute.name,
           path: '/update-order-screen',
           args: UpdateOrderRouteArgs(
-            key: key,
             order: order,
+            key: key,
           ),
         );
 
@@ -816,17 +844,17 @@ class UpdateOrderRoute extends PageRouteInfo<UpdateOrderRouteArgs> {
 
 class UpdateOrderRouteArgs {
   const UpdateOrderRouteArgs({
-    this.key,
     required this.order,
+    this.key,
   });
-
-  final Key? key;
 
   final OrderModel order;
 
+  final Key? key;
+
   @override
   String toString() {
-    return 'UpdateOrderRouteArgs{key: $key, order: $order}';
+    return 'UpdateOrderRouteArgs{order: $order, key: $key}';
   }
 }
 
@@ -834,14 +862,14 @@ class UpdateOrderRouteArgs {
 /// [CreateOfferScreen]
 class CreateOfferRoute extends PageRouteInfo<CreateOfferRouteArgs> {
   CreateOfferRoute({
-    Key? key,
     required int orderId,
+    Key? key,
   }) : super(
           CreateOfferRoute.name,
           path: '/create-offer-screen',
           args: CreateOfferRouteArgs(
-            key: key,
             orderId: orderId,
+            key: key,
           ),
         );
 
@@ -850,17 +878,17 @@ class CreateOfferRoute extends PageRouteInfo<CreateOfferRouteArgs> {
 
 class CreateOfferRouteArgs {
   const CreateOfferRouteArgs({
-    this.key,
     required this.orderId,
+    this.key,
   });
-
-  final Key? key;
 
   final int orderId;
 
+  final Key? key;
+
   @override
   String toString() {
-    return 'CreateOfferRouteArgs{key: $key, orderId: $orderId}';
+    return 'CreateOfferRouteArgs{orderId: $orderId, key: $key}';
   }
 }
 
@@ -980,14 +1008,14 @@ class ListMyOrdersRoute extends PageRouteInfo<void> {
 /// [DetailsOrderScreen]
 class DetailsOrderRoute extends PageRouteInfo<DetailsOrderRouteArgs> {
   DetailsOrderRoute({
-    Key? key,
     required int orderId,
+    Key? key,
   }) : super(
           DetailsOrderRoute.name,
           path: 'details-order-screen',
           args: DetailsOrderRouteArgs(
-            key: key,
             orderId: orderId,
+            key: key,
           ),
         );
 
@@ -996,17 +1024,17 @@ class DetailsOrderRoute extends PageRouteInfo<DetailsOrderRouteArgs> {
 
 class DetailsOrderRouteArgs {
   const DetailsOrderRouteArgs({
-    this.key,
     required this.orderId,
+    this.key,
   });
-
-  final Key? key;
 
   final int orderId;
 
+  final Key? key;
+
   @override
   String toString() {
-    return 'DetailsOrderRouteArgs{key: $key, orderId: $orderId}';
+    return 'DetailsOrderRouteArgs{orderId: $orderId, key: $key}';
   }
 }
 
@@ -1026,14 +1054,14 @@ class ListMyExecutorsRoute extends PageRouteInfo<void> {
 /// [DetailsExecutorScreen]
 class DetailsExecutorRoute extends PageRouteInfo<DetailsExecutorRouteArgs> {
   DetailsExecutorRoute({
-    Key? key,
     required int executorId,
+    Key? key,
   }) : super(
           DetailsExecutorRoute.name,
           path: 'details-executor-screen',
           args: DetailsExecutorRouteArgs(
-            key: key,
             executorId: executorId,
+            key: key,
           ),
         );
 
@@ -1042,17 +1070,17 @@ class DetailsExecutorRoute extends PageRouteInfo<DetailsExecutorRouteArgs> {
 
 class DetailsExecutorRouteArgs {
   const DetailsExecutorRouteArgs({
-    this.key,
     required this.executorId,
+    this.key,
   });
-
-  final Key? key;
 
   final int executorId;
 
+  final Key? key;
+
   @override
   String toString() {
-    return 'DetailsExecutorRouteArgs{key: $key, executorId: $executorId}';
+    return 'DetailsExecutorRouteArgs{executorId: $executorId, key: $key}';
   }
 }
 
@@ -1060,14 +1088,14 @@ class DetailsExecutorRouteArgs {
 /// [ListExecutorsScreen]
 class ListExecutorsRoute extends PageRouteInfo<ListExecutorsRouteArgs> {
   ListExecutorsRoute({
-    Key? key,
     required int orderId,
+    Key? key,
   }) : super(
           ListExecutorsRoute.name,
           path: 'list-executors-screen',
           args: ListExecutorsRouteArgs(
-            key: key,
             orderId: orderId,
+            key: key,
           ),
         );
 
@@ -1076,17 +1104,17 @@ class ListExecutorsRoute extends PageRouteInfo<ListExecutorsRouteArgs> {
 
 class ListExecutorsRouteArgs {
   const ListExecutorsRouteArgs({
-    this.key,
     required this.orderId,
+    this.key,
   });
-
-  final Key? key;
 
   final int orderId;
 
+  final Key? key;
+
   @override
   String toString() {
-    return 'ListExecutorsRouteArgs{key: $key, orderId: $orderId}';
+    return 'ListExecutorsRouteArgs{orderId: $orderId, key: $key}';
   }
 }
 
@@ -1094,16 +1122,16 @@ class ListExecutorsRouteArgs {
 /// [DetailsOfferScreen]
 class DetailsOfferRoute extends PageRouteInfo<DetailsOfferRouteArgs> {
   DetailsOfferRoute({
-    Key? key,
     required int orderId,
     required int offerId,
+    Key? key,
   }) : super(
           DetailsOfferRoute.name,
           path: 'details-offer-screen',
           args: DetailsOfferRouteArgs(
-            key: key,
             orderId: orderId,
             offerId: offerId,
+            key: key,
           ),
         );
 
@@ -1112,20 +1140,20 @@ class DetailsOfferRoute extends PageRouteInfo<DetailsOfferRouteArgs> {
 
 class DetailsOfferRouteArgs {
   const DetailsOfferRouteArgs({
-    this.key,
     required this.orderId,
     required this.offerId,
+    this.key,
   });
-
-  final Key? key;
 
   final int orderId;
 
   final int offerId;
 
+  final Key? key;
+
   @override
   String toString() {
-    return 'DetailsOfferRouteArgs{key: $key, orderId: $orderId, offerId: $offerId}';
+    return 'DetailsOfferRouteArgs{orderId: $orderId, offerId: $offerId, key: $key}';
   }
 }
 
@@ -1133,14 +1161,14 @@ class DetailsOfferRouteArgs {
 /// [ReviewScreen]
 class ReviewRoute extends PageRouteInfo<ReviewRouteArgs> {
   ReviewRoute({
-    Key? key,
     required OrderModel order,
+    Key? key,
   }) : super(
           ReviewRoute.name,
           path: 'review-screen',
           args: ReviewRouteArgs(
-            key: key,
             order: order,
+            key: key,
           ),
         );
 
@@ -1149,17 +1177,17 @@ class ReviewRoute extends PageRouteInfo<ReviewRouteArgs> {
 
 class ReviewRouteArgs {
   const ReviewRouteArgs({
-    this.key,
     required this.order,
+    this.key,
   });
-
-  final Key? key;
 
   final OrderModel order;
 
+  final Key? key;
+
   @override
   String toString() {
-    return 'ReviewRouteArgs{key: $key, order: $order}';
+    return 'ReviewRouteArgs{order: $order, key: $key}';
   }
 }
 
@@ -1191,14 +1219,14 @@ class ListStoresRoute extends PageRouteInfo<void> {
 /// [DetailsStoreScreen]
 class DetailsStoreRoute extends PageRouteInfo<DetailsStoreRouteArgs> {
   DetailsStoreRoute({
-    Key? key,
     required int storeId,
+    Key? key,
   }) : super(
           DetailsStoreRoute.name,
           path: 'details-store-screen',
           args: DetailsStoreRouteArgs(
-            key: key,
             storeId: storeId,
+            key: key,
           ),
         );
 
@@ -1207,17 +1235,17 @@ class DetailsStoreRoute extends PageRouteInfo<DetailsStoreRouteArgs> {
 
 class DetailsStoreRouteArgs {
   const DetailsStoreRouteArgs({
-    this.key,
     required this.storeId,
+    this.key,
   });
-
-  final Key? key;
 
   final int storeId;
 
+  final Key? key;
+
   @override
   String toString() {
-    return 'DetailsStoreRouteArgs{key: $key, storeId: $storeId}';
+    return 'DetailsStoreRouteArgs{storeId: $storeId, key: $key}';
   }
 }
 
@@ -1237,14 +1265,14 @@ class TradingAdsRoute extends PageRouteInfo<void> {
 /// [DetailsAdScreen]
 class DetailsAdRoute extends PageRouteInfo<DetailsAdRouteArgs> {
   DetailsAdRoute({
-    Key? key,
     required int id,
+    Key? key,
   }) : super(
           DetailsAdRoute.name,
           path: 'details-ad-screen',
           args: DetailsAdRouteArgs(
-            key: key,
             id: id,
+            key: key,
           ),
         );
 
@@ -1253,17 +1281,17 @@ class DetailsAdRoute extends PageRouteInfo<DetailsAdRouteArgs> {
 
 class DetailsAdRouteArgs {
   const DetailsAdRouteArgs({
-    this.key,
     required this.id,
+    this.key,
   });
-
-  final Key? key;
 
   final int id;
 
+  final Key? key;
+
   @override
   String toString() {
-    return 'DetailsAdRouteArgs{key: $key, id: $id}';
+    return 'DetailsAdRouteArgs{id: $id, key: $key}';
   }
 }
 
@@ -1337,6 +1365,52 @@ class ListChatsRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'ListChatsRoute';
+}
+
+/// generated route for
+/// [MyReviewsScreen]
+class MyReviewsRoute extends PageRouteInfo<void> {
+  const MyReviewsRoute()
+      : super(
+          MyReviewsRoute.name,
+          path: 'my-reviews-screen',
+        );
+
+  static const String name = 'MyReviewsRoute';
+}
+
+/// generated route for
+/// [StoreMyReviewsScreen]
+class StoreMyReviewsRoute extends PageRouteInfo<StoreMyReviewsRouteArgs> {
+  StoreMyReviewsRoute({
+    required int storeId,
+    Key? key,
+  }) : super(
+          StoreMyReviewsRoute.name,
+          path: 'store-my-reviews-screen',
+          args: StoreMyReviewsRouteArgs(
+            storeId: storeId,
+            key: key,
+          ),
+        );
+
+  static const String name = 'StoreMyReviewsRoute';
+}
+
+class StoreMyReviewsRouteArgs {
+  const StoreMyReviewsRouteArgs({
+    required this.storeId,
+    this.key,
+  });
+
+  final int storeId;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'StoreMyReviewsRouteArgs{storeId: $storeId, key: $key}';
+  }
 }
 
 /// generated route for

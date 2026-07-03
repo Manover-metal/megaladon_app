@@ -1941,6 +1941,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select category'**
   String get form_error_order_category_empty;
+
+  /// No description provided for @my_reviews.
+  ///
+  /// In en, this message translates to:
+  /// **'My Reviews'**
+  String get my_reviews;
+
+  /// No description provided for @no_reviews_yet.
+  ///
+  /// In en, this message translates to:
+  /// **'No reviews yet'**
+  String get no_reviews_yet;
+
+  /// No description provided for @reviews.
+  ///
+  /// In en, this message translates to:
+  /// **'Reviews'**
+  String get reviews;
+
+  /// No description provided for @store_reviews.
+  ///
+  /// In en, this message translates to:
+  /// **'Store reviews'**
+  String get store_reviews;
 }
 
 class _AppLocalizationsDelegate

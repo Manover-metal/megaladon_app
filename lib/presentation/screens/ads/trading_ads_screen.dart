@@ -27,8 +27,8 @@ class _TradingAdsScreenState extends State<TradingAdsScreen>
   late TabController _tabController;
 
   Future _onRefresh() async {
-    await context.read<AdvertScreenMainCubit>().fetch();
-    await context.read<ServiceScreenMainCubit>().fetch();
+    await context.read<AdvertScreenMainCubit>().refresh();
+    await context.read<ServiceScreenMainCubit>().refresh();
   }
 
   Future<void> _showFilter() async {

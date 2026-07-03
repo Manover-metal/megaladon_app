@@ -355,10 +355,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               if (executor != null)
                                 ProfileRouteTile(
                                     text: AppLocalizations.of(context)!
+                                        .my_reviews,
+                                    page: const InitialRouter(children: [
+                                      ProfileRouter(
+                                          children: [MyReviewsRoute()])
+                                    ])),
+                              if (executor != null)
+                                ProfileRouteTile(
+                                    text: AppLocalizations.of(context)!
                                         .change_executor,
                                     page: const InitialRouter(children: [
                                       ProfileRouter(
                                           children: [ChangeExecutorRoute()])
+                                    ])),
+                              if (store != null)
+                                ProfileRouteTile(
+                                    text: AppLocalizations.of(context)!
+                                        .store_reviews,
+                                    page: InitialRouter(children: [
+                                      ProfileRouter(children: [
+                                        StoreMyReviewsRoute(storeId: store.id)
+                                      ])
                                     ])),
                               if (store != null)
                                 ProfileRouteTile(

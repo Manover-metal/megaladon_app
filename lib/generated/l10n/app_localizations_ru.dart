@@ -975,4 +975,16 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get form_error_order_category_empty => 'Выберите категорию';
+
+  @override
+  String get my_reviews => 'Мои отзывы';
+
+  @override
+  String get no_reviews_yet => 'Пока нет отзывов';
+
+  @override
+  String get reviews => 'Отзывы';
+
+  @override
+  String get store_reviews => 'Отзывы магазина';
 }

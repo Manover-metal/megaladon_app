@@ -975,4 +975,16 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get form_error_order_category_empty => 'Санатты таңдаңыз';
+
+  @override
+  String get my_reviews => 'Менің пікірлерім';
+
+  @override
+  String get no_reviews_yet => 'Әзірге пікірлер жоқ';
+
+  @override
+  String get reviews => 'Пікірлер';
+
+  @override
+  String get store_reviews => 'Дүкен пікірлері';
 }

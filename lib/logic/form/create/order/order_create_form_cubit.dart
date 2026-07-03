@@ -27,7 +27,7 @@ class OrderCreateFormCubit extends Cubit<OrderCreateFormState> {
   bool checkCreate(
       {required String title,
       required String description,
-      required String priceMax,
+      required int? priceMax,
       required String executionDays,
       required CityModel? city,
       required OrderCategoryModel category,
@@ -80,7 +80,7 @@ class OrderCreateFormCubit extends Cubit<OrderCreateFormState> {
           .create(OrderCreateRequestParams(
               title: state.title.value,
               description: state.description.value,
-              priceMax: int.tryParse(state.priceMax.value),
+              priceMax: state.priceMax.value,
               executionDays: int.tryParse(state.executionDays.value),
               categoryId: state.category.value,
               cityId: state.city.value!,

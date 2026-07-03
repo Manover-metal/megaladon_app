@@ -4,11 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:megaladon/data/models/enum_form_state.dart';
 import 'package:megaladon/data/models/form/localizable_error.dart';
+import 'package:megaladon/data/models/form/price_editing_controller.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/form/create/offer/create_offer_form_cubit.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
-import 'package:megaladon/presentation/widgets/form/field/number_field.dart';
+import 'package:megaladon/presentation/widgets/form/field/price_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
@@ -27,7 +28,7 @@ class _CreateOfferScreenState extends State<CreateOfferScreen> {
   late CityPickerController _cityController;
   late TextEditingController _descriptionController;
   late TextEditingController _dateController;
-  late TextEditingController _priceController;
+  late PriceEditingController _priceController;
 
   void _back() {
     context.router.pop();
@@ -43,7 +44,7 @@ class _CreateOfferScreenState extends State<CreateOfferScreen> {
     var form = context.read<CreateOfferFormCubit>();
     return form.checkCreate(
       description: _descriptionController.value.text,
-      price: _priceController.value.text,
+      price: _priceController.number,
       city: _cityController.value,
       date: _dateController.value.text,
     );
@@ -85,7 +86,7 @@ class _CreateOfferScreenState extends State<CreateOfferScreen> {
     _cityController = CityPickerController();
     _dateController = TextEditingController();
     _descriptionController = TextEditingController();
-    _priceController = TextEditingController();
+    _priceController = PriceEditingController();
     super.initState();
   }
 
@@ -123,7 +124,7 @@ class _CreateOfferScreenState extends State<CreateOfferScreen> {
                               errorText: state.date.displayError
                                   ?.localize(AppLocalizations.of(context)!),
                             ),
-                            NumberFieldApp(
+                            PriceFieldApp(
                               label: AppLocalizations.of(context)!.price,
                               icon: const Icon(Icons.credit_card),
                               controller: _priceController,

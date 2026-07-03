@@ -14,15 +14,15 @@ enum PriceValidationError implements LocalizableError {
   }
 }
 
-class PriceFormModel extends FormzInput<String, PriceValidationError> {
-  const PriceFormModel.pure([this.isRequired = true]) : super.pure('');
-  const PriceFormModel.dirty([super.value = '', this.isRequired = true])
-      : super.dirty();
+class PriceFormModel extends FormzInput<int?, PriceValidationError> {
+  const PriceFormModel.pure([this.isRequired = true]) : super.pure(null);
+  const PriceFormModel.dirty([int? value, this.isRequired = true])
+      : super.dirty(value);
   final bool isRequired;
 
   @override
-  PriceValidationError? validator(String value) {
-    if (value.isEmpty && isRequired) return PriceValidationError.empty;
+  PriceValidationError? validator(int? value) {
+    if (value == null && isRequired) return PriceValidationError.empty;
     return null;
   }
 }

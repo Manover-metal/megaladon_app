@@ -28,7 +28,7 @@ class AdCreateFormCubit extends Cubit<AdCreateFormState> {
   bool checkCreate({
     required String title,
     required String description,
-    required String price,
+    required int? price,
     required CityModel? city,
     required AdvertCategoryModel? category,
     required String phone,
@@ -83,7 +83,7 @@ class AdCreateFormCubit extends Cubit<AdCreateFormState> {
           .create(AdvertCreateRequestParams(
               title: state.title.value,
               description: state.description.value,
-              price: int.tryParse(state.price.value),
+              price: state.price.value,
               categoryId: state.category.value!,
               cityId: state.city.value!,
               additionalPhone: state.phone.value,

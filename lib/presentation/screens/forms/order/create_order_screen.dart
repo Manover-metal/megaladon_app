@@ -5,6 +5,7 @@ import 'package:formz/formz.dart';
 import 'package:megaladon/core/icons/icons.dart';
 import 'package:megaladon/data/models/enum_form_state.dart';
 import 'package:megaladon/data/models/form/localizable_error.dart';
+import 'package:megaladon/data/models/form/price_editing_controller.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/form/create/order/order_create_form_cubit.dart';
 import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
@@ -13,6 +14,7 @@ import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/description_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/number_field.dart';
+import 'package:megaladon/presentation/widgets/form/field/price_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/form/multi_picker/file_multi_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
@@ -34,7 +36,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
   late TextEditingController _descriptionController;
 
   late CityPickerController _cityController;
-  late TextEditingController _priceMaxController;
+  late PriceEditingController _priceMaxController;
   late TextEditingController _executionDaysController;
   late FileMultiPickerController _fileController;
 
@@ -55,7 +57,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
         description: _descriptionController.value.text,
         category: _orderCategoryController.value,
         city: _cityController.value,
-        priceMax: _priceMaxController.value.text,
+        priceMax: _priceMaxController.number,
         executionDays: _executionDaysController.value.text,
         files: _fileController.value);
   }
@@ -102,7 +104,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
     _orderCategoryController = OrderCategoryPickerController();
     _titleController = TextEditingController();
     _cityController = CityPickerController();
-    _priceMaxController = TextEditingController();
+    _priceMaxController = PriceEditingController();
     _executionDaysController = TextEditingController();
     _descriptionController = TextEditingController();
     _fileController = FileMultiPickerController();
@@ -173,7 +175,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                                 errorText: state.description.displayError
                                     ?.localize(AppLocalizations.of(context)!),
                               ),
-                              NumberFieldApp(
+                              PriceFieldApp(
                                 label: AppLocalizations.of(context)!
                                     .desired_budget,
                                 controller: _priceMaxController,

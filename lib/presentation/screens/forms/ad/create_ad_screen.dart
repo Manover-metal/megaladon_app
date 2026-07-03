@@ -6,6 +6,7 @@ import 'package:megaladon/core/icons/icons.dart';
 import 'package:megaladon/data/models/dictionary/advert_type.dart';
 import 'package:megaladon/data/models/enum_form_state.dart';
 import 'package:megaladon/data/models/form/localizable_error.dart';
+import 'package:megaladon/data/models/form/price_editing_controller.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/form/create/ad/ad_create_form_cubit.dart';
 import 'package:megaladon/logic/screens/advert/main/advert_screen_main_cubit.dart';
@@ -17,8 +18,8 @@ import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/description_field.dart';
-import 'package:megaladon/presentation/widgets/form/field/number_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/phone_field.dart';
+import 'package:megaladon/presentation/widgets/form/field/price_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/form/multi_picker/media_multi_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/advert_category_picker.dart';
@@ -41,7 +42,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
   late TextEditingController _titleController;
   late TextEditingController _descriptionController;
   late CityPickerController _cityController;
-  late TextEditingController _priceController;
+  late PriceEditingController _priceController;
   late TextEditingController _phoneController;
   late ImageMultiPickerController _imageController;
 
@@ -60,7 +61,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
     return form.checkCreate(
         title: _titleController.value.text,
         description: _descriptionController.value.text,
-        price: _priceController.value.text,
+        price: _priceController.number,
         category: _advertCategoryController.value,
         city: _cityController.value,
         phone: _phoneController.value.text,
@@ -113,7 +114,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
     _advertCategoryController = AdvertCategoryPickerController();
     _titleController = TextEditingController();
     _cityController = CityPickerController();
-    _priceController = TextEditingController();
+    _priceController = PriceEditingController();
     _descriptionController = TextEditingController();
     _phoneController = TextEditingController(text: '+7');
     _imageController = ImageMultiPickerController();
@@ -179,7 +180,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
                                 errorText: state.description.displayError
                                     ?.localize(AppLocalizations.of(context)!),
                               ),
-                              NumberFieldApp(
+                              PriceFieldApp(
                                 label: AppLocalizations.of(context)!.price,
                                 controller: _priceController,
                                 icon: const Icon(Icons.money_sharp),

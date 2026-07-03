@@ -22,8 +22,7 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
   late ScrollController _scrollController;
 
   Future _onRefresh() async {
-    print('refresh');
-    await context.read<OrderScreenMainCubit>().fetch();
+    await context.read<OrderScreenMainCubit>().refresh();
   }
 
   Future<void> _showFilter() async {

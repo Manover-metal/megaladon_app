@@ -77,19 +77,10 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen>
     super.dispose();
   }
 
-  Future _onRefresh() async {
-    if (_isExecutor()) {
-      print('all');
-      return Future.wait([
-        context.read<OrderScreenMyCubit>().fetchResponded(),
-        context.read<OrderScreenMyCubit>().fetchMy(),
-      ]);
-    } else {
-      print('one');
-
-      return context.read<OrderScreenMyCubit>().fetchMy();
-    }
-  }
+  // refresh() сбрасывает startRow и перезагружает оба списка (мои/отклики)
+  // с первой страницы, сохраняя фильтры.
+  Future<void> _onRefresh() async =>
+      context.read<OrderScreenMyCubit>().refresh();
 
   Future<void> _showFilter() async {
     var result = await showModalBottomSheet(

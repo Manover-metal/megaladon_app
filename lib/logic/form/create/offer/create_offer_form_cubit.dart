@@ -22,7 +22,7 @@ class CreateOfferFormCubit extends Cubit<CreateOfferFormState> {
 
   bool checkCreate({
     required String description,
-    required String price,
+    required int? price,
     required CityModel? city,
     required String date,
   }) {
@@ -53,7 +53,7 @@ class CreateOfferFormCubit extends Cubit<CreateOfferFormState> {
               orderId,
               OfferCreateRequestParams(
                 comment: state.description.value,
-                price: state.price.value,
+                price: state.price.value!,
                 cityId: state.city.value!,
                 date: state.date.value,
               ))
