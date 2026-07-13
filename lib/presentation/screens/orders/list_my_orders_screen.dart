@@ -19,11 +19,9 @@ class ListMyOrdersScreen extends StatefulWidget {
   State<ListMyOrdersScreen> createState() => _ListMyOrdersScreenState();
 }
 
-class _ListMyOrdersScreenState extends State<ListMyOrdersScreen>
-    with SingleTickerProviderStateMixin {
+class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
   late ScrollController _scrollController;
   late ScrollController _scrollControllerResponded;
-  late TabController _tabController;
 
   void _listenerScrollMy() {
     if (_scrollController.position.maxScrollExtent <
@@ -55,11 +53,8 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen>
   void initState() {
     _scrollController = ScrollController()..addListener(_listenerScrollMy);
     if (_isExecutor()) {
-      _tabController = TabController(length: 2, vsync: this);
       _scrollControllerResponded = ScrollController()
         ..addListener(_listenerScrollResponded);
-    } else {
-      _tabController = TabController(length: 1, vsync: this);
     }
     _onRefresh();
     super.initState();
@@ -73,7 +68,6 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen>
       _scrollControllerResponded.removeListener(_listenerScrollResponded);
       _scrollControllerResponded.dispose();
     }
-    _tabController.dispose();
     super.dispose();
   }
 
@@ -139,7 +133,6 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen>
                 SliverPersistentHeader(
                     delegate: TabBarDelegate(
                   TabBar(
-                    controller: _tabController,
                     labelColor: Theme.of(context).colorScheme.primary,
                     labelStyle: Theme.of(context)
                         .textTheme
@@ -160,7 +153,6 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen>
                 ))
               ],
               body: TabBarView(
-                controller: _tabController,
                 children: [
                   RefreshIndicator(
                     onRefresh: _onRefresh,

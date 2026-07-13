@@ -987,4 +987,7 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get store_reviews => 'Дүкен пікірлері';
+
+  @override
+  String get chat_unknown_companion => 'Белгісіз әңгімелесуші';
 }

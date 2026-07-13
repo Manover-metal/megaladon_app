@@ -9,21 +9,30 @@ class ChatRepository {
       .get('/chat')
       .then((value) => ChatModel.parseAll(value.data['list']));
 
-  Future createOrder(int orderId, int executorId) =>
-      ApiService.I.post('/order/$orderId/chat/create',
-          data: {'executor_id': executorId}).then((value) => value.data);
+  // Создаёт (или переиспользует существующий) личный чат с пользователем
+  // [userId]. Возвращает чат, чтобы экран мог сразу открыть переписку.
+  Future<ChatModel?> create(int userId) => ApiService.I
+          .post<dynamic>('/chat/create', data: {'user_id': userId})
+          .then((value) {
+        final data = value.data;
+        final chat = data is Map ? data['chat'] : null;
+        return chat is Map<String, dynamic> ? ChatModel.parse(chat) : null;
+      });
 
-  Future createAdvert(int advertId) => ApiService.I
-      .post('/adverts/$advertId/chat/create')
-      .then((value) => value.data);
-
-  Future sendMessage(MessageCreateRequestParams params) => ApiService.I
-      .post('/chat/send-message', data: params.toData())
-      .then((value) => value.data);
+  Future<MessageModel?> sendMessage(MessageCreateRequestParams params) =>
+      ApiService.I
+          .post<dynamic>('/chat/send-message', data: params.toData())
+          .then((value) {
+        final data = value.data;
+        final message = data is Map ? data['chat_message'] : null;
+        return message is Map<String, dynamic>
+            ? MessageModel.fromJson(message)
+            : null;
+      });
 
   Future<List<MessageModel>> getMessages(
           int chatId, MessageIndexRequestParams params) =>
       ApiService.I
-          .get('/chat/$chatId', queryParameters: params.toData())
+          .get<dynamic>('/chat/$chatId', queryParameters: params.toData())
           .then((value) => MessageModel.fromJsonList(value.data['list']));
 }

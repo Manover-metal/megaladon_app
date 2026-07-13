@@ -400,5 +400,6 @@
   "my_reviews": "Мои отзывы",
   "no_reviews_yet": "Пока нет отзывов",
   "reviews": "Отзывы",
-  "store_reviews": "Отзывы магазина"
+  "store_reviews": "Отзывы магазина",
+  "chat_unknown_companion": "Неизвестный собеседник"
 }

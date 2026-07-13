@@ -987,4 +987,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get store_reviews => 'Store reviews';
+
+  @override
+  String get chat_unknown_companion => 'Unknown companion';
 }

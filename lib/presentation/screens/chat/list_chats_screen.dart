@@ -18,18 +18,22 @@ class ListChatsScreen extends StatefulWidget {
 
 class _ListChatsScreenState extends State<ListChatsScreen> {
   late ScrollController _scrollController;
+  late ChatCubit _cubit;
 
-  Future _refresh() async => context.read<ChatCubit>().fetch();
+  Future<void> _refresh() async => _cubit.fetchChats();
 
   @override
   void initState() {
     _scrollController = ScrollController();
+    _cubit = context.read<ChatCubit>();
     _refresh();
+    _cubit.startListPolling();
     super.initState();
   }
 
   @override
   void dispose() {
+    _cubit.stopListPolling();
     _scrollController.dispose();
     super.dispose();
   }

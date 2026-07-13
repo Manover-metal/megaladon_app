@@ -1965,6 +1965,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Store reviews'**
   String get store_reviews;
+
+  /// No description provided for @chat_unknown_companion.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown companion'**
+  String get chat_unknown_companion;
 }
 
 class _AppLocalizationsDelegate

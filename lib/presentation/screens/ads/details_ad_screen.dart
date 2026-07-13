@@ -44,9 +44,12 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
         launchUrl(uri);
       };
 
-  void _toChat() {
-    context.read<ChatCubit>().createChatAdvert(widget.id).then((value) {
-      context.router.navigate(const ListChatsRoute());
+  void _toChat(AdvertModel advert) {
+    final companionId = advert.user?.id;
+    if (companionId == null) return;
+    context.read<ChatCubit>().createChat(companionId).then((chat) {
+      if (!mounted || chat == null) return;
+      context.router.push(DetailsChatRouter(chat: chat));
     });
   }
 
@@ -232,7 +235,8 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                                                   .advert.additionalPhone!),
                                             ),
                                             OutlinedButtonApp(
-                                                onPressed: _toChat,
+                                                onPressed: () =>
+                                                    _toChat(state.advert),
                                                 text: AppLocalizations.of(
                                                         context)!
                                                     .ask_a_question_in_the_chat),

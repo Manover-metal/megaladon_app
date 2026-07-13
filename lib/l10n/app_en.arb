@@ -698,5 +698,7 @@
   "reviews": "Reviews",
   "@reviews": {},
   "store_reviews": "Store reviews",
-  "@store_reviews": {}
+  "@store_reviews": {},
+  "chat_unknown_companion": "Unknown companion",
+  "@chat_unknown_companion": {}
 }

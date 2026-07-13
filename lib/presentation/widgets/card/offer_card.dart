@@ -21,8 +21,9 @@ class OfferCard extends StatelessWidget {
       };
 
   Null Function() _createChat(BuildContext context) => () {
-        if (offer.executor?.id == null) return;
-        context.read<ChatCubit>().createChatOrder(orderId, offer.executor!.id);
+        final companionId = offer.executor?.id;
+        if (companionId == null) return;
+        context.read<ChatCubit>().createChat(companionId);
       };
 
   @override

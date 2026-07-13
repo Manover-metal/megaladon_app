@@ -400,5 +400,6 @@
   "my_reviews": "Менің пікірлерім",
   "no_reviews_yet": "Әзірге пікірлер жоқ",
   "reviews": "Пікірлер",
-  "store_reviews": "Дүкен пікірлері"
+  "store_reviews": "Дүкен пікірлері",
+  "chat_unknown_companion": "Белгісіз әңгімелесуші"
 }

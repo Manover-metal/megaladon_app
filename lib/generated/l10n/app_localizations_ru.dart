@@ -987,4 +987,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get store_reviews => 'Отзывы магазина';
+
+  @override
+  String get chat_unknown_companion => 'Неизвестный собеседник';
 }
