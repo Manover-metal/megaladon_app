@@ -22,6 +22,12 @@ class ImageService {
     return result;
   }
 
+  static Future<FilePickerResult?> getFile() => FilePicker.pickFiles(
+        withData: true,
+        type: FileType.custom,
+        allowedExtensions: ['jpg', 'jpeg', 'png', 'pdf', 'doc', 'docx'],
+      );
+
   static Future<bool> _requestWritePermission() async {
     await Permission.photos.request();
     return await Permission.photos.request().isGranted;
