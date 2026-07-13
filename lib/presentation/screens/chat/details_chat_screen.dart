@@ -1,14 +1,19 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:megaladon/core/image/image_service.dart';
 import 'package:megaladon/data/models/chat/chat_model.dart';
 import 'package:megaladon/data/models/chat/message_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/screens/chats/chat_cubit.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/presentation/widgets/chat/chat_app_bar_title.dart';
+import 'package:megaladon/presentation/widgets/chat/chat_image_viewer.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailsChatScreen extends StatefulWidget {
   const DetailsChatScreen({required this.chat, super.key});
@@ -58,6 +63,14 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
     _scrollToBottom();
     _textController.clear();
     _focusNode.requestFocus();
+  }
+
+  Future<void> _attachFile() async {
+    final result = await ImageService.getFile();
+    final file = result?.files.elementAtOrNull(0);
+    if (file == null || file.bytes == null) return;
+    _cubit.sendFile(widget.chat.id, file);
+    _scrollToBottom();
   }
 
   /// Спуск к новейшему сообщению. Список перевёрнут (reverse: true), поэтому
@@ -125,6 +138,11 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
+                    IconButton(
+                      icon: Icon(Icons.attach_file,
+                          color: Theme.of(context).colorScheme.primary),
+                      onPressed: _attachFile,
+                    ),
                     Expanded(
                       child: TextField(
                         controller: _textController,
@@ -195,7 +213,8 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
                 ...chat.messages.map((m) => _ChatItem(m,
                     isMe: m.user?.id == authState.user?.id ||
                         m.user?.id == null)),
-                ...pending.map((m) => _ChatItem(m, isMe: true)),
+                ...pending.map(
+                    (m) => _ChatItem(m, isMe: true, isUploading: true)),
                 ...failed.map((m) => _ChatItem(m, isMe: true, isError: true)),
               ].reversed.toList();
 
@@ -215,7 +234,8 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
                   itemCount: items.length,
                   itemBuilder: (context, index) {
                     final it = items[index];
-                    return message(context, it.model, it.isMe, it.isError);
+                    return message(
+                        context, it.model, it.isMe, it.isError, it.isUploading);
                   },
                 ),
               );
@@ -227,10 +247,11 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
   // Пузырь сообщения: только текст и время отправки. Мои сообщения справа,
   // собеседника — зеркально слева (другой цвет и «хвостик» на другом углу).
   Widget message(BuildContext context, MessageModel message, bool isMe,
-      [bool isError = false]) {
+      [bool isError = false, bool isUploading = false]) {
     final time = DateFormat('HH:mm').format(message.createdAt.toLocal());
     final timeColor =
         Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.5);
+    final content = _messageContent(context, message, isUploading);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
@@ -258,10 +279,7 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
                   isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  message.text ?? '',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
+                content,
                 const SizedBox(height: 2),
                 Row(
                   mainAxisSize: MainAxisSize.min,
@@ -287,15 +305,108 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
       ),
     );
   }
+
+  Widget _messageContent(
+      BuildContext context, MessageModel message, bool isUploading) {
+    if (isUploading) {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.insert_drive_file, size: 20),
+          const SizedBox(width: 8),
+          Flexible(
+            child: Text(message.fileName ?? '',
+                maxLines: 1, overflow: TextOverflow.ellipsis),
+          ),
+          const SizedBox(width: 8),
+          const SizedBox(
+            width: 16,
+            height: 16,
+            child: CircularProgressIndicator(strokeWidth: 2),
+          ),
+        ],
+      );
+    }
+
+    final url = message.file;
+    if (url != null && _isImage(message.fileName ?? url)) {
+      return GestureDetector(
+        onTap: () => Navigator.of(context).push(
+          MaterialPageRoute<void>(
+            builder: (_) => ChatImageViewer(url: url),
+          ),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: CachedNetworkImage(
+            imageUrl: url,
+            width: 200,
+            fit: BoxFit.cover,
+            placeholder: (_, __) => const SizedBox(
+              width: 200,
+              height: 120,
+              child: Center(
+                child: CircularProgressIndicator(strokeWidth: 2),
+              ),
+            ),
+            errorWidget: (_, __, ___) => const SizedBox(
+              width: 200,
+              height: 120,
+              child: Icon(Icons.broken_image_outlined),
+            ),
+          ),
+        ),
+      );
+    }
+
+    if (url != null) {
+      return GestureDetector(
+        onTap: () => _openFile(context, url),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.insert_drive_file, size: 20),
+            const SizedBox(width: 8),
+            Flexible(
+              child: Text(message.fileName ?? '',
+                  maxLines: 1, overflow: TextOverflow.ellipsis),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Text(
+      message.text ?? '',
+      style: Theme.of(context).textTheme.bodyMedium,
+    );
+  }
+
+  bool _isImage(String name) {
+    final ext = name.contains('.') ? name.split('.').last.toLowerCase() : '';
+    return ext == 'jpg' || ext == 'jpeg' || ext == 'png';
+  }
+
+  Future<void> _openFile(BuildContext context, String url) async {
+    final ok = await launchUrl(Uri.parse(url),
+        mode: LaunchMode.externalApplication);
+    if (!ok && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(AppLocalizations.of(context)!.file_open_error)),
+      );
+    }
+  }
 }
 
 /// Элемент ленты переписки: сообщение плюс флаги отрисовки. Объединяет
 /// реальные, отправляемые и неотправленные сообщения в один список для
 /// ListView.builder.
 class _ChatItem {
-  const _ChatItem(this.model, {required this.isMe, this.isError = false});
+  const _ChatItem(this.model,
+      {required this.isMe, this.isError = false, this.isUploading = false});
 
   final MessageModel model;
   final bool isMe;
   final bool isError;
+  final bool isUploading;
 }

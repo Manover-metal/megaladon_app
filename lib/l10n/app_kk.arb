@@ -401,5 +401,6 @@
   "no_reviews_yet": "Әзірге пікірлер жоқ",
   "reviews": "Пікірлер",
   "store_reviews": "Дүкен пікірлері",
-  "chat_unknown_companion": "Белгісіз әңгімелесуші"
+  "chat_unknown_companion": "Белгісіз әңгімелесуші",
+  "file_open_error": "Файлды ашу мүмкін болмады"
 }

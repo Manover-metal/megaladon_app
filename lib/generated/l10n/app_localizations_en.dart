@@ -990,4 +990,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chat_unknown_companion => 'Unknown companion';
+
+  @override
+  String get file_open_error => 'Could not open the file';
 }

@@ -1971,6 +1971,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unknown companion'**
   String get chat_unknown_companion;
+
+  /// No description provided for @file_open_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open the file'**
+  String get file_open_error;
 }
 
 class _AppLocalizationsDelegate

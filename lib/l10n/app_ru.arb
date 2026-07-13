@@ -401,5 +401,6 @@
   "no_reviews_yet": "Пока нет отзывов",
   "reviews": "Отзывы",
   "store_reviews": "Отзывы магазина",
-  "chat_unknown_companion": "Неизвестный собеседник"
+  "chat_unknown_companion": "Неизвестный собеседник",
+  "file_open_error": "Не удалось открыть файл"
 }

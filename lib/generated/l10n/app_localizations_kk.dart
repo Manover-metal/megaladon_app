@@ -990,4 +990,7 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get chat_unknown_companion => 'Белгісіз әңгімелесуші';
+
+  @override
+  String get file_open_error => 'Файлды ашу мүмкін болмады';
 }
