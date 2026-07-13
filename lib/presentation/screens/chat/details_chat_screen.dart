@@ -212,8 +212,8 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
                 ...chat.messages.map((m) => _ChatItem(m,
                     isMe: m.user?.id == authState.user?.id ||
                         m.user?.id == null)),
-                ...pending.map(
-                    (m) => _ChatItem(m, isMe: true, isUploading: true)),
+                ...pending.map((m) =>
+                    _ChatItem(m, isMe: true, isUploading: m.fileName != null)),
                 ...failed.map((m) => _ChatItem(m, isMe: true, isError: true)),
               ].reversed.toList();
 
@@ -328,6 +328,22 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
     }
 
     final url = message.file;
+    // Файл ещё не на сервере (например, неотправленное сообщение): server URL
+    // нет, но имя файла есть — показываем строку с именем, а не пустой пузырь.
+    // Красный индикатор ошибки рисует внешний message() по isError.
+    if (url == null && message.fileName != null) {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.insert_drive_file, size: 20),
+          const SizedBox(width: 8),
+          Flexible(
+            child: Text(message.fileName!,
+                maxLines: 1, overflow: TextOverflow.ellipsis),
+          ),
+        ],
+      );
+    }
     if (url != null && _isImage(message.fileName ?? url)) {
       return GestureDetector(
         onTap: () => Navigator.of(context).push(
