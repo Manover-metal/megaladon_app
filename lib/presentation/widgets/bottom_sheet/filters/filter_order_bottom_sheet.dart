@@ -1,12 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:megaladon/data/models/order_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/screens/orders/main/order_screen_main_cubit.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/order_category_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/last_day_picker.dart';
+import 'package:megaladon/presentation/widgets/form/picker/status_picker.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class FilterOrderBottomSheet extends StatefulWidget {
@@ -25,9 +27,16 @@ class FilterOrderBottomSheet extends StatefulWidget {
 }
 
 class _FilterOrderBottomSheetState extends State<FilterOrderBottomSheet> {
+  static const _statusOptions = [
+    OrderStatus.active,
+    OrderStatus.hasExecutor,
+    OrderStatus.completed,
+  ];
+
   late IndexPeriodPickerController _indexPeriodPickerController;
   late CityPickerController _cityPickerController;
   late OrderCategoryPickerController _orderCategoryPickerController;
+  late StatusPickerController _statusPickerController;
 
   void _back() {
     var params = context.read<OrderScreenMainCubit>().state.params;
@@ -37,7 +46,9 @@ class _FilterOrderBottomSheetState extends State<FilterOrderBottomSheet> {
         startRow: 0,
         last: _indexPeriodPickerController.value,
         city: city,
-        category: category));
+        category: category,
+        statuses: StatusPickerController.resolve(
+            _statusPickerController.value, _statusOptions)));
     context.router.pop(true);
   }
 
@@ -49,6 +60,8 @@ class _FilterOrderBottomSheetState extends State<FilterOrderBottomSheet> {
     _cityPickerController = CityPickerController(city: state.params.city);
     _orderCategoryPickerController =
         OrderCategoryPickerController(category: state.params.category);
+    _statusPickerController = StatusPickerController(
+        StatusPickerController.seedFrom(state.params.statuses, _statusOptions));
     super.initState();
   }
 
@@ -57,6 +70,7 @@ class _FilterOrderBottomSheetState extends State<FilterOrderBottomSheet> {
     _indexPeriodPickerController.dispose();
     _cityPickerController.dispose();
     _orderCategoryPickerController.dispose();
+    _statusPickerController.dispose();
     super.dispose();
   }
 
@@ -100,6 +114,17 @@ class _FilterOrderBottomSheetState extends State<FilterOrderBottomSheet> {
                   child: IndexPeriodPicker(
                     label: AppLocalizations.of(context)!.last_period,
                     controller: _indexPeriodPickerController,
+                  ),
+                )
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: StatusPicker(
+                    label: AppLocalizations.of(context)!.status,
+                    controller: _statusPickerController,
+                    options: _statusOptions,
                   ),
                 )
               ],
