@@ -256,6 +256,24 @@ abstract class AppLocalizations {
   /// **'Active'**
   String get active;
 
+  /// No description provided for @moderate.
+  ///
+  /// In en, this message translates to:
+  /// **'On moderation'**
+  String get moderate;
+
+  /// No description provided for @completed.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get completed;
+
+  /// No description provided for @status.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get status;
+
   /// No description provided for @in_rocessing.
   ///
   /// In en, this message translates to:
@@ -1774,6 +1792,12 @@ abstract class AppLocalizations {
   /// **'Last month'**
   String get last_month;
 
+  /// No description provided for @all_time.
+  ///
+  /// In en, this message translates to:
+  /// **'All time'**
+  String get all_time;
+
   /// No description provided for @form_error_bin_empty.
   ///
   /// In en, this message translates to:
@@ -1977,6 +2001,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not open the file'**
   String get file_open_error;
+
+  /// No description provided for @file.
+  ///
+  /// In en, this message translates to:
+  /// **'File'**
+  String get file;
+
+  /// No description provided for @photo.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo'**
+  String get photo;
+
+  /// No description provided for @camera.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera'**
+  String get camera;
 }
 
 class _AppLocalizationsDelegate

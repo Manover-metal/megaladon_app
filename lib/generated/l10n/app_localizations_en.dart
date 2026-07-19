@@ -87,6 +87,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get active => 'Active';
 
   @override
+  String get moderate => 'On moderation';
+
+  @override
+  String get completed => 'Completed';
+
+  @override
+  String get status => 'Status';
+
+  @override
   String get in_rocessing => 'In rocessing';
 
   @override
@@ -890,6 +899,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get last_month => 'Last month';
 
   @override
+  String get all_time => 'All time';
+
+  @override
   String get form_error_bin_empty => 'BIN/IIN is not filled';
 
   @override
@@ -993,4 +1005,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get file_open_error => 'Could not open the file';
+
+  @override
+  String get file => 'File';
+
+  @override
+  String get photo => 'Photo';
+
+  @override
+  String get camera => 'Camera';
 }

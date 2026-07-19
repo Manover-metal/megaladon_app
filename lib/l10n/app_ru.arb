@@ -32,6 +32,9 @@
   "theshops": "Металлопрокат",
   "all": "Все",
   "active": "Активные",
+  "moderate": "На проверке",
+  "completed": "Выполнен",
+  "status": "Статус",
   "in_rocessing": "В обработке",
   "in_work": "В работе",
   "archive": "Архив ",
@@ -369,6 +372,7 @@
   "last_3_days": "Последние 3 дня",
   "last_week": "Последняя неделя",
   "last_month": "Последний месяц",
+  "all_time": "За всё время",
   "form_error_bin_empty": "БИН/ИИН не заполнен",
   "form_error_bin_min": "БИН/ИИН заполнен не полностью",
   "form_error_bin_max": "БИН/ИИН максимум 12 цифр",
@@ -402,5 +406,8 @@
   "reviews": "Отзывы",
   "store_reviews": "Отзывы магазина",
   "chat_unknown_companion": "Неизвестный собеседник",
-  "file_open_error": "Не удалось открыть файл"
+  "file_open_error": "Не удалось открыть файл",
+  "file": "Файл",
+  "photo": "Фото",
+  "camera": "Камера"
 }

@@ -51,6 +51,9 @@
   "all": "All",
   "@all": {},
   "active": "Active",
+  "moderate": "On moderation",
+  "completed": "Completed",
+  "status": "Status",
   "@active": {},
   "in_rocessing": "In rocessing",
   "@in_rocessing": {},
@@ -635,6 +638,8 @@
   "@last_week": {},
   "last_month": "Last month",
   "@last_month": {},
+  "all_time": "All time",
+  "@all_time": {},
   "form_error_bin_empty": "BIN/IIN is not filled",
   "@form_error_bin_empty": {},
   "form_error_bin_min": "BIN/IIN is not fully filled",
@@ -702,5 +707,11 @@
   "chat_unknown_companion": "Unknown companion",
   "@chat_unknown_companion": {},
   "file_open_error": "Could not open the file",
-  "@file_open_error": {}
+  "@file_open_error": {},
+  "file": "File",
+  "@file": {},
+  "photo": "Photo",
+  "@photo": {},
+  "camera": "Camera",
+  "@camera": {}
 }

@@ -87,6 +87,15 @@ class AppLocalizationsKk extends AppLocalizations {
   String get active => 'Белсенді';
 
   @override
+  String get moderate => 'Тексеруде';
+
+  @override
+  String get completed => 'Орындалды';
+
+  @override
+  String get status => 'Мәртебе';
+
+  @override
   String get in_rocessing => 'Өңделуде';
 
   @override
@@ -891,6 +900,9 @@ class AppLocalizationsKk extends AppLocalizations {
   String get last_month => 'Соңғы ай';
 
   @override
+  String get all_time => 'Барлық уақыт';
+
+  @override
   String get form_error_bin_empty => 'БСН/ЖСН толтырылмаған';
 
   @override
@@ -993,4 +1005,13 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get file_open_error => 'Файлды ашу мүмкін болмады';
+
+  @override
+  String get file => 'Файл';
+
+  @override
+  String get photo => 'Фото';
+
+  @override
+  String get camera => 'Камера';
 }

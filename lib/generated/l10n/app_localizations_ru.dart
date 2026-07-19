@@ -87,6 +87,15 @@ class AppLocalizationsRu extends AppLocalizations {
   String get active => 'Активные';
 
   @override
+  String get moderate => 'На проверке';
+
+  @override
+  String get completed => 'Выполнен';
+
+  @override
+  String get status => 'Статус';
+
+  @override
   String get in_rocessing => 'В обработке';
 
   @override
@@ -891,6 +900,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get last_month => 'Последний месяц';
 
   @override
+  String get all_time => 'За всё время';
+
+  @override
   String get form_error_bin_empty => 'БИН/ИИН не заполнен';
 
   @override
@@ -993,4 +1005,13 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get file_open_error => 'Не удалось открыть файл';
+
+  @override
+  String get file => 'Файл';
+
+  @override
+  String get photo => 'Фото';
+
+  @override
+  String get camera => 'Камера';
 }
