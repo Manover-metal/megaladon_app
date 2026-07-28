@@ -20,9 +20,13 @@ class OfferCard extends StatelessWidget {
             .push(DetailsOfferRoute(orderId: orderId, offerId: offer.id));
       };
 
-  Null Function() _createChat(BuildContext context) => () {
-        if (offer.executor?.id == null) return;
-        context.read<ChatCubit>().createChatOrder(orderId, offer.executor!.id);
+  void Function() _createChat(BuildContext context) => () {
+        final companionId = offer.executor?.id;
+        if (companionId == null) return;
+        context.read<ChatCubit>().createChat(companionId).then((chat) {
+          if (chat == null || !context.mounted) return;
+          context.router.push(DetailsChatRouter(chat: chat));
+        });
       };
 
   @override
@@ -49,11 +53,14 @@ class OfferCard extends StatelessWidget {
             ),
             Row(
               children: [
-                Expanded(
-                    child: OutlinedButtonApp(
-                        text: AppLocalizations.of(context)!.createChat,
-                        onPressed: _createChat(context))),
-                const SizedBox(width: 10),
+                // Автор отклика удалил аккаунт — писать ему некуда.
+                if (offer.executor?.isDeleted != true) ...[
+                  Expanded(
+                      child: OutlinedButtonApp(
+                          text: AppLocalizations.of(context)!.createChat,
+                          onPressed: _createChat(context))),
+                  const SizedBox(width: 10),
+                ],
                 Expanded(
                     child: ElevatedButtonApp(
                         text: AppLocalizations.of(context)!.more_details,

@@ -44,6 +44,7 @@ import 'package:megaladon/presentation/screens/store/details_store_screen.dart';
 import 'package:megaladon/presentation/screens/store/list_stores_screen.dart';
 import 'package:megaladon/presentation/screens/store/store_my_reviews_screen.dart';
 import 'package:megaladon/presentation/screens/subscribe/subscribe_screen.dart';
+import 'package:megaladon/presentation/screens/user/user_profile_screen.dart';
 
 part 'router.gr.dart';
 
@@ -62,6 +63,9 @@ const List<AutoRoute> ad = [
   AutoRoute(page: TradingAdsScreen, path: ''),
   AutoRoute(page: DetailsAdScreen),
   AutoRoute(page: MyAdsScreen, guards: [AuthGuard]),
+  // Страница публичная, гварда нет. Дублируется в ветке order — переход
+  // идёт и с детального экрана объявления, и с детального экрана заказа.
+  AutoRoute(page: UserProfileScreen),
 ];
 
 const List<AutoRoute> store = [
@@ -79,6 +83,7 @@ const List<AutoRoute> order = [
   AutoRoute(page: DetailsOfferScreen),
   AutoRoute(page: ReviewScreen),
   AutoRoute(page: SubscribeScreen, guards: [AuthGuard]),
+  AutoRoute(page: UserProfileScreen),
 ];
 
 const List<AutoRoute> auth = [

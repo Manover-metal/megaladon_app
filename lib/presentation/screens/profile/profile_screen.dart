@@ -5,9 +5,12 @@ import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/form/price/price_form_cubit.dart';
 import 'package:megaladon/logic/screens/profile/change_photo/change_photo_cubit.dart';
+import 'package:megaladon/logic/screens/profile/delete_account/delete_account_cubit.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
+import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
+import 'package:megaladon/presentation/widgets/dialogs/delete_account_dialog.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/message/auth_message.dart';
@@ -26,6 +29,32 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  Future<void> _onDeleteAccount(BuildContext context) async {
+    final password = await showDialog<String>(
+      context: context,
+      builder: (_) => const DeleteAccountDialog(),
+    );
+    if (password != null && context.mounted) {
+      context.read<DeleteAccountCubit>().deleteAccount(password);
+    }
+  }
+
+  void _deleteAccountListener(
+      BuildContext context, DeleteAccountState state) {
+    if (state.status == DeleteAccountStatus.success) {
+      CustomSnackBar.success(
+        Text(AppLocalizations.of(context)!.account_deleted_successfully),
+      ).view(context);
+      context.read<AuthBloc>().add(AuthLogoutEvent());
+    } else if (state.status == DeleteAccountStatus.error) {
+      CustomSnackBar.error(
+        Text(state.error?.messages.isNotEmpty == true
+            ? state.error!.messages.first
+            : AppLocalizations.of(context)!.unknown_error),
+      ).view(context);
+    }
+  }
+
   Future _fetch() async {
     // Профиль грузим только авторизованным. Для гостя ProfileScreenCubit уже
     // выставляет notAuth (показывается AuthMessage). Если дёрнуть /user/profile
@@ -60,8 +89,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   @override
-  Widget build(BuildContext context) => BlocBuilder<AuthBloc, AuthState>(
-        builder: (context, state) => Scaffold(
+  Widget build(BuildContext context) =>
+      BlocListener<DeleteAccountCubit, DeleteAccountState>(
+        listener: _deleteAccountListener,
+        child: BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, state) => Scaffold(
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(70),
             child: HeaderAppBar(
@@ -386,6 +418,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           children: [ChangeStoreRoute()])
                                     ])),
                               const SizedBox(height: 20),
+                              OutlinedButtonApp(
+                                text: AppLocalizations.of(context)!
+                                    .delete_account,
+                                onPressed: () => _onDeleteAccount(context),
+                              ),
+                              const SizedBox(height: 20),
                             ],
                           );
                         } else if (state.status ==
@@ -406,6 +444,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
             ),
+          ),
           ),
         ),
       );

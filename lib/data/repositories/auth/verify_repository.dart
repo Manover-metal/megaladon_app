@@ -12,4 +12,8 @@ class VerifyRepository {
     });
     return AuthModel.fromJson(response.data as Map<String, dynamic>);
   }
+
+  Future<void> resendCode({required String phone}) async {
+    await ApiService.I.post('/auth/resend-code', data: {'phone': phone});
+  }
 }

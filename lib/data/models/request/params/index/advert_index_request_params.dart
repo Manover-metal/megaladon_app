@@ -8,8 +8,9 @@ class AdvertIndexRequestParams {
       this.desc = false,
       this.priceMin,
       this.priceMax,
-      this.last = IndexPeriod.last3day,
-      this.type = AdvertType.advert});
+      this.last = IndexPeriod.allTime,
+      this.type = AdvertType.advert,
+      this.userId});
   final int startRow;
   final int rowsPerPage;
   final bool desc;
@@ -17,6 +18,10 @@ class AdvertIndexRequestParams {
   final int? priceMax;
   final IndexPeriod last;
   final AdvertType type;
+
+  /// Фильтр по автору. Используется публичной страницей пользователя;
+  /// в обычной выдаче торговой площадки не задаётся.
+  final int? userId;
 
   Map<String, Object?> toData() {
     final data = {
@@ -28,6 +33,9 @@ class AdvertIndexRequestParams {
       'priceMax': priceMax,
       'type': type.name
     };
+    if (userId != null) {
+      data['user_id'] = userId;
+    }
     return data;
   }
 
@@ -38,7 +46,8 @@ class AdvertIndexRequestParams {
           int? priceMin,
           int? priceMax,
           IndexPeriod? last,
-          AdvertType? type}) =>
+          AdvertType? type,
+          int? userId}) =>
       AdvertIndexRequestParams(
           startRow: startRow ?? this.startRow,
           rowsPerPage: rowsPerPage ?? this.rowsPerPage,
@@ -46,5 +55,6 @@ class AdvertIndexRequestParams {
           priceMax: priceMin ?? this.priceMin,
           priceMin: priceMax ?? this.priceMax,
           last: last ?? this.last,
-          type: type ?? this.type);
+          type: type ?? this.type,
+          userId: userId ?? this.userId);
 }

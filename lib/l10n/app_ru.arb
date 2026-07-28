@@ -32,6 +32,9 @@
   "theshops": "Металлопрокат",
   "all": "Все",
   "active": "Активные",
+  "moderate": "На проверке",
+  "completed": "Выполнен",
+  "status": "Статус",
   "in_rocessing": "В обработке",
   "in_work": "В работе",
   "archive": "Архив ",
@@ -115,6 +118,7 @@
   },
   "call": "Позвонить",
   "ask_a_question_in_the_chat": "Задать вопрос в чате",
+  "chat_companion_deleted": "Пользователь удалил аккаунт",
   "my_announcement": "Мои объявления",
   "my_executor": "Мои исполнители",
   "ads": "Объявления",
@@ -126,6 +130,8 @@
   "longitude": "Долгота",
   "by_clicking_on_the_Continue_button_you_accept": "Нажимая на кнопку 'Продолжить', вы принимаете ",
   "user_Agreement_Terms": "Условия пользовательского соглашения",
+  "privacy_policy": "Политика конфиденциальности",
+  "user_agreement": "Пользовательское соглашение",
   "shop_registration": "Регистрация металопроката",
   "names": "Названия",
   "type_of_business": "Тип бизнеса",
@@ -136,6 +142,9 @@
   "enter_6digit_code_from_SMS": "Введите 6-ти значный код из смс",
   "confirm": "Подтвердить",
   "send_code_again": "Выслать код повторно",
+  "code_sent_again": "Код отправлен повторно",
+  "send_the_code": "Отправить код",
+  "reset_password": "Сменить пароль",
   "chat": "Чат",
   "noMessagesInChat": "Пока что сообщений в этом чате нет",
   "chats": "Чаты",
@@ -158,7 +167,7 @@
   "respond": "Откликнуться",
   "header": "Заголовок",
   "change_order": "Изменить заказ",
-  "artists_suggestion": "Предложение исполнителя",
+  "artists_suggestion": "Предложение",
   "price2": "Цена: ",
   "terms": "Сроки: ",
   "createChat": "Создать чат",
@@ -252,6 +261,9 @@
   "theme_light": "Светлая",
   "theme_system": "Системная",
   "about_the_application": "О приложении",
+  "delete_account": "Удалить аккаунт",
+  "delete_account_warning": "Действие необратимо. Аккаунт будет удалён, и вы выйдете из него. Введите пароль для подтверждения.",
+  "account_deleted_successfully": "Аккаунт удалён",
   "aboutText": "\"Заказы\" — список размещённых на платформе заказов для поиска лучшего предложения от исполнителей.\n\"Металлопрокат\" — список компаний, занимающихся продажей готовой продукции.\n\"+\" (Заказ) — создание заказа для поиска исполнителей.\n\"+\" (Услуги) — создание услуг для распространения своих услуг.\n\"+\" (Объявление) — создание объявления для продажи товаров или оказания услуг машиностроения.\n\"Торговая площадка\" — список объявлений о продаже товара или оказании услуг машиностроения.\n\"Профиль\" — профиль пользователя.",
   "introOrders": "Список размещённых на платформе заказов для поиска лучшего предложения от исполнителей.",
   "introStores": "Список компаний, занимающихся продажей готовой продукции.",
@@ -340,21 +352,23 @@
   "kk": "Казахский",
   "add_to_Favorite": "Добавить в избранное",
   "period": "Период",
-  "days_count": "{count} дней",
-  "@days_count": {
+  "months_count": "{count, plural, one{{count} месяц} few{{count} месяца} many{{count} месяцев} other{{count} месяца}}",
+  "@months_count": {
     "placeholders": {
       "count": {
-        "type": "String"
+        "type": "num",
+        "format": "decimalPattern"
       }
     }
   },
   "activate_for_free": "Активировать бесплатно",
   "buy": "Купить",
-  "subscribed_for_days": "Вы взяли подписку на {count} дней",
-  "@subscribed_for_days": {
+  "subscribed_for_months": "{count, plural, one{Вы взяли подписку на {count} месяц} few{Вы взяли подписку на {count} месяца} many{Вы взяли подписку на {count} месяцев} other{Вы взяли подписку на {count} месяца}}",
+  "@subscribed_for_months": {
     "placeholders": {
       "count": {
-        "type": "String"
+        "type": "num",
+        "format": "decimalPattern"
       }
     }
   },
@@ -369,6 +383,7 @@
   "last_3_days": "Последние 3 дня",
   "last_week": "Последняя неделя",
   "last_month": "Последний месяц",
+  "all_time": "За всё время",
   "form_error_bin_empty": "БИН/ИИН не заполнен",
   "form_error_bin_min": "БИН/ИИН заполнен не полностью",
   "form_error_bin_max": "БИН/ИИН максимум 12 цифр",
@@ -397,8 +412,24 @@
   "form_error_company_type_empty": "Выберите тип",
   "form_error_advert_category_empty": "Выберите категорию",
   "form_error_order_category_empty": "Выберите категорию",
+  "form_error_services_empty": "Добавьте хотя бы одну услугу",
   "my_reviews": "Мои отзывы",
   "no_reviews_yet": "Пока нет отзывов",
   "reviews": "Отзывы",
-  "store_reviews": "Отзывы магазина"
+  "store_reviews": "Отзывы магазина",
+  "chat_unknown_companion": "Неизвестный собеседник",
+  "file_open_error": "Не удалось открыть файл",
+  "file": "Файл",
+  "photo": "Фото",
+  "camera": "Камера",
+  "userProfileTitle": "Профиль",
+  "userProfileNotFound": "Пользователь не найден",
+  "userProfileTabAdverts": "Объявления",
+  "userProfileTabServices": "Услуги",
+  "userProfileTabOrders": "Заказы",
+  "userProfileEmpty": "Здесь пока пусто",
+  "userProfileRetry": "Повторить",
+  "userProfileLoadError": "Не удалось загрузить",
+  "userProfileCompletedOrders": "Выполнено заказов: {count}",
+  "userProfileMemberSince": "С нами с {date}"
 }

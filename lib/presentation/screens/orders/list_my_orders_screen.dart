@@ -19,11 +19,9 @@ class ListMyOrdersScreen extends StatefulWidget {
   State<ListMyOrdersScreen> createState() => _ListMyOrdersScreenState();
 }
 
-class _ListMyOrdersScreenState extends State<ListMyOrdersScreen>
-    with SingleTickerProviderStateMixin {
+class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
   late ScrollController _scrollController;
   late ScrollController _scrollControllerResponded;
-  late TabController _tabController;
 
   void _listenerScrollMy() {
     if (_scrollController.position.maxScrollExtent <
@@ -54,13 +52,8 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen>
   @override
   void initState() {
     _scrollController = ScrollController()..addListener(_listenerScrollMy);
-    if (_isExecutor()) {
-      _tabController = TabController(length: 2, vsync: this);
-      _scrollControllerResponded = ScrollController()
-        ..addListener(_listenerScrollResponded);
-    } else {
-      _tabController = TabController(length: 1, vsync: this);
-    }
+    _scrollControllerResponded = ScrollController()
+      ..addListener(_listenerScrollResponded);
     _onRefresh();
     super.initState();
   }
@@ -69,11 +62,8 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen>
   void dispose() {
     _scrollController.removeListener(_listenerScrollMy);
     _scrollController.dispose();
-    if (_isExecutor()) {
-      _scrollControllerResponded.removeListener(_listenerScrollResponded);
-      _scrollControllerResponded.dispose();
-    }
-    _tabController.dispose();
+    _scrollControllerResponded.removeListener(_listenerScrollResponded);
+    _scrollControllerResponded.dispose();
     super.dispose();
   }
 
@@ -104,7 +94,7 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen>
   @override
   Widget build(BuildContext context) => BlocBuilder<AuthBloc, AuthState>(
         builder: (context, authState) => DefaultTabController(
-          length: _isExecutor() ? 2 : 1,
+          length: 2,
           child: Scaffold(
             appBar: PreferredSize(
               preferredSize: const Size.fromHeight(70),
@@ -139,7 +129,6 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen>
                 SliverPersistentHeader(
                     delegate: TabBarDelegate(
                   TabBar(
-                    controller: _tabController,
                     labelColor: Theme.of(context).colorScheme.primary,
                     labelStyle: Theme.of(context)
                         .textTheme
@@ -153,14 +142,12 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen>
                     indicatorColor: Theme.of(context).colorScheme.primary,
                     tabs: [
                       Tab(text: AppLocalizations.of(context)!.as_a_user),
-                      if (_isExecutor())
-                        Tab(text: AppLocalizations.of(context)!.as_a_executor),
+                      Tab(text: AppLocalizations.of(context)!.as_a_executor),
                     ],
                   ),
                 ))
               ],
               body: TabBarView(
-                controller: _tabController,
                 children: [
                   RefreshIndicator(
                     onRefresh: _onRefresh,

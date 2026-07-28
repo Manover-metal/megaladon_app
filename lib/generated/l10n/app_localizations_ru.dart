@@ -87,6 +87,15 @@ class AppLocalizationsRu extends AppLocalizations {
   String get active => 'Активные';
 
   @override
+  String get moderate => 'На проверке';
+
+  @override
+  String get completed => 'Выполнен';
+
+  @override
+  String get status => 'Статус';
+
+  @override
   String get in_rocessing => 'В обработке';
 
   @override
@@ -289,6 +298,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get ask_a_question_in_the_chat => 'Задать вопрос в чате';
 
   @override
+  String get chat_companion_deleted => 'Пользователь удалил аккаунт';
+
+  @override
   String get my_announcement => 'Мои объявления';
 
   @override
@@ -323,6 +335,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get user_Agreement_Terms => 'Условия пользовательского соглашения';
 
   @override
+  String get privacy_policy => 'Политика конфиденциальности';
+
+  @override
+  String get user_agreement => 'Пользовательское соглашение';
+
+  @override
   String get shop_registration => 'Регистрация металопроката';
 
   @override
@@ -351,6 +369,15 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get send_code_again => 'Выслать код повторно';
+
+  @override
+  String get code_sent_again => 'Код отправлен повторно';
+
+  @override
+  String get send_the_code => 'Отправить код';
+
+  @override
+  String get reset_password => 'Сменить пароль';
 
   @override
   String get chat => 'Чат';
@@ -400,7 +427,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get change_order => 'Изменить заказ';
 
   @override
-  String get artists_suggestion => 'Предложение исполнителя';
+  String get artists_suggestion => 'Предложение';
 
   @override
   String get price2 => 'Цена: ';
@@ -571,6 +598,16 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get about_the_application => 'О приложении';
+
+  @override
+  String get delete_account => 'Удалить аккаунт';
+
+  @override
+  String get delete_account_warning =>
+      'Действие необратимо. Аккаунт будет удалён, и вы выйдете из него. Введите пароль для подтверждения.';
+
+  @override
+  String get account_deleted_successfully => 'Аккаунт удалён';
 
   @override
   String get aboutText =>
@@ -861,8 +898,20 @@ class AppLocalizationsRu extends AppLocalizations {
   String get period => 'Период';
 
   @override
-  String days_count(String count) {
-    return '$count дней';
+  String months_count(num count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString месяца',
+      many: '$countString месяцев',
+      few: '$countString месяца',
+      one: '$countString месяц',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -872,8 +921,20 @@ class AppLocalizationsRu extends AppLocalizations {
   String get buy => 'Купить';
 
   @override
-  String subscribed_for_days(String count) {
-    return 'Вы взяли подписку на $count дней';
+  String subscribed_for_months(num count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Вы взяли подписку на $countString месяца',
+      many: 'Вы взяли подписку на $countString месяцев',
+      few: 'Вы взяли подписку на $countString месяца',
+      one: 'Вы взяли подписку на $countString месяц',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -889,6 +950,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get last_month => 'Последний месяц';
+
+  @override
+  String get all_time => 'За всё время';
 
   @override
   String get form_error_bin_empty => 'БИН/ИИН не заполнен';
@@ -977,6 +1041,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get form_error_order_category_empty => 'Выберите категорию';
 
   @override
+  String get form_error_services_empty => 'Добавьте хотя бы одну услугу';
+
+  @override
   String get my_reviews => 'Мои отзывы';
 
   @override
@@ -987,4 +1054,53 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get store_reviews => 'Отзывы магазина';
+
+  @override
+  String get chat_unknown_companion => 'Неизвестный собеседник';
+
+  @override
+  String get file_open_error => 'Не удалось открыть файл';
+
+  @override
+  String get file => 'Файл';
+
+  @override
+  String get photo => 'Фото';
+
+  @override
+  String get camera => 'Камера';
+
+  @override
+  String get userProfileTitle => 'Профиль';
+
+  @override
+  String get userProfileNotFound => 'Пользователь не найден';
+
+  @override
+  String get userProfileTabAdverts => 'Объявления';
+
+  @override
+  String get userProfileTabServices => 'Услуги';
+
+  @override
+  String get userProfileTabOrders => 'Заказы';
+
+  @override
+  String get userProfileEmpty => 'Здесь пока пусто';
+
+  @override
+  String get userProfileRetry => 'Повторить';
+
+  @override
+  String get userProfileLoadError => 'Не удалось загрузить';
+
+  @override
+  String userProfileCompletedOrders(int count) {
+    return 'Выполнено заказов: $count';
+  }
+
+  @override
+  String userProfileMemberSince(String date) {
+    return 'С нами с $date';
+  }
 }

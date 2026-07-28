@@ -44,9 +44,12 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
         launchUrl(uri);
       };
 
-  void _toChat() {
-    context.read<ChatCubit>().createChatAdvert(widget.id).then((value) {
-      context.router.navigate(const ListChatsRoute());
+  void _toChat(AdvertModel advert) {
+    final companionId = advert.user?.id;
+    if (companionId == null) return;
+    context.read<ChatCubit>().createChat(companionId).then((chat) {
+      if (!mounted || chat == null) return;
+      context.router.push(DetailsChatRouter(chat: chat));
     });
   }
 
@@ -214,7 +217,27 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                UserTile(user: state.advert.user!),
+                                if (state.advert.user != null)
+                                  UserTile(
+                                    user: state.advert.user!,
+                                    // Удалённый аккаунт открывать нечего, а на
+                                    // собственном профиле вкладка заказов
+                                    // пришла бы пустой: OrderService::index
+                                    // подставляет exclude_user_id.
+                                    onTap: state.advert.user!.isDeleted ||
+                                            state.advert.user!.id ==
+                                                context
+                                                    .watch<ProfileScreenCubit>()
+                                                    .state
+                                                    .user
+                                                    ?.id
+                                        ? null
+                                        : () => context.router.push(
+                                              UserProfileRoute(
+                                                  userId:
+                                                      state.advert.user!.id),
+                                            ),
+                                  ),
                                 const SizedBox(height: 20),
                                 BlocBuilder<ProfileScreenCubit,
                                     ProfileScreenState>(
@@ -222,8 +245,13 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                                     if (stateUser is AuthLoginState) {
                                       return Column(
                                         children: [
-                                          if (state.advert.user!.id !=
-                                              stateUser.user?.id) ...[
+                                          // Автор удалил аккаунт — ни позвонить,
+                                          // ни написать ему нельзя.
+                                          if (state.advert.user != null &&
+                                              state.advert.user!.isDeleted !=
+                                                  true &&
+                                              state.advert.user!.id !=
+                                                  stateUser.user?.id) ...[
                                             ElevatedButtonApp(
                                               text:
                                                   AppLocalizations.of(context)!
@@ -232,7 +260,8 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                                                   .advert.additionalPhone!),
                                             ),
                                             OutlinedButtonApp(
-                                                onPressed: _toChat,
+                                                onPressed: () =>
+                                                    _toChat(state.advert),
                                                 text: AppLocalizations.of(
                                                         context)!
                                                     .ask_a_question_in_the_chat),

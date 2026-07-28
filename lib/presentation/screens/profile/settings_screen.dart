@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:megaladon/core/constants/legal_urls.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/locale/locale_cubit.dart';
 import 'package:megaladon/logic/theme/theme_cubit.dart';
@@ -8,6 +9,7 @@ import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/screens/settings/push_notification_tile.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 const _localeNames = {
   'en': 'English',
@@ -22,6 +24,13 @@ class SettingsScreen extends StatelessWidget {
     context.router.navigate(const InitialRouter(children: [
       ProfileRouter(children: [AboutRoute()])
     ]));
+  }
+
+  Future<void> _openUrl(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
   }
 
   String _themeName(ThemeMode mode, AppLocalizations l10n) {
@@ -104,6 +113,14 @@ class SettingsScreen extends StatelessWidget {
               OutlinedButtonApp(
                 text: l10n.about_the_application,
                 onPressed: () => _toAbout(context),
+              ),
+              OutlinedButtonApp(
+                text: l10n.user_agreement,
+                onPressed: () => _openUrl(userAgreementUrl),
+              ),
+              OutlinedButtonApp(
+                text: l10n.privacy_policy,
+                onPressed: () => _openUrl(privacyPolicyUrl),
               ),
               const SizedBox(height: 50),
             ],

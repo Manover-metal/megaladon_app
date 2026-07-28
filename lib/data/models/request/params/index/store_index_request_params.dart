@@ -7,7 +7,7 @@ class StoreIndexRequestParams {
     this.rowsPerPage = 15,
     this.desc = false,
     this.city,
-    this.last = IndexPeriod.last3day,
+    this.last = IndexPeriod.allTime,
   });
   final int startRow;
   final int rowsPerPage;

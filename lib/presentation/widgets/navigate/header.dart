@@ -10,10 +10,23 @@ class HeaderAppBar extends StatelessWidget implements PreferredSizeWidget {
       this.isBack = false,
       this.onTrailing,
       this.title,
+      this.titleWidget,
+      this.centerTitle,
+      this.backgroundColor,
       this.trailing});
   final bool isBack;
   final bool isMenu;
   final String? title;
+
+  /// Кастомный виджет заголовка. Если задан — используется вместо [title]
+  /// (например, аватар + имя собеседника в чате).
+  final Widget? titleWidget;
+
+  /// Выравнивание заголовка. null — поведение по умолчанию для платформы.
+  final bool? centerTitle;
+
+  /// Фон шапки. null — цвет фона экрана (по умолчанию).
+  final Color? backgroundColor;
   final VoidCallback? onTrailing;
   final Widget? trailing;
 
@@ -21,11 +34,14 @@ class HeaderAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
   @override
-  Widget build(BuildContext context) => AppBar(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
+  Widget build(BuildContext context) {
+    final bg = backgroundColor ?? Theme.of(context).scaffoldBackgroundColor;
+    return AppBar(
+        backgroundColor: bg,
+        surfaceTintColor: bg,
         elevation: 0,
         scrolledUnderElevation: 0,
+        centerTitle: centerTitle,
         leading: isMenu
             ? IconButton(
                 icon: const Icon(Icons.menu, size: 30),
@@ -36,11 +52,11 @@ class HeaderAppBar extends StatelessWidget implements PreferredSizeWidget {
               )
             : isBack
                 ? IconButton(
-                    icon: const Icon(Icons.arrow_back_ios, size: 30),
+                    icon: const Icon(Icons.arrow_back_ios_new, size: 26),
                     onPressed: () => context.router.pop(),
                   )
                 : null,
-        title: TitleApp(title ?? ''),
+        title: titleWidget ?? TitleApp(title ?? ''),
         actions: [
           if (onTrailing != null)
             GestureDetector(
@@ -52,4 +68,5 @@ class HeaderAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
         ],
       );
+  }
 }

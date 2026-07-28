@@ -51,6 +51,9 @@
   "all": "All",
   "@all": {},
   "active": "Active",
+  "moderate": "On moderation",
+  "completed": "Completed",
+  "status": "Status",
   "@active": {},
   "in_rocessing": "In rocessing",
   "@in_rocessing": {},
@@ -200,6 +203,8 @@
   "@call": {},
   "ask_a_question_in_the_chat": "Ask a question in the chat",
   "@ask_a_question_in_the_chat": {},
+  "chat_companion_deleted": "The user has deleted their account",
+  "@chat_companion_deleted": {},
   "my_announcement": "My announcements",
   "@my_announcement": {},
   "my_executor": "My executors",
@@ -222,6 +227,10 @@
   "@by_clicking_on_the_Continue_button_you_accept": {},
   "user_Agreement_Terms": "user agreement terms",
   "@user_Agreement_Terms": {},
+  "privacy_policy": "Privacy policy",
+  "@privacy_policy": {},
+  "user_agreement": "User agreement",
+  "@user_agreement": {},
   "shop_registration": "Shop registration",
   "@shop_registration": {},
   "names": "Names",
@@ -242,6 +251,12 @@
   "@confirm": {},
   "send_code_again": "Send code again",
   "@send_code_again": {},
+  "code_sent_again": "Code sent again",
+  "@code_sent_again": {},
+  "send_the_code": "Send the code",
+  "@send_the_code": {},
+  "reset_password": "Reset password",
+  "@reset_password": {},
   "chat": "Chat",
   "@chat": {},
   "noMessagesInChat": "No messages in this chat yet",
@@ -278,7 +293,7 @@
   "@header": {},
   "change_order": "Change order",
   "@change_order": {},
-  "artists_suggestion": "Artists suggestion",
+  "artists_suggestion": "Suggestion",
   "@artists_suggestion": {},
   "price2": "Price: ",
   "@price2": {},
@@ -417,6 +432,12 @@
   "@language": {},
   "about_the_application": "About the application",
   "@about_the_application": {},
+  "delete_account": "Delete account",
+  "@delete_account": {},
+  "delete_account_warning": "This action is irreversible. Your account will be deleted and you will be logged out. Enter your password to confirm.",
+  "@delete_account_warning": {},
+  "account_deleted_successfully": "Account deleted",
+  "@account_deleted_successfully": {},
   "aboutText": "\"Orders\" — a list of orders placed on the platform to find the best offer from executors.\n\"Rolled metal\" — a list of companies selling finished products.\n\"+\" (Order) — create an order to find executors.\n\"+\" (Services) — create services to promote your offerings.\n\"+\" (Ad) — create an ad to sell goods or provide mechanical engineering services.\n\"Marketplace\" — a list of ads for selling goods or providing mechanical engineering services.\n\"Profile\" — user profile.",
   "@aboutText": {},
   "introOrders": "A list of orders placed on the platform to find the best offer from executors.",
@@ -601,11 +622,12 @@
   "@service_category": {},
   "period": "Period",
   "@period": {},
-  "days_count": "{count} days",
-  "@days_count": {
+  "months_count": "{count, plural, one{{count} month} other{{count} months}}",
+  "@months_count": {
     "placeholders": {
       "count": {
-        "type": "String"
+        "type": "num",
+        "format": "decimalPattern"
       }
     }
   },
@@ -613,11 +635,12 @@
   "@activate_for_free": {},
   "buy": "Buy",
   "@buy": {},
-  "subscribed_for_days": "You subscribed for {count} days",
-  "@subscribed_for_days": {
+  "subscribed_for_months": "{count, plural, one{You subscribed for {count} month} other{You subscribed for {count} months}}",
+  "@subscribed_for_months": {
     "placeholders": {
       "count": {
-        "type": "String"
+        "type": "num",
+        "format": "decimalPattern"
       }
     }
   },
@@ -635,6 +658,8 @@
   "@last_week": {},
   "last_month": "Last month",
   "@last_month": {},
+  "all_time": "All time",
+  "@all_time": {},
   "form_error_bin_empty": "BIN/IIN is not filled",
   "@form_error_bin_empty": {},
   "form_error_bin_min": "BIN/IIN is not fully filled",
@@ -691,6 +716,8 @@
   "@form_error_advert_category_empty": {},
   "form_error_order_category_empty": "Select category",
   "@form_error_order_category_empty": {},
+  "form_error_services_empty": "Add at least one service",
+  "@form_error_services_empty": {},
   "my_reviews": "My Reviews",
   "@my_reviews": {},
   "no_reviews_yet": "No reviews yet",
@@ -698,5 +725,47 @@
   "reviews": "Reviews",
   "@reviews": {},
   "store_reviews": "Store reviews",
-  "@store_reviews": {}
+  "@store_reviews": {},
+  "chat_unknown_companion": "Unknown companion",
+  "@chat_unknown_companion": {},
+  "file_open_error": "Could not open the file",
+  "@file_open_error": {},
+  "file": "File",
+  "@file": {},
+  "photo": "Photo",
+  "@photo": {},
+  "camera": "Camera",
+  "@camera": {},
+  "userProfileTitle": "Profile",
+  "@userProfileTitle": {},
+  "userProfileNotFound": "User not found",
+  "@userProfileNotFound": {},
+  "userProfileTabAdverts": "Adverts",
+  "@userProfileTabAdverts": {},
+  "userProfileTabServices": "Services",
+  "@userProfileTabServices": {},
+  "userProfileTabOrders": "Orders",
+  "@userProfileTabOrders": {},
+  "userProfileEmpty": "Nothing here yet",
+  "@userProfileEmpty": {},
+  "userProfileRetry": "Retry",
+  "@userProfileRetry": {},
+  "userProfileLoadError": "Failed to load",
+  "@userProfileLoadError": {},
+  "userProfileCompletedOrders": "Completed orders: {count}",
+  "@userProfileCompletedOrders": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "userProfileMemberSince": "With us since {date}",
+  "@userProfileMemberSince": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -5,8 +5,33 @@ import 'package:megaladon/data/models/dictionary/file_model.dart';
 import 'package:megaladon/data/models/dictionary/order_category_model.dart';
 import 'package:megaladon/data/models/executor_model.dart';
 import 'package:megaladon/data/models/user_model.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 
-enum OrderStatus { nothing, moderate, active, hasExecutor, completed, archive }
+enum OrderStatus {
+  nothing,
+  moderate,
+  active,
+  hasExecutor,
+  completed,
+  archive;
+
+  String localize(AppLocalizations l10n) {
+    switch (this) {
+      case OrderStatus.moderate:
+        return l10n.moderate;
+      case OrderStatus.active:
+        return l10n.active;
+      case OrderStatus.hasExecutor:
+        return l10n.in_work;
+      case OrderStatus.completed:
+        return l10n.completed;
+      case OrderStatus.archive:
+        return l10n.archive;
+      case OrderStatus.nothing:
+        return l10n.all;
+    }
+  }
+}
 
 class OrderModel extends Equatable {
   const OrderModel(

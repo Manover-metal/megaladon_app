@@ -14,6 +14,7 @@ import 'package:megaladon/presentation/widgets/form/field/phone_field.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
+import 'package:megaladon/presentation/widgets/text/user_agreement_text.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -137,9 +138,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   Align(
                     alignment: Alignment.centerRight,
-                    child: Text(
-                        AppLocalizations.of(context)!.forgot_your_password,
-                        style: Theme.of(context).textTheme.bodySmall),
+                    child: GestureDetector(
+                      onTap: () =>
+                          context.router.push(const ForgotPasswordRoute()),
+                      child: Text(
+                          AppLocalizations.of(context)!.forgot_your_password,
+                          style: Theme.of(context).textTheme.bodySmall),
+                    ),
                   ),
                   const SizedBox(
                     height: 25,
@@ -158,6 +163,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   OutlinedButtonApp(
                       text: AppLocalizations.of(context)!.registration,
                       onPressed: _register),
+                  const SizedBox(height: 15),
+                  const UserAgreementText(),
                   const Spacer(flex: 3),
                 ],
               ),

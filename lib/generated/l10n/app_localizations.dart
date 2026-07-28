@@ -256,6 +256,24 @@ abstract class AppLocalizations {
   /// **'Active'**
   String get active;
 
+  /// No description provided for @moderate.
+  ///
+  /// In en, this message translates to:
+  /// **'On moderation'**
+  String get moderate;
+
+  /// No description provided for @completed.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get completed;
+
+  /// No description provided for @status.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get status;
+
   /// No description provided for @in_rocessing.
   ///
   /// In en, this message translates to:
@@ -646,6 +664,12 @@ abstract class AppLocalizations {
   /// **'Ask a question in the chat'**
   String get ask_a_question_in_the_chat;
 
+  /// No description provided for @chat_companion_deleted.
+  ///
+  /// In en, this message translates to:
+  /// **'The user has deleted their account'**
+  String get chat_companion_deleted;
+
   /// No description provided for @my_announcement.
   ///
   /// In en, this message translates to:
@@ -712,6 +736,18 @@ abstract class AppLocalizations {
   /// **'user agreement terms'**
   String get user_Agreement_Terms;
 
+  /// No description provided for @privacy_policy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy policy'**
+  String get privacy_policy;
+
+  /// No description provided for @user_agreement.
+  ///
+  /// In en, this message translates to:
+  /// **'User agreement'**
+  String get user_agreement;
+
   /// No description provided for @shop_registration.
   ///
   /// In en, this message translates to:
@@ -771,6 +807,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Send code again'**
   String get send_code_again;
+
+  /// No description provided for @code_sent_again.
+  ///
+  /// In en, this message translates to:
+  /// **'Code sent again'**
+  String get code_sent_again;
+
+  /// No description provided for @send_the_code.
+  ///
+  /// In en, this message translates to:
+  /// **'Send the code'**
+  String get send_the_code;
+
+  /// No description provided for @reset_password.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset password'**
+  String get reset_password;
 
   /// No description provided for @chat.
   ///
@@ -865,7 +919,7 @@ abstract class AppLocalizations {
   /// No description provided for @artists_suggestion.
   ///
   /// In en, this message translates to:
-  /// **'Artists suggestion'**
+  /// **'Suggestion'**
   String get artists_suggestion;
 
   /// No description provided for @price2.
@@ -1173,6 +1227,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'About the application'**
   String get about_the_application;
+
+  /// No description provided for @delete_account.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete account'**
+  String get delete_account;
+
+  /// No description provided for @delete_account_warning.
+  ///
+  /// In en, this message translates to:
+  /// **'This action is irreversible. Your account will be deleted and you will be logged out. Enter your password to confirm.'**
+  String get delete_account_warning;
+
+  /// No description provided for @account_deleted_successfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Account deleted'**
+  String get account_deleted_successfully;
 
   /// No description provided for @aboutText.
   ///
@@ -1726,11 +1798,11 @@ abstract class AppLocalizations {
   /// **'Period'**
   String get period;
 
-  /// No description provided for @days_count.
+  /// No description provided for @months_count.
   ///
   /// In en, this message translates to:
-  /// **'{count} days'**
-  String days_count(String count);
+  /// **'{count, plural, one{{count} month} other{{count} months}}'**
+  String months_count(num count);
 
   /// No description provided for @activate_for_free.
   ///
@@ -1744,11 +1816,11 @@ abstract class AppLocalizations {
   /// **'Buy'**
   String get buy;
 
-  /// No description provided for @subscribed_for_days.
+  /// No description provided for @subscribed_for_months.
   ///
   /// In en, this message translates to:
-  /// **'You subscribed for {count} days'**
-  String subscribed_for_days(String count);
+  /// **'{count, plural, one{You subscribed for {count} month} other{You subscribed for {count} months}}'**
+  String subscribed_for_months(num count);
 
   /// No description provided for @tenge_price.
   ///
@@ -1773,6 +1845,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Last month'**
   String get last_month;
+
+  /// No description provided for @all_time.
+  ///
+  /// In en, this message translates to:
+  /// **'All time'**
+  String get all_time;
 
   /// No description provided for @form_error_bin_empty.
   ///
@@ -1942,6 +2020,12 @@ abstract class AppLocalizations {
   /// **'Select category'**
   String get form_error_order_category_empty;
 
+  /// No description provided for @form_error_services_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least one service'**
+  String get form_error_services_empty;
+
   /// No description provided for @my_reviews.
   ///
   /// In en, this message translates to:
@@ -1965,6 +2049,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Store reviews'**
   String get store_reviews;
+
+  /// No description provided for @chat_unknown_companion.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown companion'**
+  String get chat_unknown_companion;
+
+  /// No description provided for @file_open_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open the file'**
+  String get file_open_error;
+
+  /// No description provided for @file.
+  ///
+  /// In en, this message translates to:
+  /// **'File'**
+  String get file;
+
+  /// No description provided for @photo.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo'**
+  String get photo;
+
+  /// No description provided for @camera.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera'**
+  String get camera;
+
+  /// No description provided for @userProfileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get userProfileTitle;
+
+  /// No description provided for @userProfileNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'User not found'**
+  String get userProfileNotFound;
+
+  /// No description provided for @userProfileTabAdverts.
+  ///
+  /// In en, this message translates to:
+  /// **'Adverts'**
+  String get userProfileTabAdverts;
+
+  /// No description provided for @userProfileTabServices.
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get userProfileTabServices;
+
+  /// No description provided for @userProfileTabOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'Orders'**
+  String get userProfileTabOrders;
+
+  /// No description provided for @userProfileEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing here yet'**
+  String get userProfileEmpty;
+
+  /// No description provided for @userProfileRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get userProfileRetry;
+
+  /// No description provided for @userProfileLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load'**
+  String get userProfileLoadError;
+
+  /// No description provided for @userProfileCompletedOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed orders: {count}'**
+  String userProfileCompletedOrders(int count);
+
+  /// No description provided for @userProfileMemberSince.
+  ///
+  /// In en, this message translates to:
+  /// **'With us since {date}'**
+  String userProfileMemberSince(String date);
 }
 
 class _AppLocalizationsDelegate

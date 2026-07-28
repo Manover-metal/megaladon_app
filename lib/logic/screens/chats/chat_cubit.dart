@@ -1,7 +1,10 @@
-import 'package:bloc/bloc.dart';
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
-import 'package:megaladon/core/pusher/index.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/chat/chat_model.dart';
 import 'package:megaladon/data/models/chat/message_model.dart';
 import 'package:megaladon/data/models/error_model.dart';
@@ -12,25 +15,44 @@ import 'package:megaladon/logic/auth/auth_bloc.dart';
 
 part 'chat_state.dart';
 
-class ChatCubit extends Cubit<ChatState> {
-  ChatCubit(this.authBloc) : super(ChatState()) {
+/// Чаты работают на polling: пока открыт экран списка — по таймеру опрашиваем
+/// список чатов, пока открыт конкретный чат — его сообщения. Real-time через
+/// websockets/пуши здесь намеренно не используется.
+class ChatCubit extends Cubit<ChatState> with WidgetsBindingObserver {
+  ChatCubit(this.authBloc) : super(const ChatState()) {
+    WidgetsBinding.instance.addObserver(this);
     _listenAuth(authBloc.state);
-    authBloc.stream.listen(_listenAuth);
+    _authSub = authBloc.stream.listen(_listenAuth);
   }
+
   final ChatRepository _repository = ChatRepository();
   final AuthBloc authBloc;
 
+  static const Duration _pollInterval = Duration(seconds: 5);
+
+  /// Размер страницы сообщений. Должен совпадать с
+  /// [MessageIndexRequestParams.rowsPerPage].
+  static const int _pageSize = 50;
+
+  StreamSubscription<AuthState>? _authSub;
+  Timer? _chatTimer;
+  Timer? _listTimer;
+  bool _listActive = false;
+  bool _chatPollInFlight = false;
+
+  /// Генератор временных id для оптимистичных сообщений. Отрицательный и
+  /// убывающий — чтобы гарантированно не пересекаться с серверными id.
+  int _tempIdSeq = -1;
+
+  // --- Lifecycle -----------------------------------------------------------
+
   Future<void> initial() async {
     if (authBloc.state is AuthLoginState) {
-      var auth = (authBloc.state as AuthLoginState).auth;
-      print(auth.token);
-      await PusherService.init(auth.token!);
-      await _connectUser();
-      await fetch();
+      await fetchChats();
     }
   }
 
-  void _listenAuth(state) {
+  void _listenAuth(AuthState state) {
     if (state is AuthLoginState) {
       initial();
     } else if (state is AuthLogoutState) {
@@ -38,210 +60,301 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  Future getMessages(int chatId) async {
-    var isLoading = state.isLoadingMessages[chatId] ?? false;
-
-    if (!isLoading) {
-      var isLoadingMessages = <int, bool>{chatId: true};
-      emit(state.copyWith(
-          isLoadingMessages: isLoadingMessages, update: state.update + 1));
-
-      var chat = state.chats.singleWhere((element) => element.id == chatId);
-
-      var params = MessageIndexRequestParams(chat.messages.length);
-
-      return _repository.getMessages(chatId, params).then((value) {
-        var allParams = state.params;
-        allParams[chatId] = params;
-        isLoadingMessages[chatId] = false;
-
-        emit(state.copyWith(
-            chats: state.chats.map((e) {
-              if (chat.id == e.id) {
-                return chat.addMessage(value.reversed.toList());
-              }
-              return e;
-            }).toList(),
-            isLoadingMessages: isLoadingMessages,
-            params: allParams,
-            update: state.update + 1));
-      }).catchError((error) {
-        print(error);
-        isLoadingMessages[chatId] = false;
-        emit(state.copyWith(
-            isLoadingMessages: isLoadingMessages, update: state.update + 1));
-      });
-    }
+  void _dispose() {
+    _chatTimer?.cancel();
+    _listTimer?.cancel();
+    _chatTimer = null;
+    _listTimer = null;
+    _listActive = false;
+    emit(const ChatState());
   }
 
-  Future fetch() async {
-    if (state.status == ChatScreenMainStatus.loading && state.error == null)
-      return;
+  // --- Список чатов --------------------------------------------------------
 
-    emit(state.copyWith(
-      status: ChatScreenMainStatus.loading,
-      error: null,
-    ));
-
-    return await _repository.index().then((value) {
-      for (final chat in value) {
-        _connectChat(chat);
+  Future<void> fetchChats({bool silent = false}) async {
+    if (!silent) {
+      if (state.status == ChatScreenMainStatus.loading && state.error == null) {
+        return;
       }
+      emit(state.copyWith(status: ChatScreenMainStatus.loading, error: null));
+    }
+
+    try {
+      final chats = await _repository.index();
+      // Сохраняем уже загруженные сообщения открытых чатов при обновлении списка
+      // (index возвращает чаты без сообщений).
+      final merged = chats.map((c) {
+        final existing = _chatById(c.id);
+        if (existing != null && existing.messages.isNotEmpty) {
+          return c.mergeMessages(existing.messages);
+        }
+        return c;
+      }).toList();
       emit(state.copyWith(
-        chats: value,
+        chats: merged,
         status: ChatScreenMainStatus.success,
       ));
-    }).catchError((error) {
-      print(error);
-      if (error is DioException) {
-        if (error.response?.statusCode == 403) {
-          authBloc.add(AuthLogoutEvent());
-        } else {
-          emit(state.copyWith(
-              status: ChatScreenMainStatus.error,
-              error: ErrorModel.parseDio(error)));
-        }
-      } else {
-        emit(state.copyWith(
-            status: ChatScreenMainStatus.error, error: ErrorModel.nothing));
-      }
-    });
+    } catch (error) {
+      _handleError(error, silent: silent);
+    }
   }
 
-  Future<void> _connectChat(ChatModel chat) async {
-    await PusherService.instance.subscribe(
-        channelName: 'chat.${chat.id}',
-
-        /// TODO: проблема с подпиской на канал, при каждом новом сообщении происходит перерисовка всего списка сообщений, нужно оптимизировать так, чтобы перерисовывалось только новое сообщение
-        // onEvent: _event(chat),
-        onSubscriptionError: (e) {
-          print(e);
-        },
-        onSubscriptionSucceeded: (e) {
-          print(e);
-        },
-        onMemberAdded: (member) {
-          print('Member added: $member');
-        },
-        onMemberRemoved: (member) {
-          print('Member removed: $member');
-        });
-    await PusherService.instance.connect();
+  void startListPolling() {
+    _listActive = true;
+    _restartListTimer();
   }
 
-  Future<void> _connectUser() async {
-    print('connectUser');
-    // if (authBloc.state is AuthLoginState) {
-    //   print('connectUser 2');
-
-    //   await PusherService.instance.subscribe(
-    //       channelName:
-    //           'userChats.${(authBloc.state as AuthLoginState).auth.user.id}',
-    //       onEvent: _eventUser,
-    //       onSubscriptionError: (e) {
-    //         print(e);
-    //       },
-    //       onSubscriptionSucceeded: (e) {
-    //         print(e);
-    //       },
-    //       onMemberAdded: (member) {
-    //         print('Member added: $member');
-    //       },
-    //       onMemberRemoved: (member) {
-    //         print('Member removed: $member');
-    //       });
-    //   await PusherService.instance.connect();
-    // }
+  void stopListPolling() {
+    _listActive = false;
+    _listTimer?.cancel();
+    _listTimer = null;
   }
 
-  void _eventUser(event) {
-    fetch();
+  void _restartListTimer() {
+    _listTimer?.cancel();
+    if (!_listActive) return;
+    _listTimer =
+        Timer.periodic(_pollInterval, (_) => fetchChats(silent: true));
   }
 
-  // Future<void> Function(event) _event(ChatModel chatOne) =>
-  //     (event) async {
-  //       print(event);
+  // --- Конкретный чат ------------------------------------------------------
 
-  /// TODO: оптимизировать добавление сообщений, сейчас при каждом новом сообщении происходит перерисовка всего списка сообщений, нужно оптимизировать так, чтобы перерисовывалось только новое сообщение
-  // if (event.eventName == 'new_message') {
-  //   final data = jsonDecode(event.data);
-  //   var message = MessageModel.fromJson(data['message']);
-  //   var chat =
-  //       state.chats.singleWhere((element) => element.id == chatOne.id);
-  //   chat.messages.add(message);
-  //   _changeLoadingMessages(
-  //       chat.id,
-  //       state.loadingMessages[chat.id]!
-  //           .where((element) => element.text != message.text)
-  //           .toList());
-  //   emit(state.copyWith(
-  //       chats: state.chats.map((e) {
-  //         if (chat.id == e.id) {
-  //           return chat;
-  //         }
-  //         return e;
-  //       }).toList(),
-  //       update: state.update + 1));
-  // }
-  // };
+  Future<void> openChat(int chatId) async {
+    // Если список ещё не загружен, подтягиваем его, чтобы чат существовал в state.
+    if (_chatById(chatId) == null) {
+      await fetchChats(silent: true);
+    }
+    emit(state.copyWith(activeChatId: chatId));
+    await _fetchAndMerge(chatId, 0, silent: true);
+    _restartChatTimer();
+  }
 
-  Future createChatOrder(int orderId, int executorId) async =>
-      await _repository.createOrder(orderId, executorId).then(print);
+  void closeChat() {
+    _chatTimer?.cancel();
+    _chatTimer = null;
+    emit(state.copyWith(clearActiveChatId: true));
+  }
 
-  Future createChatAdvert(int advertId) async =>
-      await _repository.createAdvert(advertId).then(print);
+  void _restartChatTimer() {
+    _chatTimer?.cancel();
+    if (state.activeChatId == null) return;
+    _chatTimer = Timer.periodic(_pollInterval, (_) => _pollActiveChat());
+  }
 
-  Future<void> _dispose() async {
+  Future<void> _pollActiveChat() async {
+    final id = state.activeChatId;
+    if (id == null || _chatPollInFlight) return;
+    _chatPollInFlight = true;
     try {
-      for (final element in state.chats) {
-        await PusherService.instance
-            .unsubscribe(channelName: 'chat.${element.id}');
-      }
-
-      await PusherService.instance.disconnect();
-    } catch (e) {
-      print(e);
+      await _fetchAndMerge(id, 0, silent: true);
+    } finally {
+      _chatPollInFlight = false;
     }
-    emit(ChatState());
   }
 
-  Future sendMessage(ChatModel chat, String text) async {
-    if (text == '') return;
+  /// Пагинация вверх: подгружает более старые сообщения открытого чата.
+  Future<void> loadOlder(int chatId) async {
+    if (state.olderLoading[chatId] == true) return;
+    if (state.hasMoreOlder[chatId] == false) return;
 
-    if (authBloc.state is AuthLoginState) {
-      _changeLoadingMessages(chat.id, [
-        ...?state.loadingMessages[chat.id],
-        MessageModel(id: 1, createdAt: DateTime.now(), text: text)
-      ]);
-      return await ChatRepository()
-          .sendMessage(
-              MessageCreateRequestParams(message: text, chatId: chat.id))
-          .catchError((error) {
-        _changeLoadingMessages(
-            chat.id,
-            state.loadingMessages[chat.id]!
-                .where((element) => element.text != text)
-                .toList());
-        _changeErrorMessages(chat.id, [
-          ...?state.loadingMessages[chat.id],
-          MessageModel(id: 1, createdAt: DateTime.now(), text: text)
-        ]);
-      });
+    final chat = _chatById(chatId);
+    if (chat == null) return;
+
+    emit(state.copyWith(
+      olderLoading: {...state.olderLoading, chatId: true},
+    ));
+
+    final count = await _fetchAndMerge(chatId, chat.messages.length, silent: true);
+
+    final hasMore = {...state.hasMoreOlder};
+    if (count >= 0 && count < _pageSize) {
+      hasMore[chatId] = false;
     }
-    return;
+    emit(state.copyWith(
+      olderLoading: {...state.olderLoading, chatId: false},
+      hasMoreOlder: hasMore,
+    ));
   }
 
-  void _changeLoadingMessages(int chatId, List<MessageModel> loadings) {
-    var mapMessagesFromChat = state.loadingMessages;
-    mapMessagesFromChat.addAll({chatId: loadings});
-    emit(state.copyWith(
-        loadingMessages: mapMessagesFromChat, update: state.update + 1));
+  /// Загружает страницу сообщений (начиная со [startRow]) и вливает её в чат.
+  /// Возвращает число полученных сообщений или -1 при ошибке.
+  Future<int> _fetchAndMerge(int chatId, int startRow,
+      {bool silent = false}) async {
+    try {
+      final fetched = await _repository.getMessages(
+          chatId, MessageIndexRequestParams(startRow));
+      _mergeIntoChat(chatId, fetched);
+      return fetched.length;
+    } catch (error) {
+      _handleError(error, silent: silent);
+      return -1;
+    }
   }
 
-  void _changeErrorMessages(int chatId, List<MessageModel> errors) {
-    var mapMessagesFromChat = state.errorMessages;
-    mapMessagesFromChat[chatId] = errors;
+  void _mergeIntoChat(int chatId, List<MessageModel> incoming) {
+    if (incoming.isEmpty) return;
+    final chats = state.chats
+        .map((c) => c.id == chatId ? c.mergeMessages(incoming) : c)
+        .toList();
+    emit(state.copyWith(chats: chats));
+  }
+
+  // --- Отправка ------------------------------------------------------------
+
+  Future<void> sendMessage(int chatId, String text) async {
+    final trimmed = text.trim();
+    if (trimmed.isEmpty) return;
+    if (authBloc.state is! AuthLoginState) return;
+
+    final temp = MessageModel(
+      id: _tempIdSeq--,
+      createdAt: DateTime.now(),
+      text: trimmed,
+    );
+    _addPending(chatId, temp);
+
+    try {
+      final msg = await _repository.sendMessage(
+          MessageCreateRequestParams(message: trimmed, chatId: chatId));
+      _removePending(chatId, temp);
+      // Если ответ распарсился — сразу показываем реальное сообщение.
+      // Если нет (msg == null) — его подтянет ближайший опрос.
+      if (msg != null) _mergeIntoChat(chatId, [msg]);
+    } catch (error) {
+      _removePending(chatId, temp);
+      _addFailed(chatId, temp);
+    }
+  }
+
+  Future<void> sendFile(int chatId, PlatformFile file) async {
+    if (authBloc.state is! AuthLoginState || file.bytes == null) return;
+
+    final temp = MessageModel(
+      id: _tempIdSeq--,
+      createdAt: DateTime.now(),
+      text: null,
+      fileName: file.name,
+    );
+    _addPending(chatId, temp);
+
+    try {
+      final multipart = MultipartFile.fromBytes(
+        file.bytes!,
+        filename: file.name,
+        contentType: _mediaTypeFor(file.name),
+      );
+      final msg = await _repository.sendMessage(
+          MessageCreateRequestParams(chatId: chatId, file: multipart));
+      _removePending(chatId, temp);
+      if (msg != null) _mergeIntoChat(chatId, [msg]);
+    } catch (_) {
+      _removePending(chatId, temp);
+      _addFailed(chatId, temp);
+    }
+  }
+
+  DioMediaType? _mediaTypeFor(String name) {
+    final ext = name.contains('.') ? name.split('.').last.toLowerCase() : '';
+    switch (ext) {
+      case 'jpg':
+      case 'jpeg':
+        return DioMediaType('image', 'jpeg');
+      case 'png':
+        return DioMediaType('image', 'png');
+      case 'pdf':
+        return DioMediaType('application', 'pdf');
+      case 'doc':
+        return DioMediaType('application', 'msword');
+      case 'docx':
+        return DioMediaType('application',
+            'vnd.openxmlformats-officedocument.wordprocessingml.document');
+      default:
+        return null;
+    }
+  }
+
+  Future<void> retryMessage(int chatId, MessageModel failed) async {
+    final map = Map<int, List<MessageModel>>.from(state.errorMessages);
+    map[chatId] = <MessageModel>[...?map[chatId]]
+      ..removeWhere((e) => e.id == failed.id);
+    emit(state.copyWith(errorMessages: map));
+    await sendMessage(chatId, failed.text ?? '');
+  }
+
+  void _addPending(int chatId, MessageModel m) {
+    final map = Map<int, List<MessageModel>>.from(state.loadingMessages);
+    map[chatId] = <MessageModel>[...?map[chatId], m];
+    emit(state.copyWith(loadingMessages: map));
+  }
+
+  void _removePending(int chatId, MessageModel m) {
+    final map = Map<int, List<MessageModel>>.from(state.loadingMessages);
+    map[chatId] = <MessageModel>[...?map[chatId]]
+      ..removeWhere((e) => e.id == m.id);
+    emit(state.copyWith(loadingMessages: map));
+  }
+
+  void _addFailed(int chatId, MessageModel m) {
+    final map = Map<int, List<MessageModel>>.from(state.errorMessages);
+    map[chatId] = <MessageModel>[...?map[chatId], m];
+    emit(state.copyWith(errorMessages: map));
+  }
+
+  // --- Создание чатов ------------------------------------------------------
+
+  /// Создаёт (или переиспользует существующий) личный чат с пользователем
+  /// [userId]. Возвращает чат, чтобы экран мог сразу открыть переписку.
+  Future<ChatModel?> createChat(int userId) async {
+    final chat = await _repository.create(userId);
+    await fetchChats(silent: true);
+    return chat;
+  }
+
+  // --- Прочее --------------------------------------------------------------
+
+  ChatModel? _chatById(int id) {
+    for (final c in state.chats) {
+      if (c.id == id) return c;
+    }
+    return null;
+  }
+
+  void _handleError(Object error, {bool silent = false}) {
+    if (error is DioException && error.response?.statusCode == 403) {
+      authBloc.add(AuthLogoutEvent());
+      return;
+    }
+    if (silent) {
+      // Фоновый опрос не должен ронять экран — просто логируем.
+      // ignore: avoid_print
+      print('chat poll error: $error');
+      return;
+    }
     emit(state.copyWith(
-        errorMessages: mapMessagesFromChat, update: state.update + 1));
+      status: ChatScreenMainStatus.error,
+      error: error is DioException
+          ? ErrorModel.parseDio(error)
+          : ErrorModel.nothing,
+    ));
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      if (_listActive) _restartListTimer();
+      if (this.state.activeChatId != null) _restartChatTimer();
+    } else {
+      _chatTimer?.cancel();
+      _listTimer?.cancel();
+    }
+  }
+
+  @override
+  Future<void> close() {
+    _authSub?.cancel();
+    _chatTimer?.cancel();
+    _listTimer?.cancel();
+    WidgetsBinding.instance.removeObserver(this);
+    return super.close();
   }
 }

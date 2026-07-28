@@ -36,6 +36,7 @@ import 'package:megaladon/logic/screens/advert/details/advert_screen_details_cub
 // import 'generated/codegen_loader.g.dart';
 import 'package:megaladon/logic/screens/advert/main/advert_screen_main_cubit.dart';
 import 'package:megaladon/logic/screens/advert/my/advert_screen_my_cubit.dart';
+import 'package:megaladon/logic/screens/auth/password_recovery/password_recovery_cubit.dart';
 import 'package:megaladon/logic/screens/chats/chat_cubit.dart';
 import 'package:megaladon/logic/screens/executors/details/executor_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/executors/favorite/add_favorite_cubit.dart';
@@ -52,6 +53,7 @@ import 'package:megaladon/logic/screens/profile/change_password/change_password_
 import 'package:megaladon/logic/screens/profile/change_phone/change_phone_cubit.dart';
 import 'package:megaladon/logic/screens/profile/change_photo/change_photo_cubit.dart';
 import 'package:megaladon/logic/screens/profile/change_store/change_store_bloc.dart';
+import 'package:megaladon/logic/screens/profile/delete_account/delete_account_cubit.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/logic/screens/service/main/service_screen_main_cubit.dart';
 import 'package:megaladon/logic/screens/service/my/service_screen_my_cubit.dart';
@@ -113,6 +115,8 @@ class App extends StatelessWidget {
                 create: (context) => RegisterUserBloc(),
               ),
               BlocProvider<AuthFormCubit>(create: (context) => AuthFormCubit()),
+              BlocProvider<PasswordRecoveryCubit>(
+                  create: (context) => PasswordRecoveryCubit()),
               BlocProvider<RegisterUserFormCubit>(
                   create: (context) => RegisterUserFormCubit()),
               BlocProvider<RegisterStoreFormCubit>(
@@ -204,6 +208,9 @@ class App extends StatelessWidget {
                 ),
                 BlocProvider<ChangePasswordCubit>(
                   create: (context) => ChangePasswordCubit(authBloc),
+                ),
+                BlocProvider<DeleteAccountCubit>(
+                  create: (context) => DeleteAccountCubit(authBloc),
                 ),
                 BlocProvider<ChangePhoneCubit>(
                   create: (context) => ChangePhoneCubit(profileCubit, authBloc),

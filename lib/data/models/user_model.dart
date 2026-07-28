@@ -11,7 +11,9 @@ class UserModel {
       required this.photo,
       required this.city,
       required this.executor,
-      required this.store});
+      required this.store,
+      this.createdAt,
+      this.isDeleted = false});
 
   final int id;
   final String name;
@@ -21,6 +23,14 @@ class UserModel {
   final CityModel? city;
   final ExecutorModel? executor;
   final StoreModel? store;
+
+  /// Дата регистрации: приходит только с публичной карточки
+  /// (GET /user/{id}/public), в остальных формах ответа её нет.
+  final DateTime? createdAt;
+
+  /// Аккаунт удалён: приходит обезличенным (имя «Удалённый аккаунт», без фото
+  /// и телефона), но продолжает отдаваться в чатах и откликах.
+  final bool isDeleted;
 
   static UserModel fromJson(Map<String, dynamic> data) => UserModel(
       id: data['id'] as int,
@@ -33,7 +43,11 @@ class UserModel {
           : null,
       executor: ExecutorModel.fromJsonOrNull(
           data['executor'] as Map<String, dynamic>?),
-      store: StoreModel.fromJsonOrNull(data['store'] as Map<String, dynamic>?));
+      store: StoreModel.fromJsonOrNull(data['store'] as Map<String, dynamic>?),
+      createdAt: data['created_at'] != null
+          ? DateTime.tryParse(data['created_at'] as String)
+          : null,
+      isDeleted: data['is_deleted'] == true);
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -42,5 +56,7 @@ class UserModel {
         'photo_url': photo,
         'count_orders': countOrders,
         'city': city?.toJson(),
+        'created_at': createdAt?.toIso8601String(),
+        'is_deleted': isDeleted,
       };
 }

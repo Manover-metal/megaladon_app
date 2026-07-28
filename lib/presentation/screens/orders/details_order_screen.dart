@@ -6,6 +6,7 @@ import 'package:megaladon/core/download/download_service.dart';
 import 'package:megaladon/data/models/dictionary/file_model.dart';
 import 'package:megaladon/data/models/order_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
+import 'package:megaladon/logic/screens/chats/chat_cubit.dart';
 import 'package:megaladon/logic/screens/orders/delete/order_delete_cubit.dart';
 import 'package:megaladon/logic/screens/orders/details/order_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/orders/main/order_screen_main_cubit.dart';
@@ -47,9 +48,14 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
         });
       };
 
-  // _toChat() {
-  //  context.read<ChatCubit>().createChat(widget.orderId, executorId);
-  // }
+  void _toChat(OrderModel order) {
+    final companionId = order.user?.id;
+    if (companionId == null) return;
+    context.read<ChatCubit>().createChat(companionId).then((chat) {
+      if (!mounted || chat == null) return;
+      context.router.push(DetailsChatRouter(chat: chat));
+    });
+  }
 
   Future<void> Function() _download(FileModel file) => () async {
         try {
@@ -297,8 +303,22 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                     var user = stateUser.user;
                                     return Column(
                                       children: [
-                                        if (order.user?.id != user?.id) ...[
-                                          UserTile(user: order.user!),
+                                        if (order.user != null &&
+                                            order.user?.id != user?.id) ...[
+                                          UserTile(
+                                            user: order.user!,
+                                            // Условие «не я» уже обеспечено
+                                            // внешним if (order.user?.id !=
+                                            // user?.id) — здесь достаточно
+                                            // отсечь удалённых.
+                                            onTap: order.user!.isDeleted
+                                                ? null
+                                                : () => context.router.push(
+                                                      UserProfileRoute(
+                                                          userId:
+                                                              order.user!.id),
+                                                    ),
+                                          ),
                                           const SizedBox(
                                             height: 20,
                                           ),
@@ -312,7 +332,10 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                             height: 20,
                                           ),
                                         ],
-                                        if (order.user?.id != user?.id &&
+                                        // Заказчик удалил аккаунт: ни откликнуться,
+                                        // ни написать ему уже нельзя.
+                                        if (order.user?.isDeleted != true &&
+                                            order.user?.id != user?.id &&
                                             stateUser.user?.executor != null &&
                                             order.status ==
                                                 OrderStatus.active) ...[
@@ -321,10 +344,11 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                                 .offer_services,
                                             onPressed: _createOffer,
                                           ),
-                                          // OutlinedButtonApp(
-                                          //   text: "Discuss_in_chat".tr(),
-                                          //   onPressed: _toChat,
-                                          // ),
+                                          OutlinedButtonApp(
+                                            text: AppLocalizations.of(context)!
+                                                .discuss_in_chat,
+                                            onPressed: () => _toChat(order),
+                                          ),
                                         ] else if (order.user?.id ==
                                             user?.id) ...[
                                           if (order.status ==

@@ -19,6 +19,7 @@ import 'package:megaladon/presentation/widgets/form/picker/dictionary/type_picke
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
+import 'package:megaladon/presentation/widgets/text/user_agreement_text.dart';
 
 class RegisterStoreScreen extends StatefulWidget {
   const RegisterStoreScreen({super.key});
@@ -247,19 +248,7 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
                         );
                       },
                     ),
-                    Text.rich(
-                      TextSpan(children: [
-                        TextSpan(
-                            text: AppLocalizations.of(context)!
-                                .by_clicking_on_the_Continue_button_you_accept),
-                        TextSpan(
-                            text: AppLocalizations.of(context)!
-                                .user_Agreement_Terms,
-                            style: const TextStyle(
-                                decoration: TextDecoration.underline))
-                      ]),
-                      textAlign: TextAlign.center,
-                    )
+                    const UserAgreementText()
                   ],
                 ),
               ),

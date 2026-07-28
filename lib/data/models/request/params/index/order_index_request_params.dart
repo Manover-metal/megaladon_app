@@ -11,13 +11,14 @@ class OrderIndexRequestParams {
       this.desc = true,
       this.city,
       this.category,
-      this.last = IndexPeriod.last3day,
+      this.last = IndexPeriod.allTime,
       this.sort = OrderIndexSort.id,
       this.statuses = const [
         OrderStatus.active,
         OrderStatus.hasExecutor,
         OrderStatus.completed,
-      ]});
+      ],
+      this.userId});
   final int startRow;
   final int rowsPerPage;
   final bool desc;
@@ -31,6 +32,10 @@ class OrderIndexRequestParams {
   /// модерации и в архиве не запрашиваются с бэкенда.
   final List<OrderStatus> statuses;
 
+  /// Фильтр по автору. Используется публичной страницей пользователя;
+  /// в обычной выдаче ленты заказов не задаётся.
+  final int? userId;
+
   Map<String, Object?> toData() {
     final data = {
       'startRow': startRow,
@@ -43,7 +48,9 @@ class OrderIndexRequestParams {
           category?.id == OrderCategoryModel.nothing.id ? null : category?.id,
       'statuses': statuses.map((status) => status.index).toList(),
     };
-    print(data);
+    if (userId != null) {
+      data['user_id'] = userId;
+    }
     return data;
   }
 
@@ -55,7 +62,8 @@ class OrderIndexRequestParams {
           OrderCategoryModel? category,
           IndexPeriod? last,
           OrderIndexSort? sort,
-          List<OrderStatus>? statuses}) =>
+          List<OrderStatus>? statuses,
+          int? userId}) =>
       OrderIndexRequestParams(
           startRow: startRow ?? this.startRow,
           rowsPerPage: rowsPerPage ?? this.rowsPerPage,
@@ -64,7 +72,8 @@ class OrderIndexRequestParams {
           category: category ?? this.category,
           last: last ?? this.last,
           sort: sort ?? this.sort,
-          statuses: statuses ?? this.statuses);
+          statuses: statuses ?? this.statuses,
+          userId: userId ?? this.userId);
 
   /// Like [copyWith], but [city] and [category] are taken verbatim — passing
   /// `null` clears the filter instead of keeping the previous value. Used when
@@ -77,7 +86,8 @@ class OrderIndexRequestParams {
           OrderCategoryModel? category,
           IndexPeriod? last,
           OrderIndexSort? sort,
-          List<OrderStatus>? statuses}) =>
+          List<OrderStatus>? statuses,
+          int? userId}) =>
       OrderIndexRequestParams(
           startRow: startRow ?? this.startRow,
           rowsPerPage: rowsPerPage ?? this.rowsPerPage,
@@ -86,5 +96,6 @@ class OrderIndexRequestParams {
           category: category,
           last: last ?? this.last,
           sort: sort ?? this.sort,
-          statuses: statuses ?? this.statuses);
+          statuses: statuses ?? this.statuses,
+          userId: userId ?? this.userId);
 }

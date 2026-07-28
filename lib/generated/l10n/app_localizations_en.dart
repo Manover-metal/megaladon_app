@@ -87,6 +87,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get active => 'Active';
 
   @override
+  String get moderate => 'On moderation';
+
+  @override
+  String get completed => 'Completed';
+
+  @override
+  String get status => 'Status';
+
+  @override
   String get in_rocessing => 'In rocessing';
 
   @override
@@ -289,6 +298,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ask_a_question_in_the_chat => 'Ask a question in the chat';
 
   @override
+  String get chat_companion_deleted => 'The user has deleted their account';
+
+  @override
   String get my_announcement => 'My announcements';
 
   @override
@@ -323,6 +335,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get user_Agreement_Terms => 'user agreement terms';
 
   @override
+  String get privacy_policy => 'Privacy policy';
+
+  @override
+  String get user_agreement => 'User agreement';
+
+  @override
   String get shop_registration => 'Shop registration';
 
   @override
@@ -351,6 +369,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get send_code_again => 'Send code again';
+
+  @override
+  String get code_sent_again => 'Code sent again';
+
+  @override
+  String get send_the_code => 'Send the code';
+
+  @override
+  String get reset_password => 'Reset password';
 
   @override
   String get chat => 'Chat';
@@ -400,7 +427,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get change_order => 'Change order';
 
   @override
-  String get artists_suggestion => 'Artists suggestion';
+  String get artists_suggestion => 'Suggestion';
 
   @override
   String get price2 => 'Price: ';
@@ -571,6 +598,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get about_the_application => 'About the application';
+
+  @override
+  String get delete_account => 'Delete account';
+
+  @override
+  String get delete_account_warning =>
+      'This action is irreversible. Your account will be deleted and you will be logged out. Enter your password to confirm.';
+
+  @override
+  String get account_deleted_successfully => 'Account deleted';
 
   @override
   String get aboutText =>
@@ -860,8 +897,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get period => 'Period';
 
   @override
-  String days_count(String count) {
-    return '$count days';
+  String months_count(num count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString months',
+      one: '$countString month',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -871,8 +918,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get buy => 'Buy';
 
   @override
-  String subscribed_for_days(String count) {
-    return 'You subscribed for $count days';
+  String subscribed_for_months(num count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'You subscribed for $countString months',
+      one: 'You subscribed for $countString month',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -888,6 +945,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get last_month => 'Last month';
+
+  @override
+  String get all_time => 'All time';
 
   @override
   String get form_error_bin_empty => 'BIN/IIN is not filled';
@@ -977,6 +1037,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get form_error_order_category_empty => 'Select category';
 
   @override
+  String get form_error_services_empty => 'Add at least one service';
+
+  @override
   String get my_reviews => 'My Reviews';
 
   @override
@@ -987,4 +1050,53 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get store_reviews => 'Store reviews';
+
+  @override
+  String get chat_unknown_companion => 'Unknown companion';
+
+  @override
+  String get file_open_error => 'Could not open the file';
+
+  @override
+  String get file => 'File';
+
+  @override
+  String get photo => 'Photo';
+
+  @override
+  String get camera => 'Camera';
+
+  @override
+  String get userProfileTitle => 'Profile';
+
+  @override
+  String get userProfileNotFound => 'User not found';
+
+  @override
+  String get userProfileTabAdverts => 'Adverts';
+
+  @override
+  String get userProfileTabServices => 'Services';
+
+  @override
+  String get userProfileTabOrders => 'Orders';
+
+  @override
+  String get userProfileEmpty => 'Nothing here yet';
+
+  @override
+  String get userProfileRetry => 'Retry';
+
+  @override
+  String get userProfileLoadError => 'Failed to load';
+
+  @override
+  String userProfileCompletedOrders(int count) {
+    return 'Completed orders: $count';
+  }
+
+  @override
+  String userProfileMemberSince(String date) {
+    return 'With us since $date';
+  }
 }

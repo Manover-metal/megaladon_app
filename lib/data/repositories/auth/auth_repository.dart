@@ -46,9 +46,22 @@ class AuthRepository {
         delete();
       });
 
-  Future resetPassword({required String phone}) async =>
-      ApiService.I.post('/auth/reset-password',
+  Future forgotPassword({required String phone}) async =>
+      ApiService.I.post('/auth/forgot-password',
           data: {'phone': phone}).then((value) => value);
+
+  Future resetPassword({
+    required String phone,
+    required String code,
+    required String password,
+    required String passwordConfirmation,
+  }) async =>
+      ApiService.I.post('/auth/reset-password', data: {
+        'phone': phone,
+        'code': code,
+        'password': password,
+        'password_confirmation': passwordConfirmation,
+      }).then((value) => value);
 
   Future<AuthModel?> read() async {
     final json = await localeStorage.getString(_authKey);

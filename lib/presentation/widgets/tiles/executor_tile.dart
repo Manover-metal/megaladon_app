@@ -40,27 +40,38 @@ class ExecutorTile extends StatelessWidget {
                 children: [
                   Text.rich(TextSpan(children: [
                     TextSpan(text: AppLocalizations.of(context)!.artist2),
-                    TextSpan(text: executor.name)
+                    TextSpan(
+                        text: executor.name,
+                        style: executor.isDeleted
+                            ? TextStyle(
+                                color: Theme.of(context).disabledColor,
+                                fontStyle: FontStyle.italic)
+                            : null)
                   ])),
                   const SizedBox(
                     height: 5,
                   ),
-                  if (executor.countOrders != null) ...[
+                  // У удалённого аккаунта нет ни счётчика заказов, ни рейтинга —
+                  // показываем только имя-заглушку.
+                  if (!executor.isDeleted) ...[
+                    if (executor.countOrders != null) ...[
+                      Text.rich(TextSpan(children: [
+                        TextSpan(
+                            text:
+                                AppLocalizations.of(context)!.posted_projects),
+                        TextSpan(text: executor.countOrders.toString())
+                      ])),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                    ],
                     Text.rich(TextSpan(children: [
+                      TextSpan(text: AppLocalizations.of(context)!.rating2),
                       TextSpan(
-                          text: AppLocalizations.of(context)!.posted_projects),
-                      TextSpan(text: executor.countOrders.toString())
-                    ])),
-                    const SizedBox(
-                      height: 5,
-                    ),
+                          text: executor.rating?.toString() ??
+                              AppLocalizations.of(context)!.noRatings)
+                    ]))
                   ],
-                  Text.rich(TextSpan(children: [
-                    TextSpan(text: AppLocalizations.of(context)!.rating2),
-                    TextSpan(
-                        text: executor.rating?.toString() ??
-                            AppLocalizations.of(context)!.noRatings)
-                  ]))
                 ],
               ),
             )

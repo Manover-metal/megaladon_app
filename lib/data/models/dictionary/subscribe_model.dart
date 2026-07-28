@@ -21,13 +21,18 @@ class SubscribeModel {
       required this.price});
   final int id;
   final SubscribeType type;
-  final String duration;
+
+  /// Срок подписки в месяцах: бэкенд хранит его в `subscriptions.validity`
+  /// и продлевает инвойс через `addMonths()`.
+  final int duration;
   final double price;
 
+  // Форма ответа задана SubscriptionPresenter::list(): id, type, duration
+  // (это validity, приходит числом) и price.
   static SubscribeModel fromJson(Map<String, dynamic> data) => SubscribeModel(
-      id: data['id'] as int,
-      type: SubscribeType.parse(data['name'] as String),
-      duration: data['duration'] as String,
+      id: Parser.toInt(data['id']),
+      type: SubscribeType.parse(data['type']),
+      duration: Parser.toInt(data['duration']),
       price: Parser.toDouble(data['price']));
 
   static List<SubscribeModel> listFromJson(List<dynamic> data) => data
