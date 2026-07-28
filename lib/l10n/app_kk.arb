@@ -118,6 +118,7 @@
   },
   "call": "Қоңырау шалу",
   "ask_a_question_in_the_chat": "Чатта сұрақ қою",
+  "chat_companion_deleted": "Пайдаланушы аккаунтын жойған",
   "my_announcement": "Менің хабарландыруларым",
   "my_executor": "Менің орындаушыларым",
   "ads": "Хабарландырулар",
@@ -129,6 +130,8 @@
   "longitude": "Бойлық",
   "by_clicking_on_the_Continue_button_you_accept": "\"Жалғастыру\" түймесін басу арқылы сіз қабылдайсыз",
   "user_Agreement_Terms": "Пайдаланушы келісімінің шарттары",
+  "privacy_policy": "Құпиялылық саясаты",
+  "user_agreement": "Пайдаланушы келісімі",
   "shop_registration": "Дүкенді тіркеу",
   "names": "Атаулары",
   "type_of_business": "Бизнес түрі",
@@ -139,6 +142,9 @@
   "enter_6digit_code_from_SMS": "SMS-тен 6 таңбалы кодты енгізіңіз",
   "confirm": "Растау",
   "send_code_again": "Кодты қайта жіберіңіз",
+  "code_sent_again": "Код қайта жіберілді",
+  "send_the_code": "Кодты жіберу",
+  "reset_password": "Құпия сөзді ауыстыру",
   "chat": "Чат",
   "noMessagesInChat": "Бұл чатта әлі хабарлама жоқ",
   "chats": "Чаттар",
@@ -161,7 +167,7 @@
   "respond": "Жауап беру",
   "header": "Тақырыбы",
   "change_order": "Тапсырысты өзгерту",
-  "artists_suggestion": "Орындаушының ұсынысы",
+  "artists_suggestion": "Орындаушының",
   "price2": "Бағасы: ",
   "terms": "Мерзімі: ",
   "createChat": "Чат жасау",
@@ -255,6 +261,9 @@
   "theme_light": "Жарық",
   "theme_system": "Жүйелік",
   "about_the_application": "Қосымша туралы",
+  "delete_account": "Аккаунтты жою",
+  "delete_account_warning": "Әрекет қайтарылмайды. Аккаунт жойылады және сіз жүйеден шығасыз. Растау үшін құпия сөзді енгізіңіз.",
+  "account_deleted_successfully": "Аккаунт жойылды",
   "aboutText": "\"Тапсырыстар\" — орындаушылардан ең жақсы ұсынысты іздеу үшін платформада орналастырылған тапсырыстар тізімі.\n\"Металл прокаты\" — дайын өнімдерді сататын компаниялар тізімі.\n\"+\" (Тапсырыс) — орындаушыларды іздеу үшін тапсырыс жасау.\n\"+\" (Қызметтер) — қызметтерді таратуға арналған қызмет жасау.\n\"+\" (Хабарландыру) — тауарларды сату немесе машина жасау қызметтерін ұсыну үшін хабарландыру жасау.\n\"Сауда алаңы\" — тауарларды сату немесе машина жасау қызметтерін ұсыну туралы хабарландырулар тізімі.\n\"Профиль\" — пайдаланушы профилі.",
   "introOrders": "Орындаушылардан ең жақсы ұсынысты іздеу үшін платформада орналастырылған тапсырыстар тізімі.",
   "introStores": "Дайын өнімдерді сататын компаниялар тізімі.",
@@ -343,21 +352,23 @@
   "kk": "Қазақ",
   "add_to_Favorite": "Добавить в избранное",
   "period": "Кезең",
-  "days_count": "{count} күн",
-  "@days_count": {
+  "months_count": "{count, plural, one{{count} ай} other{{count} ай}}",
+  "@months_count": {
     "placeholders": {
       "count": {
-        "type": "String"
+        "type": "num",
+        "format": "decimalPattern"
       }
     }
   },
   "activate_for_free": "Тегін белсендіру",
   "buy": "Сатып алу",
-  "subscribed_for_days": "{count} күнге жазылдыңыз",
-  "@subscribed_for_days": {
+  "subscribed_for_months": "{count, plural, one{{count} айға жазылдыңыз} other{{count} айға жазылдыңыз}}",
+  "@subscribed_for_months": {
     "placeholders": {
       "count": {
-        "type": "String"
+        "type": "num",
+        "format": "decimalPattern"
       }
     }
   },
@@ -401,6 +412,7 @@
   "form_error_company_type_empty": "Түрін таңдаңыз",
   "form_error_advert_category_empty": "Санатты таңдаңыз",
   "form_error_order_category_empty": "Санатты таңдаңыз",
+  "form_error_services_empty": "Кем дегенде бір қызмет қосыңыз",
   "my_reviews": "Менің пікірлерім",
   "no_reviews_yet": "Әзірге пікірлер жоқ",
   "reviews": "Пікірлер",
@@ -409,5 +421,15 @@
   "file_open_error": "Файлды ашу мүмкін болмады",
   "file": "Файл",
   "photo": "Фото",
-  "camera": "Камера"
+  "camera": "Камера",
+  "userProfileTitle": "Профиль",
+  "userProfileNotFound": "Пайдаланушы табылмады",
+  "userProfileTabAdverts": "Хабарландырулар",
+  "userProfileTabServices": "Қызметтер",
+  "userProfileTabOrders": "Тапсырыстар",
+  "userProfileEmpty": "Әзірге бос",
+  "userProfileRetry": "Қайталау",
+  "userProfileLoadError": "Жүктеу сәтсіз аяқталды",
+  "userProfileCompletedOrders": "Орындалған тапсырыстар: {count}",
+  "userProfileMemberSince": "Бізбен бірге {date} бастап"
 }

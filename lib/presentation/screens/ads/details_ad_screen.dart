@@ -217,7 +217,27 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                UserTile(user: state.advert.user!),
+                                if (state.advert.user != null)
+                                  UserTile(
+                                    user: state.advert.user!,
+                                    // Удалённый аккаунт открывать нечего, а на
+                                    // собственном профиле вкладка заказов
+                                    // пришла бы пустой: OrderService::index
+                                    // подставляет exclude_user_id.
+                                    onTap: state.advert.user!.isDeleted ||
+                                            state.advert.user!.id ==
+                                                context
+                                                    .watch<ProfileScreenCubit>()
+                                                    .state
+                                                    .user
+                                                    ?.id
+                                        ? null
+                                        : () => context.router.push(
+                                              UserProfileRoute(
+                                                  userId:
+                                                      state.advert.user!.id),
+                                            ),
+                                  ),
                                 const SizedBox(height: 20),
                                 BlocBuilder<ProfileScreenCubit,
                                     ProfileScreenState>(
@@ -225,8 +245,13 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                                     if (stateUser is AuthLoginState) {
                                       return Column(
                                         children: [
-                                          if (state.advert.user!.id !=
-                                              stateUser.user?.id) ...[
+                                          // Автор удалил аккаунт — ни позвонить,
+                                          // ни написать ему нельзя.
+                                          if (state.advert.user != null &&
+                                              state.advert.user!.isDeleted !=
+                                                  true &&
+                                              state.advert.user!.id !=
+                                                  stateUser.user?.id) ...[
                                             ElevatedButtonApp(
                                               text:
                                                   AppLocalizations.of(context)!

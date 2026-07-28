@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:megaladon/data/repositories/auth/verify_repository.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/form/verify/verify_form_cubit.dart';
@@ -21,7 +24,12 @@ class VerifyScreen extends StatefulWidget {
 }
 
 class _VerifyScreenState extends State<VerifyScreen> {
+  static const _cooldownSeconds = 60;
+
   late PinInputController _pinController;
+  final VerifyRepository _verifyRepository = VerifyRepository();
+  Timer? _timer;
+  int _secondsLeft = _cooldownSeconds;
 
   bool _checkForm() =>
       context.read<VerifyFormCubit>().checkForm(_pinController.text);
@@ -34,15 +42,49 @@ class _VerifyScreenState extends State<VerifyScreen> {
     }
   }
 
+  void _startCooldown() {
+    _timer?.cancel();
+    setState(() => _secondsLeft = _cooldownSeconds);
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_secondsLeft <= 1) {
+        timer.cancel();
+        setState(() => _secondsLeft = 0);
+      } else {
+        setState(() => _secondsLeft--);
+      }
+    });
+  }
+
+  Future<void> _resend() async {
+    if (_secondsLeft > 0) return;
+    try {
+      await _verifyRepository.resendCode(phone: widget.phone);
+      _startCooldown();
+      if (mounted) {
+        CustomSnackBar.success(
+          Text(AppLocalizations.of(context)!.code_sent_again),
+        ).view(context);
+      }
+    } catch (_) {
+      if (mounted) {
+        CustomSnackBar.error(
+          Text(AppLocalizations.of(context)!.unknown_error),
+        ).view(context);
+      }
+    }
+  }
+
   @override
   void initState() {
     _listenerVerify(false);
     _pinController = PinInputController();
+    _startCooldown();
     super.initState();
   }
 
   @override
   void dispose() {
+    _timer?.cancel();
     _pinController.dispose();
     super.dispose();
   }
@@ -119,7 +161,11 @@ class _VerifyScreenState extends State<VerifyScreen> {
                     );
                   }),
                   OutlinedButtonApp(
-                      text: AppLocalizations.of(context)!.send_code_again),
+                    text: _secondsLeft > 0
+                        ? '${AppLocalizations.of(context)!.send_code_again} ($_secondsLeft)'
+                        : AppLocalizations.of(context)!.send_code_again,
+                    onPressed: _secondsLeft > 0 ? null : _resend,
+                  ),
                   const Spacer(flex: 3),
                 ],
               ),

@@ -13,6 +13,7 @@ class ExecutorModel {
     this.countOrders,
     this.photo,
     this.services = const [],
+    this.isDeleted = false,
   });
 
   final int id;
@@ -25,6 +26,10 @@ class ExecutorModel {
   final int? countOrders;
   final String? photo;
   final List<ServiceTypeModel> services;
+
+  /// Аккаунт удалён: бэкенд всё равно отдаёт его в откликах и чатах, но уже
+  /// обезличенным — имя «Удалённый аккаунт», без фото, телефона и рейтинга.
+  final bool isDeleted;
 
   static ExecutorModel fromJson(Map<String, dynamic> data) => ExecutorModel(
         id: data['id'] as int,
@@ -39,6 +44,7 @@ class ExecutorModel {
         services: data['services'] != null
             ? ServiceTypeModel.listFromJson(data['services'] as List<dynamic>)
             : [],
+        isDeleted: data['is_deleted'] == true,
       );
 
   static ExecutorModel? fromJsonOrNull(Map<String, dynamic>? data) {
@@ -66,5 +72,6 @@ class ExecutorModel {
         'count_orders': countOrders,
         'photo_url': photo,
         'services': services.map((s) => s.toJson()).toList(),
+        'is_deleted': isDeleted,
       };
 }

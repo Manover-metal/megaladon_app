@@ -7,8 +7,10 @@ import 'package:megaladon/logic/screens/executors/favorite/add_favorite_cubit.da
 import 'package:megaladon/logic/screens/executors/my/executor_screen_my_cubit.dart';
 import 'package:megaladon/logic/screens/offers/details/offer_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/orders/details/order_screen_details_cubit.dart';
+import 'package:megaladon/logic/screens/user/reviews/user_reviews_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
+import 'package:megaladon/presentation/widgets/card/review_card.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
@@ -109,14 +111,15 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
                                 ExecutorTile(
                                   executor: state.offer.executor!,
                                 ),
-                                Align(
-                                  child: TextButton(
-                                    onPressed:
-                                        _addToFavorite(state.offer.executor!),
-                                    child: Text(AppLocalizations.of(context)!
-                                        .add_to_Favorite),
+                                if (!state.offer.executor!.isDeleted)
+                                  Align(
+                                    child: TextButton(
+                                      onPressed:
+                                          _addToFavorite(state.offer.executor!),
+                                      child: Text(AppLocalizations.of(context)!
+                                          .add_to_Favorite),
+                                    ),
                                   ),
-                                ),
                               ],
                               const SizedBox(
                                 height: 20,
@@ -146,11 +149,17 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
                               const SizedBox(
                                 height: 20,
                               ),
-                              ElevatedButtonApp(
-                                text: AppLocalizations.of(context)!
-                                    .set_as_executor,
-                                onPressed: _acceptOffer,
-                              )
+                              // Удалённый аккаунт назначить исполнителем нельзя
+                              // (бэкенд такой запрос отклоняет).
+                              if (state.offer.executor?.isDeleted != true)
+                                ElevatedButtonApp(
+                                  text: AppLocalizations.of(context)!
+                                      .set_as_executor,
+                                  onPressed: _acceptOffer,
+                                ),
+                              if (state.offer.executor != null)
+                                _ReviewsSection(
+                                    userId: state.offer.executor!.id),
                             ],
                           );
                         } else if (state is OfferScreenDetailsLoader) {
@@ -166,6 +175,64 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
               ),
             ),
           ),
+        ),
+      );
+}
+
+/// Отзывы автора отклика. Идёт последней секцией: так кнопка «Назначить
+/// исполнителем» остаётся рядом с данными отклика, а не уезжает вниз за
+/// длинным списком отзывов.
+///
+/// [userId] — именно id пользователя, а не исполнителя: OfferPresenter
+/// отдаёт автора через UserPresenter->short(), поэтому в
+/// `offer.executor.id` лежит user_id. Резолвом профиля исполнителя
+/// занимается бэкенд.
+class _ReviewsSection extends StatelessWidget {
+  const _ReviewsSection({required this.userId});
+
+  final int userId;
+
+  @override
+  Widget build(BuildContext context) => BlocProvider(
+        create: (_) => UserReviewsCubit(userId)..fetch(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 30),
+            Text(
+              AppLocalizations.of(context)!.reviews,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(height: 10),
+            BlocBuilder<UserReviewsCubit, UserReviewsState>(
+              builder: (context, state) {
+                switch (state.status) {
+                  case UserReviewsStatus.loading:
+                    return const Loader(padding: 10);
+                  case UserReviewsStatus.error:
+                    return ErrorMessage(error: state.error!);
+                  case UserReviewsStatus.success:
+                    if (state.reviews.isEmpty) {
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 10, bottom: 10),
+                        child: Center(
+                          child: Text(
+                            AppLocalizations.of(context)!.no_reviews_yet,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ),
+                      );
+                    }
+                    return Column(
+                      children: state.reviews
+                          .map((review) => ReviewCard(review: review))
+                          .toList(),
+                    );
+                }
+              },
+            ),
+            const SizedBox(height: 20),
+          ],
         ),
       );
 }

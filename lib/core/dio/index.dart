@@ -28,6 +28,12 @@ class ApiService {
         printResponseData: true,
         printResponseHeaders: false,
         printErrorMessage: true,
+        responseFilter: (response) {
+          if(response.requestOptions.uri.path.contains('api/chat/1')) {
+            return false;
+          }
+          return true;
+        },
       ),
     ));
     addInterceptors(ErrorInterceptor());

@@ -51,6 +51,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         .then((value) {
       _authRepository.write(value);
 
+      // Токен шлём именно после write(): /user/change-token требует авторизации,
+      // а logout на бэке затирает device_token — без этого вызова после
+      // перелогина пуши не приходят до следующего холодного старта.
+      _sendFbToken();
+
       emit(AuthLoginState(value));
     }).catchError((error) {
       print(error);
@@ -73,7 +78,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         .verifyRegister(code: event.code, phone: event.phone)
         .then((value) async {
       _authRepository.write(value);
-      // await _sendFbToken();
+      await _sendFbToken();
       emit(AuthLoginState(value));
     }).catchError((error) {
       print(error);

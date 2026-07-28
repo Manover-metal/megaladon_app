@@ -54,9 +54,13 @@ class _$AppRouter extends RootStackRouter {
       );
     },
     ResetPasswordRoute.name: (routeData) {
+      final args = routeData.argsAs<ResetPasswordRouteArgs>();
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const ResetPasswordScreen(),
+        child: ResetPasswordScreen(
+          phone: args.phone,
+          key: args.key,
+        ),
       );
     },
     RegisterUserRoute.name: (routeData) {
@@ -251,6 +255,16 @@ class _$AppRouter extends RootStackRouter {
         child: const SubscribeScreen(),
       );
     },
+    UserProfileRoute.name: (routeData) {
+      final args = routeData.argsAs<UserProfileRouteArgs>();
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: UserProfileScreen(
+          userId: args.userId,
+          key: args.key,
+        ),
+      );
+    },
     ListStoresRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
@@ -410,6 +424,11 @@ class _$AppRouter extends RootStackRouter {
                   parent: OrderRouter.name,
                   guards: [authGuard],
                 ),
+                RouteConfig(
+                  UserProfileRoute.name,
+                  path: 'user-profile-screen',
+                  parent: OrderRouter.name,
+                ),
               ],
             ),
             RouteConfig(
@@ -449,6 +468,11 @@ class _$AppRouter extends RootStackRouter {
                   path: 'my-ads-screen',
                   parent: AdRouter.name,
                   guards: [authGuard],
+                ),
+                RouteConfig(
+                  UserProfileRoute.name,
+                  path: 'user-profile-screen',
+                  parent: AdRouter.name,
                 ),
               ],
             ),
@@ -659,14 +683,36 @@ class ForgotPasswordRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [ResetPasswordScreen]
-class ResetPasswordRoute extends PageRouteInfo<void> {
-  const ResetPasswordRoute()
-      : super(
+class ResetPasswordRoute extends PageRouteInfo<ResetPasswordRouteArgs> {
+  ResetPasswordRoute({
+    required String phone,
+    Key? key,
+  }) : super(
           ResetPasswordRoute.name,
           path: '/reset-password-screen',
+          args: ResetPasswordRouteArgs(
+            phone: phone,
+            key: key,
+          ),
         );
 
   static const String name = 'ResetPasswordRoute';
+}
+
+class ResetPasswordRouteArgs {
+  const ResetPasswordRouteArgs({
+    required this.phone,
+    this.key,
+  });
+
+  final String phone;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'ResetPasswordRouteArgs{phone: $phone, key: $key}';
+  }
 }
 
 /// generated route for
@@ -1201,6 +1247,40 @@ class SubscribeRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'SubscribeRoute';
+}
+
+/// generated route for
+/// [UserProfileScreen]
+class UserProfileRoute extends PageRouteInfo<UserProfileRouteArgs> {
+  UserProfileRoute({
+    required int userId,
+    Key? key,
+  }) : super(
+          UserProfileRoute.name,
+          path: 'user-profile-screen',
+          args: UserProfileRouteArgs(
+            userId: userId,
+            key: key,
+          ),
+        );
+
+  static const String name = 'UserProfileRoute';
+}
+
+class UserProfileRouteArgs {
+  const UserProfileRouteArgs({
+    required this.userId,
+    this.key,
+  });
+
+  final int userId;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'UserProfileRouteArgs{userId: $userId, key: $key}';
+  }
 }
 
 /// generated route for

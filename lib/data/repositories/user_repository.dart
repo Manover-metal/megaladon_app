@@ -13,6 +13,12 @@ class UserRepository {
       ApiService.I.get('/user/$id').then((value) =>
           UserModel.fromJson(value.data['user'] as Map<String, dynamic>));
 
+  /// Публичная карточка пользователя. В отличие от [getUserById] не требует
+  /// авторизации и не содержит вложенных executor/store.
+  Future<UserModel> publicProfile(int id) =>
+      ApiService.I.get('/user/$id/public').then((value) =>
+          UserModel.fromJson(value.data['user'] as Map<String, dynamic>));
+
   Future changePhoto(FormData data) => ApiService.I
       .post('/user/update-photo', data: data)
       .then((value) => value.data);
@@ -32,6 +38,10 @@ class UserRepository {
         'password': password,
         'password_confirmation': passwordConfirmation
       }).then((value) => value.data);
+
+  Future deleteAccount(String password) => ApiService.I
+      .delete('/user/delete-account', data: {'password': password}).then(
+          (value) => value.data);
 
   Future changePhoneStepStart({
     required String phone,

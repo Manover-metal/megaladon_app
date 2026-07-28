@@ -1,6 +1,7 @@
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 
 enum IndexPeriod {
+  allTime,
   last3day,
   last7day,
   last30day;
@@ -13,6 +14,8 @@ enum IndexPeriod {
         return l10n.last_week;
       case IndexPeriod.last30day:
         return l10n.last_month;
+      case IndexPeriod.allTime:
+        return l10n.all_time;
     }
   }
 }

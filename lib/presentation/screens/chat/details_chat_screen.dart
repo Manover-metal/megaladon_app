@@ -1,14 +1,17 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:megaladon/core/image/image_service.dart';
 import 'package:megaladon/data/models/chat/chat_model.dart';
 import 'package:megaladon/data/models/chat/message_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/screens/chats/chat_cubit.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
+import 'package:megaladon/presentation/widgets/chat/attach_source_modal.dart';
 import 'package:megaladon/presentation/widgets/chat/chat_app_bar_title.dart';
 import 'package:megaladon/presentation/widgets/chat/chat_image_viewer.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
@@ -65,10 +68,22 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
   }
 
   Future<void> _attachFile() async {
-    final result = await ImageService.getFile();
-    final file = result?.files.elementAtOrNull(0);
-    if (file == null || file.bytes == null) return;
-    _cubit.sendFile(widget.chat.id, file);
+    final file = await showAttachSourceModal(context);
+    if (file == null) return;
+    final bytes = await file.readAsBytes();
+    // Оптимистичная отправка: сообщение появляется сразу, поэтому спускаемся
+    // вниз не дожидаясь ответа сервера (как и в _sendMessage).
+    unawaited(
+      _cubit.sendFile(
+        widget.chat.id,
+        PlatformFile(
+          name: file.path.split('/').last,
+          size: bytes.length,
+          bytes: bytes,
+          path: file.path,
+        ),
+      ),
+    );
     _scrollToBottom();
   }
 
@@ -95,6 +110,17 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
     }
   }
 
+  /// Актуальная версия чата: в state она обновляется опросом, widget.chat —
+  /// лишь то, с чем экран открыли.
+  ChatModel _chatOf(ChatState state) => state.chats.firstWhere(
+        (c) => c.id == widget.chat.id,
+        orElse: () => widget.chat,
+      );
+
+  /// Собеседник удалил аккаунт — писать ему некуда, ввод блокируем.
+  bool _isCompanionDeleted(ChatState state) =>
+      (_chatOf(state).companion ?? widget.chat.companion)?.isDeleted ?? false;
+
   /// Немного затемняет цвет (по светлоте), корректно работает и в светлой,
   /// и в тёмной теме. Используется для панели ввода — она должна быть чуть
   /// темнее фона переписки.
@@ -112,94 +138,99 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
           centerTitle: false,
           backgroundColor: _darken(Theme.of(context).scaffoldBackgroundColor),
           titleWidget: BlocBuilder<ChatCubit, ChatState>(
-            builder: (context, state) {
-              final chat = state.chats.firstWhere(
-                (c) => c.id == widget.chat.id,
-                orElse: () => widget.chat,
-              );
-              return ChatAppBarTitle(
-                companion: chat.companion ?? widget.chat.companion,
-                fallbackTitle: AppLocalizations.of(context)!.chat,
-              );
-            },
+            builder: (context, state) => ChatAppBarTitle(
+              companion: _chatOf(state).companion ?? widget.chat.companion,
+              fallbackTitle: AppLocalizations.of(context)!.chat,
+            ),
           ),
         ),
-        bottomNavigationBar: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-          // Панель ввода чуть темнее фона переписки.
-          color: _darken(Theme.of(context).scaffoldBackgroundColor),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SafeArea(
-                top: false,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.attach_file,
-                          color: Theme.of(context).colorScheme.primary),
-                      onPressed: _attachFile,
-                    ),
-                    Expanded(
-                      child: TextField(
-                        controller: _textController,
-                        focusNode: _focusNode,
-                        minLines: 1,
-                        maxLines: 3,
-                        textCapitalization: TextCapitalization.sentences,
-                        keyboardType: TextInputType.multiline,
-                        textInputAction: TextInputAction.newline,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                        decoration: InputDecoration(
-                          hintText: AppLocalizations.of(context)!
-                              .ask_a_question_in_the_chat,
-                          filled: true,
-                          fillColor: Theme.of(context).colorScheme.tertiary,
-                          isDense: true,
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 12),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(24),
-                            borderSide: BorderSide.none,
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(24),
-                            borderSide: BorderSide(
-                                color: Theme.of(context).colorScheme.primary),
+        bottomNavigationBar: BlocBuilder<ChatCubit, ChatState>(
+          builder: (context, state) {
+            final isDeleted = _isCompanionDeleted(state);
+            return Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              // Панель ввода чуть темнее фона переписки.
+              color: _darken(Theme.of(context).scaffoldBackgroundColor),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SafeArea(
+                    top: false,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.attach_file,
+                              color: isDeleted
+                                  ? Theme.of(context).disabledColor
+                                  : Theme.of(context).colorScheme.primary),
+                          onPressed: isDeleted ? null : _attachFile,
+                        ),
+                        Expanded(
+                          child: TextField(
+                            controller: _textController,
+                            focusNode: _focusNode,
+                            readOnly: isDeleted,
+                            minLines: 1,
+                            maxLines: 3,
+                            textCapitalization: TextCapitalization.sentences,
+                            keyboardType: TextInputType.multiline,
+                            textInputAction: TextInputAction.newline,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                            decoration: InputDecoration(
+                              hintText: isDeleted
+                                  ? AppLocalizations.of(context)!
+                                      .chat_companion_deleted
+                                  : AppLocalizations.of(context)!
+                                      .ask_a_question_in_the_chat,
+                              filled: true,
+                              fillColor: Theme.of(context).colorScheme.tertiary,
+                              isDense: true,
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 12),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(24),
+                                borderSide: BorderSide.none,
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(24),
+                                borderSide: BorderSide(
+                                    color:
+                                        Theme.of(context).colorScheme.primary),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primary,
-                        shape: BoxShape.circle,
-                      ),
-                      child: IconButton(
-                        onPressed: _sendMessage,
-                        icon: Icon(
-                          Icons.near_me_outlined,
-                          color: Theme.of(context).colorScheme.onPrimary,
+                        const SizedBox(width: 8),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: isDeleted
+                                ? Theme.of(context).disabledColor
+                                : Theme.of(context).colorScheme.primary,
+                            shape: BoxShape.circle,
+                          ),
+                          child: IconButton(
+                            onPressed: isDeleted ? null : _sendMessage,
+                            icon: Icon(
+                              Icons.near_me_outlined,
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).viewInsets.bottom,)
+                ],
               ),
-              SizedBox(height: MediaQuery.of(context).viewInsets.bottom,)
-            ],
-          ),
+            );
+          },
         ),
         body: BlocBuilder<ProfileScreenCubit, ProfileScreenState>(
           builder: (context, authState) => BlocBuilder<ChatCubit, ChatState>(
             builder: (context, state) {
-              final chat = state.chats.firstWhere(
-                (element) => element.id == widget.chat.id,
-                orElse: () => widget.chat,
-              );
+              final chat = _chatOf(state);
               final pending =
                   state.loadingMessages[widget.chat.id] ?? const [];
               final failed = state.errorMessages[widget.chat.id] ?? const [];

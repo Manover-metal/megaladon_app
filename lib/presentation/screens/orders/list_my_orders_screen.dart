@@ -52,10 +52,8 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
   @override
   void initState() {
     _scrollController = ScrollController()..addListener(_listenerScrollMy);
-    if (_isExecutor()) {
-      _scrollControllerResponded = ScrollController()
-        ..addListener(_listenerScrollResponded);
-    }
+    _scrollControllerResponded = ScrollController()
+      ..addListener(_listenerScrollResponded);
     _onRefresh();
     super.initState();
   }
@@ -64,10 +62,8 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
   void dispose() {
     _scrollController.removeListener(_listenerScrollMy);
     _scrollController.dispose();
-    if (_isExecutor()) {
-      _scrollControllerResponded.removeListener(_listenerScrollResponded);
-      _scrollControllerResponded.dispose();
-    }
+    _scrollControllerResponded.removeListener(_listenerScrollResponded);
+    _scrollControllerResponded.dispose();
     super.dispose();
   }
 
@@ -98,7 +94,7 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
   @override
   Widget build(BuildContext context) => BlocBuilder<AuthBloc, AuthState>(
         builder: (context, authState) => DefaultTabController(
-          length: _isExecutor() ? 2 : 1,
+          length: 2,
           child: Scaffold(
             appBar: PreferredSize(
               preferredSize: const Size.fromHeight(70),
@@ -146,8 +142,7 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
                     indicatorColor: Theme.of(context).colorScheme.primary,
                     tabs: [
                       Tab(text: AppLocalizations.of(context)!.as_a_user),
-                      if (_isExecutor())
-                        Tab(text: AppLocalizations.of(context)!.as_a_executor),
+                      Tab(text: AppLocalizations.of(context)!.as_a_executor),
                     ],
                   ),
                 ))

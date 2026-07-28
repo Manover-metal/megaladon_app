@@ -8,7 +8,7 @@ class OutlinedButtonApp extends StatelessWidget {
 
   Widget? _getText() {
     if (text != null) {
-      return Text(text!);
+      return Text(text!, textAlign: TextAlign.center);
     }
     return null;
   }

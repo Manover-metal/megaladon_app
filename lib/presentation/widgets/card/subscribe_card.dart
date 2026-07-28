@@ -18,7 +18,7 @@ class SubscribeCard extends StatelessWidget {
           final l10n = AppLocalizations.of(context)!;
           if (state is SubscribeSuccess) {
             CustomSnackBar.success(
-              Text(l10n.subscribed_for_days(state.subscribe.duration)),
+              Text(l10n.subscribed_for_months(state.subscribe.duration)),
             ).view(context);
           } else if (state is SubscribeError) {
             CustomSnackBar.error(
@@ -55,7 +55,7 @@ class _SubscribeCardBody extends StatelessWidget {
             DataTile(
                 title: AppLocalizations.of(context)!.period,
                 data: AppLocalizations.of(context)!
-                    .days_count(subscribe.duration)),
+                    .months_count(subscribe.duration)),
             const SizedBox(height: 10),
             ElevatedButtonApp(
               text: subscribe.price == 0.0

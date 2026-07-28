@@ -68,18 +68,28 @@ class ChatModel extends Equatable {
 
 /// Краткая инфа о собеседнике из ответа бэкенда (UserPresenter::short()).
 class ChatCompanion extends Equatable {
-  const ChatCompanion({required this.id, required this.name, this.photoUrl});
+  const ChatCompanion({
+    required this.id,
+    required this.name,
+    this.photoUrl,
+    this.isDeleted = false,
+  });
 
   factory ChatCompanion.fromJson(Map<String, dynamic> data) => ChatCompanion(
         id: data['id'] as int,
         name: (data['name'] as String?) ?? '',
         photoUrl: data['photo_url'] as String?,
+        isDeleted: data['is_deleted'] == true,
       );
 
   final int id;
   final String name;
   final String? photoUrl;
 
+  /// Собеседник удалил аккаунт: чат остаётся, имя приходит как «Удалённый
+  /// аккаунт», фото не приходит.
+  final bool isDeleted;
+
   @override
-  List<Object?> get props => [id, name, photoUrl];
+  List<Object?> get props => [id, name, photoUrl, isDeleted];
 }

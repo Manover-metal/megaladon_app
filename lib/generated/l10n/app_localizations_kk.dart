@@ -298,6 +298,9 @@ class AppLocalizationsKk extends AppLocalizations {
   String get ask_a_question_in_the_chat => 'Чатта сұрақ қою';
 
   @override
+  String get chat_companion_deleted => 'Пайдаланушы аккаунтын жойған';
+
+  @override
   String get my_announcement => 'Менің хабарландыруларым';
 
   @override
@@ -332,6 +335,12 @@ class AppLocalizationsKk extends AppLocalizations {
   String get user_Agreement_Terms => 'Пайдаланушы келісімінің шарттары';
 
   @override
+  String get privacy_policy => 'Құпиялылық саясаты';
+
+  @override
+  String get user_agreement => 'Пайдаланушы келісімі';
+
+  @override
   String get shop_registration => 'Дүкенді тіркеу';
 
   @override
@@ -360,6 +369,15 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get send_code_again => 'Кодты қайта жіберіңіз';
+
+  @override
+  String get code_sent_again => 'Код қайта жіберілді';
+
+  @override
+  String get send_the_code => 'Кодты жіберу';
+
+  @override
+  String get reset_password => 'Құпия сөзді ауыстыру';
 
   @override
   String get chat => 'Чат';
@@ -409,7 +427,7 @@ class AppLocalizationsKk extends AppLocalizations {
   String get change_order => 'Тапсырысты өзгерту';
 
   @override
-  String get artists_suggestion => 'Орындаушының ұсынысы';
+  String get artists_suggestion => 'Орындаушының';
 
   @override
   String get price2 => 'Бағасы: ';
@@ -580,6 +598,16 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get about_the_application => 'Қосымша туралы';
+
+  @override
+  String get delete_account => 'Аккаунтты жою';
+
+  @override
+  String get delete_account_warning =>
+      'Әрекет қайтарылмайды. Аккаунт жойылады және сіз жүйеден шығасыз. Растау үшін құпия сөзді енгізіңіз.';
+
+  @override
+  String get account_deleted_successfully => 'Аккаунт жойылды';
 
   @override
   String get aboutText =>
@@ -870,8 +898,18 @@ class AppLocalizationsKk extends AppLocalizations {
   String get period => 'Кезең';
 
   @override
-  String days_count(String count) {
-    return '$count күн';
+  String months_count(num count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString ай',
+      one: '$countString ай',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -881,8 +919,18 @@ class AppLocalizationsKk extends AppLocalizations {
   String get buy => 'Сатып алу';
 
   @override
-  String subscribed_for_days(String count) {
-    return '$count күнге жазылдыңыз';
+  String subscribed_for_months(num count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString айға жазылдыңыз',
+      one: '$countString айға жазылдыңыз',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -989,6 +1037,9 @@ class AppLocalizationsKk extends AppLocalizations {
   String get form_error_order_category_empty => 'Санатты таңдаңыз';
 
   @override
+  String get form_error_services_empty => 'Кем дегенде бір қызмет қосыңыз';
+
+  @override
   String get my_reviews => 'Менің пікірлерім';
 
   @override
@@ -1014,4 +1065,38 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get camera => 'Камера';
+
+  @override
+  String get userProfileTitle => 'Профиль';
+
+  @override
+  String get userProfileNotFound => 'Пайдаланушы табылмады';
+
+  @override
+  String get userProfileTabAdverts => 'Хабарландырулар';
+
+  @override
+  String get userProfileTabServices => 'Қызметтер';
+
+  @override
+  String get userProfileTabOrders => 'Тапсырыстар';
+
+  @override
+  String get userProfileEmpty => 'Әзірге бос';
+
+  @override
+  String get userProfileRetry => 'Қайталау';
+
+  @override
+  String get userProfileLoadError => 'Жүктеу сәтсіз аяқталды';
+
+  @override
+  String userProfileCompletedOrders(int count) {
+    return 'Орындалған тапсырыстар: $count';
+  }
+
+  @override
+  String userProfileMemberSince(String date) {
+    return 'Бізбен бірге $date бастап';
+  }
 }

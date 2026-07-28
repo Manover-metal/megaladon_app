@@ -10,6 +10,12 @@ class ReviewRepository {
       ApiService.I.get<dynamic>('/executor/my/ratings').then((value) =>
           ReviewModel.listFromJson(value.data['list'] as List<dynamic>));
 
+  /// Отзывы произвольного пользователя. Не требует авторизации; если у
+  /// человека нет профиля исполнителя, бэкенд отдаёт пустой список.
+  Future<List<ReviewModel>> userReviews(int userId) =>
+      ApiService.I.get<dynamic>('/user/$userId/ratings').then((value) =>
+          ReviewModel.listFromJson(value.data['list'] as List<dynamic>));
+
   Future<List<ReviewModel>> storeReviews(int storeId) =>
       ApiService.I.get<dynamic>('/store/$storeId/ratings').then((value) =>
           ReviewModel.listFromJson(value.data['list'] as List<dynamic>));

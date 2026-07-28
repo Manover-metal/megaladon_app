@@ -303,8 +303,22 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                     var user = stateUser.user;
                                     return Column(
                                       children: [
-                                        if (order.user?.id != user?.id) ...[
-                                          UserTile(user: order.user!),
+                                        if (order.user != null &&
+                                            order.user?.id != user?.id) ...[
+                                          UserTile(
+                                            user: order.user!,
+                                            // Условие «не я» уже обеспечено
+                                            // внешним if (order.user?.id !=
+                                            // user?.id) — здесь достаточно
+                                            // отсечь удалённых.
+                                            onTap: order.user!.isDeleted
+                                                ? null
+                                                : () => context.router.push(
+                                                      UserProfileRoute(
+                                                          userId:
+                                                              order.user!.id),
+                                                    ),
+                                          ),
                                           const SizedBox(
                                             height: 20,
                                           ),
@@ -318,7 +332,10 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                             height: 20,
                                           ),
                                         ],
-                                        if (order.user?.id != user?.id &&
+                                        // Заказчик удалил аккаунт: ни откликнуться,
+                                        // ни написать ему уже нельзя.
+                                        if (order.user?.isDeleted != true &&
+                                            order.user?.id != user?.id &&
                                             stateUser.user?.executor != null &&
                                             order.status ==
                                                 OrderStatus.active) ...[

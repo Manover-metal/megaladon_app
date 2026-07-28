@@ -16,6 +16,7 @@ import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picke
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
+import 'package:megaladon/presentation/widgets/text/user_agreement_text.dart';
 
 class RegisterUserScreen extends StatefulWidget {
   const RegisterUserScreen({super.key});
@@ -182,19 +183,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                       );
                     },
                   ),
-                  Text.rich(
-                    TextSpan(children: [
-                      TextSpan(
-                          text: AppLocalizations.of(context)!
-                              .by_clicking_on_the_Continue_button_you_accept),
-                      TextSpan(
-                          text: AppLocalizations.of(context)!
-                              .user_Agreement_Terms,
-                          style: const TextStyle(
-                              decoration: TextDecoration.underline))
-                    ], style: Theme.of(context).textTheme.bodySmall),
-                    textAlign: TextAlign.center,
-                  ),
+                  const UserAgreementText(),
                   const Spacer(
                     flex: 3,
                   ),
