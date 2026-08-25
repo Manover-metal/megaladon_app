@@ -494,6 +494,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get offer_services => 'Offer services';
 
   @override
+  String get respond_requires_auth_and_executor =>
+      'To respond, log in or sign up and become an executor';
+
+  @override
+  String get respond_requires_executor =>
+      'To respond, you need to become an executor';
+
+  @override
+  String get respond_requires_subscription =>
+      'Responding and chatting with the customer require an executor subscription';
+
+  @override
+  String get contact_requires_subscription =>
+      'Calling and chatting require an executor subscription';
+
+  @override
   String get discuss_in_chat => 'Discuss in chat';
 
   @override
@@ -1099,4 +1115,103 @@ class AppLocalizationsEn extends AppLocalizations {
   String userProfileMemberSince(String date) {
     return 'With us since $date';
   }
+
+  @override
+  String chatOrderGreeting(String order) {
+    return 'Hello, I\'m writing about the order \"$order\"';
+  }
+
+  @override
+  String subscriptionActiveUntil(String date) {
+    return 'Subscription active until $date';
+  }
+
+  @override
+  String get subscriptionActiveHint =>
+      'All executor features are unlocked. Renew in advance so you don\'t lose access.';
+
+  @override
+  String get subscriptionInactive => 'Subscription is not active';
+
+  @override
+  String get subscriptionInactiveHint =>
+      'Pick a period below — access opens right after payment.';
+
+  @override
+  String get subscriptionExecutorBenefitsTitle =>
+      'What the executor subscription gives you';
+
+  @override
+  String get subscriptionStoreBenefitsTitle =>
+      'What the store subscription gives you';
+
+  @override
+  String get subscriptionExecutorBenefit1Title =>
+      'Calls and chat with customers';
+
+  @override
+  String get subscriptionExecutorBenefit1Text =>
+      'The advert author\'s contacts are open: call and message them directly, with no middlemen.';
+
+  @override
+  String get subscriptionExecutorBenefit2Title => 'Your own adverts';
+
+  @override
+  String get subscriptionExecutorBenefit2Text =>
+      'Publish and edit service adverts so customers find you on their own.';
+
+  @override
+  String get subscriptionExecutorBenefit3Title => 'Every order at hand';
+
+  @override
+  String get subscriptionExecutorBenefit3Text =>
+      'Respond to orders first and take on as much work as you can handle.';
+
+  @override
+  String get subscriptionStoreBenefit1Title => 'Your store in the catalogue';
+
+  @override
+  String get subscriptionStoreBenefit1Text =>
+      'Without an active subscription the store is hidden from the metal rolling section and nobody can find it.';
+
+  @override
+  String get subscriptionStoreBenefit2Title => 'Price lists and contacts';
+
+  @override
+  String get subscriptionStoreBenefit2Text =>
+      'Buyers see your store\'s address, phone number and uploaded price lists.';
+
+  @override
+  String get subscriptionStoreBenefit3Title => 'Direct enquiries';
+
+  @override
+  String get subscriptionStoreBenefit3Text =>
+      'Customers call and message you themselves — no commission on deals.';
+
+  @override
+  String get subscriptionChoosePeriod => 'Choose a period';
+
+  @override
+  String subscriptionPerMonth(String amount) {
+    return '≈ $amount ₸ per month';
+  }
+
+  @override
+  String subscriptionBadgeBest(String percent) {
+    return 'Save $percent%';
+  }
+
+  @override
+  String get subscriptionBadgeFree => 'Free';
+
+  @override
+  String get subscriptionFootnote =>
+      'The subscription activates right after payment. Renewal is manual — no automatic charges.';
+
+  @override
+  String get subscriptionPlansEmpty => 'No plans available yet';
+
+  @override
+  String get subscriptionNoFaces =>
+      'Subscriptions are available to executors and stores. Fill in your executor or store profile to pick a plan.';
 }

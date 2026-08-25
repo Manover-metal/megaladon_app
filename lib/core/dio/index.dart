@@ -29,7 +29,7 @@ class ApiService {
         printResponseHeaders: false,
         printErrorMessage: true,
         responseFilter: (response) {
-          if(response.requestOptions.uri.path.contains('api/chat/1')) {
+          if(response.requestOptions.uri.path.contains('api/chat')) {
             return false;
           }
           return true;

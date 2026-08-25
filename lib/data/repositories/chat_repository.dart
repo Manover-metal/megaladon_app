@@ -30,6 +30,10 @@ class ChatRepository {
             : null;
       });
 
+  // Помечает прочитанными сообщения собеседника в чате [chatId].
+  Future<void> markRead(int chatId) =>
+      ApiService.I.post<dynamic>('/chat/$chatId/read');
+
   Future<List<MessageModel>> getMessages(
           int chatId, MessageIndexRequestParams params) =>
       ApiService.I

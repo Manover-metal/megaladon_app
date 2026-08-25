@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:megaladon/data/models/chat/chat_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/presentation/routing/router.dart';
+import 'package:megaladon/presentation/widgets/badge/unread_badge.dart';
 import 'package:megaladon/presentation/widgets/chat/companion_avatar.dart';
 
 class ChatCard extends StatelessWidget {
@@ -75,11 +76,27 @@ class ChatCard extends StatelessWidget {
                           softWrap: true,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
+                          // Непрочитанное превью выделяем начертанием и цветом:
+                          // бейдж справа виден не всегда — превью может занять
+                          // обе строки и увести взгляд вниз.
+                          style: chat.hasUnread
+                              ? TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: theme.textTheme.bodyMedium?.color,
+                                )
+                              : null,
                         ),
                       ],
                     ),
                   ),
                 ),
+                // Отступы вместе с бейджем: без непрочитанных превью должно
+                // дотягиваться до правого края, как раньше.
+                if (chat.hasUnread)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
+                    child: UnreadBadge(count: chat.unreadCount),
+                  ),
               ],
             ),
           ),

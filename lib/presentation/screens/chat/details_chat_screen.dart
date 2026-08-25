@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,6 +12,7 @@ import 'package:megaladon/data/models/chat/message_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/screens/chats/chat_cubit.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
+import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/chat/attach_source_modal.dart';
 import 'package:megaladon/presentation/widgets/chat/chat_app_bar_title.dart';
 import 'package:megaladon/presentation/widgets/chat/chat_image_viewer.dart';
@@ -18,8 +20,13 @@ import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DetailsChatScreen extends StatefulWidget {
-  const DetailsChatScreen({required this.chat, super.key});
+  const DetailsChatScreen({required this.chat, this.draftMessage, super.key});
   final ChatModel chat;
+
+  /// Заготовка первого сообщения: подставляется в поле ввода, но не
+  /// отправляется — пользователь может дописать, стереть или отправить как
+  /// есть. Приходит из карточки заказа, когда чат заводят с нуля.
+  final String? draftMessage;
 
   @override
   State<DetailsChatScreen> createState() => _DetailsChatScreenState();
@@ -35,7 +42,7 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
   void initState() {
     _cubit = context.read<ChatCubit>();
     _cubit.openChat(widget.chat.id);
-    _textController = TextEditingController();
+    _textController = TextEditingController(text: widget.draftMessage ?? '');
     _focusNode = FocusNode();
 
     _scrollController = ScrollController();
@@ -138,10 +145,20 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
           centerTitle: false,
           backgroundColor: _darken(Theme.of(context).scaffoldBackgroundColor),
           titleWidget: BlocBuilder<ChatCubit, ChatState>(
-            builder: (context, state) => ChatAppBarTitle(
-              companion: _chatOf(state).companion ?? widget.chat.companion,
-              fallbackTitle: AppLocalizations.of(context)!.chat,
-            ),
+            builder: (context, state) {
+              final companion =
+                  _chatOf(state).companion ?? widget.chat.companion;
+              return ChatAppBarTitle(
+                companion: companion,
+                fallbackTitle: AppLocalizations.of(context)!.chat,
+                // Удалённый аккаунт открывать нечего: GET /user/{id}/public
+                // отдаёт на него 404.
+                onTap: companion == null || companion.isDeleted
+                    ? null
+                    : () => context.router
+                        .push(UserProfileRoute(userId: companion.id)),
+              );
+            },
           ),
         ),
         bottomNavigationBar: BlocBuilder<ChatCubit, ChatState>(
@@ -221,7 +238,9 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
                       ],
                     ),
                   ),
-                  SizedBox(height: MediaQuery.of(context).viewInsets.bottom,)
+                  SizedBox(
+                    height: MediaQuery.of(context).viewInsets.bottom,
+                  )
                 ],
               ),
             );
@@ -231,8 +250,7 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
           builder: (context, authState) => BlocBuilder<ChatCubit, ChatState>(
             builder: (context, state) {
               final chat = _chatOf(state);
-              final pending =
-                  state.loadingMessages[widget.chat.id] ?? const [];
+              final pending = state.loadingMessages[widget.chat.id] ?? const [];
               final failed = state.errorMessages[widget.chat.id] ?? const [];
 
               // Визуальный порядок сверху вниз: старые → новые, затем
@@ -259,8 +277,8 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
                 child: ListView.builder(
                   controller: _scrollController,
                   reverse: true,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20, vertical: 12),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                   itemCount: items.length,
                   itemBuilder: (context, index) {
                     final it = items[index];
@@ -434,8 +452,8 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
   }
 
   Future<void> _openFile(BuildContext context, String url) async {
-    final ok = await launchUrl(Uri.parse(url),
-        mode: LaunchMode.externalApplication);
+    final ok =
+        await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
     if (!ok && context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(AppLocalizations.of(context)!.file_open_error)),

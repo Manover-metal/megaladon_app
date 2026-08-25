@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:megaladon/data/models/order_badges_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
+import 'package:megaladon/logic/screens/orders/badges/order_badges_cubit.dart';
 import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
+import 'package:megaladon/presentation/widgets/badge/unread_badge.dart';
 import 'package:megaladon/presentation/widgets/bottom_sheet/filters/filter_order_my_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/card/order_card.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
@@ -68,9 +71,13 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
   }
 
   // refresh() сбрасывает startRow и перезагружает оба списка (мои/отклики)
-  // с первой страницы, сохраняя фильтры.
-  Future<void> _onRefresh() async =>
-      context.read<OrderScreenMyCubit>().refresh();
+  // с первой страницы, сохраняя фильтры. Заодно перечитываем счётчики: на
+  // вкладках они должны сходиться с тем, что показывают карточки.
+  Future<void> _onRefresh() async {
+    await context.read<OrderScreenMyCubit>().refresh();
+    if (!mounted) return;
+    await context.read<OrderBadgesCubit>().fetch();
+  }
 
   Future<void> _showFilter() async {
     var result = await showModalBottomSheet(
@@ -93,7 +100,14 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
 
   @override
   Widget build(BuildContext context) => BlocBuilder<AuthBloc, AuthState>(
-        builder: (context, authState) => DefaultTabController(
+        builder: (context, authState) =>
+            BlocBuilder<OrderBadgesCubit, OrderBadgesState>(
+                builder: (context, badgesState) =>
+                    _buildTabs(context, badgesState.badges)),
+      );
+
+  Widget _buildTabs(BuildContext context, OrderBadges badges) =>
+      DefaultTabController(
           length: 2,
           child: Scaffold(
             appBar: PreferredSize(
@@ -141,8 +155,14 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
                     unselectedLabelColor: Colors.grey,
                     indicatorColor: Theme.of(context).colorScheme.primary,
                     tabs: [
-                      Tab(text: AppLocalizations.of(context)!.as_a_user),
-                      Tab(text: AppLocalizations.of(context)!.as_a_executor),
+                      _BadgedTab(
+                        text: AppLocalizations.of(context)!.as_a_user,
+                        count: badges.my,
+                      ),
+                      _BadgedTab(
+                        text: AppLocalizations.of(context)!.as_a_executor,
+                        count: badges.responded,
+                      ),
                     ],
                   ),
                 ))
@@ -235,7 +255,28 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
                 ],
               ),
             ),
-          ),
+          ));
+}
+
+/// Заголовок вкладки со счётчиком изменившихся заказов.
+class _BadgedTab extends StatelessWidget {
+  const _BadgedTab({required this.text, required this.count});
+
+  final String text;
+  final int count;
+
+  @override
+  Widget build(BuildContext context) => Tab(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(child: Text(text, overflow: TextOverflow.ellipsis)),
+            if (count > 0) ...[
+              const SizedBox(width: 6),
+              UnreadBadge(count: count),
+            ],
+          ],
         ),
       );
 }

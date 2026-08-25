@@ -8,17 +8,21 @@ class ChatAppBarTitle extends StatelessWidget {
   const ChatAppBarTitle({
     required this.companion,
     required this.fallbackTitle,
+    this.onTap,
     super.key,
   });
 
   final ChatCompanion? companion;
   final String fallbackTitle;
 
+  /// Переход на профиль собеседника. null — заголовок не нажимается.
+  final VoidCallback? onTap;
+
   @override
   Widget build(BuildContext context) {
     final name =
         companion?.name.isNotEmpty == true ? companion!.name : fallbackTitle;
-    return Row(
+    final title = Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         CompanionAvatar(photoUrl: companion?.photoUrl),
@@ -34,6 +38,16 @@ class ChatAppBarTitle extends StatelessWidget {
           ),
         ),
       ],
+    );
+
+    if (onTap == null) return title;
+    // HitTestBehavior.opaque: без него тап проваливается в промежутке между
+    // аватаром и текстом — Row там прозрачный. Зона нажатия ограничена самой
+    // строкой (у Row стоит mainAxisSize.min), а не всей шириной шапки.
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: onTap,
+      child: title,
     );
   }
 }

@@ -4,22 +4,27 @@ class OfferCreateRequestParams {
   OfferCreateRequestParams({
     required this.price,
     required this.cityId,
-    required this.comment,
     required this.date,
+    this.comment,
   });
   final int price;
   final String date;
-  final String comment;
+
+  /// Описание отклика необязательно: пустое не отправляем, чтобы бэкенд
+  /// сохранил null и карточка отклика показала «нет описания».
+  final String? comment;
   final int cityId;
 
   FormData toData() {
-    var data = FormData.fromMap({
+    final map = <String, dynamic>{
       'price': price,
-      'comment': comment,
       'date': date,
       'city_id': cityId,
       'expired_at': '2021-12-12'
-    });
-    return data;
+    };
+    if (comment != null && comment!.isNotEmpty) {
+      map['comment'] = comment;
+    }
+    return FormData.fromMap(map);
   }
 }

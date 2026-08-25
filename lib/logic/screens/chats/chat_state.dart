@@ -35,6 +35,10 @@ class ChatState extends Equatable {
   /// Открытый в данный момент чат (его сообщения опрашиваются по таймеру).
   final int? activeChatId;
 
+  /// Сумма непрочитанных по всем чатам — для бейджа в меню.
+  int get totalUnread =>
+      chats.fold<int>(0, (sum, chat) => sum + chat.unreadCount);
+
   @override
   List<Object?> get props => [
         status,

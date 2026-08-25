@@ -50,7 +50,9 @@ class OrderModel extends Equatable {
       this.images = const [],
       this.category,
       this.city,
-      this.status = OrderStatus.nothing});
+      this.status = OrderStatus.nothing,
+      this.statusChanged = false,
+      this.newOffersCount = 0});
   final int id;
   final String title;
   final String description;
@@ -69,6 +71,21 @@ class OrderModel extends Equatable {
   final List<FileModel> images;
 
   final OrderStatus status;
+
+  /// С последнего просмотра у заказа сменился статус. Считает бэкенд по
+  /// `order_views`; в общей ленте поля нет — там бейджей не показываем.
+  final bool statusChanged;
+
+  /// Сколько откликов прибавилось с последнего просмотра. Осмысленно только
+  /// в списке своих заказов.
+  final int newOffersCount;
+
+  /// Заказ изменился с тех пор, как пользователь его открывал.
+  bool get hasUpdates => statusChanged || newOffersCount > 0;
+
+  static OrderStatus _statusFrom(Object? code) => code != null
+      ? OrderStatus.values[Parser.toInt(code)]
+      : OrderStatus.nothing;
 
   static OrderModel fromJsonMini(Map<String, dynamic> data) => OrderModel(
         id: data['id'] as int,
@@ -89,6 +106,14 @@ class OrderModel extends Equatable {
         user: data['user'] != null
             ? UserModel.fromJson(data['user'] as Map<String, dynamic>)
             : null,
+        // status_code приходит и в списке — до сих пор он тут терялся, и
+        // карточке оставалась только строка statusName, захардкоженная
+        // по-русски в Order::getStatusName().
+        status: _statusFrom(data['status_code']),
+        statusChanged: data['status_changed'] == true,
+        newOffersCount: data['new_offers_count'] is num
+            ? (data['new_offers_count'] as num).toInt()
+            : 0,
       );
 
   static OrderModel fromJsonFull(Map<String, dynamic> data) {
@@ -145,9 +170,7 @@ class OrderModel extends Equatable {
       city: data['city'] != null
           ? CityModel.fromJson(data['city'] as Map<String, dynamic>)
           : null,
-      status: data['status_code'] != null
-          ? OrderStatus.values[Parser.toInt(data['status_code'])]
-          : OrderStatus.nothing,
+      status: _statusFrom(data['status_code']),
     );
   }
 
@@ -172,6 +195,8 @@ class OrderModel extends Equatable {
         files,
         category,
         city,
-        status
+        status,
+        statusChanged,
+        newOffersCount
       ];
 }

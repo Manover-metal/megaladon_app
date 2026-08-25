@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:megaladon/data/models/order_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/presentation/routing/router.dart';
+import 'package:megaladon/presentation/widgets/badge/unread_badge.dart';
 
 class OrderCard extends StatelessWidget {
   const OrderCard({required this.order, super.key});
@@ -28,7 +29,19 @@ class OrderCard extends StatelessWidget {
                   padding: const EdgeInsets.all(10),
                   child: Column(
                     children: [
-                      Text(order.title),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(child: Text(order.title)),
+                          // Точка, а не число: сколько именно раз сменился
+                          // статус, никто не считает — важен сам факт.
+                          if (order.statusChanged)
+                            const Padding(
+                              padding: EdgeInsets.only(left: 8, top: 6),
+                              child: UnreadBadge.dot(visible: true),
+                            ),
+                        ],
+                      ),
                       Text(order.description),
                       const SizedBox(
                         height: 30,
@@ -39,8 +52,11 @@ class OrderCard extends StatelessWidget {
                           const SizedBox(
                             width: 10,
                           ),
-                          Text(AppLocalizations.of(context)!
-                              .offersWithCount(order.countOffers.toString()))
+                          Expanded(
+                            child: Text(AppLocalizations.of(context)!
+                                .offersWithCount(order.countOffers.toString())),
+                          ),
+                          UnreadBadge(count: order.newOffersCount),
                         ],
                       ),
                       const SizedBox(

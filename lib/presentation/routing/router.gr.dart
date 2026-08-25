@@ -37,6 +37,17 @@ class _$AppRouter extends RootStackRouter {
         routeData: routeData,
         child: DetailsChatScreen(
           chat: args.chat,
+          draftMessage: args.draftMessage,
+          key: args.key,
+        ),
+      );
+    },
+    UserProfileRoute.name: (routeData) {
+      final args = routeData.argsAs<UserProfileRouteArgs>();
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: UserProfileScreen(
+          userId: args.userId,
           key: args.key,
         ),
       );
@@ -253,16 +264,6 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
         routeData: routeData,
         child: const SubscribeScreen(),
-      );
-    },
-    UserProfileRoute.name: (routeData) {
-      final args = routeData.argsAs<UserProfileRouteArgs>();
-      return MaterialPageX<dynamic>(
-        routeData: routeData,
-        child: UserProfileScreen(
-          userId: args.userId,
-          key: args.key,
-        ),
       );
     },
     ListStoresRoute.name: (routeData) {
@@ -535,6 +536,10 @@ class _$AppRouter extends RootStackRouter {
           path: '/details-chat-screen',
         ),
         RouteConfig(
+          UserProfileRoute.name,
+          path: 'user-profile-screen',
+        ),
+        RouteConfig(
           LoginRoute.name,
           path: '/login-screen',
           guards: [notAuthGuard],
@@ -628,12 +633,14 @@ class InitialRouter extends PageRouteInfo<void> {
 class DetailsChatRouter extends PageRouteInfo<DetailsChatRouterArgs> {
   DetailsChatRouter({
     required ChatModel chat,
+    String? draftMessage,
     Key? key,
   }) : super(
           DetailsChatRouter.name,
           path: '/details-chat-screen',
           args: DetailsChatRouterArgs(
             chat: chat,
+            draftMessage: draftMessage,
             key: key,
           ),
         );
@@ -644,16 +651,53 @@ class DetailsChatRouter extends PageRouteInfo<DetailsChatRouterArgs> {
 class DetailsChatRouterArgs {
   const DetailsChatRouterArgs({
     required this.chat,
+    this.draftMessage,
     this.key,
   });
 
   final ChatModel chat;
 
+  final String? draftMessage;
+
   final Key? key;
 
   @override
   String toString() {
-    return 'DetailsChatRouterArgs{chat: $chat, key: $key}';
+    return 'DetailsChatRouterArgs{chat: $chat, draftMessage: $draftMessage, key: $key}';
+  }
+}
+
+/// generated route for
+/// [UserProfileScreen]
+class UserProfileRoute extends PageRouteInfo<UserProfileRouteArgs> {
+  UserProfileRoute({
+    required int userId,
+    Key? key,
+  }) : super(
+          UserProfileRoute.name,
+          path: 'user-profile-screen',
+          args: UserProfileRouteArgs(
+            userId: userId,
+            key: key,
+          ),
+        );
+
+  static const String name = 'UserProfileRoute';
+}
+
+class UserProfileRouteArgs {
+  const UserProfileRouteArgs({
+    required this.userId,
+    this.key,
+  });
+
+  final int userId;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'UserProfileRouteArgs{userId: $userId, key: $key}';
   }
 }
 
@@ -1247,40 +1291,6 @@ class SubscribeRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'SubscribeRoute';
-}
-
-/// generated route for
-/// [UserProfileScreen]
-class UserProfileRoute extends PageRouteInfo<UserProfileRouteArgs> {
-  UserProfileRoute({
-    required int userId,
-    Key? key,
-  }) : super(
-          UserProfileRoute.name,
-          path: 'user-profile-screen',
-          args: UserProfileRouteArgs(
-            userId: userId,
-            key: key,
-          ),
-        );
-
-  static const String name = 'UserProfileRoute';
-}
-
-class UserProfileRouteArgs {
-  const UserProfileRouteArgs({
-    required this.userId,
-    this.key,
-  });
-
-  final int userId;
-
-  final Key? key;
-
-  @override
-  String toString() {
-    return 'UserProfileRouteArgs{userId: $userId, key: $key}';
-  }
 }
 
 /// generated route for

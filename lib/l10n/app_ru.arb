@@ -213,6 +213,10 @@
     }
   },
   "offer_services": "Предложить услуги",
+  "respond_requires_auth_and_executor": "Чтобы откликнуться, войдите или зарегистрируйтесь и станьте исполнителем",
+  "respond_requires_executor": "Чтобы откликнуться, вы должны стать исполнителем",
+  "respond_requires_subscription": "Отклик и чат с заказчиком доступны по подписке исполнителя",
+  "contact_requires_subscription": "Звонок и чат доступны по подписке исполнителя",
   "discuss_in_chat": "Обсудить в чате",
   "offers": "Предложений: ",
   "offersCount": "Предложений ({count} новых)",
@@ -431,5 +435,52 @@
   "userProfileRetry": "Повторить",
   "userProfileLoadError": "Не удалось загрузить",
   "userProfileCompletedOrders": "Выполнено заказов: {count}",
-  "userProfileMemberSince": "С нами с {date}"
+  "userProfileMemberSince": "С нами с {date}",
+  "chatOrderGreeting": "Здравствуйте, я по заказу «{order}»",
+  "subscriptionActiveUntil": "Подписка активна до {date}",
+  "@subscriptionActiveUntil": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionActiveHint": "Все возможности исполнителя открыты. Продлите заранее, чтобы не потерять доступ.",
+  "subscriptionInactive": "Подписка не активна",
+  "subscriptionInactiveHint": "Выберите срок ниже — доступ откроется сразу после оплаты.",
+  "subscriptionExecutorBenefitsTitle": "Что даёт подписка исполнителя",
+  "subscriptionStoreBenefitsTitle": "Что даёт подписка магазина",
+  "subscriptionExecutorBenefit1Title": "Звонки и чат с заказчиком",
+  "subscriptionExecutorBenefit1Text": "Контакты автора объявления открыты: звоните и пишите напрямую, без посредников.",
+  "subscriptionExecutorBenefit2Title": "Свои объявления",
+  "subscriptionExecutorBenefit2Text": "Публикуйте и редактируйте объявления об услугах, чтобы заказчики находили вас сами.",
+  "subscriptionExecutorBenefit3Title": "Все заказы под рукой",
+  "subscriptionExecutorBenefit3Text": "Откликайтесь на заказы первым и берите столько работы, сколько потянете.",
+  "subscriptionStoreBenefit1Title": "Магазин в каталоге",
+  "subscriptionStoreBenefit1Text": "Без активной подписки магазин не показывается в разделе металлопроката и его не найдут.",
+  "subscriptionStoreBenefit2Title": "Прайсы и контакты",
+  "subscriptionStoreBenefit2Text": "Покупатели видят адрес, телефон и загруженные прайс-листы вашего магазина.",
+  "subscriptionStoreBenefit3Title": "Заявки напрямую",
+  "subscriptionStoreBenefit3Text": "Клиенты звонят и пишут вам сами — никакой комиссии за сделку.",
+  "subscriptionChoosePeriod": "Выберите срок",
+  "subscriptionPerMonth": "≈ {amount} ₸ в месяц",
+  "@subscriptionPerMonth": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionBadgeBest": "Выгодно −{percent}%",
+  "@subscriptionBadgeBest": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionBadgeFree": "Бесплатно",
+  "subscriptionFootnote": "Подписка активируется сразу после оплаты. Продление — вручную, автосписаний нет.",
+  "subscriptionPlansEmpty": "Тарифы пока недоступны",
+  "subscriptionNoFaces": "Подписки доступны исполнителям и магазинам. Заполните профиль исполнителя или магазина, чтобы выбрать тариф."
 }

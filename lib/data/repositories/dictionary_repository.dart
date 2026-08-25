@@ -27,12 +27,36 @@ class DictionaryRepository {
       ApiService.I.get('/company-types').then((value) =>
           CompanyTypeModel.listFromJson(value.data['list'] as List<dynamic>));
 
-  Future<List<SubscribeModel>> getSubscribeStore() => ApiService.I
-      .get('/subscriptions', queryParameters: {'type': 'store'}).then((value) =>
-          SubscribeModel.listFromJson(value.data['list'] as List<dynamic>));
+  Future<List<SubscribeModel>> getSubscribeStore() => _getSubscribes('store');
 
-  Future<List<SubscribeModel>> getSubscribeExecutor() => ApiService.I
-      .get('/subscriptions', queryParameters: {'type': 'executor'}).then(
-          (value) =>
-              SubscribeModel.listFromJson(value.data['list'] as List<dynamic>));
+  Future<List<SubscribeModel>> getSubscribeExecutor() =>
+      _getSubscribes('executor');
+
+  /// Общий запрос подписок с логированием сырого ответа: подписки перестали
+  /// отображаться, а по пустому списку на экране не понять, вернул ли бэкенд
+  /// ничего или ответ не разобрался в [SubscribeModel].
+  Future<List<SubscribeModel>> _getSubscribes(String type) async {
+    final response = await ApiService.I
+        .get<dynamic>('/subscriptions', queryParameters: {'type': type});
+
+    final raw = response.data['list'];
+    print('[subscriptions:$type] сырой list: $raw');
+
+    if (raw is! List) {
+      throw FormatException(
+          '[subscriptions:$type] в поле list ожидался массив, пришло '
+          '${raw.runtimeType}; тело ответа: ${response.data}');
+    }
+
+    try {
+      return SubscribeModel.listFromJson(raw);
+    } catch (err, stackTrace) {
+      // Разбор падает на конкретном элементе — печатаем его целиком, иначе по
+      // тексту исключения не видно, какое поле не совпало с моделью.
+      print('[subscriptions:$type] не разобрался ответ: $err');
+      print('[subscriptions:$type] элементы: $raw');
+      print(stackTrace);
+      rethrow;
+    }
+  }
 }

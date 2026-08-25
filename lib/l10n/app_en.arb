@@ -353,6 +353,14 @@
   },
   "offer_services": "Offer services",
   "@offer_services": {},
+  "respond_requires_auth_and_executor": "To respond, log in or sign up and become an executor",
+  "@respond_requires_auth_and_executor": {},
+  "respond_requires_executor": "To respond, you need to become an executor",
+  "@respond_requires_executor": {},
+  "respond_requires_subscription": "Responding and chatting with the customer require an executor subscription",
+  "@respond_requires_subscription": {},
+  "contact_requires_subscription": "Calling and chatting require an executor subscription",
+  "@contact_requires_subscription": {},
   "discuss_in_chat": "Discuss in chat",
   "@discuss_in_chat": {},
   "offers": "Offers: ",
@@ -767,5 +775,59 @@
         "type": "String"
       }
     }
-  }
+  },
+  "chatOrderGreeting": "Hello, I'm writing about the order \"{order}\"",
+  "@chatOrderGreeting": {
+    "placeholders": {
+      "order": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionActiveUntil": "Subscription active until {date}",
+  "@subscriptionActiveUntil": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionActiveHint": "All executor features are unlocked. Renew in advance so you don't lose access.",
+  "subscriptionInactive": "Subscription is not active",
+  "subscriptionInactiveHint": "Pick a period below — access opens right after payment.",
+  "subscriptionExecutorBenefitsTitle": "What the executor subscription gives you",
+  "subscriptionStoreBenefitsTitle": "What the store subscription gives you",
+  "subscriptionExecutorBenefit1Title": "Calls and chat with customers",
+  "subscriptionExecutorBenefit1Text": "The advert author's contacts are open: call and message them directly, with no middlemen.",
+  "subscriptionExecutorBenefit2Title": "Your own adverts",
+  "subscriptionExecutorBenefit2Text": "Publish and edit service adverts so customers find you on their own.",
+  "subscriptionExecutorBenefit3Title": "Every order at hand",
+  "subscriptionExecutorBenefit3Text": "Respond to orders first and take on as much work as you can handle.",
+  "subscriptionStoreBenefit1Title": "Your store in the catalogue",
+  "subscriptionStoreBenefit1Text": "Without an active subscription the store is hidden from the metal rolling section and nobody can find it.",
+  "subscriptionStoreBenefit2Title": "Price lists and contacts",
+  "subscriptionStoreBenefit2Text": "Buyers see your store's address, phone number and uploaded price lists.",
+  "subscriptionStoreBenefit3Title": "Direct enquiries",
+  "subscriptionStoreBenefit3Text": "Customers call and message you themselves — no commission on deals.",
+  "subscriptionChoosePeriod": "Choose a period",
+  "subscriptionPerMonth": "≈ {amount} ₸ per month",
+  "@subscriptionPerMonth": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionBadgeBest": "Save {percent}%",
+  "@subscriptionBadgeBest": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionBadgeFree": "Free",
+  "subscriptionFootnote": "The subscription activates right after payment. Renewal is manual — no automatic charges.",
+  "subscriptionPlansEmpty": "No plans available yet",
+  "subscriptionNoFaces": "Subscriptions are available to executors and stores. Fill in your executor or store profile to pick a plan."
 }

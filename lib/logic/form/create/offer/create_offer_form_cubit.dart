@@ -26,7 +26,8 @@ class CreateOfferFormCubit extends Cubit<CreateOfferFormState> {
     required CityModel? city,
     required String date,
   }) {
-    var descriptionForm = DescriptionFormModel.dirty(description);
+    // Описание в отклике необязательно — проверяем только лимит длины.
+    var descriptionForm = DescriptionFormModel.dirtyOptional(description);
     var priceFormModel = PriceFormModel.dirty(price);
     var cityForm = CityFormModel.dirty(city?.id);
     var dateForm = DateOfferFormModel.dirty(date);

@@ -11,6 +11,7 @@ import 'package:megaladon/logic/screens/user/user_profile_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
+import 'package:megaladon/presentation/widgets/text/hint_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UserProfileScreen extends StatelessWidget {
@@ -166,7 +167,9 @@ class _UserProfileViewState extends State<_UserProfileView>
   }
 }
 
-/// «Позвонить» доступно всем — телефон и так публичен на карточке.
+/// «Позвонить» доступно гостям и обычным пользователям — телефон и так публичен
+/// на карточке, — но исполнителю без активной подписки закрыт весь контакт с
+/// заказчиком: и звонок, и чат. Это часть платного доступа.
 /// «Написать» требует авторизации: ChatCubit.createChat бьётся в
 /// защищённый эндпоинт и на 403 разлогинивает, поэтому гостю её не
 /// показываем.
@@ -178,35 +181,50 @@ class _ContactButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final isGuest = context.watch<ProfileScreenCubit>().state.user == null;
+    final profile = context.watch<ProfileScreenCubit>().state;
+    final isGuest = profile.user == null;
+    final executor = profile.user?.executor;
+    final contactBlocked = executor != null && !executor.hasActiveSubscription;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Row(
+      child: Column(
         children: [
-          if (user.phone != null)
-            Expanded(
-              child: ElevatedButtonApp(
-                text: l10n.call,
-                onPressed: () =>
-                    launchUrl(Uri(scheme: 'tel', path: user.phone!)),
-              ),
-            ),
-          if (user.phone != null && !isGuest) const SizedBox(width: 12),
-          if (!isGuest)
-            Expanded(
-              child: OutlinedButtonApp(
-                text: l10n.write,
-                onPressed: () =>
-                    context.read<ChatCubit>().createChat(user.id).then((chat) {
-                  // context.mounted — аналог проверки !mounted из
-                  // _toChat в details_ad_screen: экран могли закрыть,
-                  // пока создавался чат.
-                  if (chat == null || !context.mounted) return;
-                  context.router.push(DetailsChatRouter(chat: chat));
-                }),
-              ),
-            ),
+          Row(
+            children: [
+              if (user.phone != null)
+                Expanded(
+                  child: ElevatedButtonApp(
+                    text: l10n.call,
+                    onPressed: contactBlocked
+                        ? null
+                        : () =>
+                            launchUrl(Uri(scheme: 'tel', path: user.phone!)),
+                  ),
+                ),
+              if (user.phone != null && !isGuest) const SizedBox(width: 12),
+              if (!isGuest)
+                Expanded(
+                  child: OutlinedButtonApp(
+                    text: l10n.write,
+                    onPressed: contactBlocked
+                        ? null
+                        : () => context
+                                .read<ChatCubit>()
+                                .createChat(user.id)
+                                .then((chat) {
+                              // context.mounted — аналог проверки !mounted из
+                              // _toChat в details_ad_screen: экран могли
+                              // закрыть, пока создавался чат.
+                              if (chat == null || !context.mounted) return;
+                              context.router
+                                  .push(DetailsChatRouter(chat: chat));
+                            }),
+                  ),
+                ),
+            ],
+          ),
+          if (contactBlocked) HintText(l10n.contact_requires_subscription),
         ],
       ),
     );

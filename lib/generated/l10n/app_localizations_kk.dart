@@ -494,6 +494,22 @@ class AppLocalizationsKk extends AppLocalizations {
   String get offer_services => 'Қызметтерді ұсыну';
 
   @override
+  String get respond_requires_auth_and_executor =>
+      'Жауап беру үшін кіріңіз немесе тіркеліңіз және орындаушы болыңыз';
+
+  @override
+  String get respond_requires_executor =>
+      'Жауап беру үшін орындаушы болуыңыз керек';
+
+  @override
+  String get respond_requires_subscription =>
+      'Жауап беру және тапсырыс берушімен чат орындаушы жазылымы бойынша қолжетімді';
+
+  @override
+  String get contact_requires_subscription =>
+      'Қоңырау шалу және чат орындаушы жазылымы бойынша қолжетімді';
+
+  @override
   String get discuss_in_chat => 'Чатта талқылау';
 
   @override
@@ -1099,4 +1115,102 @@ class AppLocalizationsKk extends AppLocalizations {
   String userProfileMemberSince(String date) {
     return 'Бізбен бірге $date бастап';
   }
+
+  @override
+  String chatOrderGreeting(String order) {
+    return 'Сәлеметсіз бе, мен «$order» тапсырысы бойынша хабарласып тұрмын';
+  }
+
+  @override
+  String subscriptionActiveUntil(String date) {
+    return 'Жазылым $date дейін белсенді';
+  }
+
+  @override
+  String get subscriptionActiveHint =>
+      'Орындаушының барлық мүмкіндіктері ашық. Қолжетімділікті жоғалтпау үшін алдын ала ұзартыңыз.';
+
+  @override
+  String get subscriptionInactive => 'Жазылым белсенді емес';
+
+  @override
+  String get subscriptionInactiveHint =>
+      'Төменнен мерзімді таңдаңыз — қолжетімділік төлемнен кейін бірден ашылады.';
+
+  @override
+  String get subscriptionExecutorBenefitsTitle =>
+      'Орындаушы жазылымы не береді';
+
+  @override
+  String get subscriptionStoreBenefitsTitle => 'Дүкен жазылымы не береді';
+
+  @override
+  String get subscriptionExecutorBenefit1Title =>
+      'Тапсырыс берушімен қоңырау және чат';
+
+  @override
+  String get subscriptionExecutorBenefit1Text =>
+      'Хабарландыру авторының байланыстары ашық: делдалсыз тікелей қоңырау шалыңыз және жазыңыз.';
+
+  @override
+  String get subscriptionExecutorBenefit2Title => 'Өз хабарландыруларыңыз';
+
+  @override
+  String get subscriptionExecutorBenefit2Text =>
+      'Тапсырыс берушілер сізді өздері табуы үшін қызметтер туралы хабарландыруларды жариялаңыз және өңдеңіз.';
+
+  @override
+  String get subscriptionExecutorBenefit3Title => 'Барлық тапсырыс қол астында';
+
+  @override
+  String get subscriptionExecutorBenefit3Text =>
+      'Тапсырыстарға бірінші болып жауап беріңіз және қалағаныңызша жұмыс алыңыз.';
+
+  @override
+  String get subscriptionStoreBenefit1Title => 'Дүкен каталогта';
+
+  @override
+  String get subscriptionStoreBenefit1Text =>
+      'Белсенді жазылымсыз дүкен металл прокаты бөлімінде көрсетілмейді және оны ешкім таппайды.';
+
+  @override
+  String get subscriptionStoreBenefit2Title => 'Прайстар мен байланыстар';
+
+  @override
+  String get subscriptionStoreBenefit2Text =>
+      'Сатып алушылар дүкеніңіздің мекенжайын, телефонын және жүктелген прайс-парақтарын көреді.';
+
+  @override
+  String get subscriptionStoreBenefit3Title => 'Тікелей өтінімдер';
+
+  @override
+  String get subscriptionStoreBenefit3Text =>
+      'Клиенттер сізге өздері қоңырау шалады және жазады — мәміле үшін комиссия жоқ.';
+
+  @override
+  String get subscriptionChoosePeriod => 'Мерзімді таңдаңыз';
+
+  @override
+  String subscriptionPerMonth(String amount) {
+    return '≈ айына $amount ₸';
+  }
+
+  @override
+  String subscriptionBadgeBest(String percent) {
+    return 'Тиімді −$percent%';
+  }
+
+  @override
+  String get subscriptionBadgeFree => 'Тегін';
+
+  @override
+  String get subscriptionFootnote =>
+      'Жазылым төлемнен кейін бірден іске қосылады. Ұзарту — қолмен, автоматты түрде ақша алынбайды.';
+
+  @override
+  String get subscriptionPlansEmpty => 'Тарифтер әзірге қолжетімді емес';
+
+  @override
+  String get subscriptionNoFaces =>
+      'Жазылымдар орындаушылар мен дүкендерге қолжетімді. Тариф таңдау үшін орындаушы немесе дүкен профилін толтырыңыз.';
 }

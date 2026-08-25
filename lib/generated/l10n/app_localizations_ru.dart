@@ -494,6 +494,22 @@ class AppLocalizationsRu extends AppLocalizations {
   String get offer_services => 'Предложить услуги';
 
   @override
+  String get respond_requires_auth_and_executor =>
+      'Чтобы откликнуться, войдите или зарегистрируйтесь и станьте исполнителем';
+
+  @override
+  String get respond_requires_executor =>
+      'Чтобы откликнуться, вы должны стать исполнителем';
+
+  @override
+  String get respond_requires_subscription =>
+      'Отклик и чат с заказчиком доступны по подписке исполнителя';
+
+  @override
+  String get contact_requires_subscription =>
+      'Звонок и чат доступны по подписке исполнителя';
+
+  @override
   String get discuss_in_chat => 'Обсудить в чате';
 
   @override
@@ -1103,4 +1119,101 @@ class AppLocalizationsRu extends AppLocalizations {
   String userProfileMemberSince(String date) {
     return 'С нами с $date';
   }
+
+  @override
+  String chatOrderGreeting(String order) {
+    return 'Здравствуйте, я по заказу «$order»';
+  }
+
+  @override
+  String subscriptionActiveUntil(String date) {
+    return 'Подписка активна до $date';
+  }
+
+  @override
+  String get subscriptionActiveHint =>
+      'Все возможности исполнителя открыты. Продлите заранее, чтобы не потерять доступ.';
+
+  @override
+  String get subscriptionInactive => 'Подписка не активна';
+
+  @override
+  String get subscriptionInactiveHint =>
+      'Выберите срок ниже — доступ откроется сразу после оплаты.';
+
+  @override
+  String get subscriptionExecutorBenefitsTitle =>
+      'Что даёт подписка исполнителя';
+
+  @override
+  String get subscriptionStoreBenefitsTitle => 'Что даёт подписка магазина';
+
+  @override
+  String get subscriptionExecutorBenefit1Title => 'Звонки и чат с заказчиком';
+
+  @override
+  String get subscriptionExecutorBenefit1Text =>
+      'Контакты автора объявления открыты: звоните и пишите напрямую, без посредников.';
+
+  @override
+  String get subscriptionExecutorBenefit2Title => 'Свои объявления';
+
+  @override
+  String get subscriptionExecutorBenefit2Text =>
+      'Публикуйте и редактируйте объявления об услугах, чтобы заказчики находили вас сами.';
+
+  @override
+  String get subscriptionExecutorBenefit3Title => 'Все заказы под рукой';
+
+  @override
+  String get subscriptionExecutorBenefit3Text =>
+      'Откликайтесь на заказы первым и берите столько работы, сколько потянете.';
+
+  @override
+  String get subscriptionStoreBenefit1Title => 'Магазин в каталоге';
+
+  @override
+  String get subscriptionStoreBenefit1Text =>
+      'Без активной подписки магазин не показывается в разделе металлопроката и его не найдут.';
+
+  @override
+  String get subscriptionStoreBenefit2Title => 'Прайсы и контакты';
+
+  @override
+  String get subscriptionStoreBenefit2Text =>
+      'Покупатели видят адрес, телефон и загруженные прайс-листы вашего магазина.';
+
+  @override
+  String get subscriptionStoreBenefit3Title => 'Заявки напрямую';
+
+  @override
+  String get subscriptionStoreBenefit3Text =>
+      'Клиенты звонят и пишут вам сами — никакой комиссии за сделку.';
+
+  @override
+  String get subscriptionChoosePeriod => 'Выберите срок';
+
+  @override
+  String subscriptionPerMonth(String amount) {
+    return '≈ $amount ₸ в месяц';
+  }
+
+  @override
+  String subscriptionBadgeBest(String percent) {
+    return 'Выгодно −$percent%';
+  }
+
+  @override
+  String get subscriptionBadgeFree => 'Бесплатно';
+
+  @override
+  String get subscriptionFootnote =>
+      'Подписка активируется сразу после оплаты. Продление — вручную, автосписаний нет.';
+
+  @override
+  String get subscriptionPlansEmpty => 'Тарифы пока недоступны';
+
+  @override
+  String get subscriptionNoFaces =>
+      'Подписки доступны исполнителям и магазинам. Заполните профиль исполнителя или магазина, чтобы выбрать тариф.';
 }

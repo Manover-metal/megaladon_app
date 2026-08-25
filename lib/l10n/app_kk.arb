@@ -213,6 +213,10 @@
     }
   },
   "offer_services": "Қызметтерді ұсыну",
+  "respond_requires_auth_and_executor": "Жауап беру үшін кіріңіз немесе тіркеліңіз және орындаушы болыңыз",
+  "respond_requires_executor": "Жауап беру үшін орындаушы болуыңыз керек",
+  "respond_requires_subscription": "Жауап беру және тапсырыс берушімен чат орындаушы жазылымы бойынша қолжетімді",
+  "contact_requires_subscription": "Қоңырау шалу және чат орындаушы жазылымы бойынша қолжетімді",
   "discuss_in_chat": "Чатта талқылау",
   "offers": "Ұсыныстар: ",
   "offersCount": "Ұсыныстар ({count} жаңа)",
@@ -431,5 +435,52 @@
   "userProfileRetry": "Қайталау",
   "userProfileLoadError": "Жүктеу сәтсіз аяқталды",
   "userProfileCompletedOrders": "Орындалған тапсырыстар: {count}",
-  "userProfileMemberSince": "Бізбен бірге {date} бастап"
+  "userProfileMemberSince": "Бізбен бірге {date} бастап",
+  "chatOrderGreeting": "Сәлеметсіз бе, мен «{order}» тапсырысы бойынша хабарласып тұрмын",
+  "subscriptionActiveUntil": "Жазылым {date} дейін белсенді",
+  "@subscriptionActiveUntil": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionActiveHint": "Орындаушының барлық мүмкіндіктері ашық. Қолжетімділікті жоғалтпау үшін алдын ала ұзартыңыз.",
+  "subscriptionInactive": "Жазылым белсенді емес",
+  "subscriptionInactiveHint": "Төменнен мерзімді таңдаңыз — қолжетімділік төлемнен кейін бірден ашылады.",
+  "subscriptionExecutorBenefitsTitle": "Орындаушы жазылымы не береді",
+  "subscriptionStoreBenefitsTitle": "Дүкен жазылымы не береді",
+  "subscriptionExecutorBenefit1Title": "Тапсырыс берушімен қоңырау және чат",
+  "subscriptionExecutorBenefit1Text": "Хабарландыру авторының байланыстары ашық: делдалсыз тікелей қоңырау шалыңыз және жазыңыз.",
+  "subscriptionExecutorBenefit2Title": "Өз хабарландыруларыңыз",
+  "subscriptionExecutorBenefit2Text": "Тапсырыс берушілер сізді өздері табуы үшін қызметтер туралы хабарландыруларды жариялаңыз және өңдеңіз.",
+  "subscriptionExecutorBenefit3Title": "Барлық тапсырыс қол астында",
+  "subscriptionExecutorBenefit3Text": "Тапсырыстарға бірінші болып жауап беріңіз және қалағаныңызша жұмыс алыңыз.",
+  "subscriptionStoreBenefit1Title": "Дүкен каталогта",
+  "subscriptionStoreBenefit1Text": "Белсенді жазылымсыз дүкен металл прокаты бөлімінде көрсетілмейді және оны ешкім таппайды.",
+  "subscriptionStoreBenefit2Title": "Прайстар мен байланыстар",
+  "subscriptionStoreBenefit2Text": "Сатып алушылар дүкеніңіздің мекенжайын, телефонын және жүктелген прайс-парақтарын көреді.",
+  "subscriptionStoreBenefit3Title": "Тікелей өтінімдер",
+  "subscriptionStoreBenefit3Text": "Клиенттер сізге өздері қоңырау шалады және жазады — мәміле үшін комиссия жоқ.",
+  "subscriptionChoosePeriod": "Мерзімді таңдаңыз",
+  "subscriptionPerMonth": "≈ айына {amount} ₸",
+  "@subscriptionPerMonth": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionBadgeBest": "Тиімді −{percent}%",
+  "@subscriptionBadgeBest": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionBadgeFree": "Тегін",
+  "subscriptionFootnote": "Жазылым төлемнен кейін бірден іске қосылады. Ұзарту — қолмен, автоматты түрде ақша алынбайды.",
+  "subscriptionPlansEmpty": "Тарифтер әзірге қолжетімді емес",
+  "subscriptionNoFaces": "Жазылымдар орындаушылар мен дүкендерге қолжетімді. Тариф таңдау үшін орындаушы немесе дүкен профилін толтырыңыз."
 }

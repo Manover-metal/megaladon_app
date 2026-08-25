@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
+import 'package:megaladon/logic/screens/chats/chat_cubit.dart';
+import 'package:megaladon/logic/screens/orders/badges/order_badges_cubit.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
@@ -72,13 +74,22 @@ class DrawerApp extends StatelessWidget {
                             visible: state is AuthLoginState,
                             child: Column(
                               children: [
-                                DrawerRouteTile(
-                                  text: AppLocalizations.of(context)!.my_orders,
-                                  page: const InitialRouter(
-                                    children: [
-                                      OrderRouter(
-                                          children: [ListMyOrdersRoute()])
-                                    ],
+                                // Заказы, где с последнего просмотра сменился
+                                // статус или прибавились отклики — обе вкладки
+                                // экрана сразу.
+                                BlocBuilder<OrderBadgesCubit,
+                                    OrderBadgesState>(
+                                  builder: (context, badgesState) =>
+                                      DrawerRouteTile(
+                                    text:
+                                        AppLocalizations.of(context)!.my_orders,
+                                    badgeCount: badgesState.badges.total,
+                                    page: const InitialRouter(
+                                      children: [
+                                        OrderRouter(
+                                            children: [ListMyOrdersRoute()])
+                                      ],
+                                    ),
                                   ),
                                 ),
                                 DrawerRouteTile(
@@ -100,23 +111,48 @@ class DrawerApp extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-                                DrawerRouteTile(
-                                  text: AppLocalizations.of(context)!.chats,
-                                  page: const InitialRouter(
-                                    children: [
-                                      ProfileRouter(
-                                          children: [ListChatsRoute()])
-                                    ],
+                                // Счётчик берём из ChatCubit: он опрашивает
+                                // список чатов и вне их экрана, поэтому бейдж
+                                // здесь не устаревает.
+                                BlocBuilder<ChatCubit, ChatState>(
+                                  builder: (context, chatState) =>
+                                      DrawerRouteTile(
+                                    text: AppLocalizations.of(context)!.chats,
+                                    badgeCount: chatState.totalUnread,
+                                    page: const InitialRouter(
+                                      children: [
+                                        ProfileRouter(
+                                            children: [ListChatsRoute()])
+                                      ],
+                                    ),
                                   ),
                                 ),
-                                DrawerRouteTile(
-                                  text: AppLocalizations.of(context)!
-                                      .subscriptions,
-                                  page: const InitialRouter(
-                                    children: [
-                                      OrderRouter(children: [SubscribeRoute()])
-                                    ],
-                                  ),
+                                // Экран подписок состоит из вкладок «как
+                                // исполнитель» и «как магазин»: без этих
+                                // сущностей у пользователя там ноль вкладок и
+                                // пустой экран. Поэтому и пункт меню прячем.
+                                BlocBuilder<ProfileScreenCubit,
+                                    ProfileScreenState>(
+                                  builder: (context, profileState) {
+                                    final hasFace =
+                                        profileState.user?.executor != null ||
+                                            profileState.user?.store != null;
+
+                                    if (!hasFace) {
+                                      return const SizedBox.shrink();
+                                    }
+
+                                    return DrawerRouteTile(
+                                      text: AppLocalizations.of(context)!
+                                          .subscriptions,
+                                      page: const InitialRouter(
+                                        children: [
+                                          OrderRouter(
+                                              children: [SubscribeRoute()])
+                                        ],
+                                      ),
+                                    );
+                                  },
                                 ),
                               ],
                             )),

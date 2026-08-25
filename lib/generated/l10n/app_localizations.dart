@@ -1030,6 +1030,30 @@ abstract class AppLocalizations {
   /// **'Offer services'**
   String get offer_services;
 
+  /// No description provided for @respond_requires_auth_and_executor.
+  ///
+  /// In en, this message translates to:
+  /// **'To respond, log in or sign up and become an executor'**
+  String get respond_requires_auth_and_executor;
+
+  /// No description provided for @respond_requires_executor.
+  ///
+  /// In en, this message translates to:
+  /// **'To respond, you need to become an executor'**
+  String get respond_requires_executor;
+
+  /// No description provided for @respond_requires_subscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Responding and chatting with the customer require an executor subscription'**
+  String get respond_requires_subscription;
+
+  /// No description provided for @contact_requires_subscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Calling and chatting require an executor subscription'**
+  String get contact_requires_subscription;
+
   /// No description provided for @discuss_in_chat.
   ///
   /// In en, this message translates to:
@@ -2139,6 +2163,162 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'With us since {date}'**
   String userProfileMemberSince(String date);
+
+  /// No description provided for @chatOrderGreeting.
+  ///
+  /// In en, this message translates to:
+  /// **'Hello, I\'m writing about the order \"{order}\"'**
+  String chatOrderGreeting(String order);
+
+  /// No description provided for @subscriptionActiveUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription active until {date}'**
+  String subscriptionActiveUntil(String date);
+
+  /// No description provided for @subscriptionActiveHint.
+  ///
+  /// In en, this message translates to:
+  /// **'All executor features are unlocked. Renew in advance so you don\'t lose access.'**
+  String get subscriptionActiveHint;
+
+  /// No description provided for @subscriptionInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription is not active'**
+  String get subscriptionInactive;
+
+  /// No description provided for @subscriptionInactiveHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a period below — access opens right after payment.'**
+  String get subscriptionInactiveHint;
+
+  /// No description provided for @subscriptionExecutorBenefitsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What the executor subscription gives you'**
+  String get subscriptionExecutorBenefitsTitle;
+
+  /// No description provided for @subscriptionStoreBenefitsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What the store subscription gives you'**
+  String get subscriptionStoreBenefitsTitle;
+
+  /// No description provided for @subscriptionExecutorBenefit1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Calls and chat with customers'**
+  String get subscriptionExecutorBenefit1Title;
+
+  /// No description provided for @subscriptionExecutorBenefit1Text.
+  ///
+  /// In en, this message translates to:
+  /// **'The advert author\'s contacts are open: call and message them directly, with no middlemen.'**
+  String get subscriptionExecutorBenefit1Text;
+
+  /// No description provided for @subscriptionExecutorBenefit2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Your own adverts'**
+  String get subscriptionExecutorBenefit2Title;
+
+  /// No description provided for @subscriptionExecutorBenefit2Text.
+  ///
+  /// In en, this message translates to:
+  /// **'Publish and edit service adverts so customers find you on their own.'**
+  String get subscriptionExecutorBenefit2Text;
+
+  /// No description provided for @subscriptionExecutorBenefit3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Every order at hand'**
+  String get subscriptionExecutorBenefit3Title;
+
+  /// No description provided for @subscriptionExecutorBenefit3Text.
+  ///
+  /// In en, this message translates to:
+  /// **'Respond to orders first and take on as much work as you can handle.'**
+  String get subscriptionExecutorBenefit3Text;
+
+  /// No description provided for @subscriptionStoreBenefit1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Your store in the catalogue'**
+  String get subscriptionStoreBenefit1Title;
+
+  /// No description provided for @subscriptionStoreBenefit1Text.
+  ///
+  /// In en, this message translates to:
+  /// **'Without an active subscription the store is hidden from the metal rolling section and nobody can find it.'**
+  String get subscriptionStoreBenefit1Text;
+
+  /// No description provided for @subscriptionStoreBenefit2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Price lists and contacts'**
+  String get subscriptionStoreBenefit2Title;
+
+  /// No description provided for @subscriptionStoreBenefit2Text.
+  ///
+  /// In en, this message translates to:
+  /// **'Buyers see your store\'s address, phone number and uploaded price lists.'**
+  String get subscriptionStoreBenefit2Text;
+
+  /// No description provided for @subscriptionStoreBenefit3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct enquiries'**
+  String get subscriptionStoreBenefit3Title;
+
+  /// No description provided for @subscriptionStoreBenefit3Text.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers call and message you themselves — no commission on deals.'**
+  String get subscriptionStoreBenefit3Text;
+
+  /// No description provided for @subscriptionChoosePeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a period'**
+  String get subscriptionChoosePeriod;
+
+  /// No description provided for @subscriptionPerMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'≈ {amount} ₸ per month'**
+  String subscriptionPerMonth(String amount);
+
+  /// No description provided for @subscriptionBadgeBest.
+  ///
+  /// In en, this message translates to:
+  /// **'Save {percent}%'**
+  String subscriptionBadgeBest(String percent);
+
+  /// No description provided for @subscriptionBadgeFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Free'**
+  String get subscriptionBadgeFree;
+
+  /// No description provided for @subscriptionFootnote.
+  ///
+  /// In en, this message translates to:
+  /// **'The subscription activates right after payment. Renewal is manual — no automatic charges.'**
+  String get subscriptionFootnote;
+
+  /// No description provided for @subscriptionPlansEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No plans available yet'**
+  String get subscriptionPlansEmpty;
+
+  /// No description provided for @subscriptionNoFaces.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscriptions are available to executors and stores. Fill in your executor or store profile to pick a plan.'**
+  String get subscriptionNoFaces;
 }
 
 class _AppLocalizationsDelegate

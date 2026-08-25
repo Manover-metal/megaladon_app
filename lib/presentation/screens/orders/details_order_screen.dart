@@ -7,6 +7,7 @@ import 'package:megaladon/data/models/dictionary/file_model.dart';
 import 'package:megaladon/data/models/order_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/screens/chats/chat_cubit.dart';
+import 'package:megaladon/logic/screens/orders/badges/order_badges_cubit.dart';
 import 'package:megaladon/logic/screens/orders/delete/order_delete_cubit.dart';
 import 'package:megaladon/logic/screens/orders/details/order_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/orders/main/order_screen_main_cubit.dart';
@@ -20,6 +21,7 @@ import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
+import 'package:megaladon/presentation/widgets/text/hint_text.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 import 'package:megaladon/presentation/widgets/tiles/executor_tile.dart';
 import 'package:megaladon/presentation/widgets/tiles/user_tile.dart';
@@ -51,9 +53,16 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
   void _toChat(OrderModel order) {
     final companionId = order.user?.id;
     if (companionId == null) return;
+    final greeting =
+        AppLocalizations.of(context)!.chatOrderGreeting(order.title);
     context.read<ChatCubit>().createChat(companionId).then((chat) {
       if (!mounted || chat == null) return;
-      context.router.push(DetailsChatRouter(chat: chat));
+      // Заготовку подставляем только в чат, где переписки ещё не было:
+      // если с этим заказчиком уже общались, поле остаётся пустым.
+      context.router.push(DetailsChatRouter(
+        chat: chat,
+        draftMessage: chat.lastMessage == null ? greeting : null,
+      ));
     });
   }
 
@@ -86,10 +95,26 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
         context.read<OrderDeleteCubit>().delete(order.id);
       };
 
+  late OrderBadgesCubit _badgesCubit;
+  late OrderScreenMyCubit _myOrdersCubit;
+
   @override
   void initState() {
     context.read<OrderScreenDetailsCubit>().fetch(id: widget.orderId);
+    // Ссылки берём здесь: в dispose обращаться к context уже нельзя.
+    _badgesCubit = context.read<OrderBadgesCubit>();
+    _myOrdersCubit = context.read<OrderScreenMyCubit>();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // Открытие карточки гасит отметку на бэкенде (OrderService::info), но
+    // счётчики и списки об этом не знают — перечитываем на выходе, иначе
+    // бейдж провисел бы до следующего опроса.
+    _badgesCubit.fetch();
+    _myOrdersCubit.refresh();
+    super.dispose();
   }
 
   void _listener(BuildContext context, OrderScreenDetailsState state) {
@@ -301,6 +326,7 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                 builder: (context, stateUser) {
                                   if (stateUser.user != null) {
                                     var user = stateUser.user;
+                                    final executor = user?.executor;
                                     return Column(
                                       children: [
                                         if (order.user != null &&
@@ -336,19 +362,42 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                         // ни написать ему уже нельзя.
                                         if (order.user?.isDeleted != true &&
                                             order.user?.id != user?.id &&
-                                            stateUser.user?.executor != null &&
                                             order.status ==
                                                 OrderStatus.active) ...[
-                                          ElevatedButtonApp(
-                                            text: AppLocalizations.of(context)!
-                                                .offer_services,
-                                            onPressed: _createOffer,
-                                          ),
-                                          OutlinedButtonApp(
-                                            text: AppLocalizations.of(context)!
-                                                .discuss_in_chat,
-                                            onPressed: () => _toChat(order),
-                                          ),
+                                          if (executor == null)
+                                            // Авторизован, но профиля исполнителя нет.
+                                            HintText(
+                                              AppLocalizations.of(context)!
+                                                  .respond_requires_executor,
+                                            )
+                                          else ...[
+                                            // Без активной подписки закрыт весь
+                                            // контакт с заказчиком: и отклик,
+                                            // и чат.
+                                            ElevatedButtonApp(
+                                              text:
+                                                  AppLocalizations.of(context)!
+                                                      .offer_services,
+                                              onPressed:
+                                                  executor.hasActiveSubscription
+                                                      ? _createOffer
+                                                      : null,
+                                            ),
+                                            OutlinedButtonApp(
+                                              text:
+                                                  AppLocalizations.of(context)!
+                                                      .discuss_in_chat,
+                                              onPressed:
+                                                  executor.hasActiveSubscription
+                                                      ? () => _toChat(order)
+                                                      : null,
+                                            ),
+                                            if (!executor.hasActiveSubscription)
+                                              HintText(
+                                                AppLocalizations.of(context)!
+                                                    .respond_requires_subscription,
+                                              ),
+                                          ],
                                         ] else if (order.user?.id ==
                                             user?.id) ...[
                                           if (order.status ==
@@ -391,6 +440,16 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                           ),
                                         ]
                                       ],
+                                    );
+                                  } else if (stateUser.status ==
+                                          ProfileScreenStatus.notAuth &&
+                                      order.user?.isDeleted != true &&
+                                      order.status == OrderStatus.active) {
+                                    // Гость: сначала вход/регистрация,
+                                    // затем профиль исполнителя.
+                                    return HintText(
+                                      AppLocalizations.of(context)!
+                                          .respond_requires_auth_and_executor,
                                     );
                                   } else {
                                     return Container();

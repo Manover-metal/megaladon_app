@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/advert_model.dart';
 import 'package:megaladon/data/models/dictionary/advert_type.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
-import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/screens/advert/delete/advert_delete_cubit.dart';
 import 'package:megaladon/logic/screens/advert/details/advert_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/chats/chat_cubit.dart';
@@ -17,6 +16,7 @@ import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
+import 'package:megaladon/presentation/widgets/text/hint_text.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 import 'package:megaladon/presentation/widgets/tiles/user_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -242,7 +242,15 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                                 BlocBuilder<ProfileScreenCubit,
                                     ProfileScreenState>(
                                   builder: (context, stateUser) {
-                                    if (stateUser is AuthLoginState) {
+                                    if (stateUser.user != null) {
+                                      final executor = stateUser.user?.executor;
+                                      // Исполнителю без активной подписки
+                                      // закрыты и звонок, и чат: доступ к
+                                      // контактам платный.
+                                      final contactBlocked = executor != null &&
+                                          !executor.hasActiveSubscription;
+                                      final phone =
+                                          state.advert.additionalPhone;
                                       return Column(
                                         children: [
                                           // Автор удалил аккаунт — ни позвонить,
@@ -252,19 +260,27 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                                                   true &&
                                               state.advert.user!.id !=
                                                   stateUser.user?.id) ...[
-                                            ElevatedButtonApp(
-                                              text:
-                                                  AppLocalizations.of(context)!
-                                                      .call,
-                                              onPressed: _call(state
-                                                  .advert.additionalPhone!),
-                                            ),
+                                            if (phone != null)
+                                              ElevatedButtonApp(
+                                                text: AppLocalizations.of(
+                                                        context)!
+                                                    .call,
+                                                onPressed: contactBlocked
+                                                    ? null
+                                                    : _call(phone),
+                                              ),
                                             OutlinedButtonApp(
-                                                onPressed: () =>
-                                                    _toChat(state.advert),
+                                                onPressed: contactBlocked
+                                                    ? null
+                                                    : () =>
+                                                        _toChat(state.advert),
                                                 text: AppLocalizations.of(
                                                         context)!
                                                     .ask_a_question_in_the_chat),
+                                            if (contactBlocked)
+                                              HintText(AppLocalizations.of(
+                                                      context)!
+                                                  .contact_requires_subscription),
                                           ]
                                         ],
                                       );

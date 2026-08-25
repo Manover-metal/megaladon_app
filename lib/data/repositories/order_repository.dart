@@ -1,4 +1,5 @@
 import 'package:megaladon/core/dio/index.dart';
+import 'package:megaladon/data/models/order_badges_model.dart';
 import 'package:megaladon/data/models/order_model.dart';
 import 'package:megaladon/data/models/request/params/create/order_create_request_params.dart';
 import 'package:megaladon/data/models/request/params/index/order_index_request_params.dart';
@@ -20,6 +21,12 @@ class OrderRepository {
           .get('/order/my-responded', queryParameters: params.toData())
           .then((value) =>
               OrderModel.listFromJsonMini(value.data['list'] as List<dynamic>));
+
+  /// Счётчики обновлений: сколько «моих заказов» и заказов, где пользователь
+  /// назначен исполнителем, изменилось с последнего просмотра.
+  Future<OrderBadges> badges() => ApiService.I
+      .get<dynamic>('/order/badges')
+      .then((value) => OrderBadges.parse(value.data));
 
   Future<OrderModel> info(int id) => ApiService.I
       .get(

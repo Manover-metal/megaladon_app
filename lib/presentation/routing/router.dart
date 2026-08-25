@@ -134,6 +134,12 @@ const List<AutoRoute> form = [
       page: DetailsChatScreen,
       name: 'DetailsChatRouter',
     ),
+    // Третья регистрация профиля (кроме ветвей ad и order): экран переписки
+    // лежит в корне роутера, поэтому context.router в шапке чата — корневой
+    // StackRouter, и маршрут должен быть среди его детей. Путь задан явно:
+    // генератор требует, чтобы одноимённые маршруты объявляли одинаковый
+    // сегмент, а корневому по умолчанию досталось бы «/user-profile-screen».
+    AutoRoute(page: UserProfileScreen, path: 'user-profile-screen'),
     ...auth,
     ...form
   ],

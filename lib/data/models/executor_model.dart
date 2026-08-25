@@ -14,6 +14,7 @@ class ExecutorModel {
     this.photo,
     this.services = const [],
     this.isDeleted = false,
+    this.subscriptionExpiredAt,
   });
 
   final int id;
@@ -31,6 +32,25 @@ class ExecutorModel {
   /// обезличенным — имя «Удалённый аккаунт», без фото, телефона и рейтинга.
   final bool isDeleted;
 
+  /// Окончание оплаченной подписки. `ExecutorPresenter::edited()` отдаёт его
+  /// unix-временем в секундах (null, если активного инвойса нет), и только в
+  /// полной форме — в `short()` поля нет вовсе. Поэтому у чужих исполнителей
+  /// оно всегда null: проверять подписку осмысленно лишь на своём профиле.
+  final DateTime? subscriptionExpiredAt;
+
+  /// Подписка куплена и ещё не истекла — исполнителю доступны отклики и звонки.
+  bool get hasActiveSubscription =>
+      subscriptionExpiredAt?.isAfter(DateTime.now()) ?? false;
+
+  /// Секунды, а не миллисекунды: так это поле приходит с бэкенда и в таком же
+  /// виде уходит в localStorage через [toJson].
+  static DateTime? _expiredAtFromJson(Object? value) {
+    if (value == null) return null;
+    final seconds = Parser.toInt(value);
+    if (seconds == 0) return null;
+    return DateTime.fromMillisecondsSinceEpoch(seconds * 1000);
+  }
+
   static ExecutorModel fromJson(Map<String, dynamic> data) => ExecutorModel(
         id: data['id'] as int,
         name: data['name'] as String,
@@ -45,6 +65,8 @@ class ExecutorModel {
             ? ServiceTypeModel.listFromJson(data['services'] as List<dynamic>)
             : [],
         isDeleted: data['is_deleted'] == true,
+        subscriptionExpiredAt:
+            _expiredAtFromJson(data['subscription_expired_at']),
       );
 
   static ExecutorModel? fromJsonOrNull(Map<String, dynamic>? data) {
@@ -73,5 +95,8 @@ class ExecutorModel {
         'photo_url': photo,
         'services': services.map((s) => s.toJson()).toList(),
         'is_deleted': isDeleted,
+        'subscription_expired_at': subscriptionExpiredAt == null
+            ? null
+            : subscriptionExpiredAt!.millisecondsSinceEpoch ~/ 1000,
       };
 }

@@ -20,8 +20,19 @@ class OrderScreenMyState extends Equatable {
   final bool stock;
   final bool stockResponded;
 
+  // ordersResponded и stockResponded обязаны быть в props: без них Equatable
+  // считает состояние неизменившимся, когда обновился только список откликов,
+  // и BlocBuilder вкладки «как исполнитель» не перестраивается.
   @override
-  List<Object?> get props => [status, orders, error, params, stock];
+  List<Object?> get props => [
+        status,
+        orders,
+        ordersResponded,
+        error,
+        params,
+        stock,
+        stockResponded,
+      ];
 
   OrderScreenMyState copyWith({
     OrderScreenMyStatus? status,
