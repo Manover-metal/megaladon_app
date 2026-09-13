@@ -15,19 +15,11 @@ class OrderSummaryCard extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final scheme = Theme.of(context).colorScheme;
 
-    // Крупной строкой показываем рекомендованную цену; если её нет или она
-    // нулевая, ту, что есть. Раньше обе печатались через .toString() и у
-    // пустой цены на экране появлялось слово «null».
-    final recommended = order.priceRecommendedText;
-    final max = order.priceMaxText;
-    final headline = recommended ?? max;
-    final headlineNote = recommended != null
-        ? l10n.priceRecommendedNote
-        : l10n.priceMaxLabel.toLowerCase();
+    // Бюджет — крупной строкой. Пустой и нулевой не показываем: раньше цены
+    // печатались через .toString() и на экране появлялось слово «null».
+    final budget = order.budgetText;
 
     final rows = <_Row>[
-      if (recommended != null && max != null)
-        _Row(l10n.priceMaxLabel, l10n.priceAmount(max)),
       if (order.executionDays != null)
         _Row(l10n.deadlineLabel, l10n.cardDays(order.executionDays.toString())),
       if (order.city != null) _Row(l10n.city, order.city!.name),
@@ -40,13 +32,13 @@ class OrderSummaryCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (headline != null) ...[
+          if (budget != null) ...[
             Row(
               crossAxisAlignment: CrossAxisAlignment.baseline,
               textBaseline: TextBaseline.alphabetic,
               children: [
                 Text(
-                  l10n.priceAmount(headline),
+                  l10n.priceAmount(budget),
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w700,
@@ -56,7 +48,7 @@ class OrderSummaryCard extends StatelessWidget {
                 const SizedBox(width: 8),
                 Flexible(
                   child: Text(
-                    headlineNote,
+                    l10n.budgetLabel.toLowerCase(),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(fontSize: 12, color: scheme.secondary),

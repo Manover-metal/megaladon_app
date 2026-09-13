@@ -6,14 +6,12 @@ class OrderUpdateRequestParams {
       required this.description,
       required this.categoryId,
       required this.cityId,
-      this.priceRecommended,
-      this.priceMax,
+      this.budget,
       this.executionDays,
       this.files = const []});
   final String title;
   final String description;
-  final int? priceRecommended;
-  final int? priceMax;
+  final int? budget;
   final int? executionDays;
   final int categoryId;
   final int cityId;
@@ -23,8 +21,7 @@ class OrderUpdateRequestParams {
     var data = FormData.fromMap({
       'title': title,
       'description': description,
-      'price_recommended': priceRecommended,
-      'price_max': priceMax,
+      'budget': budget,
       'execution_days': executionDays,
       'category_id': categoryId,
       'city_id': cityId,

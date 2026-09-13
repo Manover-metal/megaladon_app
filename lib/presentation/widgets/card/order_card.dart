@@ -31,8 +31,7 @@ class OrderCard extends StatelessWidget {
     final muted = scheme.secondary;
     final ink = theme.textTheme.bodyMedium?.color;
 
-    final hasPrice =
-        order.priceRecommendedText != null || order.priceMaxText != null;
+    final budget = order.budgetText;
     final city = order.city?.name;
     final days = order.executionDays;
 
@@ -75,9 +74,16 @@ class OrderCard extends StatelessWidget {
                     style: TextStyle(fontSize: 13, height: 1.4, color: muted),
                   ),
                 ],
-                if (hasPrice) ...[
+                if (budget != null) ...[
                   const SizedBox(height: _gap),
-                  _PriceLine(order: order, muted: muted),
+                  Text(
+                    l10n.priceAmount(budget),
+                    style: TextStyle(
+                      fontSize: 19,
+                      fontWeight: FontWeight.w700,
+                      color: scheme.primary,
+                    ),
+                  ),
                 ],
                 const SizedBox(height: _gap),
                 Container(height: 1, color: line),
@@ -171,47 +177,6 @@ class _StatusLine extends StatelessWidget {
           order.createdAt,
           style: TextStyle(fontSize: 12, color: muted),
         ),
-      ],
-    );
-  }
-}
-
-/// Рекомендованная цена крупно, потолок бюджета — мелкой подписью рядом.
-/// Нет рекомендованной (или она нулевая) — крупно идёт потолок, без подписи.
-class _PriceLine extends StatelessWidget {
-  const _PriceLine({required this.order, required this.muted});
-  final OrderModel order;
-  final Color muted;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final recommended = order.priceRecommendedText;
-    final max = order.priceMaxText;
-
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.baseline,
-      textBaseline: TextBaseline.alphabetic,
-      children: [
-        Text(
-          l10n.priceAmount((recommended ?? max)!),
-          style: TextStyle(
-            fontSize: 19,
-            fontWeight: FontWeight.w700,
-            color: Theme.of(context).colorScheme.primary,
-          ),
-        ),
-        if (recommended != null && max != null) ...[
-          const SizedBox(width: 8),
-          Flexible(
-            child: Text(
-              l10n.cardPriceUpTo(max),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontSize: 12, color: muted),
-            ),
-          ),
-        ],
       ],
     );
   }

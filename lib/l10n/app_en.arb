@@ -91,14 +91,12 @@
   "@company_type_selection_title": {},
   "search": "Search",
   "@search": {},
-  "desired_budget": "Desired budget (optional)",
-  "@desired_budget": {},
+  "budgetOptional": "Budget (optional)",
+  "@budgetOptional": {},
   "execution_days_label": "Execution period (in days)",
   "@execution_days_label": {},
   "form_error_execution_days_empty": "Specify the execution period in days",
   "@form_error_execution_days_empty": {},
-  "allowed_budget": "Allowed budget (optional)",
-  "@allowed_budget": {},
   "attach_files": "Attach files",
   "@attach_files": {},
   "add_file": "Add file",
@@ -331,16 +329,6 @@
   "@orderWithId": {
     "placeholders": {
       "id": {
-        "type": "String"
-      }
-    }
-  },
-  "desired_budget_up_to": "Desired budget: up to ",
-  "@desired_budget_up_to": {},
-  "desiredBudgetUpToAmount": "Desired budget: up to {amount} ₸",
-  "@desiredBudgetUpToAmount": {
-    "placeholders": {
-      "amount": {
         "type": "String"
       }
     }
@@ -849,14 +837,6 @@
   "subscriptionFootnote": "The subscription activates right after payment. Renewal is manual — no automatic charges.",
   "subscriptionPlansEmpty": "No plans available yet",
   "subscriptionNoFaces": "Subscriptions are available to executors and stores. Fill in your executor or store profile to pick a plan.",
-  "cardPriceUpTo": "up to {amount} ₸",
-  "@cardPriceUpTo": {
-    "placeholders": {
-      "amount": {
-        "type": "String"
-      }
-    }
-  },
   "cardDays": "{days} d.",
   "@cardDays": {
     "placeholders": {
@@ -865,8 +845,7 @@
       }
     }
   },
-  "priceRecommendedNote": "recommended",
-  "priceMaxLabel": "Maximum",
+  "budgetLabel": "Budget",
   "deadlineLabel": "Deadline",
   "offersLabel": "Offers",
   "priceFromAmount": "from {amount} ₸",

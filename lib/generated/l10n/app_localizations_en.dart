@@ -156,7 +156,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get search => 'Search';
 
   @override
-  String get desired_budget => 'Desired budget (optional)';
+  String get budgetOptional => 'Budget (optional)';
 
   @override
   String get execution_days_label => 'Execution period (in days)';
@@ -164,9 +164,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get form_error_execution_days_empty =>
       'Specify the execution period in days';
-
-  @override
-  String get allowed_budget => 'Allowed budget (optional)';
 
   @override
   String get attach_files => 'Attach files';
@@ -479,14 +476,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String orderWithId(String id) {
     return 'Order №$id';
-  }
-
-  @override
-  String get desired_budget_up_to => 'Desired budget: up to ';
-
-  @override
-  String desiredBudgetUpToAmount(String amount) {
-    return 'Desired budget: up to $amount ₸';
   }
 
   @override
@@ -1232,20 +1221,12 @@ class AppLocalizationsEn extends AppLocalizations {
       'Subscriptions are available to executors and stores. Fill in your executor or store profile to pick a plan.';
 
   @override
-  String cardPriceUpTo(String amount) {
-    return 'up to $amount ₸';
-  }
-
-  @override
   String cardDays(String days) {
     return '$days d.';
   }
 
   @override
-  String get priceRecommendedNote => 'recommended';
-
-  @override
-  String get priceMaxLabel => 'Maximum';
+  String get budgetLabel => 'Budget';
 
   @override
   String get deadlineLabel => 'Deadline';

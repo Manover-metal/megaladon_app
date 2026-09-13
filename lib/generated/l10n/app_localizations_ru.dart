@@ -156,7 +156,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get search => 'Поиск';
 
   @override
-  String get desired_budget => 'Желаемый бюджет (не обязательно)';
+  String get budgetOptional => 'Бюджет (не обязательно)';
 
   @override
   String get execution_days_label => 'Срок исполнения в днях';
@@ -164,9 +164,6 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get form_error_execution_days_empty =>
       'Укажите срок исполнения в днях';
-
-  @override
-  String get allowed_budget => 'Допустимый бюджет (не обязательно)';
 
   @override
   String get attach_files => 'Прикрепить файлы:';
@@ -479,14 +476,6 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String orderWithId(String id) {
     return 'Заказ №$id';
-  }
-
-  @override
-  String get desired_budget_up_to => 'Желаемый бюджет: до ';
-
-  @override
-  String desiredBudgetUpToAmount(String amount) {
-    return 'Желаемый бюджет: до $amount ₸';
   }
 
   @override
@@ -1234,20 +1223,12 @@ class AppLocalizationsRu extends AppLocalizations {
       'Подписки доступны исполнителям и магазинам. Заполните профиль исполнителя или магазина, чтобы выбрать тариф.';
 
   @override
-  String cardPriceUpTo(String amount) {
-    return 'до $amount ₸';
-  }
-
-  @override
   String cardDays(String days) {
     return '$days дн.';
   }
 
   @override
-  String get priceRecommendedNote => 'рекомендуемая';
-
-  @override
-  String get priceMaxLabel => 'Максимум';
+  String get budgetLabel => 'Бюджет';
 
   @override
   String get deadlineLabel => 'Срок';

@@ -394,11 +394,11 @@ abstract class AppLocalizations {
   /// **'Search'**
   String get search;
 
-  /// No description provided for @desired_budget.
+  /// No description provided for @budgetOptional.
   ///
   /// In en, this message translates to:
-  /// **'Desired budget (optional)'**
-  String get desired_budget;
+  /// **'Budget (optional)'**
+  String get budgetOptional;
 
   /// No description provided for @execution_days_label.
   ///
@@ -411,12 +411,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Specify the execution period in days'**
   String get form_error_execution_days_empty;
-
-  /// No description provided for @allowed_budget.
-  ///
-  /// In en, this message translates to:
-  /// **'Allowed budget (optional)'**
-  String get allowed_budget;
 
   /// No description provided for @attach_files.
   ///
@@ -1017,18 +1011,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Order №{id}'**
   String orderWithId(String id);
-
-  /// No description provided for @desired_budget_up_to.
-  ///
-  /// In en, this message translates to:
-  /// **'Desired budget: up to '**
-  String get desired_budget_up_to;
-
-  /// No description provided for @desiredBudgetUpToAmount.
-  ///
-  /// In en, this message translates to:
-  /// **'Desired budget: up to {amount} ₸'**
-  String desiredBudgetUpToAmount(String amount);
 
   /// No description provided for @executionDaysValue.
   ///
@@ -2350,29 +2332,17 @@ abstract class AppLocalizations {
   /// **'Subscriptions are available to executors and stores. Fill in your executor or store profile to pick a plan.'**
   String get subscriptionNoFaces;
 
-  /// No description provided for @cardPriceUpTo.
-  ///
-  /// In en, this message translates to:
-  /// **'up to {amount} ₸'**
-  String cardPriceUpTo(String amount);
-
   /// No description provided for @cardDays.
   ///
   /// In en, this message translates to:
   /// **'{days} d.'**
   String cardDays(String days);
 
-  /// No description provided for @priceRecommendedNote.
+  /// No description provided for @budgetLabel.
   ///
   /// In en, this message translates to:
-  /// **'recommended'**
-  String get priceRecommendedNote;
-
-  /// No description provided for @priceMaxLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Maximum'**
-  String get priceMaxLabel;
+  /// **'Budget'**
+  String get budgetLabel;
 
   /// No description provided for @deadlineLabel.
   ///

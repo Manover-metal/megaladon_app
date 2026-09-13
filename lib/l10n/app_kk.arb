@@ -55,10 +55,9 @@
   "city_selection_title": "Қала таңдау",
   "company_type_selection_title": "Түрін таңдау",
   "search": "Іздеу",
-  "desired_budget": "Қажетті бюджет (міндетті емес)",
+  "budgetOptional": "Бюджет (міндетті емес)",
   "execution_days_label": "Орындау мерзімі (күнмен)",
   "form_error_execution_days_empty": "Орындау мерзімін күнмен көрсетіңіз",
-  "allowed_budget": "Рұқсат етілген бюджет (міндетті емес)",
   "attach_files": "Файлдарды тіркеу:",
   "add_file": "Файлды қосу",
   "create_order": "Тапсырысты құру",
@@ -194,15 +193,6 @@
   "@orderWithId": {
     "placeholders": {
       "id": {
-        "type": "String"
-      }
-    }
-  },
-  "desired_budget_up_to": " Қажетті бюджет: дейін ",
-  "desiredBudgetUpToAmount": "Қажетті бюджет: дейін {amount} ₸",
-  "@desiredBudgetUpToAmount": {
-    "placeholders": {
-      "amount": {
         "type": "String"
       }
     }
@@ -502,10 +492,8 @@
   "subscriptionFootnote": "Жазылым төлемнен кейін бірден іске қосылады. Ұзарту — қолмен, автоматты түрде ақша алынбайды.",
   "subscriptionPlansEmpty": "Тарифтер әзірге қолжетімді емес",
   "subscriptionNoFaces": "Жазылымдар орындаушылар мен дүкендерге қолжетімді. Тариф таңдау үшін орындаушы немесе дүкен профилін толтырыңыз.",
-  "cardPriceUpTo": "{amount} ₸ дейін",
   "cardDays": "{days} күн",
-  "priceRecommendedNote": "ұсынылған",
-  "priceMaxLabel": "Максимум",
+  "budgetLabel": "Бюджет",
   "deadlineLabel": "Мерзімі",
   "offersLabel": "Ұсыныстар",
   "priceFromAmount": "{amount} ₸ бастап",

@@ -27,14 +27,14 @@ class OrderUpdateFormCubit extends Cubit<OrderUpdateFormState> {
   bool checkUpdate(
       {required String title,
       required String description,
-      required int? priceMax,
+      required int? budget,
       required String executionDays,
       required CityModel? city,
       required OrderCategoryModel category,
       required List<PlatformFile> files}) {
     var titleForm = TitleFormModel.dirty(title);
     var descriptionForm = DescriptionFormModel.dirty(description);
-    var priceMaxFormModel = PriceFormModel.dirty(priceMax, false);
+    var budgetFormModel = PriceFormModel.dirty(budget, false);
     var executionDaysForm = ExecutionDaysFormModel.dirty(executionDays);
     var cityForm = CityFormModel.dirty(city?.id);
     var categoryForm = OrderCategoryFormModel.dirty(category.id);
@@ -44,7 +44,7 @@ class OrderUpdateFormCubit extends Cubit<OrderUpdateFormState> {
       descriptionForm,
       cityForm,
       categoryForm,
-      priceMaxFormModel,
+      budgetFormModel,
       executionDaysForm,
     ]);
 
@@ -55,7 +55,7 @@ class OrderUpdateFormCubit extends Cubit<OrderUpdateFormState> {
         countTry: state.countTry + 1,
         city: cityForm,
         category: categoryForm,
-        priceMax: priceMaxFormModel,
+        budget: budgetFormModel,
         executionDays: executionDaysForm,
         files: files);
     emit(stateNew);
@@ -81,7 +81,7 @@ class OrderUpdateFormCubit extends Cubit<OrderUpdateFormState> {
             OrderUpdateRequestParams(
                 title: state.title.value,
                 description: state.description.value,
-                priceMax: state.priceMax.value,
+                budget: state.budget.value,
                 executionDays: int.tryParse(state.executionDays.value),
                 categoryId: state.category.value,
                 cityId: state.city.value!,

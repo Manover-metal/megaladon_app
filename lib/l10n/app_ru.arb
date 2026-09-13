@@ -55,10 +55,9 @@
   "city_selection_title": "Выбор города",
   "company_type_selection_title": "Выбор типа",
   "search": "Поиск",
-  "desired_budget": "Желаемый бюджет (не обязательно)",
+  "budgetOptional": "Бюджет (не обязательно)",
   "execution_days_label": "Срок исполнения в днях",
   "form_error_execution_days_empty": "Укажите срок исполнения в днях",
-  "allowed_budget": "Допустимый бюджет (не обязательно)",
   "attach_files": "Прикрепить файлы:",
   "add_file": "Добавить файл",
   "create_order": "Создать заказ",
@@ -194,15 +193,6 @@
   "@orderWithId": {
     "placeholders": {
       "id": {
-        "type": "String"
-      }
-    }
-  },
-  "desired_budget_up_to": "Желаемый бюджет: до ",
-  "desiredBudgetUpToAmount": "Желаемый бюджет: до {amount} ₸",
-  "@desiredBudgetUpToAmount": {
-    "placeholders": {
-      "amount": {
         "type": "String"
       }
     }
@@ -502,10 +492,8 @@
   "subscriptionFootnote": "Подписка активируется сразу после оплаты. Продление — вручную, автосписаний нет.",
   "subscriptionPlansEmpty": "Тарифы пока недоступны",
   "subscriptionNoFaces": "Подписки доступны исполнителям и магазинам. Заполните профиль исполнителя или магазина, чтобы выбрать тариф.",
-  "cardPriceUpTo": "до {amount} ₸",
   "cardDays": "{days} дн.",
-  "priceRecommendedNote": "рекомендуемая",
-  "priceMaxLabel": "Максимум",
+  "budgetLabel": "Бюджет",
   "deadlineLabel": "Срок",
   "offersLabel": "Отклики",
   "priceFromAmount": "от {amount} ₸",

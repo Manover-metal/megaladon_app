@@ -38,7 +38,7 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
   late TextEditingController _descriptionController;
 
   late CityPickerController _cityController;
-  late PriceEditingController _priceMaxController;
+  late PriceEditingController _budgetController;
   late TextEditingController _executionDaysController;
   late FileMultiPickerController _fileController;
 
@@ -59,7 +59,7 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
         description: _descriptionController.value.text,
         category: _orderCategoryController.value,
         city: _cityController.value,
-        priceMax: _priceMaxController.number,
+        budget: _budgetController.number,
         executionDays: _executionDaysController.value.text,
         files: _fileController.value);
   }
@@ -102,8 +102,8 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
         OrderCategoryPickerController(category: widget.order.category);
     _titleController = TextEditingController(text: widget.order.title);
     _cityController = CityPickerController(city: widget.order.city);
-    _priceMaxController =
-        PriceEditingController(value: widget.order.priceMax?.toInt());
+    _budgetController =
+        PriceEditingController(value: widget.order.budget?.toInt());
     _executionDaysController = TextEditingController(
         text: widget.order.executionDays?.toString() ?? '');
     _descriptionController =
@@ -118,7 +118,7 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
     _titleController.dispose();
     _cityController.dispose();
     _descriptionController.dispose();
-    _priceMaxController.dispose();
+    _budgetController.dispose();
     _executionDaysController.dispose();
     _fileController.dispose();
     super.dispose();
@@ -167,9 +167,9 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
                               ),
                               PriceFieldApp(
                                 label: AppLocalizations.of(context)!
-                                    .desired_budget,
-                                controller: _priceMaxController,
-                                errorText: state.priceMax.displayError
+                                    .budgetOptional,
+                                controller: _budgetController,
+                                errorText: state.budget.displayError
                                     ?.localize(AppLocalizations.of(context)!),
                               ),
                               NumberFieldApp(

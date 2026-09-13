@@ -156,7 +156,7 @@ class AppLocalizationsKk extends AppLocalizations {
   String get search => 'Іздеу';
 
   @override
-  String get desired_budget => 'Қажетті бюджет (міндетті емес)';
+  String get budgetOptional => 'Бюджет (міндетті емес)';
 
   @override
   String get execution_days_label => 'Орындау мерзімі (күнмен)';
@@ -164,9 +164,6 @@ class AppLocalizationsKk extends AppLocalizations {
   @override
   String get form_error_execution_days_empty =>
       'Орындау мерзімін күнмен көрсетіңіз';
-
-  @override
-  String get allowed_budget => 'Рұқсат етілген бюджет (міндетті емес)';
 
   @override
   String get attach_files => 'Файлдарды тіркеу:';
@@ -479,14 +476,6 @@ class AppLocalizationsKk extends AppLocalizations {
   @override
   String orderWithId(String id) {
     return '№$id тапсырыс';
-  }
-
-  @override
-  String get desired_budget_up_to => ' Қажетті бюджет: дейін ';
-
-  @override
-  String desiredBudgetUpToAmount(String amount) {
-    return 'Қажетті бюджет: дейін $amount ₸';
   }
 
   @override
@@ -1231,20 +1220,12 @@ class AppLocalizationsKk extends AppLocalizations {
       'Жазылымдар орындаушылар мен дүкендерге қолжетімді. Тариф таңдау үшін орындаушы немесе дүкен профилін толтырыңыз.';
 
   @override
-  String cardPriceUpTo(String amount) {
-    return '$amount ₸ дейін';
-  }
-
-  @override
   String cardDays(String days) {
     return '$days күн';
   }
 
   @override
-  String get priceRecommendedNote => 'ұсынылған';
-
-  @override
-  String get priceMaxLabel => 'Максимум';
+  String get budgetLabel => 'Бюджет';
 
   @override
   String get deadlineLabel => 'Мерзімі';

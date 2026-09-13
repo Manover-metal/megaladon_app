@@ -63,8 +63,7 @@ class OrderModel extends Equatable {
       required this.statusName,
       required this.createdAt,
       required this.countOffers,
-      this.priceRecommended,
-      this.priceMax,
+      this.budget,
       this.executionDays,
       this.user,
       this.executor,
@@ -82,11 +81,10 @@ class OrderModel extends Equatable {
   final String createdAt;
   final int countOffers;
 
-  /// Цены хранятся числом: строку из них делает представление. Раньше
+  /// Бюджет хранится числом: строку из него делает представление. Раньше
   /// модель держала уже отформатированный текст, и его приходилось разбирать
-  /// обратно — например, чтобы подставить цену в форму редактирования.
-  final double? priceRecommended;
-  final double? priceMax;
+  /// обратно — например, чтобы подставить бюджет в форму редактирования.
+  final double? budget;
   final int? executionDays;
   final UserModel? user;
   final OrderCategoryModel? category;
@@ -108,12 +106,10 @@ class OrderModel extends Equatable {
   /// Заказ изменился с тех пор, как пользователь его открывал.
   bool get hasUpdates => statusChanged || newOffersCount > 0;
 
-  /// Цены с разделителями разрядов — то, что показывают карточка и экран.
-  /// Ноль бэкенд присылает вместо «не указана», поэтому показывать его как
-  /// цену нельзя: для пустой и нулевой цены текста нет.
-  String? get priceRecommendedText => _priceText(priceRecommended);
-
-  String? get priceMaxText => _priceText(priceMax);
+  /// Бюджет с разделителями разрядов — то, что показывают карточка и экран.
+  /// Ноль бэкенд присылает вместо «не указан», поэтому показывать его как
+  /// сумму нельзя: для пустого и нулевого бюджета текста нет.
+  String? get budgetText => _priceText(budget);
 
   static String? _priceText(double? price) =>
       price != null && price > 0 ? Parser.toPrice(price) : null;
@@ -126,11 +122,8 @@ class OrderModel extends Equatable {
         id: data['id'] as int,
         title: data['title'] as String,
         description: data['description'] as String,
-        priceRecommended: data['price_recommended'] != null
-            ? Parser.toDouble(data['price_recommended'])
-            : null,
-        priceMax: data['price_max'] != null
-            ? Parser.toDouble(data['price_max'])
+        budget: data['budget'] != null
+            ? Parser.toDouble(data['budget'])
             : null,
         statusName: data['status'] as String,
         createdAt: data['created_at'] as String,
@@ -184,11 +177,7 @@ class OrderModel extends Equatable {
       id: data['id'] as int,
       title: data['title'] as String,
       description: data['description'] as String,
-      priceRecommended: data['price_recommended'] != null
-          ? Parser.toDouble(data['price_recommended'])
-          : null,
-      priceMax:
-          data['price_max'] != null ? Parser.toDouble(data['price_max']) : null,
+      budget: data['budget'] != null ? Parser.toDouble(data['budget']) : null,
       executionDays: data['execution_days'] != null
           ? Parser.toInt(data['execution_days'])
           : null,
@@ -227,8 +216,7 @@ class OrderModel extends Equatable {
         statusName,
         createdAt,
         countOffers,
-        priceRecommended,
-        priceMax,
+        budget,
         executionDays,
         user,
         executor,
