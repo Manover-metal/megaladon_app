@@ -48,6 +48,10 @@
   "@orders": {},
   "theshops": "Rolled metal",
   "@theshops": {},
+  "tabOrders": "Orders",
+  "tabStores": "Metal",
+  "tabAds": "Ads",
+  "tabProfile": "Profile",
   "all": "All",
   "@all": {},
   "active": "Active",
@@ -223,7 +227,7 @@
   "@latitude": {},
   "longitude": "Longitude",
   "@longitude": {},
-  "by_clicking_on_the_Continue_button_you_accept": "By clicking on the 'Continue' button you accept ",
+  "by_clicking_on_the_Continue_button_you_accept": "By continuing, you accept ",
   "@by_clicking_on_the_Continue_button_you_accept": {},
   "user_Agreement_Terms": "user agreement terms",
   "@user_Agreement_Terms": {},
@@ -319,14 +323,16 @@
       }
     }
   },
-  "set_as_executor": "Set as executor",
+  "set_as_executor": "Assign",
   "@set_as_executor": {},
   "order": "Order №",
   "@order": {},
   "orderWithId": "Order №{id}",
   "@orderWithId": {
     "placeholders": {
-      "id": {"type": "String"}
+      "id": {
+        "type": "String"
+      }
     }
   },
   "desired_budget_up_to": "Desired budget: up to ",
@@ -334,13 +340,17 @@
   "desiredBudgetUpToAmount": "Desired budget: up to {amount} ₸",
   "@desiredBudgetUpToAmount": {
     "placeholders": {
-      "amount": {"type": "String"}
+      "amount": {
+        "type": "String"
+      }
     }
   },
   "executionDaysValue": "Execution period: {days} days",
   "@executionDaysValue": {
     "placeholders": {
-      "days": {"type": "String"}
+      "days": {
+        "type": "String"
+      }
     }
   },
   "valid_to": "Valid to: ",
@@ -348,11 +358,21 @@
   "validToAmount": "Valid to: {amount} ₸",
   "@validToAmount": {
     "placeholders": {
-      "amount": {"type": "String"}
+      "amount": {
+        "type": "String"
+      }
     }
   },
   "offer_services": "Offer services",
   "@offer_services": {},
+  "respond_requires_auth_and_executor": "To respond, log in or sign up and become an executor",
+  "@respond_requires_auth_and_executor": {},
+  "respond_requires_executor": "To respond, you need to become an executor",
+  "@respond_requires_executor": {},
+  "respond_requires_subscription": "Responding and chatting with the customer require an executor subscription",
+  "@respond_requires_subscription": {},
+  "contact_requires_subscription": "Calling and chatting require an executor subscription",
+  "@contact_requires_subscription": {},
   "discuss_in_chat": "Discuss in chat",
   "@discuss_in_chat": {},
   "offers": "Offers: ",
@@ -360,13 +380,17 @@
   "offersCount": "Offers ({count} new)",
   "@offersCount": {
     "placeholders": {
-      "count": {"type": "String"}
+      "count": {
+        "type": "String"
+      }
     }
   },
   "offersWithCount": "Offers: {count}",
   "@offersWithCount": {
     "placeholders": {
-      "count": {"type": "String"}
+      "count": {
+        "type": "String"
+      }
     }
   },
   "discuss_in_chat2": "Discuss in chat (5 new)",
@@ -386,7 +410,9 @@
   "feedbackOnOrderId": "Feedback on order №{id}",
   "@feedbackOnOrderId": {
     "placeholders": {
-      "id": {"type": "String"}
+      "id": {
+        "type": "String"
+      }
     }
   },
   "leave_feedback": "Leave feedback",
@@ -429,7 +455,6 @@
   "@theme_light": {},
   "theme_system": "System",
   "@theme_system": {},
-  "@language": {},
   "about_the_application": "About the application",
   "@about_the_application": {},
   "delete_account": "Delete account",
@@ -635,6 +660,8 @@
   "@activate_for_free": {},
   "buy": "Buy",
   "@buy": {},
+  "subscriptionRequested": "Subscription request created. It will be activated once the payment is confirmed.",
+  "@subscriptionRequested": {},
   "subscribed_for_months": "{count, plural, one{You subscribed for {count} month} other{You subscribed for {count} months}}",
   "@subscribed_for_months": {
     "placeholders": {
@@ -767,5 +794,222 @@
         "type": "String"
       }
     }
-  }
+  },
+  "chatOrderGreeting": "Hello, I'm writing about the order \"{order}\"",
+  "@chatOrderGreeting": {
+    "placeholders": {
+      "order": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionActiveUntil": "Subscription active until {date}",
+  "@subscriptionActiveUntil": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionActiveHint": "All executor features are unlocked. Renew in advance so you don't lose access.",
+  "subscriptionInactive": "Subscription is not active",
+  "subscriptionInactiveHint": "Pick a period below — access opens right after payment.",
+  "subscriptionExecutorBenefitsTitle": "What the executor subscription gives you",
+  "subscriptionStoreBenefitsTitle": "What the store subscription gives you",
+  "subscriptionExecutorBenefit1Title": "Calls and chat with customers",
+  "subscriptionExecutorBenefit1Text": "The advert author's contacts are open: call and message them directly, with no middlemen.",
+  "subscriptionExecutorBenefit2Title": "Your own adverts",
+  "subscriptionExecutorBenefit2Text": "Publish and edit service adverts so customers find you on their own.",
+  "subscriptionExecutorBenefit3Title": "Every order at hand",
+  "subscriptionExecutorBenefit3Text": "Respond to orders first and take on as much work as you can handle.",
+  "subscriptionStoreBenefit1Title": "Your store in the catalogue",
+  "subscriptionStoreBenefit1Text": "Without an active subscription the store is hidden from the metal rolling section and nobody can find it.",
+  "subscriptionStoreBenefit2Title": "Price lists and contacts",
+  "subscriptionStoreBenefit2Text": "Buyers see your store's address, phone number and uploaded price lists.",
+  "subscriptionStoreBenefit3Title": "Direct enquiries",
+  "subscriptionStoreBenefit3Text": "Customers call and message you themselves — no commission on deals.",
+  "subscriptionChoosePeriod": "Choose a period",
+  "subscriptionPerMonth": "≈ {amount} ₸ per month",
+  "@subscriptionPerMonth": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionBadgeBest": "Save {percent}%",
+  "@subscriptionBadgeBest": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionBadgeFree": "Free",
+  "subscriptionFootnote": "The subscription activates right after payment. Renewal is manual — no automatic charges.",
+  "subscriptionPlansEmpty": "No plans available yet",
+  "subscriptionNoFaces": "Subscriptions are available to executors and stores. Fill in your executor or store profile to pick a plan.",
+  "cardPriceUpTo": "up to {amount} ₸",
+  "@cardPriceUpTo": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "cardDays": "{days} d.",
+  "@cardDays": {
+    "placeholders": {
+      "days": {
+        "type": "String"
+      }
+    }
+  },
+  "priceRecommendedNote": "recommended",
+  "priceMaxLabel": "Maximum",
+  "deadlineLabel": "Deadline",
+  "offersLabel": "Offers",
+  "priceFromAmount": "from {amount} ₸",
+  "@priceFromAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "sellerLabel": "Seller",
+  "executorLabel": "Executor",
+  "photosLabel": "Photos",
+  "publishedLabel": "Published",
+  "settingsGroupAppearance": "Appearance",
+  "settingsGroupNotifications": "Notifications",
+  "settingsGroupApp": "Application",
+  "linkOpenError": "Could not open the link",
+  "storeLabel": "Store",
+  "addressLabel": "Address",
+  "binLabel": "BIN/IIN",
+  "typeLabel": "Type",
+  "pricesLabel": "Price lists",
+  "chipPrice": "Price list",
+  "chipPhone": "Phone",
+  "no_contacts_yet": "No contacts listed",
+  "metricOrders": "orders",
+  "metricRating": "rating",
+  "metricServices": "services",
+  "requisitesLabel": "Details",
+  "writeMessage": "Message",
+  "offersTitle": "Offers",
+  "noOffersYet": "No one has responded yet",
+  "offerExpired": "Expired",
+  "commentLabel": "Comment",
+  "conditionsLabel": "Terms",
+  "executionDateLabel": "Completion date",
+  "accountTab": "Account",
+  "securityLabel": "Security",
+  "changePhotoLabel": "Change photo",
+  "subscriptionUntil": "Subscription until {date}",
+  "@subscriptionUntil": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionNone": "No subscription",
+  "showAllCount": "Show all {count}",
+  "@showAllCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "reviewsCount": "{count} reviews",
+  "@reviewsCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "login_subtitle": "Phone number and password",
+  "@login_subtitle": {},
+  "create_account": "Create account",
+  "@create_account": {},
+  "register_user_subtitle": "A few fields and you can post orders",
+  "@register_user_subtitle": {},
+  "sms_code_title": "SMS code",
+  "@sms_code_title": {},
+  "code_sent_to": "Sent to {phone}",
+  "@code_sent_to": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "change_number": "Change number",
+  "@change_number": {},
+  "resend_code_in": "Send the code again in {time}",
+  "@resend_code_in": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "store_registration_subtitle": "Your shop will appear in search for buyers in your city",
+  "@store_registration_subtitle": {},
+  "executor_registration_subtitle": "Customers will find you by services and city",
+  "@executor_registration_subtitle": {},
+  "map_point": "Point on the map",
+  "@map_point": {},
+  "store_location_hint": "Buyers look for warehouses near them. We will read the coordinates once, when you submit the form.",
+  "@store_location_hint": {},
+  "change_store_subtitle": "Buyers will see the changes in search and on your shop page right away",
+  "@change_store_subtitle": {},
+  "save_changes": "Save",
+  "@save_changes": {},
+  "change_executor_subtitle": "Customers will see the changes in contractor search and in your offers",
+  "@change_executor_subtitle": {},
+  "change_phone_subtitle": "We will send a code to the new number. Enter your current password to confirm",
+  "@change_phone_subtitle": {},
+  "change_password_subtitle": "Enter your current password and choose a new one",
+  "@change_password_subtitle": {},
+  "offerPriceTypeLabel": "Price is for",
+  "@offerPriceTypeLabel": {},
+  "offerPriceTotal": "for the whole job",
+  "@offerPriceTotal": {},
+  "offerPricePerUnit": "per unit",
+  "@offerPricePerUnit": {},
+  "offer_create_title": "Your offer",
+  "@offer_create_title": {},
+  "offer_create_subtitle": "The customer will see the price, timing and comment and can choose you as the contractor",
+  "@offer_create_subtitle": {},
+  "pushBannerTitle": "Notifications are off",
+  "@pushBannerTitle": {},
+  "pushBannerText": "Turn them on so you don't miss offers, messages and order status changes",
+  "@pushBannerText": {},
+  "pushBannerSystemText": "Notifications are blocked in your phone settings. Allow them so you don't miss offers, messages and order status changes",
+  "@pushBannerSystemText": {},
+  "pushBannerEnable": "Turn on",
+  "@pushBannerEnable": {},
+  "pushBannerAllow": "Allow",
+  "@pushBannerAllow": {},
+  "pushBannerOpenSettings": "Open settings",
+  "@pushBannerOpenSettings": {},
+  "viewMyOffer": "Offer",
+  "@viewMyOffer": {},
+  "alreadyResponded": "You have already responded to this order",
+  "@alreadyResponded": {},
+  "executor_location_hint": "Customers look for contractors near them. We will read the coordinates once, when you submit the form.",
+  "@executor_location_hint": {},
+  "location_service_disabled": "Turn on location on your phone so we can put you on the map",
+  "@location_service_disabled": {},
+  "location_permission_denied": "Allow the app to use your location so we can put you on the map",
+  "@location_permission_denied": {},
+  "form_error_contacts_empty": "Add at least one contact",
+  "@form_error_contacts_empty": {},
+  "form_error_contacts_incomplete": "Contacts are not fully filled out",
+  "@form_error_contacts_incomplete": {}
 }

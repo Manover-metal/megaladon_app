@@ -1,15 +1,19 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:megaladon/data/models/executor_model.dart';
 import 'package:megaladon/data/models/offer_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/screens/chats/chat_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
-import 'package:megaladon/presentation/widgets/tiles/data_tile.dart';
-import 'package:megaladon/presentation/widgets/tiles/executor_tile.dart';
 
+/// Отклик на заказ. Читается как коммерческое предложение: цена заголовком,
+/// под ней исполнитель, дальше комментарий во всю ширину. Раньше цена стояла
+/// третьей строкой тем же кеглем, что подпись «Описание», а сам комментарий
+/// был зажат в правую половину строки и выровнен вправо.
 class OfferCard extends StatelessWidget {
   const OfferCard({required this.offer, required this.orderId, super.key});
   final int orderId;
@@ -20,54 +24,219 @@ class OfferCard extends StatelessWidget {
             .push(DetailsOfferRoute(orderId: orderId, offerId: offer.id));
       };
 
-  void Function() _createChat(BuildContext context) => () {
+  /// Отдаём кнопке Future запроса — она держит крутилку и не принимает
+  /// второе нажатие. Переписку открывает ChatOpenListener.
+  Future<void> Function() _createChat(BuildContext context) => () async {
+        // В отклике приходит UserPresenter::short(), то есть id здесь —
+        // пользовательский, а openChatWith его и ждёт.
         final companionId = offer.executor?.id;
         if (companionId == null) return;
-        context.read<ChatCubit>().createChat(companionId).then((chat) {
-          if (chat == null || !context.mounted) return;
-          context.router.push(DetailsChatRouter(chat: chat));
-        });
+        await context.read<ChatCubit>().openChatWith(companionId);
       };
 
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final l10n = AppLocalizations.of(context)!;
+    final executor = offer.executor;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Container(
+        padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
+          color: scheme.tertiary,
           borderRadius: BorderRadius.circular(10),
-          color: Theme.of(context).colorScheme.tertiary,
+          border: Border.all(color: scheme.onTertiary),
         ),
-        margin: const EdgeInsets.symmetric(vertical: 10),
-        padding: const EdgeInsets.all(10),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (offer.executor != null) ExecutorTile(executor: offer.executor!),
-            DataTile(
-                title: AppLocalizations.of(context)!.description2,
-                data: offer.comment ??
-                    AppLocalizations.of(context)!.no_description),
-            DataTile(
-                title: AppLocalizations.of(context)!.terms, data: offer.date),
-            DataTile(
-                title: AppLocalizations.of(context)!.price2, data: offer.price),
-            const SizedBox(
-              height: 30,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                Text(
+                  l10n.priceAmount(offer.priceText),
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w700,
+                    color: scheme.primary,
+                  ),
+                ),
+                const SizedBox(width: 9),
+                // За что цена — сразу за числом: «за шт.» меняет смысл суммы.
+                Flexible(
+                  child: Text(
+                    [
+                      offer.priceType.localize(l10n),
+                      if (offer.date.isNotEmpty) offer.date,
+                    ].join(' · '),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 11.5, color: scheme.secondary),
+                  ),
+                ),
+                if (offer.isExpired) ...[
+                  const SizedBox(width: 8),
+                  _Chip(text: l10n.offerExpired),
+                ],
+              ],
             ),
+            if (executor != null) ...[
+              const SizedBox(height: 9),
+              _Author(executor: executor),
+            ],
+            const SizedBox(height: 9),
+            Text(
+              offer.comment ?? l10n.no_description,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 12.5,
+                height: 1.4,
+                color: scheme.secondary,
+              ),
+            ),
+            const SizedBox(height: 11),
+            Container(height: 1, color: scheme.onTertiary),
+            const SizedBox(height: 10),
             Row(
               children: [
                 // Автор отклика удалил аккаунт — писать ему некуда.
-                if (offer.executor?.isDeleted != true) ...[
+                if (executor?.isDeleted != true) ...[
                   Expanded(
-                      child: OutlinedButtonApp(
-                          text: AppLocalizations.of(context)!.createChat,
-                          onPressed: _createChat(context))),
-                  const SizedBox(width: 10),
+                    child: OutlinedButtonApp(
+                      text: l10n.chat,
+                      onPressed: _createChat(context),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
                 ],
                 Expanded(
-                    child: ElevatedButtonApp(
-                        text: AppLocalizations.of(context)!.more_details,
-                        onPressed: _onTap(context))),
+                  child: ElevatedButtonApp(
+                    text: l10n.more_details,
+                    onPressed: _onTap(context),
+                  ),
+                ),
               ],
-            )
+            ),
           ],
         ),
-      );
+      ),
+    );
+  }
+}
+
+/// Кто предложил: аватар, имя и число заказов одной строкой. Прежний
+/// `ExecutorTile` занимал здесь около восьмидесяти пикселей высоты и печатал
+/// строку «Рейтинг», которого в отклике всё равно нет.
+class _Author extends StatelessWidget {
+  const _Author({required this.executor});
+  final ExecutorModel executor;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final l10n = AppLocalizations.of(context)!;
+    final orders = executor.countOrders;
+
+    return InkWell(
+      onTap: executor.isDeleted
+          ? null
+          : () => context.router.push(
+                UserProfileRoute(userId: executor.id),
+              ),
+      child: Row(
+        children: [
+          _Avatar(executor: executor),
+          const SizedBox(width: 9),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  executor.name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    fontStyle: executor.isDeleted ? FontStyle.italic : null,
+                    color: executor.isDeleted
+                        ? theme.disabledColor
+                        : theme.textTheme.bodyMedium?.color,
+                  ),
+                ),
+                if (orders != null)
+                  Text(
+                    '$orders ${l10n.metricOrders}',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 11, color: scheme.secondary),
+                  ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _Avatar extends StatelessWidget {
+  const _Avatar({required this.executor});
+  final ExecutorModel executor;
+
+  static const double _size = 32;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final photo = executor.photo;
+    final placeholder = Container(
+      color: scheme.secondaryContainer,
+      alignment: Alignment.center,
+      child: Icon(Icons.person, size: 18, color: scheme.secondary),
+    );
+
+    return ClipOval(
+      child: SizedBox(
+        width: _size,
+        height: _size,
+        child: photo == null || photo.isEmpty
+            ? placeholder
+            : CachedNetworkImage(
+                imageUrl: photo,
+                fit: BoxFit.cover,
+                progressIndicatorBuilder: (_, __, ___) => placeholder,
+                errorWidget: (_, __, ___) => placeholder,
+              ),
+      ),
+    );
+  }
+}
+
+class _Chip extends StatelessWidget {
+  const _Chip({required this.text});
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+      decoration: BoxDecoration(
+        color: scheme.onTertiary,
+        borderRadius: BorderRadius.circular(100),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(fontSize: 10.5, height: 1.3, color: scheme.secondary),
+      ),
+    );
+  }
 }

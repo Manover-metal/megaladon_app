@@ -54,39 +54,45 @@ class _ContactTypeMultiPickerState extends State<ContactTypeMultiPicker> {
         widget.controller._removeByIndex(index);
       };
 
+  // Контакты — Column, а не ListView(shrinkWrap): пикер стоит в
+  // AuthScaffold, чей SliverFillRemaining(hasScrollBody: false) меряет
+  // содержимое intrinsic-высотой, а вьюпорт ListView её не отдаёт — экран
+  // регистрации магазина падал при открытии. Контактов единицы, ленивость
+  // списка здесь ничего не даёт.
   @override
   Widget build(BuildContext context) => Column(
         children: [
           ValueListenableBuilder(
             valueListenable: widget.controller,
-            builder: (context, contactTypes, child) => ListView.builder(
-                itemCount: contactTypes.length,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, item) => Container(
-                      margin: const EdgeInsets.symmetric(vertical: 20),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: ContactTypePicker(
-                              label: AppLocalizations.of(context)!.contact,
-                              controller: widget.controller.value[item],
+            builder: (context, contactTypes, child) => Column(
+              children: [
+                for (var item = 0; item < contactTypes.length; item++)
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 20),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: ContactTypePicker(
+                            label: AppLocalizations.of(context)!.contact,
+                            controller: contactTypes[item],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 32),
+                          child: IconButton(
+                            onPressed: _removeByIndex(item),
+                            icon: Icon(
+                              Icons.remove_circle_outline_rounded,
+                              color: Theme.of(context).colorScheme.error,
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 32),
-                            child: IconButton(
-                              onPressed: _removeByIndex(item),
-                              icon: Icon(
-                                Icons.remove_circle_outline_rounded,
-                                color: Theme.of(context).colorScheme.error,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    )),
+                        )
+                      ],
+                    ),
+                  ),
+              ],
+            ),
           ),
           OutlinedButtonApp(
             text: AppLocalizations.of(context)!.add_contact,

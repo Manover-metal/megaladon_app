@@ -16,6 +16,23 @@ class Parser {
     return 0;
   }
 
-  static String toPrice(value) =>
-      NumberFormat('#,###').format(toDouble(value).toInt());
+  /// Цена в виде «20 000»: разряды разделяются неразрывным пробелом, чтобы
+  /// число не переносилось по строкам. NumberFormat даёт запятую, поэтому
+  /// подменяем разделитель после форматирования.
+  static String toPrice(Object? value) => NumberFormat('#,###')
+      .format(toDouble(value).toInt())
+      .replaceAll(',', '\u00A0');
+
+  /// Дата в том же виде, в каком её отдаёт бэкенд у заказов (`d.m.Y`).
+  /// Объявлениям `created_at` приходит сырым timestamp'ом, поэтому формат
+  /// приводим на клиенте — иначе в ленте оказалась бы строка вида
+  /// «2026-09-12T10:33:00.000000Z».
+  static String? toDate(Object? value) {
+    if (value is! String) return null;
+
+    final parsed = DateTime.tryParse(value);
+    if (parsed == null) return null;
+
+    return DateFormat('dd.MM.yyyy').format(parsed.toLocal());
+  }
 }

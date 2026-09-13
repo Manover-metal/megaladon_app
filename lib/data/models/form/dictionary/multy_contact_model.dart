@@ -1,17 +1,19 @@
 import 'package:formz/formz.dart';
 import 'package:megaladon/data/models/contact_model.dart';
+import 'package:megaladon/data/models/form/localizable_error.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 
-enum MultiContactValidationError {
+enum MultiContactValidationError implements LocalizableError {
   empty,
   dataEmpty;
 
   @override
-  String toString() {
+  String localize(AppLocalizations l10n) {
     switch (this) {
       case MultiContactValidationError.empty:
-        return 'Add at least one contact';
+        return l10n.form_error_contacts_empty;
       case MultiContactValidationError.dataEmpty:
-        return 'Contacts are not fully filled out';
+        return l10n.form_error_contacts_incomplete;
     }
   }
 }
@@ -35,7 +37,6 @@ class MultiContactFormModel
       } else if (element.value.isEmpty) {
         return MultiContactValidationError.dataEmpty;
       }
-      print(element.type);
     }
 
     return null;

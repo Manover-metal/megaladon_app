@@ -22,7 +22,21 @@ class ChangePhotoCubit extends Cubit<ChangePhotoState> {
   final ProfileScreenCubit profileCubit;
   final AuthBloc authBloc;
 
+  /// Идёт выбор или загрузка фото. Кнопка камеры во время загрузки снова
+  /// активна, и второе нажатие открывало выбор и слало второй запрос.
+  bool _inFlight = false;
+
   Future<void> changePhoto() async {
+    if (_inFlight) return;
+    _inFlight = true;
+    try {
+      await _changePhoto();
+    } finally {
+      _inFlight = false;
+    }
+  }
+
+  Future<void> _changePhoto() async {
     final result = await ImageService.getImage();
     if (result == null) {
       log('changePhoto: выбор изображения отменён', name: 'ChangePhoto');

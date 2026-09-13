@@ -81,6 +81,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get theshops => 'Rolled metal';
 
   @override
+  String get tabOrders => 'Orders';
+
+  @override
+  String get tabStores => 'Metal';
+
+  @override
+  String get tabAds => 'Ads';
+
+  @override
+  String get tabProfile => 'Profile';
+
+  @override
   String get all => 'All';
 
   @override
@@ -329,7 +341,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get by_clicking_on_the_Continue_button_you_accept =>
-      'By clicking on the \'Continue\' button you accept ';
+      'By continuing, you accept ';
 
   @override
   String get user_Agreement_Terms => 'user agreement terms';
@@ -459,7 +471,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get set_as_executor => 'Set as executor';
+  String get set_as_executor => 'Assign';
 
   @override
   String get order => 'Order №';
@@ -492,6 +504,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get offer_services => 'Offer services';
+
+  @override
+  String get respond_requires_auth_and_executor =>
+      'To respond, log in or sign up and become an executor';
+
+  @override
+  String get respond_requires_executor =>
+      'To respond, you need to become an executor';
+
+  @override
+  String get respond_requires_subscription =>
+      'Responding and chatting with the customer require an executor subscription';
+
+  @override
+  String get contact_requires_subscription =>
+      'Calling and chatting require an executor subscription';
 
   @override
   String get discuss_in_chat => 'Discuss in chat';
@@ -918,6 +946,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get buy => 'Buy';
 
   @override
+  String get subscriptionRequested =>
+      'Subscription request created. It will be activated once the payment is confirmed.';
+
+  @override
   String subscribed_for_months(num count) {
     final intl.NumberFormat countNumberFormat =
         intl.NumberFormat.decimalPattern(localeName);
@@ -1099,4 +1131,358 @@ class AppLocalizationsEn extends AppLocalizations {
   String userProfileMemberSince(String date) {
     return 'With us since $date';
   }
+
+  @override
+  String chatOrderGreeting(String order) {
+    return 'Hello, I\'m writing about the order \"$order\"';
+  }
+
+  @override
+  String subscriptionActiveUntil(String date) {
+    return 'Subscription active until $date';
+  }
+
+  @override
+  String get subscriptionActiveHint =>
+      'All executor features are unlocked. Renew in advance so you don\'t lose access.';
+
+  @override
+  String get subscriptionInactive => 'Subscription is not active';
+
+  @override
+  String get subscriptionInactiveHint =>
+      'Pick a period below — access opens right after payment.';
+
+  @override
+  String get subscriptionExecutorBenefitsTitle =>
+      'What the executor subscription gives you';
+
+  @override
+  String get subscriptionStoreBenefitsTitle =>
+      'What the store subscription gives you';
+
+  @override
+  String get subscriptionExecutorBenefit1Title =>
+      'Calls and chat with customers';
+
+  @override
+  String get subscriptionExecutorBenefit1Text =>
+      'The advert author\'s contacts are open: call and message them directly, with no middlemen.';
+
+  @override
+  String get subscriptionExecutorBenefit2Title => 'Your own adverts';
+
+  @override
+  String get subscriptionExecutorBenefit2Text =>
+      'Publish and edit service adverts so customers find you on their own.';
+
+  @override
+  String get subscriptionExecutorBenefit3Title => 'Every order at hand';
+
+  @override
+  String get subscriptionExecutorBenefit3Text =>
+      'Respond to orders first and take on as much work as you can handle.';
+
+  @override
+  String get subscriptionStoreBenefit1Title => 'Your store in the catalogue';
+
+  @override
+  String get subscriptionStoreBenefit1Text =>
+      'Without an active subscription the store is hidden from the metal rolling section and nobody can find it.';
+
+  @override
+  String get subscriptionStoreBenefit2Title => 'Price lists and contacts';
+
+  @override
+  String get subscriptionStoreBenefit2Text =>
+      'Buyers see your store\'s address, phone number and uploaded price lists.';
+
+  @override
+  String get subscriptionStoreBenefit3Title => 'Direct enquiries';
+
+  @override
+  String get subscriptionStoreBenefit3Text =>
+      'Customers call and message you themselves — no commission on deals.';
+
+  @override
+  String get subscriptionChoosePeriod => 'Choose a period';
+
+  @override
+  String subscriptionPerMonth(String amount) {
+    return '≈ $amount ₸ per month';
+  }
+
+  @override
+  String subscriptionBadgeBest(String percent) {
+    return 'Save $percent%';
+  }
+
+  @override
+  String get subscriptionBadgeFree => 'Free';
+
+  @override
+  String get subscriptionFootnote =>
+      'The subscription activates right after payment. Renewal is manual — no automatic charges.';
+
+  @override
+  String get subscriptionPlansEmpty => 'No plans available yet';
+
+  @override
+  String get subscriptionNoFaces =>
+      'Subscriptions are available to executors and stores. Fill in your executor or store profile to pick a plan.';
+
+  @override
+  String cardPriceUpTo(String amount) {
+    return 'up to $amount ₸';
+  }
+
+  @override
+  String cardDays(String days) {
+    return '$days d.';
+  }
+
+  @override
+  String get priceRecommendedNote => 'recommended';
+
+  @override
+  String get priceMaxLabel => 'Maximum';
+
+  @override
+  String get deadlineLabel => 'Deadline';
+
+  @override
+  String get offersLabel => 'Offers';
+
+  @override
+  String priceFromAmount(String amount) {
+    return 'from $amount ₸';
+  }
+
+  @override
+  String get sellerLabel => 'Seller';
+
+  @override
+  String get executorLabel => 'Executor';
+
+  @override
+  String get photosLabel => 'Photos';
+
+  @override
+  String get publishedLabel => 'Published';
+
+  @override
+  String get settingsGroupAppearance => 'Appearance';
+
+  @override
+  String get settingsGroupNotifications => 'Notifications';
+
+  @override
+  String get settingsGroupApp => 'Application';
+
+  @override
+  String get linkOpenError => 'Could not open the link';
+
+  @override
+  String get storeLabel => 'Store';
+
+  @override
+  String get addressLabel => 'Address';
+
+  @override
+  String get binLabel => 'BIN/IIN';
+
+  @override
+  String get typeLabel => 'Type';
+
+  @override
+  String get pricesLabel => 'Price lists';
+
+  @override
+  String get chipPrice => 'Price list';
+
+  @override
+  String get chipPhone => 'Phone';
+
+  @override
+  String get no_contacts_yet => 'No contacts listed';
+
+  @override
+  String get metricOrders => 'orders';
+
+  @override
+  String get metricRating => 'rating';
+
+  @override
+  String get metricServices => 'services';
+
+  @override
+  String get requisitesLabel => 'Details';
+
+  @override
+  String get writeMessage => 'Message';
+
+  @override
+  String get offersTitle => 'Offers';
+
+  @override
+  String get noOffersYet => 'No one has responded yet';
+
+  @override
+  String get offerExpired => 'Expired';
+
+  @override
+  String get commentLabel => 'Comment';
+
+  @override
+  String get conditionsLabel => 'Terms';
+
+  @override
+  String get executionDateLabel => 'Completion date';
+
+  @override
+  String get accountTab => 'Account';
+
+  @override
+  String get securityLabel => 'Security';
+
+  @override
+  String get changePhotoLabel => 'Change photo';
+
+  @override
+  String subscriptionUntil(String date) {
+    return 'Subscription until $date';
+  }
+
+  @override
+  String get subscriptionNone => 'No subscription';
+
+  @override
+  String showAllCount(String count) {
+    return 'Show all $count';
+  }
+
+  @override
+  String reviewsCount(String count) {
+    return '$count reviews';
+  }
+
+  @override
+  String get login_subtitle => 'Phone number and password';
+
+  @override
+  String get create_account => 'Create account';
+
+  @override
+  String get register_user_subtitle => 'A few fields and you can post orders';
+
+  @override
+  String get sms_code_title => 'SMS code';
+
+  @override
+  String code_sent_to(String phone) {
+    return 'Sent to $phone';
+  }
+
+  @override
+  String get change_number => 'Change number';
+
+  @override
+  String resend_code_in(String time) {
+    return 'Send the code again in $time';
+  }
+
+  @override
+  String get store_registration_subtitle =>
+      'Your shop will appear in search for buyers in your city';
+
+  @override
+  String get executor_registration_subtitle =>
+      'Customers will find you by services and city';
+
+  @override
+  String get map_point => 'Point on the map';
+
+  @override
+  String get store_location_hint =>
+      'Buyers look for warehouses near them. We will read the coordinates once, when you submit the form.';
+
+  @override
+  String get change_store_subtitle =>
+      'Buyers will see the changes in search and on your shop page right away';
+
+  @override
+  String get save_changes => 'Save';
+
+  @override
+  String get change_executor_subtitle =>
+      'Customers will see the changes in contractor search and in your offers';
+
+  @override
+  String get change_phone_subtitle =>
+      'We will send a code to the new number. Enter your current password to confirm';
+
+  @override
+  String get change_password_subtitle =>
+      'Enter your current password and choose a new one';
+
+  @override
+  String get offerPriceTypeLabel => 'Price is for';
+
+  @override
+  String get offerPriceTotal => 'for the whole job';
+
+  @override
+  String get offerPricePerUnit => 'per unit';
+
+  @override
+  String get offer_create_title => 'Your offer';
+
+  @override
+  String get offer_create_subtitle =>
+      'The customer will see the price, timing and comment and can choose you as the contractor';
+
+  @override
+  String get pushBannerTitle => 'Notifications are off';
+
+  @override
+  String get pushBannerText =>
+      'Turn them on so you don\'t miss offers, messages and order status changes';
+
+  @override
+  String get pushBannerSystemText =>
+      'Notifications are blocked in your phone settings. Allow them so you don\'t miss offers, messages and order status changes';
+
+  @override
+  String get pushBannerEnable => 'Turn on';
+
+  @override
+  String get pushBannerAllow => 'Allow';
+
+  @override
+  String get pushBannerOpenSettings => 'Open settings';
+
+  @override
+  String get viewMyOffer => 'Offer';
+
+  @override
+  String get alreadyResponded => 'You have already responded to this order';
+
+  @override
+  String get executor_location_hint =>
+      'Customers look for contractors near them. We will read the coordinates once, when you submit the form.';
+
+  @override
+  String get location_service_disabled =>
+      'Turn on location on your phone so we can put you on the map';
+
+  @override
+  String get location_permission_denied =>
+      'Allow the app to use your location so we can put you on the map';
+
+  @override
+  String get form_error_contacts_empty => 'Add at least one contact';
+
+  @override
+  String get form_error_contacts_incomplete =>
+      'Contacts are not fully filled out';
 }

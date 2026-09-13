@@ -81,6 +81,18 @@ class AppLocalizationsRu extends AppLocalizations {
   String get theshops => 'Металлопрокат';
 
   @override
+  String get tabOrders => 'Заказы';
+
+  @override
+  String get tabStores => 'Прокат';
+
+  @override
+  String get tabAds => 'Объявления';
+
+  @override
+  String get tabProfile => 'Профиль';
+
+  @override
   String get all => 'Все';
 
   @override
@@ -329,7 +341,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get by_clicking_on_the_Continue_button_you_accept =>
-      'Нажимая на кнопку \'Продолжить\', вы принимаете ';
+      'Продолжая, вы принимаете ';
 
   @override
   String get user_Agreement_Terms => 'Условия пользовательского соглашения';
@@ -459,7 +471,7 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get set_as_executor => 'Назначить исполнителем';
+  String get set_as_executor => 'Назначить';
 
   @override
   String get order => 'Заказ №';
@@ -492,6 +504,22 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get offer_services => 'Предложить услуги';
+
+  @override
+  String get respond_requires_auth_and_executor =>
+      'Чтобы откликнуться, войдите или зарегистрируйтесь и станьте исполнителем';
+
+  @override
+  String get respond_requires_executor =>
+      'Чтобы откликнуться, вы должны стать исполнителем';
+
+  @override
+  String get respond_requires_subscription =>
+      'Отклик и чат с заказчиком доступны по подписке исполнителя';
+
+  @override
+  String get contact_requires_subscription =>
+      'Звонок и чат доступны по подписке исполнителя';
 
   @override
   String get discuss_in_chat => 'Обсудить в чате';
@@ -865,7 +893,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get failed_to_open_contact => 'Не удалось открыть контакт';
 
   @override
-  String get artist2 => 'Иполнитель: ';
+  String get artist2 => 'Исполнитель: ';
 
   @override
   String get address2 => 'Адрес: ';
@@ -919,6 +947,10 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get buy => 'Купить';
+
+  @override
+  String get subscriptionRequested =>
+      'Заявка на подписку создана. Подписка включится после подтверждения оплаты.';
 
   @override
   String subscribed_for_months(num count) {
@@ -1103,4 +1135,357 @@ class AppLocalizationsRu extends AppLocalizations {
   String userProfileMemberSince(String date) {
     return 'С нами с $date';
   }
+
+  @override
+  String chatOrderGreeting(String order) {
+    return 'Здравствуйте, я по заказу «$order»';
+  }
+
+  @override
+  String subscriptionActiveUntil(String date) {
+    return 'Подписка активна до $date';
+  }
+
+  @override
+  String get subscriptionActiveHint =>
+      'Все возможности исполнителя открыты. Продлите заранее, чтобы не потерять доступ.';
+
+  @override
+  String get subscriptionInactive => 'Подписка не активна';
+
+  @override
+  String get subscriptionInactiveHint =>
+      'Выберите срок ниже — доступ откроется сразу после оплаты.';
+
+  @override
+  String get subscriptionExecutorBenefitsTitle =>
+      'Что даёт подписка исполнителя';
+
+  @override
+  String get subscriptionStoreBenefitsTitle => 'Что даёт подписка магазина';
+
+  @override
+  String get subscriptionExecutorBenefit1Title => 'Звонки и чат с заказчиком';
+
+  @override
+  String get subscriptionExecutorBenefit1Text =>
+      'Контакты автора объявления открыты: звоните и пишите напрямую, без посредников.';
+
+  @override
+  String get subscriptionExecutorBenefit2Title => 'Свои объявления';
+
+  @override
+  String get subscriptionExecutorBenefit2Text =>
+      'Публикуйте и редактируйте объявления об услугах, чтобы заказчики находили вас сами.';
+
+  @override
+  String get subscriptionExecutorBenefit3Title => 'Все заказы под рукой';
+
+  @override
+  String get subscriptionExecutorBenefit3Text =>
+      'Откликайтесь на заказы первым и берите столько работы, сколько потянете.';
+
+  @override
+  String get subscriptionStoreBenefit1Title => 'Магазин в каталоге';
+
+  @override
+  String get subscriptionStoreBenefit1Text =>
+      'Без активной подписки магазин не показывается в разделе металлопроката и его не найдут.';
+
+  @override
+  String get subscriptionStoreBenefit2Title => 'Прайсы и контакты';
+
+  @override
+  String get subscriptionStoreBenefit2Text =>
+      'Покупатели видят адрес, телефон и загруженные прайс-листы вашего магазина.';
+
+  @override
+  String get subscriptionStoreBenefit3Title => 'Заявки напрямую';
+
+  @override
+  String get subscriptionStoreBenefit3Text =>
+      'Клиенты звонят и пишут вам сами — никакой комиссии за сделку.';
+
+  @override
+  String get subscriptionChoosePeriod => 'Выберите срок';
+
+  @override
+  String subscriptionPerMonth(String amount) {
+    return '≈ $amount ₸ в месяц';
+  }
+
+  @override
+  String subscriptionBadgeBest(String percent) {
+    return 'Выгодно −$percent%';
+  }
+
+  @override
+  String get subscriptionBadgeFree => 'Бесплатно';
+
+  @override
+  String get subscriptionFootnote =>
+      'Подписка активируется сразу после оплаты. Продление — вручную, автосписаний нет.';
+
+  @override
+  String get subscriptionPlansEmpty => 'Тарифы пока недоступны';
+
+  @override
+  String get subscriptionNoFaces =>
+      'Подписки доступны исполнителям и магазинам. Заполните профиль исполнителя или магазина, чтобы выбрать тариф.';
+
+  @override
+  String cardPriceUpTo(String amount) {
+    return 'до $amount ₸';
+  }
+
+  @override
+  String cardDays(String days) {
+    return '$days дн.';
+  }
+
+  @override
+  String get priceRecommendedNote => 'рекомендуемая';
+
+  @override
+  String get priceMaxLabel => 'Максимум';
+
+  @override
+  String get deadlineLabel => 'Срок';
+
+  @override
+  String get offersLabel => 'Отклики';
+
+  @override
+  String priceFromAmount(String amount) {
+    return 'от $amount ₸';
+  }
+
+  @override
+  String get sellerLabel => 'Продавец';
+
+  @override
+  String get executorLabel => 'Исполнитель';
+
+  @override
+  String get photosLabel => 'Фотографии';
+
+  @override
+  String get publishedLabel => 'Опубликовано';
+
+  @override
+  String get settingsGroupAppearance => 'Оформление';
+
+  @override
+  String get settingsGroupNotifications => 'Уведомления';
+
+  @override
+  String get settingsGroupApp => 'Приложение';
+
+  @override
+  String get linkOpenError => 'Не удалось открыть ссылку';
+
+  @override
+  String get storeLabel => 'Магазин';
+
+  @override
+  String get addressLabel => 'Адрес';
+
+  @override
+  String get binLabel => 'БИН/ИИН';
+
+  @override
+  String get typeLabel => 'Тип';
+
+  @override
+  String get pricesLabel => 'Прайс-листы';
+
+  @override
+  String get chipPrice => 'Прайс';
+
+  @override
+  String get chipPhone => 'Телефон';
+
+  @override
+  String get no_contacts_yet => 'Контакты не указаны';
+
+  @override
+  String get metricOrders => 'заказов';
+
+  @override
+  String get metricRating => 'рейтинг';
+
+  @override
+  String get metricServices => 'услуги';
+
+  @override
+  String get requisitesLabel => 'Реквизиты';
+
+  @override
+  String get writeMessage => 'Написать';
+
+  @override
+  String get offersTitle => 'Отклики';
+
+  @override
+  String get noOffersYet => 'Пока никто не откликнулся';
+
+  @override
+  String get offerExpired => 'Истёк';
+
+  @override
+  String get commentLabel => 'Комментарий';
+
+  @override
+  String get conditionsLabel => 'Условия';
+
+  @override
+  String get executionDateLabel => 'Дата исполнения';
+
+  @override
+  String get accountTab => 'Аккаунт';
+
+  @override
+  String get securityLabel => 'Безопасность';
+
+  @override
+  String get changePhotoLabel => 'Изменить фото';
+
+  @override
+  String subscriptionUntil(String date) {
+    return 'Подписка до $date';
+  }
+
+  @override
+  String get subscriptionNone => 'Нет подписки';
+
+  @override
+  String showAllCount(String count) {
+    return 'Показать все $count';
+  }
+
+  @override
+  String reviewsCount(String count) {
+    return '$count отзывов';
+  }
+
+  @override
+  String get login_subtitle => 'Номер телефона и пароль';
+
+  @override
+  String get create_account => 'Создать аккаунт';
+
+  @override
+  String get register_user_subtitle =>
+      'Несколько полей — и можно размещать заказы';
+
+  @override
+  String get sms_code_title => 'Код из СМС';
+
+  @override
+  String code_sent_to(String phone) {
+    return 'Отправили на $phone';
+  }
+
+  @override
+  String get change_number => 'Изменить номер';
+
+  @override
+  String resend_code_in(String time) {
+    return 'Выслать код повторно через $time';
+  }
+
+  @override
+  String get store_registration_subtitle =>
+      'Магазин появится в поиске у покупателей вашего города';
+
+  @override
+  String get executor_registration_subtitle =>
+      'Заказчики найдут вас по услугам и городу';
+
+  @override
+  String get map_point => 'Точка на карте';
+
+  @override
+  String get store_location_hint =>
+      'Покупатели ищут склады рядом с собой. Координаты определим один раз, когда вы отправите форму.';
+
+  @override
+  String get change_store_subtitle =>
+      'Изменения сразу увидят покупатели в поиске и на странице магазина';
+
+  @override
+  String get save_changes => 'Сохранить';
+
+  @override
+  String get change_executor_subtitle =>
+      'Заказчики увидят изменения в поиске исполнителей и в ваших откликах';
+
+  @override
+  String get change_phone_subtitle =>
+      'Пришлём код на новый номер. Для подтверждения введите текущий пароль';
+
+  @override
+  String get change_password_subtitle =>
+      'Введите текущий пароль и придумайте новый';
+
+  @override
+  String get offerPriceTypeLabel => 'Цена указана';
+
+  @override
+  String get offerPriceTotal => 'за всю работу';
+
+  @override
+  String get offerPricePerUnit => 'за шт.';
+
+  @override
+  String get offer_create_title => 'Ваше предложение';
+
+  @override
+  String get offer_create_subtitle =>
+      'Заказчик увидит цену, срок и комментарий и сможет выбрать вас исполнителем';
+
+  @override
+  String get pushBannerTitle => 'Уведомления выключены';
+
+  @override
+  String get pushBannerText =>
+      'Включите их, чтобы не пропустить отклики, сообщения и смену статуса заказов';
+
+  @override
+  String get pushBannerSystemText =>
+      'Уведомления запрещены в настройках телефона. Разрешите их, чтобы не пропустить отклики, сообщения и смену статуса заказов';
+
+  @override
+  String get pushBannerEnable => 'Включить';
+
+  @override
+  String get pushBannerAllow => 'Разрешить';
+
+  @override
+  String get pushBannerOpenSettings => 'Открыть настройки';
+
+  @override
+  String get viewMyOffer => 'Отклик';
+
+  @override
+  String get alreadyResponded => 'Вы уже откликнулись на этот заказ';
+
+  @override
+  String get executor_location_hint =>
+      'Заказчики ищут исполнителей рядом с собой. Координаты определим один раз, когда вы отправите форму.';
+
+  @override
+  String get location_service_disabled =>
+      'Включите геолокацию на телефоне, чтобы мы отметили вас на карте';
+
+  @override
+  String get location_permission_denied =>
+      'Разрешите приложению доступ к геопозиции, чтобы мы отметили вас на карте';
+
+  @override
+  String get form_error_contacts_empty => 'Добавьте хотя бы один контакт';
+
+  @override
+  String get form_error_contacts_incomplete =>
+      'Контакты заполнены не полностью';
 }

@@ -81,6 +81,18 @@ class AppLocalizationsKk extends AppLocalizations {
   String get theshops => 'Металл илемдеу';
 
   @override
+  String get tabOrders => 'Тапсырыс';
+
+  @override
+  String get tabStores => 'Металл';
+
+  @override
+  String get tabAds => 'Хабарлама';
+
+  @override
+  String get tabProfile => 'Профиль';
+
+  @override
   String get all => 'Барлығы';
 
   @override
@@ -329,7 +341,7 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get by_clicking_on_the_Continue_button_you_accept =>
-      '\"Жалғастыру\" түймесін басу арқылы сіз қабылдайсыз';
+      'Жалғастыра отырып, сіз қабылдайсыз ';
 
   @override
   String get user_Agreement_Terms => 'Пайдаланушы келісімінің шарттары';
@@ -459,7 +471,7 @@ class AppLocalizationsKk extends AppLocalizations {
   }
 
   @override
-  String get set_as_executor => 'Орындаушы болып тағайындалсын';
+  String get set_as_executor => 'Тағайындау';
 
   @override
   String get order => '№ тапсырыс';
@@ -492,6 +504,22 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get offer_services => 'Қызметтерді ұсыну';
+
+  @override
+  String get respond_requires_auth_and_executor =>
+      'Жауап беру үшін кіріңіз немесе тіркеліңіз және орындаушы болыңыз';
+
+  @override
+  String get respond_requires_executor =>
+      'Жауап беру үшін орындаушы болуыңыз керек';
+
+  @override
+  String get respond_requires_subscription =>
+      'Жауап беру және тапсырыс берушімен чат орындаушы жазылымы бойынша қолжетімді';
+
+  @override
+  String get contact_requires_subscription =>
+      'Қоңырау шалу және чат орындаушы жазылымы бойынша қолжетімді';
 
   @override
   String get discuss_in_chat => 'Чатта талқылау';
@@ -919,6 +947,10 @@ class AppLocalizationsKk extends AppLocalizations {
   String get buy => 'Сатып алу';
 
   @override
+  String get subscriptionRequested =>
+      'Жазылымға өтінім жасалды. Төлем расталғаннан кейін жазылым қосылады.';
+
+  @override
   String subscribed_for_months(num count) {
     final intl.NumberFormat countNumberFormat =
         intl.NumberFormat.decimalPattern(localeName);
@@ -1099,4 +1131,358 @@ class AppLocalizationsKk extends AppLocalizations {
   String userProfileMemberSince(String date) {
     return 'Бізбен бірге $date бастап';
   }
+
+  @override
+  String chatOrderGreeting(String order) {
+    return 'Сәлеметсіз бе, мен «$order» тапсырысы бойынша хабарласып тұрмын';
+  }
+
+  @override
+  String subscriptionActiveUntil(String date) {
+    return 'Жазылым $date дейін белсенді';
+  }
+
+  @override
+  String get subscriptionActiveHint =>
+      'Орындаушының барлық мүмкіндіктері ашық. Қолжетімділікті жоғалтпау үшін алдын ала ұзартыңыз.';
+
+  @override
+  String get subscriptionInactive => 'Жазылым белсенді емес';
+
+  @override
+  String get subscriptionInactiveHint =>
+      'Төменнен мерзімді таңдаңыз — қолжетімділік төлемнен кейін бірден ашылады.';
+
+  @override
+  String get subscriptionExecutorBenefitsTitle =>
+      'Орындаушы жазылымы не береді';
+
+  @override
+  String get subscriptionStoreBenefitsTitle => 'Дүкен жазылымы не береді';
+
+  @override
+  String get subscriptionExecutorBenefit1Title =>
+      'Тапсырыс берушімен қоңырау және чат';
+
+  @override
+  String get subscriptionExecutorBenefit1Text =>
+      'Хабарландыру авторының байланыстары ашық: делдалсыз тікелей қоңырау шалыңыз және жазыңыз.';
+
+  @override
+  String get subscriptionExecutorBenefit2Title => 'Өз хабарландыруларыңыз';
+
+  @override
+  String get subscriptionExecutorBenefit2Text =>
+      'Тапсырыс берушілер сізді өздері табуы үшін қызметтер туралы хабарландыруларды жариялаңыз және өңдеңіз.';
+
+  @override
+  String get subscriptionExecutorBenefit3Title => 'Барлық тапсырыс қол астында';
+
+  @override
+  String get subscriptionExecutorBenefit3Text =>
+      'Тапсырыстарға бірінші болып жауап беріңіз және қалағаныңызша жұмыс алыңыз.';
+
+  @override
+  String get subscriptionStoreBenefit1Title => 'Дүкен каталогта';
+
+  @override
+  String get subscriptionStoreBenefit1Text =>
+      'Белсенді жазылымсыз дүкен металл прокаты бөлімінде көрсетілмейді және оны ешкім таппайды.';
+
+  @override
+  String get subscriptionStoreBenefit2Title => 'Прайстар мен байланыстар';
+
+  @override
+  String get subscriptionStoreBenefit2Text =>
+      'Сатып алушылар дүкеніңіздің мекенжайын, телефонын және жүктелген прайс-парақтарын көреді.';
+
+  @override
+  String get subscriptionStoreBenefit3Title => 'Тікелей өтінімдер';
+
+  @override
+  String get subscriptionStoreBenefit3Text =>
+      'Клиенттер сізге өздері қоңырау шалады және жазады — мәміле үшін комиссия жоқ.';
+
+  @override
+  String get subscriptionChoosePeriod => 'Мерзімді таңдаңыз';
+
+  @override
+  String subscriptionPerMonth(String amount) {
+    return '≈ айына $amount ₸';
+  }
+
+  @override
+  String subscriptionBadgeBest(String percent) {
+    return 'Тиімді −$percent%';
+  }
+
+  @override
+  String get subscriptionBadgeFree => 'Тегін';
+
+  @override
+  String get subscriptionFootnote =>
+      'Жазылым төлемнен кейін бірден іске қосылады. Ұзарту — қолмен, автоматты түрде ақша алынбайды.';
+
+  @override
+  String get subscriptionPlansEmpty => 'Тарифтер әзірге қолжетімді емес';
+
+  @override
+  String get subscriptionNoFaces =>
+      'Жазылымдар орындаушылар мен дүкендерге қолжетімді. Тариф таңдау үшін орындаушы немесе дүкен профилін толтырыңыз.';
+
+  @override
+  String cardPriceUpTo(String amount) {
+    return '$amount ₸ дейін';
+  }
+
+  @override
+  String cardDays(String days) {
+    return '$days күн';
+  }
+
+  @override
+  String get priceRecommendedNote => 'ұсынылған';
+
+  @override
+  String get priceMaxLabel => 'Максимум';
+
+  @override
+  String get deadlineLabel => 'Мерзімі';
+
+  @override
+  String get offersLabel => 'Ұсыныстар';
+
+  @override
+  String priceFromAmount(String amount) {
+    return '$amount ₸ бастап';
+  }
+
+  @override
+  String get sellerLabel => 'Сатушы';
+
+  @override
+  String get executorLabel => 'Орындаушы';
+
+  @override
+  String get photosLabel => 'Фотосуреттер';
+
+  @override
+  String get publishedLabel => 'Жарияланды';
+
+  @override
+  String get settingsGroupAppearance => 'Безендіру';
+
+  @override
+  String get settingsGroupNotifications => 'Хабарламалар';
+
+  @override
+  String get settingsGroupApp => 'Қосымша';
+
+  @override
+  String get linkOpenError => 'Сілтемені ашу мүмкін болмады';
+
+  @override
+  String get storeLabel => 'Дүкен';
+
+  @override
+  String get addressLabel => 'Мекенжай';
+
+  @override
+  String get binLabel => 'БСН/ЖСН';
+
+  @override
+  String get typeLabel => 'Түрі';
+
+  @override
+  String get pricesLabel => 'Прайс-парақтар';
+
+  @override
+  String get chipPrice => 'Прайс';
+
+  @override
+  String get chipPhone => 'Телефон';
+
+  @override
+  String get no_contacts_yet => 'Байланыстар көрсетілмеген';
+
+  @override
+  String get metricOrders => 'тапсырыс';
+
+  @override
+  String get metricRating => 'рейтинг';
+
+  @override
+  String get metricServices => 'қызметтер';
+
+  @override
+  String get requisitesLabel => 'Деректемелер';
+
+  @override
+  String get writeMessage => 'Жазу';
+
+  @override
+  String get offersTitle => 'Ұсыныстар';
+
+  @override
+  String get noOffersYet => 'Әзірге ешкім жауап берген жоқ';
+
+  @override
+  String get offerExpired => 'Мерзімі өтті';
+
+  @override
+  String get commentLabel => 'Пікір';
+
+  @override
+  String get conditionsLabel => 'Шарттар';
+
+  @override
+  String get executionDateLabel => 'Орындау күні';
+
+  @override
+  String get accountTab => 'Аккаунт';
+
+  @override
+  String get securityLabel => 'Қауіпсіздік';
+
+  @override
+  String get changePhotoLabel => 'Фотоны өзгерту';
+
+  @override
+  String subscriptionUntil(String date) {
+    return 'Жазылым $date дейін';
+  }
+
+  @override
+  String get subscriptionNone => 'Жазылым жоқ';
+
+  @override
+  String showAllCount(String count) {
+    return 'Барлығын көрсету: $count';
+  }
+
+  @override
+  String reviewsCount(String count) {
+    return '$count пікір';
+  }
+
+  @override
+  String get login_subtitle => 'Телефон нөмірі мен құпия сөз';
+
+  @override
+  String get create_account => 'Аккаунт жасау';
+
+  @override
+  String get register_user_subtitle =>
+      'Бірнеше өріс — және тапсырыс бере аласыз';
+
+  @override
+  String get sms_code_title => 'SMS коды';
+
+  @override
+  String code_sent_to(String phone) {
+    return '$phone нөміріне жіберілді';
+  }
+
+  @override
+  String get change_number => 'Нөмірді өзгерту';
+
+  @override
+  String resend_code_in(String time) {
+    return 'Кодты $time кейін қайта жіберу';
+  }
+
+  @override
+  String get store_registration_subtitle =>
+      'Дүкен қалаңыздағы сатып алушылардың іздеуінде көрінеді';
+
+  @override
+  String get executor_registration_subtitle =>
+      'Тапсырыс берушілер сізді қызметтер мен қала бойынша табады';
+
+  @override
+  String get map_point => 'Картадағы нүкте';
+
+  @override
+  String get store_location_hint =>
+      'Сатып алушылар жақын маңдағы қоймаларды іздейді. Координаттарды форманы жібергенде бір рет анықтаймыз.';
+
+  @override
+  String get change_store_subtitle =>
+      'Өзгерістерді сатып алушылар іздеуде және дүкен бетінде бірден көреді';
+
+  @override
+  String get save_changes => 'Сақтау';
+
+  @override
+  String get change_executor_subtitle =>
+      'Тапсырыс берушілер өзгерістерді орындаушыларды іздеуде және сіздің ұсыныстарыңызда көреді';
+
+  @override
+  String get change_phone_subtitle =>
+      'Жаңа нөмірге код жібереміз. Растау үшін қазіргі құпия сөзді енгізіңіз';
+
+  @override
+  String get change_password_subtitle =>
+      'Қазіргі құпия сөзді енгізіп, жаңасын ойлап табыңыз';
+
+  @override
+  String get offerPriceTypeLabel => 'Баға көрсетілген';
+
+  @override
+  String get offerPriceTotal => 'бүкіл жұмысқа';
+
+  @override
+  String get offerPricePerUnit => 'дана үшін';
+
+  @override
+  String get offer_create_title => 'Сіздің ұсынысыңыз';
+
+  @override
+  String get offer_create_subtitle =>
+      'Тапсырыс беруші бағаны, мерзімді және пікірді көріп, сізді орындаушы ретінде таңдай алады';
+
+  @override
+  String get pushBannerTitle => 'Хабарландырулар өшірулі';
+
+  @override
+  String get pushBannerText =>
+      'Ұсыныстарды, хабарламаларды және тапсырыс мәртебесінің өзгерісін өткізіп алмау үшін оларды қосыңыз';
+
+  @override
+  String get pushBannerSystemText =>
+      'Хабарландыруларға телефон баптауларында тыйым салынған. Ұсыныстарды, хабарламаларды және тапсырыс мәртебесінің өзгерісін өткізіп алмау үшін оларға рұқсат беріңіз';
+
+  @override
+  String get pushBannerEnable => 'Қосу';
+
+  @override
+  String get pushBannerAllow => 'Рұқсат беру';
+
+  @override
+  String get pushBannerOpenSettings => 'Баптауларды ашу';
+
+  @override
+  String get viewMyOffer => 'Ұсыныс';
+
+  @override
+  String get alreadyResponded => 'Сіз бұл тапсырысқа ұсыныс жібердіңіз';
+
+  @override
+  String get executor_location_hint =>
+      'Тапсырыс берушілер жақын маңдағы орындаушыларды іздейді. Координаттарды форманы жібергенде бір рет анықтаймыз.';
+
+  @override
+  String get location_service_disabled =>
+      'Картада көріну үшін телефонда геолокацияны қосыңыз';
+
+  @override
+  String get location_permission_denied =>
+      'Картада көріну үшін қолданбаға геопозицияға рұқсат беріңіз';
+
+  @override
+  String get form_error_contacts_empty => 'Кемінде бір байланыс қосыңыз';
+
+  @override
+  String get form_error_contacts_incomplete =>
+      'Байланыстар толық толтырылмаған';
 }

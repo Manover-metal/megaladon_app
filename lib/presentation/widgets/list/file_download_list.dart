@@ -12,26 +12,35 @@ class FileDownloadList extends StatefulWidget {
 }
 
 class _FileDownloadListState extends State<FileDownloadList> {
-  Future<void> Function() _download(FileModel file) => () async {
-        try {
-          final downloadFile = await DownloadService.download(
-              url: file.url,
-              callback: (prog, gres) {
-                print('$prog, $gres');
-              });
+  /// Файлы, которые сейчас скачиваются. Пока файл качается, вместо кнопки
+  /// крутилка — второе нажатие не запускает вторую загрузку.
+  final Set<FileModel> _downloading = {};
 
-          if (downloadFile == null) return;
+  Future<void> _download(FileModel file) async {
+    if (!_downloading.add(file)) return;
+    setState(() {});
+    try {
+      final downloadFile = await DownloadService.download(
+          url: file.url,
+          callback: (prog, gres) {
+            print('$prog, $gres');
+          });
 
-          await SharePlus.instance.share(
-            ShareParams(files: [XFile(downloadFile.path)]),
-          );
-        } catch (_) {
-          if (!mounted) return;
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Не удалось загрузить файл')),
-          );
-        }
-      };
+      if (downloadFile == null) return;
+
+      await SharePlus.instance.share(
+        ShareParams(files: [XFile(downloadFile.path)]),
+      );
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Не удалось загрузить файл')),
+      );
+    } finally {
+      _downloading.remove(file);
+      if (mounted) setState(() {});
+    }
+  }
 
   @override
   Widget build(BuildContext context) => Column(
@@ -46,9 +55,19 @@ class _FileDownloadListState extends State<FileDownloadList> {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     )),
-                    IconButton(
-                        onPressed: _download(file),
-                        icon: const Icon(Icons.share))
+                    if (_downloading.contains(file))
+                      const Padding(
+                        padding: EdgeInsets.all(12),
+                        child: SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
+                      )
+                    else
+                      IconButton(
+                          onPressed: () => _download(file),
+                          icon: const Icon(Icons.share)),
                   ],
                 ))
             .toList(),

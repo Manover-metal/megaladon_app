@@ -1,24 +1,27 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:formz/formz.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:megaladon/data/models/form/localizable_error.dart';
 import 'package:megaladon/data/models/request/params/update/change_store_request_params.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/form/update/store/change_store_form_cubit.dart';
 import 'package:megaladon/logic/screens/profile/change_store/change_store_bloc.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
+import 'package:megaladon/presentation/widgets/auth/auth_scaffold.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
-import 'package:megaladon/presentation/widgets/form/field/number_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/form/multi_picker/contact_multi_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
-import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
 
+/// Изменение магазина. Собран так же, как регистрация магазина: заголовок с
+/// пояснением, поля карточками, подсказка про геопозицию. БИН здесь не
+/// редактируется — поле убрано, а бэкенд без `bin` в запросе оставляет
+/// сохранённое значение как есть.
 class ChangeStoreScreen extends StatefulWidget {
   const ChangeStoreScreen({super.key});
 
@@ -28,131 +31,104 @@ class ChangeStoreScreen extends StatefulWidget {
 
 class _ChangeStoreScreenState extends State<ChangeStoreScreen> {
   late TextEditingController _nameController;
-  late TextEditingController _binController;
   late CityPickerController _cityPickerController;
   late TextEditingController _fullAddressController;
   late ContactTypeMultiPickerController _contactController;
 
-  Future<void> _register() async {
-    if (await _checkForm()) {
-      var position = await getLocation();
-      if (position != null) {
-        context.read<ChangeStoreBloc>().add(ChangeStoreFetchEvent(
-              params: ChangeStoreRequestParams(
-                  name: _nameController.value.text,
-                  bin: _binController.value.text,
-                  lat: position.latitude,
-                  lon: position.longitude,
-                  fullAddress: _fullAddressController.value.text,
-                  city: _cityPickerController.value!,
-                  contacts: _contactController.value
-                      .map((e) => e.getData())
-                      .toList()),
-            ));
-      }
+  Future<void> _save() async {
+    // Координаты берём один раз за нажатие. Раньше их запрашивали дважды:
+    // сначала внутри проверки формы, потом ещё раз перед отправкой.
+    final position = await _resolveLocation();
+    if (position == null || !mounted) return;
+    if (!_checkForm(position)) return;
+
+    context.read<ChangeStoreBloc>().add(ChangeStoreFetchEvent(
+          params: ChangeStoreRequestParams(
+              name: _nameController.value.text,
+              lat: position.latitude,
+              lon: position.longitude,
+              fullAddress: _fullAddressController.value.text,
+              city: _cityPickerController.value!,
+              contacts:
+                  _contactController.value.map((e) => e.getData()).toList()),
+        ));
+  }
+
+  // Ошибки полей рисуются под полями, ошибка списка — под его карточкой.
+  // Снекбар остаётся за ответом сервера.
+  void _listenChange(BuildContext context, ChangeStoreState state) {
+    if (state is ChangeStoreSuccess) {
+      unawaited(_openProfile());
+    } else if (state is ChangeStoreError) {
+      CustomSnackBar.error(
+        Text(
+          state.error.messages.isNotEmpty
+              ? state.error.messages.first
+              : AppLocalizations.of(context)!.unknown_error,
+        ),
+      ).view(context);
     }
   }
 
-  Future<Position?> getLocation() async {
-    bool serviceEnabled;
-    LocationPermission permission;
+  /// Перечитываем профиль, чтобы вкладка магазина показала новые данные.
+  Future<void> _openProfile() async {
+    final router = context.router;
+    await context.read<ProfileScreenCubit>().fetch();
+    unawaited(
+        router.navigate(const InitialRouter(children: [ProfileRouter()])));
+  }
 
-    // Check if location services are enabled
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      CustomSnackBar.error(
-        const Text('Отключенена геопозиция'),
-      ).view(context);
+  /// Одна попытка получить координаты. Причина отказа объясняется на языке
+  /// приложения — раньше это были захардкоженные русские строки.
+  Future<Position?> _resolveLocation() async {
+    final l10n = AppLocalizations.of(context)!;
+
+    if (!await Geolocator.isLocationServiceEnabled()) {
+      if (mounted) {
+        CustomSnackBar.error(Text(l10n.location_service_disabled))
+            .view(context);
+      }
       return null;
     }
 
-    // Request location permission
-    permission = await Geolocator.checkPermission();
+    var permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        CustomSnackBar.error(
-          const Text('Отключенено разрешение на получение геопозиция'),
-        ).view(context);
-        return null;
-      }
     }
 
-    if (permission == LocationPermission.deniedForever) {
-      CustomSnackBar.error(
-        const Text('Отключенено разрешение на получение геопозиция'),
-      ).view(context);
+    if (permission == LocationPermission.denied ||
+        permission == LocationPermission.deniedForever) {
+      if (mounted) {
+        CustomSnackBar.error(Text(l10n.location_permission_denied))
+            .view(context);
+      }
       return null;
     }
 
-    // Get the current position (latitude and longitude)
-    var position = await Geolocator.getCurrentPosition(
+    return Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     );
-
-    return position;
   }
 
-  dynamic _listenerForm(BuildContext context, ChangeStoreFormState state) {
-    if (!state.status) {
-      for (final element in state.props) {
-        if (element is FormzInput && element.isNotValid) {
-          final err = element.error;
-          return CustomSnackBar.error(
-            Text(err is LocalizableError
-                ? err.localize(AppLocalizations.of(context)!)
-                : err.toString()),
-          ).view(context);
-        }
-      }
-    }
-  }
-
-  Null Function(BuildContext context, ChangeStoreState state) _listenChange(
-          bool isListener) =>
-      (context, state) {
-        if (state is ChangeStoreSuccess) {
-          context.router
-              .navigate(const InitialRouter(children: [ProfileRouter()]));
-        } else if (state is ChangeStoreError && isListener) {
-          CustomSnackBar.error(
-            Text(
-              state.error.messages.isNotEmpty
-                  ? state.error.messages.first
-                  : AppLocalizations.of(context)!.unknown_error,
-            ),
-          ).view(context);
-        }
-      };
-
-  Future<bool> _checkForm() async {
-    var position = await getLocation();
-    if (position != null) {
-      var form = context.read<ChangeStoreFormCubit>();
-      return form.checkChangeForm(
-          name: _nameController.value.text,
-          fullAddress: _fullAddressController.value.text,
-          bin: _binController.value.text,
-          lat: position.latitude.toString(),
-          lon: position.longitude.toString(),
-          city: _cityPickerController.value,
-          contacts: _contactController.value.map((e) => e.getData()).toList());
-    } else {
-      return false;
-    }
+  bool _checkForm(Position position) {
+    final form = context.read<ChangeStoreFormCubit>();
+    return form.checkChangeForm(
+        name: _nameController.value.text,
+        fullAddress: _fullAddressController.value.text,
+        lat: position.latitude.toString(),
+        lon: position.longitude.toString(),
+        city: _cityPickerController.value,
+        contacts: _contactController.value.map((e) => e.getData()).toList());
   }
 
   @override
   void initState() {
-    var state = context.read<ProfileScreenCubit>().state;
-    _nameController = TextEditingController(text: state.user?.store?.name);
-    _fullAddressController =
-        TextEditingController(text: state.user?.store?.fullAddress);
-    _binController =
-        TextEditingController(text: state.user?.store?.bin.toString());
-    _cityPickerController = CityPickerController(city: state.user?.store?.city);
+    final store = context.read<ProfileScreenCubit>().state.user?.store;
+    _nameController = TextEditingController(text: store?.name);
+    _fullAddressController = TextEditingController(text: store?.fullAddress);
+    _cityPickerController = CityPickerController(city: store?.city);
     _contactController =
-        ContactTypeMultiPickerController(contacts: state.user?.store?.contacts);
+        ContactTypeMultiPickerController(contacts: store?.contacts);
     super.initState();
   }
 
@@ -160,86 +136,91 @@ class _ChangeStoreScreenState extends State<ChangeStoreScreen> {
   void dispose() {
     _nameController.dispose();
     _fullAddressController.dispose();
-    _binController.dispose();
     _cityPickerController.dispose();
     _contactController.dispose();
     super.dispose();
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: HeaderAppBar(
-          isBack: true,
-          title: AppLocalizations.of(context)!.change_store,
-        ),
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              child: MultiBlocListener(
-                listeners: [
-                  BlocListener<ChangeStoreFormCubit, ChangeStoreFormState>(
-                    listener: _listenerForm,
-                  ),
-                  BlocListener<ChangeStoreBloc, ChangeStoreState>(
-                    listener: _listenChange(true),
-                  ),
-                ],
-                child: Column(
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    return BlocListener<ChangeStoreBloc, ChangeStoreState>(
+      listener: _listenChange,
+      child: AuthScaffold(
+        title: l10n.change_store,
+        children: [
+          AuthHeading(
+            title: l10n.change_store,
+            subtitle: l10n.change_store_subtitle,
+          ),
+          const SizedBox(height: 20),
+          BlocBuilder<ChangeStoreFormCubit, ChangeStoreFormState>(
+            builder: (context, formState) => Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                AuthFieldGroup(
                   children: [
-                    BlocBuilder<ChangeStoreFormCubit, ChangeStoreFormState>(
-                      builder: (context, formState) => Column(
-                        children: [
-                          TextFieldApp(
-                            label: AppLocalizations.of(context)!.names,
-                            icon: const Icon(Icons.person_add_alt_1),
-                            controller: _nameController,
-                            errorText: formState.name.displayError
-                                ?.localize(AppLocalizations.of(context)!),
-                          ),
-                          NumberFieldApp(
-                            label: AppLocalizations.of(context)!.bIN,
-                            icon: const Icon(Icons.wallet),
-                            controller: _binController,
-                            errorText: formState.bin.displayError
-                                ?.localize(AppLocalizations.of(context)!),
-                          ),
-                          TextFieldApp(
-                            label: AppLocalizations.of(context)!.full_address,
-                            icon: const Icon(Icons.maps_home_work_outlined),
-                            controller: _fullAddressController,
-                          ),
-                          CityPicker(
-                              label: AppLocalizations.of(context)!.city,
-                              controller: _cityPickerController,
-                              errorText: formState.city.displayError
-                                  ?.localize(AppLocalizations.of(context)!)),
-                          ContactTypeMultiPicker(
-                            controller: _contactController,
-                          ),
-                        ],
-                      ),
+                    TextFieldApp(
+                      label: l10n.names,
+                      controller: _nameController,
+                      errorText: formState.name.displayError?.localize(l10n),
                     ),
-                    const SizedBox(height: 20),
-                    BlocBuilder<ChangeStoreBloc, ChangeStoreState>(
-                      builder: (context, state) {
-                        if (state is ChangeStoreLoading) {
-                          return ElevatedButtonApp(
-                            child: const Loader(),
-                            onPressed: () {},
-                          );
-                        }
-                        return ElevatedButtonApp(
-                          text: AppLocalizations.of(context)!.edit,
-                          onPressed: _register,
-                        );
-                      },
+                    TextFieldApp(
+                      label: l10n.full_address,
+                      controller: _fullAddressController,
+                    ),
+                    CityPicker(
+                      label: l10n.city,
+                      controller: _cityPickerController,
+                      errorText: formState.city.displayError?.localize(l10n),
                     ),
                   ],
                 ),
-              ),
+                const SizedBox(height: 20),
+                AuthFieldGroup(
+                  title: l10n.contacts,
+                  children: [
+                    ContactTypeMultiPicker(controller: _contactController),
+                  ],
+                ),
+                if (formState.contacts.displayError != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 6, left: 4),
+                    child: Text(
+                      formState.contacts.displayError!.localize(l10n),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.error,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+              ],
             ),
           ),
-        ),
-      );
+          const SizedBox(height: 20),
+          AuthNote(
+            icon: Icons.location_on_outlined,
+            title: l10n.map_point,
+            text: l10n.store_location_hint,
+          ),
+          const SizedBox(height: 20),
+          BlocBuilder<ChangeStoreBloc, ChangeStoreState>(
+            builder: (context, state) {
+              if (state is ChangeStoreLoading) {
+                return ElevatedButtonApp(
+                  onPressed: () {},
+                  child: Loader(color: Theme.of(context).colorScheme.surface),
+                );
+              }
+              return ElevatedButtonApp(
+                text: l10n.save_changes,
+                onPressed: _save,
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
 }

@@ -7,6 +7,7 @@ class ChatModel extends Equatable {
     this.messages = const [],
     this.lastMessage,
     this.companion,
+    this.unreadCount = 0,
   });
 
   final int id;
@@ -19,6 +20,13 @@ class ChatModel extends Equatable {
   /// Второй участник чата (с кем идёт переписка) — для шапки экрана.
   final ChatCompanion? companion;
 
+  /// Сколько сообщений собеседника пользователь ещё не открывал. Считает
+  /// бэкенд (`ChatRepo::index`), гасится вызовом `POST /chat/{id}/read`.
+  /// В ответе `createChat` поля нет — там непрочитанных быть не может.
+  final int unreadCount;
+
+  bool get hasUnread => unreadCount > 0;
+
   static ChatModel parse(data) => ChatModel(
         id: data['id'] as int,
         messages: const [],
@@ -28,6 +36,9 @@ class ChatModel extends Equatable {
         companion: data['companion'] is Map<String, dynamic>
             ? ChatCompanion.fromJson(data['companion'] as Map<String, dynamic>)
             : null,
+        unreadCount: data['unread_count'] is num
+            ? (data['unread_count'] as num).toInt()
+            : 0,
       );
 
   static List<ChatModel> parseAll(data) => (data as List)
@@ -38,12 +49,14 @@ class ChatModel extends Equatable {
     List<MessageModel>? messages,
     String? lastMessage,
     ChatCompanion? companion,
+    int? unreadCount,
   }) =>
       ChatModel(
         id: id,
         messages: messages ?? this.messages,
         lastMessage: lastMessage ?? this.lastMessage,
         companion: companion ?? this.companion,
+        unreadCount: unreadCount ?? this.unreadCount,
       );
 
   /// Объединяет текущие сообщения с [incoming], убирая дубли по id и заново
@@ -63,7 +76,8 @@ class ChatModel extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, messages, lastMessage, companion];
+  List<Object?> get props =>
+      [id, messages, lastMessage, companion, unreadCount];
 }
 
 /// Краткая инфа о собеседнике из ответа бэкенда (UserPresenter::short()).

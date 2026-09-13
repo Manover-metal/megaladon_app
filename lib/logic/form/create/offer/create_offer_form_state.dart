@@ -4,7 +4,7 @@ class CreateOfferFormState extends Equatable {
   const CreateOfferFormState(
       {this.status = false,
       this.price = const PriceFormModel.pure(),
-      this.description = const DescriptionFormModel.pure(),
+      this.description = const DescriptionFormModel.pureOptional(),
       this.city = const CityFormModel.pure(),
       this.date = const DateOfferFormModel.pure(),
       this.countTry = 1,

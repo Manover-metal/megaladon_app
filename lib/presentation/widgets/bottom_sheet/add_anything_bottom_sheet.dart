@@ -39,7 +39,8 @@ class AddAnythingBottomSheet extends StatelessWidget {
                     ),
                     BlocBuilder<ProfileScreenCubit, ProfileScreenState>(
                         builder: (context, state) => Visibility(
-                              visible: state.user?.executor != null,
+                              visible: state.user?.executor != null ||
+                                  state.user?.store != null,
                               child: ElevatedButtonApp(
                                 text: AppLocalizations.of(context)!.service,
                                 onPressed:

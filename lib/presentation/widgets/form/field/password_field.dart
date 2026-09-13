@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:megaladon/presentation/widgets/form/field_style.dart';
 
 class PasswordFieldApp extends StatefulWidget {
   const PasswordFieldApp(
@@ -30,12 +31,9 @@ class _PasswordFieldAppState extends State<PasswordFieldApp> {
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 4),
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.tertiary,
-                border: Border.all(
-                    color: widget.errorText != null
-                        ? Theme.of(context).colorScheme.error
-                        : Theme.of(context).colorScheme.primary,
-                    width: 0.5),
+                color: FieldStyle.fillOf(context),
+                border: FieldStyle.borderOf(context,
+                    hasError: widget.errorText != null),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Row(

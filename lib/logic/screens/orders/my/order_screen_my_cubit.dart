@@ -60,10 +60,10 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
         if (error.response?.statusCode == 403) {
           authBloc.add(AuthLogoutEvent());
         } else {
-          emit(state.copyWith(error: ErrorModel.parseDio(error)));
+          _emitError(ErrorModel.parseDio(error));
         }
       } else {
-        emit(state.copyWith(error: ErrorModel.nothing));
+        _emitError(ErrorModel.nothing);
       }
     });
   }
@@ -103,44 +103,40 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
         if (error.response?.statusCode == 403) {
           authBloc.add(AuthLogoutEvent());
         } else {
-          emit(state.copyWith(error: ErrorModel.parseDio(error)));
+          _emitError(ErrorModel.parseDio(error));
         }
       } else {
-        emit(state.copyWith(error: ErrorModel.nothing));
+        _emitError(ErrorModel.nothing);
       }
     });
   }
 
+  /// Ошибку обязательно сопровождаем сменой статуса: экран показывает
+  /// [ErrorMessage] по `status == error`, а без него оставался бы полностью
+  /// пустым — ни списка, ни лоадера, ни текста ошибки.
+  void _emitError(ErrorModel error) => emit(
+        state.copyWith(status: OrderScreenMyStatus.error, error: error),
+      );
+
+  /// Обновление обоих списков с первой страницы.
+  ///
+  /// Списки грузятся независимо. Раньше здесь был `Future.wait` по двум
+  /// запросам сразу: он отклоняется целиком при падении любого из них, и
+  /// успешно полученные «мои» заказы не доходили до emit — экран оставался
+  /// пустым, хотя ответ по ним пришёл с 200. Теперь сбой одного списка
+  /// затрагивает только его.
   Future refresh() async {
     if (state.status == OrderScreenMyStatus.loading && state.error == null)
       return;
 
-    var mainParams = state.params.copyWith(startRow: 0);
-    return await Future.wait([
-      _repository.indexMy(mainParams),
-      _repository.indexMyResponded(mainParams),
-    ]).then((value) {
-      final my = value[0];
-      final myResponded = value[1];
+    final mainParams = state.params.copyWith(startRow: 0);
 
-      emit(state.copyWith(
-          orders: my,
-          params: mainParams,
-          status: OrderScreenMyStatus.success,
-          stock: my.length < mainParams.rowsPerPage,
-          ordersResponded: myResponded,
-          stockResponded: myResponded.length < mainParams.rowsPerPage));
-    }).catchError((error) {
-      if (error is DioException) {
-        if (error.response?.statusCode == 403) {
-          authBloc.add(AuthLogoutEvent());
-        } else {
-          emit(state.copyWith(error: ErrorModel.parseDio(error)));
-        }
-      } else {
-        emit(state.copyWith(error: ErrorModel.nothing));
-      }
-    });
+    // fetchMy и fetchResponded гасят свои ошибки сами, поэтому wait здесь
+    // безопасен — он лишь дожидается обоих.
+    await Future.wait([
+      fetchMy(params: mainParams),
+      fetchResponded(params: mainParams),
+    ]);
   }
 
   void changeParams(OrderIndexRequestParams params) {

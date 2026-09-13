@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/screens/settings/push_notification_cubit.dart';
+import 'package:megaladon/presentation/widgets/settings/settings_row.dart';
 import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
 
 /// Самодостаточный блок настройки пуш-уведомлений: создаёт Cubit и сразу
@@ -33,13 +34,12 @@ class _PushNotificationView extends StatelessWidget {
       builder: (context, state) {
         final cubit = context.read<PushNotificationCubit>();
 
-        return ListTile(
-          title: Text(
-            l10n.pushNotificationsTitle,
-            style: const TextStyle(fontSize: 16),
-          ),
-          contentPadding: EdgeInsets.zero,
-          subtitle: Text(_subtitle(l10n, state)),
+        // Строка та же, что у остальных настроек: раньше здесь стоял
+        // ListTile со своими отступами и ритм экрана рвался.
+        return SettingsRow(
+          icon: Icons.notifications_none,
+          title: l10n.pushNotificationsTitle,
+          subtitle: _subtitle(l10n, state),
           trailing: _Trailing(
               state: state, onRetry: cubit.init, onToggle: cubit.toggle),
         );

@@ -1,19 +1,17 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:formz/formz.dart';
-import 'package:megaladon/data/models/form/localizable_error.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/form/auth/auth_form_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
+import 'package:megaladon/presentation/widgets/auth/auth_scaffold.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/password_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/phone_field.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
-import 'package:megaladon/presentation/widgets/text/title.dart';
 import 'package:megaladon/presentation/widgets/text/user_agreement_text.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -28,7 +26,8 @@ class _LoginScreenState extends State<LoginScreen> {
   late TextEditingController _phone;
 
   void _register() {
-    context.router.popAndPush(const RegisterUserRoute());
+    // push, а не popAndPush: с экрана регистрации нужно уметь вернуться сюда.
+    context.router.push(const RegisterUserRoute());
   }
 
   void _login() {
@@ -62,6 +61,8 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+  // Ошибки формы поля показывают сами, под собой. Снекбар остаётся за
+  // ответом сервера — раньше одна и та же фраза приходила дважды.
   void _listenerAuth(BuildContext context, AuthState state) {
     if (state is AuthLoginState) {
       context.router.replaceAll([
@@ -80,96 +81,60 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  void _listenerForm(BuildContext context, AuthFormState state) {
-    if (!state.status) {
-      for (final element in state.props) {
-        if (element is FormzInput && element.isNotValid) {
-          final err = element.error;
-          CustomSnackBar.error(
-            Text(err is LocalizableError
-                ? err.localize(AppLocalizations.of(context)!)
-                : AppLocalizations.of(context)!.unknown_error),
-          ).view(context);
-          return;
-        }
-      }
-    }
-  }
-
   @override
-  Widget build(BuildContext context) => Scaffold(
-        body: Container(
-          padding: const EdgeInsets.all(20),
-          child: MultiBlocListener(
-            listeners: [
-              BlocListener<AuthBloc, AuthState>(listener: _listenerAuth),
-              BlocListener<AuthFormCubit, AuthFormState>(
-                  listener: _listenerForm)
-            ],
-            child: SafeArea(
-              child: Column(
-                children: [
-                  const Spacer(),
-                  TitleApp(AppLocalizations.of(context)!.authorization),
-                  // Spacer(),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  BlocBuilder<AuthFormCubit, AuthFormState>(
-                    builder: (context, formState) => Column(
-                      children: [
-                        PhoneField(
-                          icon: const Icon(Icons.person),
-                          label:
-                              AppLocalizations.of(context)!.your_phone_number,
-                          controller: _phone,
-                          errorText: formState.phone.displayError
-                              ?.localize(AppLocalizations.of(context)!),
-                        ),
-                        PasswordFieldApp(
-                          icon: const Icon(Icons.lock),
-                          label: AppLocalizations.of(context)!.your_password,
-                          controller: _password,
-                          errorText: formState.password.displayError
-                              ?.localize(AppLocalizations.of(context)!),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: GestureDetector(
-                      onTap: () =>
-                          context.router.push(const ForgotPasswordRoute()),
-                      child: Text(
-                          AppLocalizations.of(context)!.forgot_your_password,
-                          style: Theme.of(context).textTheme.bodySmall),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-                    if (state is AuthLoadingState) {
-                      return ElevatedButtonApp(
-                          child: Loader(
-                              color: Theme.of(context).colorScheme.surface),
-                          onPressed: () {});
-                    }
-                    return ElevatedButtonApp(
-                        text: AppLocalizations.of(context)!.sign_in,
-                        onPressed: _login);
-                  }),
-                  OutlinedButtonApp(
-                      text: AppLocalizations.of(context)!.registration,
-                      onPressed: _register),
-                  const SizedBox(height: 15),
-                  const UserAgreementText(),
-                  const Spacer(flex: 3),
-                ],
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    return BlocListener<AuthBloc, AuthState>(
+      listener: _listenerAuth,
+      child: AuthScaffold(
+        footer: const UserAgreementText(),
+        children: [
+          AuthHeading(title: l10n.authorization, subtitle: l10n.login_subtitle),
+          const SizedBox(height: 20),
+          BlocBuilder<AuthFormCubit, AuthFormState>(
+            builder: (context, formState) => AuthFieldGroup(
+              children: [
+                PhoneField(
+                  label: l10n.your_phone_number,
+                  controller: _phone,
+                  errorText: formState.phone.displayError?.localize(l10n),
+                ),
+                PasswordFieldApp(
+                  label: l10n.your_password,
+                  controller: _password,
+                  errorText: formState.password.displayError?.localize(l10n),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 10),
+          Align(
+            alignment: Alignment.centerRight,
+            child: GestureDetector(
+              onTap: () => context.router.push(const ForgotPasswordRoute()),
+              child: Text(
+                l10n.forgot_your_password,
+                style: Theme.of(context).textTheme.bodySmall,
               ),
             ),
           ),
-        ),
-      );
+          const SizedBox(height: 20),
+          BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              if (state is AuthLoadingState) {
+                return ElevatedButtonApp(
+                  onPressed: () {},
+                  child: Loader(color: Theme.of(context).colorScheme.surface),
+                );
+              }
+              return ElevatedButtonApp(text: l10n.sign_in, onPressed: _login);
+            },
+          ),
+          const SizedBox(height: 8),
+          OutlinedButtonApp(text: l10n.create_account, onPressed: _register),
+        ],
+      ),
+    );
+  }
 }

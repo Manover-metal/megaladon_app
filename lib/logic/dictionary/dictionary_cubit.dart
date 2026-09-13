@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:megaladon/data/models/dictionary/advert_category_model.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
@@ -82,27 +83,40 @@ class DictionaryCubit extends Cubit<DictionaryState> {
   }
 
   Future<void> fetchSubscribesStore() async {
-    await _repository.getSubscribeStore().then((value) {
-      print(value);
-
+    try {
+      final value = await _repository.getSubscribeStore();
+      print('[subscriptions:store] получено ${value.length} шт.');
       emit(state.copyWith(subscribesStore: value));
-    }).catchError((Object err, StackTrace stackTrace) {
-      print(err);
-      print(stackTrace);
-
+    } catch (err, stackTrace) {
+      _logSubscribesFailure('store', err, stackTrace);
       emit(state.copyWith(subscribesStore: []));
-    });
+    }
   }
 
   Future<void> fetchSubscribesExecutor() async {
-    await _repository.getSubscribeExecutor().then((value) {
-      print(value);
+    try {
+      final value = await _repository.getSubscribeExecutor();
+      print('[subscriptions:executor] получено ${value.length} шт.');
       emit(state.copyWith(subscribesExecutor: value));
-    }).catchError((Object err, StackTrace stackTrace) {
-      print(err);
-      print(stackTrace);
-
+    } catch (err, stackTrace) {
+      _logSubscribesFailure('executor', err, stackTrace);
       emit(state.copyWith(subscribesExecutor: []));
-    });
+    }
+  }
+
+  /// При любой ошибке список подписок подменяется пустым, и экран выглядит так
+  /// же, как при честном пустом ответе. Поэтому причину печатаем подробно:
+  /// у [DioException] отдельно статус, путь и тело — по ним сразу видно, дошёл
+  /// ли запрос до сервера и что он ответил.
+  void _logSubscribesFailure(String type, Object err, StackTrace stackTrace) {
+    if (err is DioException) {
+      print('[subscriptions:$type] запрос не удался: ${err.type}');
+      print('[subscriptions:$type] url: ${err.requestOptions.uri}');
+      print('[subscriptions:$type] статус: ${err.response?.statusCode}');
+      print('[subscriptions:$type] тело: ${err.response?.data}');
+    } else {
+      print('[subscriptions:$type] ошибка обработки ответа: $err');
+    }
+    print(stackTrace);
   }
 }

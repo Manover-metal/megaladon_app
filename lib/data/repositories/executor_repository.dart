@@ -15,7 +15,12 @@ class ExecutorRepository {
       ApiService.I.post('/executor/favorite',
           data: {'order_id': orderId, 'executor_id': executorId});
 
-  Future<ExecutorModel> getById(int id) =>
-      ApiService.I.get('/user/$id').then((value) => ExecutorModel.fromJson(
-          value.data['user']['executor'] as Map<String, dynamic>));
+  /// Исполнитель по id исполнителя. Раньше здесь был GET /user/{id}: id
+  /// исполнителя уходил как id пользователя, находился другой человек без
+  /// профиля исполнителя — и разбор падал на `null` («type 'Null' is not a
+  /// subtype of type 'Map<String, dynamic>'»).
+  Future<ExecutorModel> getById(int id) => ApiService.I
+      .get<dynamic>('/executor/$id')
+      .then((value) => ExecutorModel.fromJson(
+          value.data['executor'] as Map<String, dynamic>));
 }

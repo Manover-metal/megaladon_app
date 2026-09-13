@@ -9,6 +9,7 @@ import 'package:megaladon/data/models/form/date_offer.dart';
 import 'package:megaladon/data/models/form/description.dart';
 import 'package:megaladon/data/models/form/dictionary/city.dart';
 import 'package:megaladon/data/models/form/price.dart';
+import 'package:megaladon/data/models/offer_model.dart';
 import 'package:megaladon/data/models/request/params/create/offer_create_request_params.dart';
 import 'package:megaladon/data/repositories/offer_repository.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
@@ -26,7 +27,8 @@ class CreateOfferFormCubit extends Cubit<CreateOfferFormState> {
     required CityModel? city,
     required String date,
   }) {
-    var descriptionForm = DescriptionFormModel.dirty(description);
+    // Описание в отклике необязательно — проверяем только лимит длины.
+    var descriptionForm = DescriptionFormModel.dirtyOptional(description);
     var priceFormModel = PriceFormModel.dirty(price);
     var cityForm = CityFormModel.dirty(city?.id);
     var dateForm = DateOfferFormModel.dirty(date);
@@ -45,7 +47,10 @@ class CreateOfferFormCubit extends Cubit<CreateOfferFormState> {
     return stateNew.status;
   }
 
-  Future createFetch(int orderId) async {
+  /// [priceType] — за что цена. Выбор хранит экран: проверять в нём нечего,
+  /// одно из двух значений выбрано всегда.
+  Future createFetch(int orderId,
+      {OfferPriceType priceType = OfferPriceType.total}) async {
     if (state.formState != EnumFormState.fetch) {
       emit(state.copyWith(formState: EnumFormState.fetch));
       return _repository
@@ -54,6 +59,7 @@ class CreateOfferFormCubit extends Cubit<CreateOfferFormState> {
               OfferCreateRequestParams(
                 comment: state.description.value,
                 price: state.price.value!,
+                priceType: priceType,
                 cityId: state.city.value!,
                 date: state.date.value,
               ))

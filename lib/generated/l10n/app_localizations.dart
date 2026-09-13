@@ -244,6 +244,30 @@ abstract class AppLocalizations {
   /// **'Rolled metal'**
   String get theshops;
 
+  /// No description provided for @tabOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'Orders'**
+  String get tabOrders;
+
+  /// No description provided for @tabStores.
+  ///
+  /// In en, this message translates to:
+  /// **'Metal'**
+  String get tabStores;
+
+  /// No description provided for @tabAds.
+  ///
+  /// In en, this message translates to:
+  /// **'Ads'**
+  String get tabAds;
+
+  /// No description provided for @tabProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get tabProfile;
+
   /// No description provided for @all.
   ///
   /// In en, this message translates to:
@@ -727,7 +751,7 @@ abstract class AppLocalizations {
   /// No description provided for @by_clicking_on_the_Continue_button_you_accept.
   ///
   /// In en, this message translates to:
-  /// **'By clicking on the \'Continue\' button you accept '**
+  /// **'By continuing, you accept '**
   String get by_clicking_on_the_Continue_button_you_accept;
 
   /// No description provided for @user_Agreement_Terms.
@@ -979,7 +1003,7 @@ abstract class AppLocalizations {
   /// No description provided for @set_as_executor.
   ///
   /// In en, this message translates to:
-  /// **'Set as executor'**
+  /// **'Assign'**
   String get set_as_executor;
 
   /// No description provided for @order.
@@ -1029,6 +1053,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Offer services'**
   String get offer_services;
+
+  /// No description provided for @respond_requires_auth_and_executor.
+  ///
+  /// In en, this message translates to:
+  /// **'To respond, log in or sign up and become an executor'**
+  String get respond_requires_auth_and_executor;
+
+  /// No description provided for @respond_requires_executor.
+  ///
+  /// In en, this message translates to:
+  /// **'To respond, you need to become an executor'**
+  String get respond_requires_executor;
+
+  /// No description provided for @respond_requires_subscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Responding and chatting with the customer require an executor subscription'**
+  String get respond_requires_subscription;
+
+  /// No description provided for @contact_requires_subscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Calling and chatting require an executor subscription'**
+  String get contact_requires_subscription;
 
   /// No description provided for @discuss_in_chat.
   ///
@@ -1816,6 +1864,12 @@ abstract class AppLocalizations {
   /// **'Buy'**
   String get buy;
 
+  /// No description provided for @subscriptionRequested.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription request created. It will be activated once the payment is confirmed.'**
+  String get subscriptionRequested;
+
   /// No description provided for @subscribed_for_months.
   ///
   /// In en, this message translates to:
@@ -2139,6 +2193,612 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'With us since {date}'**
   String userProfileMemberSince(String date);
+
+  /// No description provided for @chatOrderGreeting.
+  ///
+  /// In en, this message translates to:
+  /// **'Hello, I\'m writing about the order \"{order}\"'**
+  String chatOrderGreeting(String order);
+
+  /// No description provided for @subscriptionActiveUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription active until {date}'**
+  String subscriptionActiveUntil(String date);
+
+  /// No description provided for @subscriptionActiveHint.
+  ///
+  /// In en, this message translates to:
+  /// **'All executor features are unlocked. Renew in advance so you don\'t lose access.'**
+  String get subscriptionActiveHint;
+
+  /// No description provided for @subscriptionInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription is not active'**
+  String get subscriptionInactive;
+
+  /// No description provided for @subscriptionInactiveHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a period below — access opens right after payment.'**
+  String get subscriptionInactiveHint;
+
+  /// No description provided for @subscriptionExecutorBenefitsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What the executor subscription gives you'**
+  String get subscriptionExecutorBenefitsTitle;
+
+  /// No description provided for @subscriptionStoreBenefitsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What the store subscription gives you'**
+  String get subscriptionStoreBenefitsTitle;
+
+  /// No description provided for @subscriptionExecutorBenefit1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Calls and chat with customers'**
+  String get subscriptionExecutorBenefit1Title;
+
+  /// No description provided for @subscriptionExecutorBenefit1Text.
+  ///
+  /// In en, this message translates to:
+  /// **'The advert author\'s contacts are open: call and message them directly, with no middlemen.'**
+  String get subscriptionExecutorBenefit1Text;
+
+  /// No description provided for @subscriptionExecutorBenefit2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Your own adverts'**
+  String get subscriptionExecutorBenefit2Title;
+
+  /// No description provided for @subscriptionExecutorBenefit2Text.
+  ///
+  /// In en, this message translates to:
+  /// **'Publish and edit service adverts so customers find you on their own.'**
+  String get subscriptionExecutorBenefit2Text;
+
+  /// No description provided for @subscriptionExecutorBenefit3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Every order at hand'**
+  String get subscriptionExecutorBenefit3Title;
+
+  /// No description provided for @subscriptionExecutorBenefit3Text.
+  ///
+  /// In en, this message translates to:
+  /// **'Respond to orders first and take on as much work as you can handle.'**
+  String get subscriptionExecutorBenefit3Text;
+
+  /// No description provided for @subscriptionStoreBenefit1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Your store in the catalogue'**
+  String get subscriptionStoreBenefit1Title;
+
+  /// No description provided for @subscriptionStoreBenefit1Text.
+  ///
+  /// In en, this message translates to:
+  /// **'Without an active subscription the store is hidden from the metal rolling section and nobody can find it.'**
+  String get subscriptionStoreBenefit1Text;
+
+  /// No description provided for @subscriptionStoreBenefit2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Price lists and contacts'**
+  String get subscriptionStoreBenefit2Title;
+
+  /// No description provided for @subscriptionStoreBenefit2Text.
+  ///
+  /// In en, this message translates to:
+  /// **'Buyers see your store\'s address, phone number and uploaded price lists.'**
+  String get subscriptionStoreBenefit2Text;
+
+  /// No description provided for @subscriptionStoreBenefit3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct enquiries'**
+  String get subscriptionStoreBenefit3Title;
+
+  /// No description provided for @subscriptionStoreBenefit3Text.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers call and message you themselves — no commission on deals.'**
+  String get subscriptionStoreBenefit3Text;
+
+  /// No description provided for @subscriptionChoosePeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a period'**
+  String get subscriptionChoosePeriod;
+
+  /// No description provided for @subscriptionPerMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'≈ {amount} ₸ per month'**
+  String subscriptionPerMonth(String amount);
+
+  /// No description provided for @subscriptionBadgeBest.
+  ///
+  /// In en, this message translates to:
+  /// **'Save {percent}%'**
+  String subscriptionBadgeBest(String percent);
+
+  /// No description provided for @subscriptionBadgeFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Free'**
+  String get subscriptionBadgeFree;
+
+  /// No description provided for @subscriptionFootnote.
+  ///
+  /// In en, this message translates to:
+  /// **'The subscription activates right after payment. Renewal is manual — no automatic charges.'**
+  String get subscriptionFootnote;
+
+  /// No description provided for @subscriptionPlansEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No plans available yet'**
+  String get subscriptionPlansEmpty;
+
+  /// No description provided for @subscriptionNoFaces.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscriptions are available to executors and stores. Fill in your executor or store profile to pick a plan.'**
+  String get subscriptionNoFaces;
+
+  /// No description provided for @cardPriceUpTo.
+  ///
+  /// In en, this message translates to:
+  /// **'up to {amount} ₸'**
+  String cardPriceUpTo(String amount);
+
+  /// No description provided for @cardDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} d.'**
+  String cardDays(String days);
+
+  /// No description provided for @priceRecommendedNote.
+  ///
+  /// In en, this message translates to:
+  /// **'recommended'**
+  String get priceRecommendedNote;
+
+  /// No description provided for @priceMaxLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum'**
+  String get priceMaxLabel;
+
+  /// No description provided for @deadlineLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Deadline'**
+  String get deadlineLabel;
+
+  /// No description provided for @offersLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Offers'**
+  String get offersLabel;
+
+  /// No description provided for @priceFromAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'from {amount} ₸'**
+  String priceFromAmount(String amount);
+
+  /// No description provided for @sellerLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Seller'**
+  String get sellerLabel;
+
+  /// No description provided for @executorLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Executor'**
+  String get executorLabel;
+
+  /// No description provided for @photosLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos'**
+  String get photosLabel;
+
+  /// No description provided for @publishedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Published'**
+  String get publishedLabel;
+
+  /// No description provided for @settingsGroupAppearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get settingsGroupAppearance;
+
+  /// No description provided for @settingsGroupNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get settingsGroupNotifications;
+
+  /// No description provided for @settingsGroupApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Application'**
+  String get settingsGroupApp;
+
+  /// No description provided for @linkOpenError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open the link'**
+  String get linkOpenError;
+
+  /// No description provided for @storeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Store'**
+  String get storeLabel;
+
+  /// No description provided for @addressLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get addressLabel;
+
+  /// No description provided for @binLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'BIN/IIN'**
+  String get binLabel;
+
+  /// No description provided for @typeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get typeLabel;
+
+  /// No description provided for @pricesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Price lists'**
+  String get pricesLabel;
+
+  /// No description provided for @chipPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Price list'**
+  String get chipPrice;
+
+  /// No description provided for @chipPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get chipPhone;
+
+  /// No description provided for @no_contacts_yet.
+  ///
+  /// In en, this message translates to:
+  /// **'No contacts listed'**
+  String get no_contacts_yet;
+
+  /// No description provided for @metricOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'orders'**
+  String get metricOrders;
+
+  /// No description provided for @metricRating.
+  ///
+  /// In en, this message translates to:
+  /// **'rating'**
+  String get metricRating;
+
+  /// No description provided for @metricServices.
+  ///
+  /// In en, this message translates to:
+  /// **'services'**
+  String get metricServices;
+
+  /// No description provided for @requisitesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get requisitesLabel;
+
+  /// No description provided for @writeMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get writeMessage;
+
+  /// No description provided for @offersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Offers'**
+  String get offersTitle;
+
+  /// No description provided for @noOffersYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No one has responded yet'**
+  String get noOffersYet;
+
+  /// No description provided for @offerExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Expired'**
+  String get offerExpired;
+
+  /// No description provided for @commentLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Comment'**
+  String get commentLabel;
+
+  /// No description provided for @conditionsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms'**
+  String get conditionsLabel;
+
+  /// No description provided for @executionDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Completion date'**
+  String get executionDateLabel;
+
+  /// No description provided for @accountTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get accountTab;
+
+  /// No description provided for @securityLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Security'**
+  String get securityLabel;
+
+  /// No description provided for @changePhotoLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Change photo'**
+  String get changePhotoLabel;
+
+  /// No description provided for @subscriptionUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription until {date}'**
+  String subscriptionUntil(String date);
+
+  /// No description provided for @subscriptionNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No subscription'**
+  String get subscriptionNone;
+
+  /// No description provided for @showAllCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Show all {count}'**
+  String showAllCount(String count);
+
+  /// No description provided for @reviewsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} reviews'**
+  String reviewsCount(String count);
+
+  /// No description provided for @login_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number and password'**
+  String get login_subtitle;
+
+  /// No description provided for @create_account.
+  ///
+  /// In en, this message translates to:
+  /// **'Create account'**
+  String get create_account;
+
+  /// No description provided for @register_user_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'A few fields and you can post orders'**
+  String get register_user_subtitle;
+
+  /// No description provided for @sms_code_title.
+  ///
+  /// In en, this message translates to:
+  /// **'SMS code'**
+  String get sms_code_title;
+
+  /// No description provided for @code_sent_to.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent to {phone}'**
+  String code_sent_to(String phone);
+
+  /// No description provided for @change_number.
+  ///
+  /// In en, this message translates to:
+  /// **'Change number'**
+  String get change_number;
+
+  /// No description provided for @resend_code_in.
+  ///
+  /// In en, this message translates to:
+  /// **'Send the code again in {time}'**
+  String resend_code_in(String time);
+
+  /// No description provided for @store_registration_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your shop will appear in search for buyers in your city'**
+  String get store_registration_subtitle;
+
+  /// No description provided for @executor_registration_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers will find you by services and city'**
+  String get executor_registration_subtitle;
+
+  /// No description provided for @map_point.
+  ///
+  /// In en, this message translates to:
+  /// **'Point on the map'**
+  String get map_point;
+
+  /// No description provided for @store_location_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Buyers look for warehouses near them. We will read the coordinates once, when you submit the form.'**
+  String get store_location_hint;
+
+  /// No description provided for @change_store_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Buyers will see the changes in search and on your shop page right away'**
+  String get change_store_subtitle;
+
+  /// No description provided for @save_changes.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save_changes;
+
+  /// No description provided for @change_executor_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers will see the changes in contractor search and in your offers'**
+  String get change_executor_subtitle;
+
+  /// No description provided for @change_phone_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We will send a code to the new number. Enter your current password to confirm'**
+  String get change_phone_subtitle;
+
+  /// No description provided for @change_password_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your current password and choose a new one'**
+  String get change_password_subtitle;
+
+  /// No description provided for @offerPriceTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Price is for'**
+  String get offerPriceTypeLabel;
+
+  /// No description provided for @offerPriceTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'for the whole job'**
+  String get offerPriceTotal;
+
+  /// No description provided for @offerPricePerUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'per unit'**
+  String get offerPricePerUnit;
+
+  /// No description provided for @offer_create_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Your offer'**
+  String get offer_create_title;
+
+  /// No description provided for @offer_create_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The customer will see the price, timing and comment and can choose you as the contractor'**
+  String get offer_create_subtitle;
+
+  /// No description provided for @pushBannerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are off'**
+  String get pushBannerTitle;
+
+  /// No description provided for @pushBannerText.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn them on so you don\'t miss offers, messages and order status changes'**
+  String get pushBannerText;
+
+  /// No description provided for @pushBannerSystemText.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are blocked in your phone settings. Allow them so you don\'t miss offers, messages and order status changes'**
+  String get pushBannerSystemText;
+
+  /// No description provided for @pushBannerEnable.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on'**
+  String get pushBannerEnable;
+
+  /// No description provided for @pushBannerAllow.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow'**
+  String get pushBannerAllow;
+
+  /// No description provided for @pushBannerOpenSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open settings'**
+  String get pushBannerOpenSettings;
+
+  /// No description provided for @viewMyOffer.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer'**
+  String get viewMyOffer;
+
+  /// No description provided for @alreadyResponded.
+  ///
+  /// In en, this message translates to:
+  /// **'You have already responded to this order'**
+  String get alreadyResponded;
+
+  /// No description provided for @executor_location_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers look for contractors near them. We will read the coordinates once, when you submit the form.'**
+  String get executor_location_hint;
+
+  /// No description provided for @location_service_disabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on location on your phone so we can put you on the map'**
+  String get location_service_disabled;
+
+  /// No description provided for @location_permission_denied.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow the app to use your location so we can put you on the map'**
+  String get location_permission_denied;
+
+  /// No description provided for @form_error_contacts_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least one contact'**
+  String get form_error_contacts_empty;
+
+  /// No description provided for @form_error_contacts_incomplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Contacts are not fully filled out'**
+  String get form_error_contacts_incomplete;
 }
 
 class _AppLocalizationsDelegate

@@ -43,6 +43,7 @@ import 'package:megaladon/logic/screens/executors/favorite/add_favorite_cubit.da
 import 'package:megaladon/logic/screens/executors/my/executor_screen_my_cubit.dart';
 import 'package:megaladon/logic/screens/offers/details/offer_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/offers/list/offer_screen_main_cubit.dart';
+import 'package:megaladon/logic/screens/orders/badges/order_badges_cubit.dart';
 import 'package:megaladon/logic/screens/orders/delete/order_delete_cubit.dart';
 import 'package:megaladon/logic/screens/orders/details/order_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/orders/main/order_screen_main_cubit.dart';
@@ -172,6 +173,10 @@ class App extends StatelessWidget {
                   create: (context) => OrderUpdateFormCubit(authBloc)),
               BlocProvider<ChatCubit>(
                   lazy: false, create: (context) => ChatCubit(authBloc)),
+              // lazy: false — бейдж в меню должен быть заполнен ещё до того,
+              // как пользователь впервые откроет списки заказов.
+              BlocProvider<OrderBadgesCubit>(
+                  lazy: false, create: (context) => OrderBadgesCubit(authBloc)),
               BlocProvider<SubscribeCubit>(
                   create: (context) => SubscribeCubit()),
               BlocProvider<ReviewCubit>(

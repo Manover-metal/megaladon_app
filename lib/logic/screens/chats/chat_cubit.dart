@@ -30,6 +30,11 @@ class ChatCubit extends Cubit<ChatState> with WidgetsBindingObserver {
 
   static const Duration _pollInterval = Duration(seconds: 5);
 
+  /// Список чатов опрашивается и вне экрана чатов — иначе бейдж непрочитанных
+  /// в меню оставался бы тем, каким его увидели при последнем заходе в чаты.
+  /// Реже, чем на самом экране: он нужен только для счётчика.
+  static const Duration _backgroundListInterval = Duration(seconds: 30);
+
   /// Размер страницы сообщений. Должен совпадать с
   /// [MessageIndexRequestParams.rowsPerPage].
   static const int _pageSize = 50;
@@ -44,11 +49,16 @@ class ChatCubit extends Cubit<ChatState> with WidgetsBindingObserver {
   /// убывающий — чтобы гарантированно не пересекаться с серверными id.
   int _tempIdSeq = -1;
 
+  /// До какого сообщения чат уже помечен прочитанным, по chatId. Нужен, чтобы
+  /// опрос открытой переписки не слал отметку каждые пять секунд.
+  final Map<int, int> _markedReadUpTo = {};
+
   // --- Lifecycle -----------------------------------------------------------
 
   Future<void> initial() async {
     if (authBloc.state is AuthLoginState) {
       await fetchChats();
+      _restartListTimer();
     }
   }
 
@@ -66,6 +76,7 @@ class ChatCubit extends Cubit<ChatState> with WidgetsBindingObserver {
     _chatTimer = null;
     _listTimer = null;
     _listActive = false;
+    _markedReadUpTo.clear();
     emit(const ChatState());
   }
 
@@ -90,6 +101,16 @@ class ChatCubit extends Cubit<ChatState> with WidgetsBindingObserver {
         }
         return c;
       }).toList();
+
+      // Бэкенд не отдаёт чаты без сообщений (ChatRepo::index), а только что
+      // созданный чат как раз пуст. Открытый чат держим, даже если его нет в
+      // ответе: иначе опрос, пришедший сразу после первой отправки, выкинул
+      // бы чат вместе с только что отправленным сообщением.
+      final activeId = state.activeChatId;
+      if (activeId != null && merged.every((c) => c.id != activeId)) {
+        final active = _chatById(activeId);
+        if (active != null) merged.insert(0, active);
+      }
       emit(state.copyWith(
         chats: merged,
         status: ChatScreenMainStatus.success,
@@ -99,22 +120,27 @@ class ChatCubit extends Cubit<ChatState> with WidgetsBindingObserver {
     }
   }
 
+  /// Экран чатов открыт — переключаемся на частый опрос.
   void startListPolling() {
     _listActive = true;
     _restartListTimer();
   }
 
+  /// Экран чатов закрыт. Опрос не останавливаем, а замедляем: бейдж в меню
+  /// должен обновляться и с других экранов.
   void stopListPolling() {
     _listActive = false;
-    _listTimer?.cancel();
-    _listTimer = null;
+    _restartListTimer();
   }
 
   void _restartListTimer() {
     _listTimer?.cancel();
-    if (!_listActive) return;
-    _listTimer =
-        Timer.periodic(_pollInterval, (_) => fetchChats(silent: true));
+    _listTimer = null;
+    if (authBloc.state is! AuthLoginState) return;
+    _listTimer = Timer.periodic(
+      _listActive ? _pollInterval : _backgroundListInterval,
+      (_) => fetchChats(silent: true),
+    );
   }
 
   // --- Конкретный чат ------------------------------------------------------
@@ -126,6 +152,7 @@ class ChatCubit extends Cubit<ChatState> with WidgetsBindingObserver {
     }
     emit(state.copyWith(activeChatId: chatId));
     await _fetchAndMerge(chatId, 0, silent: true);
+    await _markRead(chatId);
     _restartChatTimer();
   }
 
@@ -147,8 +174,42 @@ class ChatCubit extends Cubit<ChatState> with WidgetsBindingObserver {
     _chatPollInFlight = true;
     try {
       await _fetchAndMerge(id, 0, silent: true);
+      // Пока переписка открыта, пришедшее сообщение сразу считается
+      // прочитанным: опрос списка мог успеть поднять счётчик.
+      await _markRead(id);
     } finally {
       _chatPollInFlight = false;
+    }
+  }
+
+  /// Гасит счётчик непрочитанных у чата: сначала локально, чтобы бейдж исчез
+  /// без ожидания сети, затем на сервере. Ошибку глушим — ближайший опрос
+  /// списка вернёт настоящий счётчик, и отметка повторится.
+  ///
+  /// Отметку привязываем к последнему сообщению: пока в открытой переписке
+  /// ничего нового не появилось, запрос не повторяется, а как только придёт
+  /// новое — уходит сразу, не дожидаясь, пока опрос списка поднимет счётчик.
+  Future<void> _markRead(int chatId) async {
+    final chat = _chatById(chatId);
+    if (chat == null || chat.messages.isEmpty) return;
+
+    final lastId = chat.messages.last.id;
+    if (_markedReadUpTo[chatId] == lastId && !chat.hasUnread) return;
+
+    if (chat.hasUnread) {
+      emit(state.copyWith(
+        chats: state.chats
+            .map((c) => c.id == chatId ? c.copyWith(unreadCount: 0) : c)
+            .toList(),
+      ));
+    }
+
+    try {
+      await _repository.markRead(chatId);
+      _markedReadUpTo[chatId] = lastId;
+    } catch (error) {
+      // ignore: avoid_print
+      print('chat markRead error: $error');
     }
   }
 
@@ -191,11 +252,18 @@ class ChatCubit extends Cubit<ChatState> with WidgetsBindingObserver {
     }
   }
 
+  /// Вливает сообщения в чат. Чата может ещё не быть в списке: бэкенд
+  /// скрывает пустые чаты, и только что созданного там нет. Раньше сообщения
+  /// в такой чат молча выбрасывались — первое сообщение пропадало с экрана
+  /// до ближайшего опроса списка (вне экрана чатов — до 30 секунд).
   void _mergeIntoChat(int chatId, List<MessageModel> incoming) {
     if (incoming.isEmpty) return;
-    final chats = state.chats
-        .map((c) => c.id == chatId ? c.mergeMessages(incoming) : c)
-        .toList();
+    final exists = state.chats.any((c) => c.id == chatId);
+    final chats = exists
+        ? state.chats
+            .map((c) => c.id == chatId ? c.mergeMessages(incoming) : c)
+            .toList()
+        : [ChatModel(id: chatId).mergeMessages(incoming), ...state.chats];
     emit(state.copyWith(chats: chats));
   }
 
@@ -302,13 +370,51 @@ class ChatCubit extends Cubit<ChatState> with WidgetsBindingObserver {
 
   // --- Создание чатов ------------------------------------------------------
 
-  /// Создаёт (или переиспользует существующий) личный чат с пользователем
-  /// [userId]. Возвращает чат, чтобы экран мог сразу открыть переписку.
-  Future<ChatModel?> createChat(int userId) async {
-    final chat = await _repository.create(userId);
-    await fetchChats(silent: true);
-    return chat;
+  /// «Написать» / «Чат»: создаёт (или переиспользует) личный чат с
+  /// пользователем [userId] и просит его открыть — в state появляется
+  /// [ChatState.openRequest]. Переход делает ChatOpenListener, экраны сами
+  /// никуда не переходят. [greeting] подставляется в поле ввода, только если
+  /// переписки ещё не было.
+  ///
+  /// Пока чат создаётся, повторный вызов ничего не делает: двойное нажатие
+  /// слало два запроса и открывало переписку дважды. Future завершается
+  /// после запроса — кнопка держит на это время крутилку.
+  Future<void> openChatWith(int userId, {String? greeting}) async {
+    if (_creatingChat) return;
+    _creatingChat = true;
+    try {
+      final chat = await _repository.create(userId);
+      if (chat == null) return;
+      await fetchChats(silent: true);
+      emit(state.copyWith(
+        openRequest: ChatOpenRequest(
+          id: ++_openRequestSeq,
+          chat: chat,
+          draftMessage: chat.lastMessage == null ? greeting : null,
+        ),
+      ));
+    } catch (error) {
+      if (error is DioException && error.response?.statusCode == 403) {
+        authBloc.add(AuthLogoutEvent());
+        return;
+      }
+      // Раньше ошибка создания чата никуда не доходила: кнопка просто
+      // ничего не делала.
+      emit(state.copyWith(
+        openRequest: ChatOpenRequest(
+          id: ++_openRequestSeq,
+          error: error is DioException
+              ? ErrorModel.parseDio(error)
+              : ErrorModel.nothing,
+        ),
+      ));
+    } finally {
+      _creatingChat = false;
+    }
   }
+
+  bool _creatingChat = false;
+  int _openRequestSeq = 0;
 
   // --- Прочее --------------------------------------------------------------
 
@@ -341,7 +447,7 @@ class ChatCubit extends Cubit<ChatState> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      if (_listActive) _restartListTimer();
+      _restartListTimer();
       if (this.state.activeChatId != null) _restartChatTimer();
     } else {
       _chatTimer?.cancel();

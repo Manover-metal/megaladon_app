@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/screens/store/reviews/store_reviews_cubit.dart';
-import 'package:megaladon/presentation/widgets/card/review_card.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
+import 'package:megaladon/presentation/widgets/review/reviews_list.dart';
 
 class StoreMyReviewsScreen extends StatelessWidget {
   const StoreMyReviewsScreen({required this.storeId, super.key});
@@ -54,11 +54,7 @@ class StoreMyReviewsScreen extends StatelessWidget {
                           ),
                         );
                       }
-                      return Column(
-                        children: state.reviews
-                            .map((review) => ReviewCard(review: review))
-                            .toList(),
-                      );
+                      return ReviewsList(reviews: state.reviews);
                     },
                   ),
                 ),

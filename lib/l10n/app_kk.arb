@@ -30,6 +30,10 @@
   "cut": "Қою",
   "orders": "Тапсырыстар",
   "theshops": "Металл илемдеу",
+  "tabOrders": "Тапсырыс",
+  "tabStores": "Металл",
+  "tabAds": "Хабарлама",
+  "tabProfile": "Профиль",
   "all": "Барлығы",
   "active": "Белсенді",
   "moderate": "Тексеруде",
@@ -128,7 +132,7 @@
   "full_address": "Полный адрес",
   "latitude": "Ендік",
   "longitude": "Бойлық",
-  "by_clicking_on_the_Continue_button_you_accept": "\"Жалғастыру\" түймесін басу арқылы сіз қабылдайсыз",
+  "by_clicking_on_the_Continue_button_you_accept": "Жалғастыра отырып, сіз қабылдайсыз ",
   "user_Agreement_Terms": "Пайдаланушы келісімінің шарттары",
   "privacy_policy": "Құпиялылық саясаты",
   "user_agreement": "Пайдаланушы келісімі",
@@ -184,47 +188,63 @@
       }
     }
   },
-  "set_as_executor": "Орындаушы болып тағайындалсын",
+  "set_as_executor": "Тағайындау",
   "order": "№ тапсырыс",
   "orderWithId": "№{id} тапсырыс",
   "@orderWithId": {
     "placeholders": {
-      "id": {"type": "String"}
+      "id": {
+        "type": "String"
+      }
     }
   },
   "desired_budget_up_to": " Қажетті бюджет: дейін ",
   "desiredBudgetUpToAmount": "Қажетті бюджет: дейін {amount} ₸",
   "@desiredBudgetUpToAmount": {
     "placeholders": {
-      "amount": {"type": "String"}
+      "amount": {
+        "type": "String"
+      }
     }
   },
   "executionDaysValue": "Орындау мерзімі: {days} күн",
   "@executionDaysValue": {
     "placeholders": {
-      "days": {"type": "String"}
+      "days": {
+        "type": "String"
+      }
     }
   },
   "valid_to": "Рұқсат етілген: дейін",
   "validToAmount": "Рұқсат етілген: дейін {amount} ₸",
   "@validToAmount": {
     "placeholders": {
-      "amount": {"type": "String"}
+      "amount": {
+        "type": "String"
+      }
     }
   },
   "offer_services": "Қызметтерді ұсыну",
+  "respond_requires_auth_and_executor": "Жауап беру үшін кіріңіз немесе тіркеліңіз және орындаушы болыңыз",
+  "respond_requires_executor": "Жауап беру үшін орындаушы болуыңыз керек",
+  "respond_requires_subscription": "Жауап беру және тапсырыс берушімен чат орындаушы жазылымы бойынша қолжетімді",
+  "contact_requires_subscription": "Қоңырау шалу және чат орындаушы жазылымы бойынша қолжетімді",
   "discuss_in_chat": "Чатта талқылау",
   "offers": "Ұсыныстар: ",
   "offersCount": "Ұсыныстар ({count} жаңа)",
   "offersWithCount": "Ұсыныстар: {count}",
   "@offersWithCount": {
     "placeholders": {
-      "count": {"type": "String"}
+      "count": {
+        "type": "String"
+      }
     }
   },
   "@offersCount": {
     "placeholders": {
-      "count": {"type": "String"}
+      "count": {
+        "type": "String"
+      }
     }
   },
   "discuss_in_chat2": "Чатта талқылау (5 жаңа)",
@@ -237,7 +257,9 @@
   "feedbackOnOrderId": "№{id} тапсырыс бойынша пікір",
   "@feedbackOnOrderId": {
     "placeholders": {
-      "id": {"type": "String"}
+      "id": {
+        "type": "String"
+      }
     }
   },
   "leave_feedback": "Пікір қалдыру",
@@ -363,6 +385,7 @@
   },
   "activate_for_free": "Тегін белсендіру",
   "buy": "Сатып алу",
+  "subscriptionRequested": "Жазылымға өтінім жасалды. Төлем расталғаннан кейін жазылым қосылады.",
   "subscribed_for_months": "{count, plural, one{{count} айға жазылдыңыз} other{{count} айға жазылдыңыз}}",
   "@subscribed_for_months": {
     "placeholders": {
@@ -431,5 +454,127 @@
   "userProfileRetry": "Қайталау",
   "userProfileLoadError": "Жүктеу сәтсіз аяқталды",
   "userProfileCompletedOrders": "Орындалған тапсырыстар: {count}",
-  "userProfileMemberSince": "Бізбен бірге {date} бастап"
+  "userProfileMemberSince": "Бізбен бірге {date} бастап",
+  "chatOrderGreeting": "Сәлеметсіз бе, мен «{order}» тапсырысы бойынша хабарласып тұрмын",
+  "subscriptionActiveUntil": "Жазылым {date} дейін белсенді",
+  "@subscriptionActiveUntil": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionActiveHint": "Орындаушының барлық мүмкіндіктері ашық. Қолжетімділікті жоғалтпау үшін алдын ала ұзартыңыз.",
+  "subscriptionInactive": "Жазылым белсенді емес",
+  "subscriptionInactiveHint": "Төменнен мерзімді таңдаңыз — қолжетімділік төлемнен кейін бірден ашылады.",
+  "subscriptionExecutorBenefitsTitle": "Орындаушы жазылымы не береді",
+  "subscriptionStoreBenefitsTitle": "Дүкен жазылымы не береді",
+  "subscriptionExecutorBenefit1Title": "Тапсырыс берушімен қоңырау және чат",
+  "subscriptionExecutorBenefit1Text": "Хабарландыру авторының байланыстары ашық: делдалсыз тікелей қоңырау шалыңыз және жазыңыз.",
+  "subscriptionExecutorBenefit2Title": "Өз хабарландыруларыңыз",
+  "subscriptionExecutorBenefit2Text": "Тапсырыс берушілер сізді өздері табуы үшін қызметтер туралы хабарландыруларды жариялаңыз және өңдеңіз.",
+  "subscriptionExecutorBenefit3Title": "Барлық тапсырыс қол астында",
+  "subscriptionExecutorBenefit3Text": "Тапсырыстарға бірінші болып жауап беріңіз және қалағаныңызша жұмыс алыңыз.",
+  "subscriptionStoreBenefit1Title": "Дүкен каталогта",
+  "subscriptionStoreBenefit1Text": "Белсенді жазылымсыз дүкен металл прокаты бөлімінде көрсетілмейді және оны ешкім таппайды.",
+  "subscriptionStoreBenefit2Title": "Прайстар мен байланыстар",
+  "subscriptionStoreBenefit2Text": "Сатып алушылар дүкеніңіздің мекенжайын, телефонын және жүктелген прайс-парақтарын көреді.",
+  "subscriptionStoreBenefit3Title": "Тікелей өтінімдер",
+  "subscriptionStoreBenefit3Text": "Клиенттер сізге өздері қоңырау шалады және жазады — мәміле үшін комиссия жоқ.",
+  "subscriptionChoosePeriod": "Мерзімді таңдаңыз",
+  "subscriptionPerMonth": "≈ айына {amount} ₸",
+  "@subscriptionPerMonth": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionBadgeBest": "Тиімді −{percent}%",
+  "@subscriptionBadgeBest": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionBadgeFree": "Тегін",
+  "subscriptionFootnote": "Жазылым төлемнен кейін бірден іске қосылады. Ұзарту — қолмен, автоматты түрде ақша алынбайды.",
+  "subscriptionPlansEmpty": "Тарифтер әзірге қолжетімді емес",
+  "subscriptionNoFaces": "Жазылымдар орындаушылар мен дүкендерге қолжетімді. Тариф таңдау үшін орындаушы немесе дүкен профилін толтырыңыз.",
+  "cardPriceUpTo": "{amount} ₸ дейін",
+  "cardDays": "{days} күн",
+  "priceRecommendedNote": "ұсынылған",
+  "priceMaxLabel": "Максимум",
+  "deadlineLabel": "Мерзімі",
+  "offersLabel": "Ұсыныстар",
+  "priceFromAmount": "{amount} ₸ бастап",
+  "sellerLabel": "Сатушы",
+  "executorLabel": "Орындаушы",
+  "photosLabel": "Фотосуреттер",
+  "publishedLabel": "Жарияланды",
+  "settingsGroupAppearance": "Безендіру",
+  "settingsGroupNotifications": "Хабарламалар",
+  "settingsGroupApp": "Қосымша",
+  "linkOpenError": "Сілтемені ашу мүмкін болмады",
+  "storeLabel": "Дүкен",
+  "addressLabel": "Мекенжай",
+  "binLabel": "БСН/ЖСН",
+  "typeLabel": "Түрі",
+  "pricesLabel": "Прайс-парақтар",
+  "chipPrice": "Прайс",
+  "chipPhone": "Телефон",
+  "no_contacts_yet": "Байланыстар көрсетілмеген",
+  "metricOrders": "тапсырыс",
+  "metricRating": "рейтинг",
+  "metricServices": "қызметтер",
+  "requisitesLabel": "Деректемелер",
+  "writeMessage": "Жазу",
+  "offersTitle": "Ұсыныстар",
+  "noOffersYet": "Әзірге ешкім жауап берген жоқ",
+  "offerExpired": "Мерзімі өтті",
+  "commentLabel": "Пікір",
+  "conditionsLabel": "Шарттар",
+  "executionDateLabel": "Орындау күні",
+  "accountTab": "Аккаунт",
+  "securityLabel": "Қауіпсіздік",
+  "changePhotoLabel": "Фотоны өзгерту",
+  "subscriptionUntil": "Жазылым {date} дейін",
+  "subscriptionNone": "Жазылым жоқ",
+  "showAllCount": "Барлығын көрсету: {count}",
+  "reviewsCount": "{count} пікір",
+  "login_subtitle": "Телефон нөмірі мен құпия сөз",
+  "create_account": "Аккаунт жасау",
+  "register_user_subtitle": "Бірнеше өріс — және тапсырыс бере аласыз",
+  "sms_code_title": "SMS коды",
+  "code_sent_to": "{phone} нөміріне жіберілді",
+  "change_number": "Нөмірді өзгерту",
+  "resend_code_in": "Кодты {time} кейін қайта жіберу",
+  "store_registration_subtitle": "Дүкен қалаңыздағы сатып алушылардың іздеуінде көрінеді",
+  "executor_registration_subtitle": "Тапсырыс берушілер сізді қызметтер мен қала бойынша табады",
+  "map_point": "Картадағы нүкте",
+  "store_location_hint": "Сатып алушылар жақын маңдағы қоймаларды іздейді. Координаттарды форманы жібергенде бір рет анықтаймыз.",
+  "change_store_subtitle": "Өзгерістерді сатып алушылар іздеуде және дүкен бетінде бірден көреді",
+  "save_changes": "Сақтау",
+  "change_executor_subtitle": "Тапсырыс берушілер өзгерістерді орындаушыларды іздеуде және сіздің ұсыныстарыңызда көреді",
+  "change_phone_subtitle": "Жаңа нөмірге код жібереміз. Растау үшін қазіргі құпия сөзді енгізіңіз",
+  "change_password_subtitle": "Қазіргі құпия сөзді енгізіп, жаңасын ойлап табыңыз",
+  "offerPriceTypeLabel": "Баға көрсетілген",
+  "offerPriceTotal": "бүкіл жұмысқа",
+  "offerPricePerUnit": "дана үшін",
+  "offer_create_title": "Сіздің ұсынысыңыз",
+  "offer_create_subtitle": "Тапсырыс беруші бағаны, мерзімді және пікірді көріп, сізді орындаушы ретінде таңдай алады",
+  "pushBannerTitle": "Хабарландырулар өшірулі",
+  "pushBannerText": "Ұсыныстарды, хабарламаларды және тапсырыс мәртебесінің өзгерісін өткізіп алмау үшін оларды қосыңыз",
+  "pushBannerSystemText": "Хабарландыруларға телефон баптауларында тыйым салынған. Ұсыныстарды, хабарламаларды және тапсырыс мәртебесінің өзгерісін өткізіп алмау үшін оларға рұқсат беріңіз",
+  "pushBannerEnable": "Қосу",
+  "pushBannerAllow": "Рұқсат беру",
+  "pushBannerOpenSettings": "Баптауларды ашу",
+  "viewMyOffer": "Ұсыныс",
+  "alreadyResponded": "Сіз бұл тапсырысқа ұсыныс жібердіңіз",
+  "executor_location_hint": "Тапсырыс берушілер жақын маңдағы орындаушыларды іздейді. Координаттарды форманы жібергенде бір рет анықтаймыз.",
+  "location_service_disabled": "Картада көріну үшін телефонда геолокацияны қосыңыз",
+  "location_permission_denied": "Картада көріну үшін қолданбаға геопозицияға рұқсат беріңіз",
+  "form_error_contacts_empty": "Кемінде бір байланыс қосыңыз",
+  "form_error_contacts_incomplete": "Байланыстар толық толтырылмаған"
 }

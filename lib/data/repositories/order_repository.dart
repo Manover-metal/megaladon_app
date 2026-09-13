@@ -1,4 +1,6 @@
 import 'package:megaladon/core/dio/index.dart';
+import 'package:megaladon/data/models/order_badges_model.dart';
+import 'package:megaladon/data/models/order_details_model.dart';
 import 'package:megaladon/data/models/order_model.dart';
 import 'package:megaladon/data/models/request/params/create/order_create_request_params.dart';
 import 'package:megaladon/data/models/request/params/index/order_index_request_params.dart';
@@ -21,12 +23,26 @@ class OrderRepository {
           .then((value) =>
               OrderModel.listFromJsonMini(value.data['list'] as List<dynamic>));
 
+  /// Счётчики обновлений: сколько «моих заказов» и заказов, где пользователь
+  /// назначен исполнителем, изменилось с последнего просмотра.
+  Future<OrderBadges> badges() => ApiService.I
+      .get<dynamic>('/order/badges')
+      .then((value) => OrderBadges.parse(value.data));
+
   Future<OrderModel> info(int id) => ApiService.I
       .get(
         '/order/$id',
       )
       .then((value) =>
           OrderModel.fromJsonFull(value.data['order'] as Map<String, dynamic>));
+
+  /// Тот же `/order/{id}`, но вместе с откликом смотрящего (`my_offer_id`) —
+  /// для экрана заказа: откликнувшемуся показываем «Посмотреть предложение»
+  /// вместо «Предложить услуги».
+  Future<OrderDetailsModel> details(int id) => ApiService.I
+      .get<dynamic>('/order/$id')
+      .then((value) =>
+          OrderDetailsModel.fromJson(value.data as Map<String, dynamic>));
 
   Future create(OrderCreateRequestParams params) => ApiService.I
       .post('/order/create', data: params.toData())
