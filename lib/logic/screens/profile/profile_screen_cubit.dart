@@ -27,7 +27,11 @@ class ProfileScreenCubit extends Cubit<ProfileScreenState> {
   }
 
   Future fetch() async {
-    emit(const ProfileScreenState(status: ProfileScreenStatus.loading));
+    // Пользователя на время перезагрузки не сбрасываем: по state.user
+    // решают, исполнитель ли он (hasExecutor), и с user == null вкладка
+    // «Как исполнитель» на каждый refresh профиля превращалась в заглушку.
+    emit(ProfileScreenState(
+        status: ProfileScreenStatus.loading, user: state.user));
     return updateData();
   }
 

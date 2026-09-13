@@ -92,11 +92,12 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
     }
   }
 
-  bool _isExecutor() {
-    final a = context.read<ProfileScreenCubit>().hasExecutor();
-    print(a);
-    return a;
-  }
+  // select, а не read: профиль грузится асинхронно (кубит создаётся лениво —
+  // бывает, что прямо здесь), и экран, построенный до ответа, должен
+  // перестроиться, когда исполнитель появится. С read вкладка так и
+  // оставалась с «Зарегистрируйтесь как исполнитель», хотя заказы были.
+  bool _isExecutor(BuildContext context) =>
+      context.select((ProfileScreenCubit cubit) => cubit.hasExecutor());
 
   @override
   Widget build(BuildContext context) => BlocBuilder<AuthBloc, AuthState>(
@@ -203,7 +204,7 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
                       ),
                     ),
                   ),
-                  if (_isExecutor())
+                  if (_isExecutor(context))
                     RefreshIndicator(
                       onRefresh: _onRefresh,
                       child: CupertinoScrollbar(
