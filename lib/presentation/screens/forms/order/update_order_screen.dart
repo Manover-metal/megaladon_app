@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:megaladon/core/utils/parser.dart';
 import 'package:megaladon/data/models/enum_form_state.dart';
 import 'package:megaladon/data/models/form/localizable_error.dart';
 import 'package:megaladon/data/models/form/price_editing_controller.dart';
@@ -103,10 +102,8 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
         OrderCategoryPickerController(category: widget.order.category);
     _titleController = TextEditingController(text: widget.order.title);
     _cityController = CityPickerController(city: widget.order.city);
-    _priceMaxController = PriceEditingController(
-        value: widget.order.priceMax == null
-            ? null
-            : Parser.toInt(widget.order.priceMax));
+    _priceMaxController =
+        PriceEditingController(value: widget.order.priceMax?.toInt());
     _executionDaysController = TextEditingController(
         text: widget.order.executionDays?.toString() ?? '');
     _descriptionController =

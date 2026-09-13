@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:megaladon/core/utils/parser.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/dictionary/file_model.dart';
@@ -31,6 +32,27 @@ enum OrderStatus {
         return l10n.all;
     }
   }
+
+  /// Цвет статуса для списков. Пары подобраны под обе темы: в тёмной те же
+  /// оттенки уходят в грязь, поэтому каждый осветлён отдельно.
+  Color color(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    switch (this) {
+      case OrderStatus.moderate:
+        return isDark ? const Color(0xFFC7C4C2) : const Color(0xFF64748B);
+      case OrderStatus.active:
+        return isDark ? const Color(0xFF5BC4B4) : const Color(0xFF0F766E);
+      case OrderStatus.hasExecutor:
+        return isDark ? const Color(0xFFFBBF24) : const Color(0xFFD97706);
+      case OrderStatus.completed:
+        return isDark ? const Color(0xFF4ADE80) : const Color(0xFF15803D);
+      case OrderStatus.archive:
+        return isDark ? const Color(0xFF7A7674) : const Color(0xFF94A3B8);
+      case OrderStatus.nothing:
+        return Theme.of(context).colorScheme.secondary;
+    }
+  }
 }
 
 class OrderModel extends Equatable {
@@ -60,8 +82,11 @@ class OrderModel extends Equatable {
   final String createdAt;
   final int countOffers;
 
-  final String? priceRecommended;
-  final String? priceMax;
+  /// Цены хранятся числом: строку из них делает представление. Раньше
+  /// модель держала уже отформатированный текст, и его приходилось разбирать
+  /// обратно — например, чтобы подставить цену в форму редактирования.
+  final double? priceRecommended;
+  final double? priceMax;
   final int? executionDays;
   final UserModel? user;
   final OrderCategoryModel? category;
@@ -83,6 +108,13 @@ class OrderModel extends Equatable {
   /// Заказ изменился с тех пор, как пользователь его открывал.
   bool get hasUpdates => statusChanged || newOffersCount > 0;
 
+  /// Цены с разделителями разрядов — то, что показывают карточка и экран.
+  String? get priceRecommendedText =>
+      priceRecommended != null ? Parser.toPrice(priceRecommended) : null;
+
+  String? get priceMaxText =>
+      priceMax != null ? Parser.toPrice(priceMax) : null;
+
   static OrderStatus _statusFrom(Object? code) => code != null
       ? OrderStatus.values[Parser.toInt(code)]
       : OrderStatus.nothing;
@@ -92,10 +124,10 @@ class OrderModel extends Equatable {
         title: data['title'] as String,
         description: data['description'] as String,
         priceRecommended: data['price_recommended'] != null
-            ? Parser.toPrice(data['price_recommended'])
+            ? Parser.toDouble(data['price_recommended'])
             : null,
         priceMax: data['price_max'] != null
-            ? Parser.toPrice(data['price_max'])
+            ? Parser.toDouble(data['price_max'])
             : null,
         statusName: data['status'] as String,
         createdAt: data['created_at'] as String,
@@ -105,6 +137,11 @@ class OrderModel extends Equatable {
             : null,
         user: data['user'] != null
             ? UserModel.fromJson(data['user'] as Map<String, dynamic>)
+            : null,
+        // Город бэкенд отдаёт и в списке (OrderPresenter::list), но до сих
+        // пор он тут терялся — карточке его показать было неоткуда.
+        city: data['city'] != null && (data['city'] as Map)['id'] != null
+            ? CityModel.fromJson(data['city'] as Map<String, dynamic>)
             : null,
         // status_code приходит и в списке — до сих пор он тут терялся, и
         // карточке оставалась только строка statusName, захардкоженная
@@ -145,10 +182,10 @@ class OrderModel extends Equatable {
       title: data['title'] as String,
       description: data['description'] as String,
       priceRecommended: data['price_recommended'] != null
-          ? Parser.toPrice(data['price_recommended'])
+          ? Parser.toDouble(data['price_recommended'])
           : null,
       priceMax:
-          data['price_max'] != null ? Parser.toPrice(data['price_max']) : null,
+          data['price_max'] != null ? Parser.toDouble(data['price_max']) : null,
       executionDays: data['execution_days'] != null
           ? Parser.toInt(data['execution_days'])
           : null,

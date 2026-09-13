@@ -65,7 +65,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       // Возвращаемся к уже существующему экрану логина в стеке
       // (под ним остаётся InitialRouter с табами), а не пересоздаём стек —
       // иначе каркас приложения теряется и с логина некуда выйти.
-      context.router.popUntil((route) => route.settings.name == LoginRoute.name);
+      context.router
+          .popUntil((route) => route.settings.name == LoginRoute.name);
     } else if (state.status == PasswordRecoveryStatus.error2) {
       CustomSnackBar.error(
         Text(state.error?.messages.isNotEmpty == true

@@ -15,7 +15,7 @@ import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/chat/attach_source_modal.dart';
 import 'package:megaladon/presentation/widgets/chat/chat_app_bar_title.dart';
-import 'package:megaladon/presentation/widgets/chat/chat_image_viewer.dart';
+import 'package:megaladon/presentation/widgets/image_viewer.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -397,7 +397,7 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
       return GestureDetector(
         onTap: () => Navigator.of(context).push(
           MaterialPageRoute<void>(
-            builder: (_) => ChatImageViewer(url: url),
+            builder: (_) => ImageViewerScreen(url: url),
           ),
         ),
         child: ClipRRect(

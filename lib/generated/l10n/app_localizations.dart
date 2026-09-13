@@ -244,6 +244,30 @@ abstract class AppLocalizations {
   /// **'Rolled metal'**
   String get theshops;
 
+  /// No description provided for @tabOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'Orders'**
+  String get tabOrders;
+
+  /// No description provided for @tabStores.
+  ///
+  /// In en, this message translates to:
+  /// **'Metal'**
+  String get tabStores;
+
+  /// No description provided for @tabAds.
+  ///
+  /// In en, this message translates to:
+  /// **'Ads'**
+  String get tabAds;
+
+  /// No description provided for @tabProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get tabProfile;
+
   /// No description provided for @all.
   ///
   /// In en, this message translates to:
@@ -727,7 +751,7 @@ abstract class AppLocalizations {
   /// No description provided for @by_clicking_on_the_Continue_button_you_accept.
   ///
   /// In en, this message translates to:
-  /// **'By clicking on the \'Continue\' button you accept '**
+  /// **'By continuing, you accept '**
   String get by_clicking_on_the_Continue_button_you_accept;
 
   /// No description provided for @user_Agreement_Terms.
@@ -2319,6 +2343,348 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Subscriptions are available to executors and stores. Fill in your executor or store profile to pick a plan.'**
   String get subscriptionNoFaces;
+
+  /// No description provided for @cardPriceUpTo.
+  ///
+  /// In en, this message translates to:
+  /// **'up to {amount} ₸'**
+  String cardPriceUpTo(String amount);
+
+  /// No description provided for @cardDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} d.'**
+  String cardDays(String days);
+
+  /// No description provided for @priceRecommendedNote.
+  ///
+  /// In en, this message translates to:
+  /// **'recommended'**
+  String get priceRecommendedNote;
+
+  /// No description provided for @priceMaxLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum'**
+  String get priceMaxLabel;
+
+  /// No description provided for @deadlineLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Deadline'**
+  String get deadlineLabel;
+
+  /// No description provided for @offersLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Offers'**
+  String get offersLabel;
+
+  /// No description provided for @priceFromAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'from {amount} ₸'**
+  String priceFromAmount(String amount);
+
+  /// No description provided for @sellerLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Seller'**
+  String get sellerLabel;
+
+  /// No description provided for @executorLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Executor'**
+  String get executorLabel;
+
+  /// No description provided for @photosLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos'**
+  String get photosLabel;
+
+  /// No description provided for @publishedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Published'**
+  String get publishedLabel;
+
+  /// No description provided for @settingsGroupAppearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get settingsGroupAppearance;
+
+  /// No description provided for @settingsGroupNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get settingsGroupNotifications;
+
+  /// No description provided for @settingsGroupApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Application'**
+  String get settingsGroupApp;
+
+  /// No description provided for @linkOpenError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open the link'**
+  String get linkOpenError;
+
+  /// No description provided for @storeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Store'**
+  String get storeLabel;
+
+  /// No description provided for @addressLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get addressLabel;
+
+  /// No description provided for @binLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'BIN/IIN'**
+  String get binLabel;
+
+  /// No description provided for @typeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get typeLabel;
+
+  /// No description provided for @pricesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Price lists'**
+  String get pricesLabel;
+
+  /// No description provided for @chipPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Price list'**
+  String get chipPrice;
+
+  /// No description provided for @chipPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get chipPhone;
+
+  /// No description provided for @no_contacts_yet.
+  ///
+  /// In en, this message translates to:
+  /// **'No contacts listed'**
+  String get no_contacts_yet;
+
+  /// No description provided for @metricOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'orders'**
+  String get metricOrders;
+
+  /// No description provided for @metricRating.
+  ///
+  /// In en, this message translates to:
+  /// **'rating'**
+  String get metricRating;
+
+  /// No description provided for @metricServices.
+  ///
+  /// In en, this message translates to:
+  /// **'services'**
+  String get metricServices;
+
+  /// No description provided for @requisitesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get requisitesLabel;
+
+  /// No description provided for @writeMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get writeMessage;
+
+  /// No description provided for @offersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Offers'**
+  String get offersTitle;
+
+  /// No description provided for @noOffersYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No one has responded yet'**
+  String get noOffersYet;
+
+  /// No description provided for @offerExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Expired'**
+  String get offerExpired;
+
+  /// No description provided for @commentLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Comment'**
+  String get commentLabel;
+
+  /// No description provided for @conditionsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms'**
+  String get conditionsLabel;
+
+  /// No description provided for @executionDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Completion date'**
+  String get executionDateLabel;
+
+  /// No description provided for @accountTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get accountTab;
+
+  /// No description provided for @securityLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Security'**
+  String get securityLabel;
+
+  /// No description provided for @changePhotoLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Change photo'**
+  String get changePhotoLabel;
+
+  /// No description provided for @subscriptionUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription until {date}'**
+  String subscriptionUntil(String date);
+
+  /// No description provided for @subscriptionNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No subscription'**
+  String get subscriptionNone;
+
+  /// No description provided for @showAllCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Show all {count}'**
+  String showAllCount(String count);
+
+  /// No description provided for @reviewsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} reviews'**
+  String reviewsCount(String count);
+
+  /// No description provided for @login_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number and password'**
+  String get login_subtitle;
+
+  /// No description provided for @create_account.
+  ///
+  /// In en, this message translates to:
+  /// **'Create account'**
+  String get create_account;
+
+  /// No description provided for @register_user_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'A few fields and you can post orders'**
+  String get register_user_subtitle;
+
+  /// No description provided for @sms_code_title.
+  ///
+  /// In en, this message translates to:
+  /// **'SMS code'**
+  String get sms_code_title;
+
+  /// No description provided for @code_sent_to.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent to {phone}'**
+  String code_sent_to(String phone);
+
+  /// No description provided for @change_number.
+  ///
+  /// In en, this message translates to:
+  /// **'Change number'**
+  String get change_number;
+
+  /// No description provided for @resend_code_in.
+  ///
+  /// In en, this message translates to:
+  /// **'Send the code again in {time}'**
+  String resend_code_in(String time);
+
+  /// No description provided for @store_registration_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your shop will appear in search for buyers in your city'**
+  String get store_registration_subtitle;
+
+  /// No description provided for @executor_registration_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers will find you by services and city'**
+  String get executor_registration_subtitle;
+
+  /// No description provided for @map_point.
+  ///
+  /// In en, this message translates to:
+  /// **'Point on the map'**
+  String get map_point;
+
+  /// No description provided for @store_location_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Buyers look for warehouses near them. We will read the coordinates once, when you submit the form.'**
+  String get store_location_hint;
+
+  /// No description provided for @executor_location_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers look for contractors near them. We will read the coordinates once, when you submit the form.'**
+  String get executor_location_hint;
+
+  /// No description provided for @location_service_disabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on location on your phone so we can put you on the map'**
+  String get location_service_disabled;
+
+  /// No description provided for @location_permission_denied.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow the app to use your location so we can put you on the map'**
+  String get location_permission_denied;
+
+  /// No description provided for @form_error_contacts_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least one contact'**
+  String get form_error_contacts_empty;
+
+  /// No description provided for @form_error_contacts_incomplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Contacts are not fully filled out'**
+  String get form_error_contacts_incomplete;
 }
 
 class _AppLocalizationsDelegate

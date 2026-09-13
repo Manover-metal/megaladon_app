@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:megaladon/presentation/widgets/form/field_style.dart';
 
 class TextFieldApp extends StatelessWidget {
   const TextFieldApp(
@@ -37,12 +38,9 @@ class TextFieldApp extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.all(13),
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.tertiary,
-                border: Border.all(
-                    color: errorText != null
-                        ? Theme.of(context).colorScheme.error
-                        : Theme.of(context).colorScheme.primary,
-                    width: 0.5),
+                color: FieldStyle.fillOf(context),
+                border:
+                    FieldStyle.borderOf(context, hasError: errorText != null),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: TextField(

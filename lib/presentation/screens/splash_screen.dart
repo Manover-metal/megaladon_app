@@ -100,70 +100,85 @@ class _SplashScreenState extends State<SplashScreen> {
                 alignment: Alignment.bottomCenter,
                 children: [
                   SizedBox(
-                      height: 50,
+                      // Иконка (25) + подпись (10pt) + индикатор активного таба
+                      // с отступами. Табы делят ширину поровну через Expanded,
+                      // пятая доля — пустая, под центральной кнопкой «+».
+                      height: 66,
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          IntroStepBuilder(
+                          Expanded(
+                            child: IntroStepBuilder(
+                                builder: (context, key) => Tab(
+                                      key: key,
+                                      icon: IconPack.basket,
+                                      label: AppLocalizations.of(context)!
+                                          .tabOrders,
+                                      isActive: 0 == tabsRouter.activeIndex,
+                                      click: _handleClick(tabsRouter, 0),
+                                      doubleClick: _doubleTap(
+                                          context,
+                                          const InitialRouter(
+                                              children: [OrderRouter()])),
+                                    ),
+                                order: 1,
+                                overlayBuilder: (params) => Text(
+                                    AppLocalizations.of(context)!.introOrders),
+                                onWidgetLoad: _introStart(context)),
+                          ),
+                          Expanded(
+                            child: IntroStepBuilder(
                               builder: (context, key) => Tab(
-                                    key: key,
-                                    icon: IconPack.basket,
-                                    isActive: 0 == tabsRouter.activeIndex,
-                                    click: _handleClick(tabsRouter, 0),
-                                    doubleClick: _doubleTap(
-                                        context,
-                                        const InitialRouter(
-                                            children: [OrderRouter()])),
-                                  ),
-                              order: 1,
+                                key: key,
+                                icon: IconPack.market,
+                                label: AppLocalizations.of(context)!.tabStores,
+                                isActive: 1 == tabsRouter.activeIndex,
+                                click: _handleClick(tabsRouter, 1),
+                                doubleClick: _doubleTap(
+                                    context,
+                                    const InitialRouter(
+                                        children: [StoreRouter()])),
+                              ),
+                              order: 2,
                               overlayBuilder: (params) => Text(
-                                  AppLocalizations.of(context)!.introOrders),
-                              onWidgetLoad: _introStart(context)),
-                          IntroStepBuilder(
-                            builder: (context, key) => Tab(
-                              key: key,
-                              icon: IconPack.market,
-                              isActive: 1 == tabsRouter.activeIndex,
-                              click: _handleClick(tabsRouter, 1),
-                              doubleClick: _doubleTap(
-                                  context,
-                                  const InitialRouter(
-                                      children: [StoreRouter()])),
+                                  AppLocalizations.of(context)!.introStores),
                             ),
-                            order: 2,
-                            overlayBuilder: (params) =>
-                                Text(AppLocalizations.of(context)!.introStores),
                           ),
-                          const SizedBox(
-                            width: 50,
-                          ),
-                          IntroStepBuilder(
-                            builder: (context, key) => Tab(
-                              key: key,
-                              icon: Icons.account_balance_wallet_outlined,
-                              isActive: 2 == tabsRouter.activeIndex,
-                              click: _handleClick(tabsRouter, 2),
-                              doubleClick: _doubleTap(context,
-                                  const InitialRouter(children: [AdRouter()])),
+                          const Expanded(child: SizedBox.shrink()),
+                          Expanded(
+                            child: IntroStepBuilder(
+                              builder: (context, key) => Tab(
+                                key: key,
+                                icon: Icons.account_balance_wallet_outlined,
+                                label: AppLocalizations.of(context)!.tabAds,
+                                isActive: 2 == tabsRouter.activeIndex,
+                                click: _handleClick(tabsRouter, 2),
+                                doubleClick: _doubleTap(
+                                    context,
+                                    const InitialRouter(
+                                        children: [AdRouter()])),
+                              ),
+                              order: 3,
+                              overlayBuilder: (params) =>
+                                  Text(AppLocalizations.of(context)!.introAds),
                             ),
-                            order: 3,
-                            overlayBuilder: (params) =>
-                                Text(AppLocalizations.of(context)!.introAds),
                           ),
-                          IntroStepBuilder(
-                            builder: (context, key) => Tab(
-                              key: key,
-                              icon: IconPack.profile,
-                              isActive: 3 == tabsRouter.activeIndex,
-                              click: _handleClick(tabsRouter, 3),
-                              doubleClick: _doubleTap(
-                                  context,
-                                  const InitialRouter(
-                                      children: [ProfileRouter()])),
+                          Expanded(
+                            child: IntroStepBuilder(
+                              builder: (context, key) => Tab(
+                                key: key,
+                                icon: IconPack.profile,
+                                label: AppLocalizations.of(context)!.tabProfile,
+                                isActive: 3 == tabsRouter.activeIndex,
+                                click: _handleClick(tabsRouter, 3),
+                                doubleClick: _doubleTap(
+                                    context,
+                                    const InitialRouter(
+                                        children: [ProfileRouter()])),
+                              ),
+                              order: 4,
+                              overlayBuilder: (params) => Text(
+                                  AppLocalizations.of(context)!.introProfile),
                             ),
-                            order: 4,
-                            overlayBuilder: (params) => Text(
-                                AppLocalizations.of(context)!.introProfile),
                           ),
                         ],
                       )),
@@ -190,32 +205,60 @@ class _SplashScreenState extends State<SplashScreen> {
 class Tab extends StatelessWidget {
   const Tab(
       {required this.icon,
+      required this.label,
       required this.isActive,
       required this.click,
       required this.doubleClick,
       super.key});
   final IconData icon;
+
+  /// Подпись под иконкой. Короткие tab-ключи из .arb, а не заголовки экранов:
+  /// на 360dp каждому табу достаётся ~72dp, полные названия не влезают.
+  final String label;
   final bool isActive;
   final VoidCallback click;
   final VoidCallback doubleClick;
 
   @override
-  Widget build(BuildContext context) => InkWell(
-        borderRadius: BorderRadius.circular(100),
-        onTap: click,
-        onDoubleTap: doubleClick,
-        child: Ink(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(100),
-          ),
-          padding: const EdgeInsets.all(10),
-          child: Icon(
-            icon,
-            color: isActive
-                ? Theme.of(context).colorScheme.primary
-                : Theme.of(context).colorScheme.onSecondary,
-            size: 25,
-          ),
+  Widget build(BuildContext context) {
+    final color = isActive
+        ? Theme.of(context).colorScheme.primary
+        : Theme.of(context).colorScheme.onSecondary;
+    return InkWell(
+      borderRadius: BorderRadius.circular(16),
+      onTap: click,
+      onDoubleTap: doubleClick,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, color: color, size: 25),
+            const SizedBox(height: 2),
+            Text(
+              label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: color,
+                fontSize: 10,
+                height: 1.2,
+                fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
+              ),
+            ),
+            const SizedBox(height: 3),
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              height: 3,
+              width: 20,
+              decoration: BoxDecoration(
+                color: isActive ? color : Colors.transparent,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+          ],
         ),
-      );
+      ),
+    );
+  }
 }

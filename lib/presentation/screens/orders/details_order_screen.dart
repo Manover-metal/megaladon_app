@@ -1,9 +1,6 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:megaladon/core/download/download_service.dart';
-import 'package:megaladon/data/models/dictionary/file_model.dart';
 import 'package:megaladon/data/models/order_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/screens/chats/chat_cubit.dart';
@@ -14,18 +11,19 @@ import 'package:megaladon/logic/screens/orders/main/order_screen_main_cubit.dart
 import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
+import 'package:megaladon/presentation/widgets/attachments_view.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
-import 'package:megaladon/presentation/widgets/list/file_download_list.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
+import 'package:megaladon/presentation/widgets/order/order_status_pill.dart';
+import 'package:megaladon/presentation/widgets/order/order_summary_card.dart';
+import 'package:megaladon/presentation/widgets/section/content_section.dart';
 import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/hint_text.dart';
-import 'package:megaladon/presentation/widgets/text/title.dart';
 import 'package:megaladon/presentation/widgets/tiles/executor_tile.dart';
 import 'package:megaladon/presentation/widgets/tiles/user_tile.dart';
-import 'package:share_plus/share_plus.dart';
 
 class DetailsOrderScreen extends StatefulWidget {
   const DetailsOrderScreen({required this.orderId, super.key});
@@ -36,6 +34,8 @@ class DetailsOrderScreen extends StatefulWidget {
 }
 
 class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
+  static const double _sectionGap = 18;
+
   void _createOffer() {
     context.router.push(CreateOfferRoute(orderId: widget.orderId));
   }
@@ -65,35 +65,6 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
       ));
     });
   }
-
-  Future<void> Function() _download(FileModel file) => () async {
-        try {
-          final downloadFile = await DownloadService.download(
-              url: file.url,
-              callback: (prog, gres) {
-                print('$prog, $gres');
-              });
-
-          if (downloadFile == null) return;
-
-          await SharePlus.instance.share(
-            ShareParams(files: [XFile(downloadFile.path)]),
-          );
-        } catch (_) {
-          if (!mounted) return;
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Не удалось загрузить файл')),
-          );
-        }
-      };
-
-  Null Function() _edit(OrderModel order) => () {
-        context.router.navigate(UpdateOrderRoute(order: order));
-      };
-
-  Null Function() _delete(OrderModel order) => () {
-        context.read<OrderDeleteCubit>().delete(order.id);
-      };
 
   late OrderBadgesCubit _badgesCubit;
   late OrderScreenMyCubit _myOrdersCubit;
@@ -146,7 +117,7 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
   }
 
   Future<void> Function() _onTrailing(OrderModel order) =>
-      () => showModalBottomSheet(
+      () => showModalBottomSheet<void>(
           useRootNavigator: true,
           useSafeArea: true,
           context: context,
@@ -177,6 +148,12 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
         context.read<OrderDeleteCubit>().delete(order.id);
       };
 
+  /// Заказ принадлежит текущему пользователю. Условие раньше требовало,
+  /// чтобы свой id был `null` — из-за этого меню «Изменить/Удалить» в шапке
+  /// не открывалось вообще ни у кого.
+  bool _isOwner(ProfileScreenState authState, OrderModel? order) =>
+      authState.user?.id != null && authState.user?.id == order?.user?.id;
+
   @override
   Widget build(BuildContext context) =>
       BlocListener<OrderDeleteCubit, OrderDeleteState>(
@@ -188,293 +165,312 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                 BlocBuilder<OrderScreenDetailsCubit, OrderScreenDetailsState>(
               builder: (context, state) =>
                   BlocBuilder<ProfileScreenCubit, ProfileScreenState>(
-                builder: (context, authState) => HeaderAppBar(
+                builder: (context, authState) {
+                  final order = state.order;
+                  // Редактировать и удалять можно, пока заказ не ушёл в
+                  // работу — тот же порог, что стоял у кнопок в теле экрана.
+                  final canManage = order != null &&
+                      _isOwner(authState, order) &&
+                      order.status.index <= OrderStatus.active.index;
+
+                  return HeaderAppBar(
                     isBack: true,
-                    title: state.order != null
+                    compactTitle: true,
+                    title: order != null
                         ? AppLocalizations.of(context)!
-                            .orderWithId(state.order!.id.toString())
+                            .orderWithId(order.id.toString())
                         : null,
-                    onTrailing: authState.user?.id == null &&
-                            authState.user?.id == state.order?.user?.id &&
-                            state.order != null
-                        ? _onTrailing(state.order!)
-                        : null),
-              ),
-            ),
-          ),
-          body: SingleChildScrollView(
-            child: Container(
-              constraints:
-                  BoxConstraints(minHeight: MediaQuery.of(context).size.height),
-              child: BlocConsumer<OrderScreenDetailsCubit,
-                  OrderScreenDetailsState>(
-                listener: _listener,
-                builder: (context, state) {
-                  if (state.status == OrderScreenDetailsStateStatus.success ||
-                      state.status ==
-                          OrderScreenDetailsStateStatus.errorMessage) {
-                    var order = state.order!;
-                    return Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Column(
-                            children: [
-                              Text(order.title),
-                              Text(order.description),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              if (order.files.isEmpty &&
-                                  order.images.isEmpty) ...[
-                                SubTitleApp(AppLocalizations.of(context)!
-                                    .no_attached_files),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                              ] else ...[
-                                SubTitleApp(AppLocalizations.of(context)!
-                                    .attached_files),
-                                if (order.files.isNotEmpty) ...[
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  FileDownloadList(files: order.files),
-                                ],
-                                if (order.images.isNotEmpty) ...[
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  ...order.images.map((e) {
-                                    print(e.url);
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 8),
-                                      child: Stack(
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            child: Container(
-                                              width: double.infinity,
-                                              constraints: const BoxConstraints(
-                                                  minHeight: 100),
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .secondary,
-                                              child: CachedNetworkImage(
-                                                imageUrl: e.url,
-                                                progressIndicatorBuilder:
-                                                    (context, url,
-                                                            downloadProgress) =>
-                                                        Icon(
-                                                            Icons
-                                                                .image_outlined,
-                                                            size: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width /
-                                                                10),
-                                                errorWidget: (context, url,
-                                                        error) =>
-                                                    Icon(Icons.error_outline,
-                                                        size: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .width /
-                                                            10),
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                          ),
-                                          Positioned(
-                                            right: 0,
-                                            child: IconButton(
-                                                onPressed: _download(e),
-                                                icon:
-                                                    const Icon(Icons.download)),
-                                          )
-                                        ],
-                                      ),
-                                    );
-                                  }).toList()
-                                ]
-                              ],
-                            ],
-                          ),
-                        ),
-                        const Divider(thickness: 1),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(AppLocalizations.of(context)!
-                                  .desiredBudgetUpToAmount(
-                                      order.priceMax.toString())),
-                              Text(AppLocalizations.of(context)!.validToAmount(
-                                  order.priceRecommended.toString())),
-                              if (order.executionDays != null)
-                                Text(AppLocalizations.of(context)!
-                                    .executionDaysValue(
-                                        order.executionDays.toString())),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              BlocBuilder<ProfileScreenCubit,
-                                  ProfileScreenState>(
-                                builder: (context, stateUser) {
-                                  if (stateUser.user != null) {
-                                    var user = stateUser.user;
-                                    final executor = user?.executor;
-                                    return Column(
-                                      children: [
-                                        if (order.user != null &&
-                                            order.user?.id != user?.id) ...[
-                                          UserTile(
-                                            user: order.user!,
-                                            // Условие «не я» уже обеспечено
-                                            // внешним if (order.user?.id !=
-                                            // user?.id) — здесь достаточно
-                                            // отсечь удалённых.
-                                            onTap: order.user!.isDeleted
-                                                ? null
-                                                : () => context.router.push(
-                                                      UserProfileRoute(
-                                                          userId:
-                                                              order.user!.id),
-                                                    ),
-                                          ),
-                                          const SizedBox(
-                                            height: 20,
-                                          ),
-                                        ] else if (order.executor != null &&
-                                            order.executor?.id != user?.id &&
-                                            order.status.index >
-                                                OrderStatus.active.index) ...[
-                                          ExecutorTile(
-                                              executor: order.executor!),
-                                          const SizedBox(
-                                            height: 20,
-                                          ),
-                                        ],
-                                        // Заказчик удалил аккаунт: ни откликнуться,
-                                        // ни написать ему уже нельзя.
-                                        if (order.user?.isDeleted != true &&
-                                            order.user?.id != user?.id &&
-                                            order.status ==
-                                                OrderStatus.active) ...[
-                                          if (executor == null)
-                                            // Авторизован, но профиля исполнителя нет.
-                                            HintText(
-                                              AppLocalizations.of(context)!
-                                                  .respond_requires_executor,
-                                            )
-                                          else ...[
-                                            // Без активной подписки закрыт весь
-                                            // контакт с заказчиком: и отклик,
-                                            // и чат.
-                                            ElevatedButtonApp(
-                                              text:
-                                                  AppLocalizations.of(context)!
-                                                      .offer_services,
-                                              onPressed:
-                                                  executor.hasActiveSubscription
-                                                      ? _createOffer
-                                                      : null,
-                                            ),
-                                            OutlinedButtonApp(
-                                              text:
-                                                  AppLocalizations.of(context)!
-                                                      .discuss_in_chat,
-                                              onPressed:
-                                                  executor.hasActiveSubscription
-                                                      ? () => _toChat(order)
-                                                      : null,
-                                            ),
-                                            if (!executor.hasActiveSubscription)
-                                              HintText(
-                                                AppLocalizations.of(context)!
-                                                    .respond_requires_subscription,
-                                              ),
-                                          ],
-                                        ] else if (order.user?.id ==
-                                            user?.id) ...[
-                                          if (order.status ==
-                                              OrderStatus.active) ...[
-                                            ElevatedButtonApp(
-                                              text:
-                                                  AppLocalizations.of(context)!
-                                                      .offersCount(order
-                                                          .countOffers
-                                                          .toString()),
-                                              onPressed: _checkExecutors,
-                                            ),
-                                            // OutlinedButtonApp(
-                                            //   text: "Discuss_in_chat2".tr(),
-                                            //   onPressed: _toChats,
-                                            // ),
-                                          ],
-                                          if (order.status ==
-                                              OrderStatus.hasExecutor) ...[
-                                            ElevatedButtonApp(
-                                              text:
-                                                  AppLocalizations.of(context)!
-                                                      .to_finish_work,
-                                              onPressed: _complete(order),
-                                            ),
-                                          ],
-                                        ],
-                                        if (order.user?.id == user?.id &&
-                                            order.status.index <=
-                                                OrderStatus.active.index) ...[
-                                          ElevatedButtonApp(
-                                            text: AppLocalizations.of(context)!
-                                                .edit,
-                                            onPressed: _edit(order),
-                                          ),
-                                          OutlinedButtonApp(
-                                            text: AppLocalizations.of(context)!
-                                                .delete,
-                                            onPressed: _delete(order),
-                                          ),
-                                        ]
-                                      ],
-                                    );
-                                  } else if (stateUser.status ==
-                                          ProfileScreenStatus.notAuth &&
-                                      order.user?.isDeleted != true &&
-                                      order.status == OrderStatus.active) {
-                                    // Гость: сначала вход/регистрация,
-                                    // затем профиль исполнителя.
-                                    return HintText(
-                                      AppLocalizations.of(context)!
-                                          .respond_requires_auth_and_executor,
-                                    );
-                                  } else {
-                                    return Container();
-                                  }
-                                },
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    );
-                  } else if (state.status ==
-                      OrderScreenDetailsStateStatus.loading) {
-                    return const Loader(
-                      padding: 10,
-                    );
-                  } else if (state.status ==
-                      OrderScreenDetailsStateStatus.error) {
-                    return ErrorMessage(error: state.error!);
-                  }
-                  return Container();
+                    onTrailing: canManage ? _onTrailing(order) : null,
+                  );
                 },
               ),
             ),
           ),
+          body: BlocConsumer<OrderScreenDetailsCubit, OrderScreenDetailsState>(
+            listener: _listener,
+            builder: (context, state) {
+              if (state.status == OrderScreenDetailsStateStatus.loading) {
+                return const Loader(padding: 10);
+              }
+
+              if (state.status == OrderScreenDetailsStateStatus.error) {
+                return ErrorMessage(error: state.error!);
+              }
+
+              final order = state.order;
+              if (order == null) return const SizedBox.shrink();
+
+              return _OrderBody(order: order, gap: _sectionGap);
+            },
+          ),
+          bottomNavigationBar:
+              BlocBuilder<OrderScreenDetailsCubit, OrderScreenDetailsState>(
+            builder: (context, state) {
+              final order = state.order;
+              if (order == null) return const SizedBox.shrink();
+
+              return _ActionBar(
+                order: order,
+                onOffer: _createOffer,
+                onChat: () => _toChat(order),
+                onExecutors: _checkExecutors,
+                onComplete: _complete(order),
+              );
+            },
+          ),
         ),
+      );
+}
+
+/// Прокручиваемая часть экрана: шапка, сводка и разделы. Раньше всё это было
+/// одной колонкой без заголовков, с центрированным описанием и одним
+/// разделителем на весь экран.
+class _OrderBody extends StatelessWidget {
+  const _OrderBody({required this.order, required this.gap});
+  final OrderModel order;
+  final double gap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+    final hasAttachments = order.images.isNotEmpty || order.files.isNotEmpty;
+
+    return SingleChildScrollView(
+      padding: const EdgeInsets.fromLTRB(20, 4, 20, 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              OrderStatusPill(status: order.status),
+              const Spacer(),
+              Text(
+                order.createdAt,
+                style:
+                    TextStyle(fontSize: 12, color: theme.colorScheme.secondary),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            order.title,
+            style: TextStyle(
+              fontSize: 21,
+              height: 1.25,
+              fontWeight: FontWeight.w700,
+              color: theme.textTheme.bodyMedium?.color,
+            ),
+          ),
+          SizedBox(height: gap),
+          OrderSummaryCard(order: order),
+          if (order.description.isNotEmpty) ...[
+            SizedBox(height: gap),
+            ContentSection(
+              title: l10n.description,
+              child: Text(
+                order.description,
+                style: TextStyle(
+                  fontSize: 14,
+                  height: 1.5,
+                  color: theme.textTheme.bodyMedium?.color,
+                ),
+              ),
+            ),
+          ],
+          SizedBox(height: gap),
+          ContentSection(
+            title: l10n.attached_files,
+            boxed: !hasAttachments,
+            child: hasAttachments
+                ? AttachmentsView(images: order.images, files: order.files)
+                : Text(
+                    l10n.no_attached_files,
+                    style: TextStyle(
+                        fontSize: 13, color: theme.colorScheme.secondary),
+                  ),
+          ),
+          _Participant(order: order, gap: gap),
+        ],
+      ),
+    );
+  }
+}
+
+/// Заказчик или назначенный исполнитель — смотря кто смотрит и в каком
+/// состоянии заказ. Логика показа перенесена из тела экрана без изменений.
+class _Participant extends StatelessWidget {
+  const _Participant({required this.order, required this.gap});
+  final OrderModel order;
+  final double gap;
+
+  @override
+  Widget build(BuildContext context) =>
+      BlocBuilder<ProfileScreenCubit, ProfileScreenState>(
+        builder: (context, stateUser) {
+          final l10n = AppLocalizations.of(context)!;
+          final user = stateUser.user;
+
+          if (order.user != null && order.user?.id != user?.id) {
+            return Padding(
+              padding: EdgeInsets.only(top: gap),
+              child: ContentSection(
+                title: l10n.customer,
+                child: UserTile(
+                  user: order.user!,
+                  // Условие «не я» уже обеспечено внешним if — здесь
+                  // достаточно отсечь удалённых.
+                  onTap: order.user!.isDeleted
+                      ? null
+                      : () => context.router.push(
+                            UserProfileRoute(userId: order.user!.id),
+                          ),
+                ),
+              ),
+            );
+          }
+
+          if (order.executor != null &&
+              order.executor?.id != user?.id &&
+              order.status.index > OrderStatus.active.index) {
+            return Padding(
+              padding: EdgeInsets.only(top: gap),
+              child: ContentSection(
+                title: l10n.executorLabel,
+                child: ExecutorTile(
+                  executor: order.executor!,
+                  // Заказчик рядом открывается, а исполнитель — нет: тут
+                  // это настоящий профиль исполнителя, а не пользователя.
+                  onTap: order.executor!.isDeleted
+                      ? null
+                      : () => context.router.push(
+                            DetailsExecutorRoute(
+                                executorId: order.executor!.id),
+                          ),
+                ),
+              ),
+            );
+          }
+
+          return const SizedBox.shrink();
+        },
+      );
+}
+
+/// Закреплённая панель действий. Раньше кнопки лежали в самом низу
+/// прокрутки: до «Предложить услуги» приходилось листать через описание,
+/// файлы и полноразмерные фотографии.
+class _ActionBar extends StatelessWidget {
+  const _ActionBar({
+    required this.order,
+    required this.onOffer,
+    required this.onChat,
+    required this.onExecutors,
+    required this.onComplete,
+  });
+  final OrderModel order;
+  final VoidCallback onOffer;
+  final VoidCallback onChat;
+  final VoidCallback onExecutors;
+  final VoidCallback onComplete;
+
+  List<Widget> _children(BuildContext context, ProfileScreenState stateUser) {
+    final l10n = AppLocalizations.of(context)!;
+    final user = stateUser.user;
+
+    if (user == null) {
+      // Гость: сначала вход/регистрация, затем профиль исполнителя.
+      if (stateUser.status == ProfileScreenStatus.notAuth &&
+          order.user?.isDeleted != true &&
+          order.status == OrderStatus.active) {
+        return [HintText(l10n.respond_requires_auth_and_executor)];
+      }
+      return const [];
+    }
+
+    final isOwner = order.user?.id == user.id;
+
+    // Заказчик удалил аккаунт: ни откликнуться, ни написать ему уже нельзя.
+    if (!isOwner &&
+        order.user?.isDeleted != true &&
+        order.status == OrderStatus.active) {
+      final executor = user.executor;
+      if (executor == null) {
+        // Авторизован, но профиля исполнителя нет.
+        return [HintText(l10n.respond_requires_executor)];
+      }
+
+      // Без активной подписки закрыт весь контакт с заказчиком: и отклик,
+      // и чат.
+      final canRespond = executor.hasActiveSubscription;
+
+      return [
+        Row(
+          children: [
+            Expanded(
+              flex: 2,
+              child: ElevatedButtonApp(
+                text: l10n.offer_services,
+                onPressed: canRespond ? onOffer : null,
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: OutlinedButtonApp(
+                text: l10n.chat,
+                onPressed: canRespond ? onChat : null,
+              ),
+            ),
+          ],
+        ),
+        if (!canRespond) HintText(l10n.respond_requires_subscription),
+      ];
+    }
+
+    if (isOwner) {
+      if (order.status == OrderStatus.active) {
+        return [
+          ElevatedButtonApp(
+            text: l10n.offersCount(order.countOffers.toString()),
+            onPressed: onExecutors,
+          ),
+        ];
+      }
+      if (order.status == OrderStatus.hasExecutor) {
+        return [
+          ElevatedButtonApp(text: l10n.to_finish_work, onPressed: onComplete),
+        ];
+      }
+    }
+
+    return const [];
+  }
+
+  @override
+  Widget build(BuildContext context) =>
+      BlocBuilder<ProfileScreenCubit, ProfileScreenState>(
+        builder: (context, stateUser) {
+          final children = _children(context, stateUser);
+          if (children.isEmpty) return const SizedBox.shrink();
+
+          final scheme = Theme.of(context).colorScheme;
+
+          return Container(
+            decoration: BoxDecoration(
+              color: scheme.tertiary,
+              border: Border(top: BorderSide(color: scheme.onTertiary)),
+            ),
+            child: SafeArea(
+              top: false,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: children,
+                ),
+              ),
+            ),
+          );
+        },
       );
 }

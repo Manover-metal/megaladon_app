@@ -2,6 +2,7 @@ import 'package:megaladon/core/utils/parser.dart';
 import 'package:megaladon/data/models/contact_model.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/dictionary/file_model.dart';
+import 'package:megaladon/data/models/dictionary/store_type_model.dart';
 
 class StoreModel {
   StoreModel({
@@ -17,6 +18,7 @@ class StoreModel {
     this.lon,
     this.name,
     this.city,
+    this.type,
   });
 
   final int id;
@@ -31,7 +33,23 @@ class StoreModel {
   final bool hasPhone;
   final List<FileModel> prices;
   final CityModel? city;
+  final StoreTypeModel? type;
   final List<ContactModel>? contacts;
+
+  /// Первый телефон магазина — по нему звонят из ленты и с карточки.
+  ContactModel? get primaryPhone {
+    final list = contacts;
+    if (list == null) return null;
+
+    for (final contact in list) {
+      if (contact.type == ContactType.phone ||
+          contact.type == ContactType.home_phone) {
+        return contact;
+      }
+    }
+
+    return null;
+  }
 
   static StoreModel fromJson(Map<String, dynamic> data) {
     var contacts = data['contacts'] != null
@@ -40,7 +58,10 @@ class StoreModel {
 
     return StoreModel(
         id: data['id'] as int,
-        rating: Parser.toInt(data['rating']),
+        // Parser.toInt превращает null в 0, поэтому отсутствие оценок
+        // раньше выглядело как «Рейтинг: 0» и ветка «Нет оценок» была
+        // недостижима.
+        rating: data['rating'] != null ? Parser.toInt(data['rating']) : null,
         bin: data['bin'] as String?,
         fullAddress: data['full_address'] as String,
         photo: data['photo_url'] as String?,
@@ -57,7 +78,8 @@ class StoreModel {
                 element.type == ContactType.phone),
         city: data['city'] != null
             ? CityModel.fromJson(data['city'] as Map<String, dynamic>)
-            : null);
+            : null,
+        type: StoreTypeModel.fromJsonOrNull(data['type']));
   }
 
   static StoreModel? fromJsonOrNull(Map<String, dynamic>? data) =>
@@ -78,6 +100,7 @@ class StoreModel {
         'lon': lon,
         'prices': prices.map((p) => p.toJson()).toList(),
         'city': city?.toJson(),
+        'type': type?.toJson(),
         'contacts': contacts?.map((c) => c.toJson()).toList(),
       };
 }

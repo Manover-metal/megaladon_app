@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/dictionary/dictionary_cubit.dart';
+import 'package:megaladon/presentation/widgets/form/field_style.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_selection_screen.dart';
 
 class CityPickerController extends ValueNotifier<CityModel?> {
@@ -85,13 +86,9 @@ class _CityPickerState extends State<CityPicker> {
                   width: double.infinity,
                   padding: const EdgeInsets.all(13),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.tertiary,
-                    border: Border.all(
-                      color: widget.errorText != null
-                          ? Theme.of(context).colorScheme.error
-                          : Theme.of(context).colorScheme.primary,
-                      width: 0.5,
-                    ),
+                    color: FieldStyle.fillOf(context),
+                    border: FieldStyle.borderOf(context,
+                        hasError: widget.errorText != null),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Row(

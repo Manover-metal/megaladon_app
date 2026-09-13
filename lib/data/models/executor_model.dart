@@ -5,6 +5,8 @@ class ExecutorModel {
   ExecutorModel({
     required this.id,
     required this.name,
+    this.userId,
+    this.description,
     this.rating,
     this.bin,
     this.lat,
@@ -18,7 +20,13 @@ class ExecutorModel {
   });
 
   final int id;
+
+  /// id пользователя, которому принадлежит профиль исполнителя. Чат
+  /// заводится именно по нему: `ChatCubit.createChat` ждёт пользователя, а
+  /// не исполнителя.
+  final int? userId;
   final String name;
+  final String? description;
   final double? rating;
   final String? bin;
   final double? lat;
@@ -53,12 +61,17 @@ class ExecutorModel {
 
   static ExecutorModel fromJson(Map<String, dynamic> data) => ExecutorModel(
         id: data['id'] as int,
+        userId: data['user_id'] as int?,
         name: data['name'] as String,
-        rating: Parser.toDouble(data['rating'] as dynamic),
+        description: data['description'] as String?,
+        // Parser.toDouble превращает null в 0, поэтому исполнитель без
+        // отзывов показывался с «Рейтинг: 0.0», а ветка «Нет оценок» была
+        // недостижима. То же и с координатами.
+        rating: data['rating'] != null ? Parser.toDouble(data['rating']) : null,
         bin: data['bin'] as String?,
         photo: data['photo_url'] as String?,
-        lat: Parser.toDouble(data['lat']),
-        lon: Parser.toDouble(data['lon']),
+        lat: data['lat'] != null ? Parser.toDouble(data['lat']) : null,
+        lon: data['lon'] != null ? Parser.toDouble(data['lon']) : null,
         fullAddress: data['full_address'] as String?,
         countOrders: data['count_orders'] as int?,
         services: data['services'] != null
@@ -85,7 +98,9 @@ class ExecutorModel {
 
   Map<String, dynamic> toJson() => {
         'id': id,
+        'user_id': userId,
         'name': name,
+        'description': description,
         'rating': rating,
         'bin': bin,
         'lat': lat,

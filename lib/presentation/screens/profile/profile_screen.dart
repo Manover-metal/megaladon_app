@@ -1,6 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:megaladon/data/models/executor_model.dart';
+import 'package:megaladon/data/models/store_model.dart';
+import 'package:megaladon/data/models/user_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/form/price/price_form_cubit.dart';
@@ -9,17 +14,16 @@ import 'package:megaladon/logic/screens/profile/delete_account/delete_account_cu
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
-import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/dialogs/delete_account_dialog.dart';
-import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/message/auth_message.dart';
 import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
+import 'package:megaladon/presentation/widgets/rating/rating_stars.dart';
+import 'package:megaladon/presentation/widgets/section/content_section.dart';
+import 'package:megaladon/presentation/widgets/settings/settings_row.dart';
 import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
-import 'package:megaladon/presentation/widgets/text/title.dart';
 import 'package:megaladon/presentation/widgets/tiles/contact_tile.dart';
-import 'package:megaladon/presentation/widgets/tiles/profile_route_tile.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -29,6 +33,13 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  static const double _gap = 16;
+
+  /// Выбранная вкладка среди доступных ролей. Индекс считается по списку,
+  /// который собирается в [_tabsFor]: у человека без второй роли вкладок нет
+  /// вовсе и переключатель не показывается.
+  int _tab = 0;
+
   Future<void> _onDeleteAccount(BuildContext context) async {
     final password = await showDialog<String>(
       context: context,
@@ -39,8 +50,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  void _deleteAccountListener(
-      BuildContext context, DeleteAccountState state) {
+  void _deleteAccountListener(BuildContext context, DeleteAccountState state) {
     if (state.status == DeleteAccountStatus.success) {
       CustomSnackBar.success(
         Text(AppLocalizations.of(context)!.account_deleted_successfully),
@@ -56,7 +66,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future _fetch() async {
-    // Профиль грузим только авторизованным. Для гостя ProfileScreenCubit уже
+    // Гость сюда попадает штатно: ProfileScreenCubit при отсутствии токена
     // выставляет notAuth (показывается AuthMessage). Если дёрнуть /user/profile
     // без токена — придёт 403, и updateData() пошлёт AuthLogoutEvent, который
     // теперь уводит на логин. Поэтому гостя здесь не трогаем.
@@ -88,364 +98,724 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  /// Какие вкладки показывать. «Аккаунт» есть всегда, роли — по наличию.
+  List<String> _tabsFor(UserModel user, AppLocalizations l10n) => [
+        l10n.accountTab,
+        if (user.executor != null) l10n.executorLabel,
+        if (user.store != null) l10n.storeLabel,
+      ];
+
   @override
   Widget build(BuildContext context) =>
       BlocListener<DeleteAccountCubit, DeleteAccountState>(
         listener: _deleteAccountListener,
-        child: BlocBuilder<AuthBloc, AuthState>(
-          builder: (context, state) => Scaffold(
-          appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(70),
-            child: HeaderAppBar(
-              isMenu: true,
-              title: AppLocalizations.of(context)!.profile,
-            ),
+        child: Scaffold(
+          appBar: HeaderAppBar(
+            isMenu: true,
+            compactTitle: true,
+            title: AppLocalizations.of(context)!.profile,
           ),
+          // CustomScrollView, а не SingleChildScrollView: состояния без
+          // содержимого отдаются через SliverFillRemaining и занимают ровно
+          // вьюпорт, а не выдуманную высоту экрана. Сам список слайверов
+          // существует всегда — RefreshIndicator требует прокручиваемого
+          // потомка в любом состоянии.
           body: RefreshIndicator(
             onRefresh: _fetch,
-            child: SingleChildScrollView(
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  children: [
-                    BlocBuilder<ProfileScreenCubit, ProfileScreenState>(
-                      builder: (context, state) {
-                        if (state.status == ProfileScreenStatus.success) {
-                          var user = state.user!;
-                          var executor = state.user?.executor;
-                          var store = state.user?.store;
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Align(
-                                alignment: Alignment.center,
-                                child: BlocConsumer<ChangePhotoCubit,
-                                    ChangePhotoState>(
-                                  listener: _photoListener,
-                                  builder: (context, state) => SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width / 3,
-                                    height:
-                                        MediaQuery.of(context).size.width / 3,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(100),
-                                      clipBehavior: Clip.hardEdge,
-                                      child: Stack(
-                                        alignment: Alignment.bottomCenter,
-                                        children: [
-                                          Container(
-                                            width: double.infinity,
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                3,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .secondary,
-                                            child: state.status ==
-                                                    PhotoStatus.bytes
-                                                ? Image.memory(
-                                                    state.imageData!,
-                                                    fit: BoxFit.cover,
-                                                  )
-                                                : CachedNetworkImage(
-                                                    imageUrl: state.url ?? '',
-                                                    fadeInDuration:
-                                                        Duration.zero,
-                                                    progressIndicatorBuilder: (context,
-                                                            url,
-                                                            downloadProgress) =>
-                                                        Icon(Icons.person,
-                                                            size: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width /
-                                                                4),
-                                                    errorWidget: (context, url,
-                                                            error) =>
-                                                        Icon(Icons.person,
-                                                            size: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width /
-                                                                4),
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                          ),
-                                          Align(
-                                              alignment: Alignment.bottomCenter,
-                                              child: GestureDetector(
-                                                onTap: _changePhoto,
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        const BorderRadius
-                                                            .vertical(
-                                                            bottom:
-                                                                Radius.circular(
-                                                                    1000)),
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .surface
-                                                        .withValues(alpha: 0.5),
-                                                  ),
-                                                  padding: const EdgeInsets
-                                                      .symmetric(vertical: 3),
-                                                  width: double.infinity,
-                                                  child: const Icon(Icons.edit),
-                                                ),
-                                              ))
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              TextFieldApp(
-                                  readOnly: true,
-                                  label: AppLocalizations.of(context)!.name,
-                                  value: user.name),
-                              if (user.phone != null)
-                                TextFieldApp(
-                                    readOnly: true,
-                                    label:
-                                        AppLocalizations.of(context)!.telephone,
-                                    value: user.phone!),
-                              if (user.city != null)
-                                TextFieldApp(
-                                    readOnly: true,
-                                    label:
-                                        AppLocalizations.of(context)!.location,
-                                    value: AppLocalizations.of(context)!
-                                        .cityName(user.city?.name ?? '')),
-                              if (executor != null) ...[
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                TitleApp(
-                                    AppLocalizations.of(context)!.artist_data),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                TextFieldApp(
-                                    readOnly: true,
-                                    label: AppLocalizations.of(context)!
-                                        .organization,
-                                    value: executor.name),
-                                TextFieldApp(
-                                    readOnly: true,
-                                    label: AppLocalizations.of(context)!.bIN,
-                                    value: executor.bin!),
-                                TextFieldApp(
-                                    readOnly: true,
-                                    label: AppLocalizations.of(context)!.rating,
-                                    value: executor.rating?.toString() ??
-                                        AppLocalizations.of(context)!
-                                            .noRatings),
-                                if (executor.fullAddress != null)
-                                  TextFieldApp(
-                                      readOnly: true,
-                                      label:
-                                          AppLocalizations.of(context)!.address,
-                                      value: executor.fullAddress!),
-                                if (executor.countOrders != null)
-                                  TextFieldApp(
-                                      readOnly: true,
-                                      label: AppLocalizations.of(context)!
-                                          .the_number_of_orders,
-                                      value: executor.countOrders.toString()),
-                              ],
-                              if (store != null) ...[
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                TitleApp(
-                                    AppLocalizations.of(context)!.store_data),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                TextFieldApp(
-                                    readOnly: true,
-                                    label:
-                                        AppLocalizations.of(context)!.address,
-                                    value: store.fullAddress),
-                                TextFieldApp(
-                                    readOnly: true,
-                                    label: AppLocalizations.of(context)!.rating,
-                                    value: store.rating?.toString() ??
-                                        AppLocalizations.of(context)!
-                                            .noRatings),
-                                if (store.bin != null)
-                                  TextFieldApp(
-                                      readOnly: true,
-                                      label: AppLocalizations.of(context)!.bIN,
-                                      value: store.bin.toString()),
-                                if (store.city != null)
-                                  TextFieldApp(
-                                      readOnly: true,
-                                      label: AppLocalizations.of(context)!.city,
-                                      value: store.city!.name),
-                                if (store.contacts != null)
-                                  ...store.contacts!
-                                      .map((e) => ContactTile(contact: e))
-                                      .toList(),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                TitleApp(
-                                    AppLocalizations.of(context)!.price_lists),
-                                BlocConsumer<PriceFormCubit, PriceFormState>(
-                                    builder: (context, state) => Column(
-                                          children: [
-                                            Column(
-                                              children: state.prices
-                                                  .map((file) => Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Expanded(
-                                                              child: Text(
-                                                            file.name,
-                                                            maxLines: 1,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                          )),
-                                                          IconButton(
-                                                              onPressed: () => context
-                                                                  .read<
-                                                                      PriceFormCubit>()
-                                                                  .delete(
-                                                                      file.id),
-                                                              icon: const Icon(
-                                                                  Icons.delete,
-                                                                  color: Colors
-                                                                      .red)),
-                                                          if (file.active)
-                                                            IconButton(
-                                                                onPressed: () => context
-                                                                    .read<
-                                                                        PriceFormCubit>()
-                                                                    .deactivate(
-                                                                        file
-                                                                            .id),
-                                                                icon: const Icon(
-                                                                    Icons
-                                                                        .check_circle_rounded,
-                                                                    color: Colors
-                                                                        .green))
-                                                          else
-                                                            IconButton(
-                                                                onPressed: () => context.read<PriceFormCubit>().activate(
-                                                                    file.id),
-                                                                icon: const Icon(
-                                                                    Icons.remove_circle_outline,
-                                                                    color: Colors.red))
-                                                        ],
-                                                      ))
-                                                  .toList(),
-                                            ),
-                                            ElevatedButtonApp(
-                                              text:
-                                                  AppLocalizations.of(context)!
-                                                      .add_price,
-                                              onPressed: context
-                                                  .read<PriceFormCubit>()
-                                                  .addPrice,
-                                            ),
-                                          ],
-                                        ),
-                                    listener: (context, state) {
-                                      if (state.error != null) {
-                                        CustomSnackBar.error(
-                                          Text(
-                                            state.error?.messages.isNotEmpty ==
-                                                    true
-                                                ? state.error!.messages.first
-                                                : AppLocalizations.of(context)!
-                                                    .unknown_error,
-                                          ),
-                                        ).view(context);
-                                      }
-                                    }),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                              ],
-                              ProfileRouteTile(
-                                  text: AppLocalizations.of(context)!
-                                      .change_phone_number,
-                                  page: const ChangePhoneStartRoute()),
-                              ProfileRouteTile(
-                                  text: AppLocalizations.of(context)!
-                                      .change_password,
-                                  page: const ChangePasswordRoute()),
-                              if (executor != null)
-                                ProfileRouteTile(
-                                    text: AppLocalizations.of(context)!
-                                        .my_reviews,
-                                    page: const InitialRouter(children: [
-                                      ProfileRouter(
-                                          children: [MyReviewsRoute()])
-                                    ])),
-                              if (executor != null)
-                                ProfileRouteTile(
-                                    text: AppLocalizations.of(context)!
-                                        .change_executor,
-                                    page: const InitialRouter(children: [
-                                      ProfileRouter(
-                                          children: [ChangeExecutorRoute()])
-                                    ])),
-                              if (store != null)
-                                ProfileRouteTile(
-                                    text: AppLocalizations.of(context)!
-                                        .store_reviews,
-                                    page: InitialRouter(children: [
-                                      ProfileRouter(children: [
-                                        StoreMyReviewsRoute(storeId: store.id)
-                                      ])
-                                    ])),
-                              if (store != null)
-                                ProfileRouteTile(
-                                    text: AppLocalizations.of(context)!
-                                        .change_store,
-                                    page: const InitialRouter(children: [
-                                      ProfileRouter(
-                                          children: [ChangeStoreRoute()])
-                                    ])),
-                              const SizedBox(height: 20),
-                              OutlinedButtonApp(
-                                text: AppLocalizations.of(context)!
-                                    .delete_account,
-                                onPressed: () => _onDeleteAccount(context),
-                              ),
-                              const SizedBox(height: 20),
-                            ],
-                          );
-                        } else if (state.status ==
-                            ProfileScreenStatus.notAuth) {
-                          return const AuthMessage();
-                        } else if (state.status ==
-                            ProfileScreenStatus.loading) {
-                          return const Loader();
-                        } else if (state.status ==
-                            ProfileScreenStatus.notAuth) {
-                          return ErrorMessage(error: state.error!);
-                        } else {
-                          return Container();
-                        }
-                      },
-                    ),
-                  ],
-                ),
+            child: BlocBuilder<ProfileScreenCubit, ProfileScreenState>(
+              builder: (context, state) => CustomScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                slivers: [
+                  SliverPadding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 24),
+                    sliver: _sliver(context, state),
+                  ),
+                ],
               ),
             ),
           ),
-          ),
         ),
       );
+
+  Widget _sliver(BuildContext context, ProfileScreenState state) {
+    if (state.status == ProfileScreenStatus.loading) {
+      return const SliverFillRemaining(
+        hasScrollBody: false,
+        child: Center(child: Loader()),
+      );
+    }
+    if (state.status == ProfileScreenStatus.notAuth) {
+      return const SliverFillRemaining(
+        hasScrollBody: false,
+        child: Center(child: AuthMessage()),
+      );
+    }
+    // Раньше эта ветка проверяла notAuth второй раз и потому была
+    // недостижима: любой сбой запроса профиля оборачивался пустым экраном.
+    if (state.status == ProfileScreenStatus.error) {
+      return SliverFillRemaining(
+        hasScrollBody: false,
+        child: Center(child: ErrorMessage(error: state.error!)),
+      );
+    }
+    if (state.status != ProfileScreenStatus.success || state.user == null) {
+      return const SliverToBoxAdapter(child: SizedBox.shrink());
+    }
+
+    return SliverToBoxAdapter(child: _body(context, state.user!));
+  }
+
+  Widget _body(BuildContext context, UserModel user) {
+    final l10n = AppLocalizations.of(context)!;
+    final tabs = _tabsFor(user, l10n);
+    final index = _tab.clamp(0, tabs.length - 1);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _Header(
+            user: user,
+            onChangePhoto: _changePhoto,
+            onPhotoError: _photoListener),
+        // Одна роль — переключать нечего.
+        if (tabs.length > 1) ...[
+          const SizedBox(height: _gap),
+          _Tabs(
+            tabs: tabs,
+            current: index,
+            onChanged: (value) => setState(() => _tab = value),
+          ),
+        ],
+        const SizedBox(height: _gap),
+        _tabContent(context, user, tabs[index], l10n),
+      ],
+    );
+  }
+
+  Widget _tabContent(
+      BuildContext context, UserModel user, String tab, AppLocalizations l10n) {
+    if (tab == l10n.executorLabel && user.executor != null) {
+      return _ExecutorTab(executor: user.executor!, gap: _gap);
+    }
+    if (tab == l10n.storeLabel && user.store != null) {
+      return _StoreTab(store: user.store!, gap: _gap);
+    }
+
+    return _AccountTab(
+      user: user,
+      gap: _gap,
+      onDelete: () => _onDeleteAccount(context),
+    );
+  }
+}
+
+/// Шапка: аватар, имя, телефон и город. Аватар был размером в треть ширины
+/// экрана, а поверх нижней трети круга лежала полупрозрачная «шторка» с
+/// карандашом во всю ширину.
+class _Header extends StatelessWidget {
+  const _Header({
+    required this.user,
+    required this.onChangePhoto,
+    required this.onPhotoError,
+  });
+  final UserModel user;
+  final VoidCallback onChangePhoto;
+  final void Function(BuildContext, ChangePhotoState) onPhotoError;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final l10n = AppLocalizations.of(context)!;
+
+    final caption = [
+      if (user.phone != null) user.phone!,
+      if (user.city != null) user.city!.name,
+    ].join(' · ');
+
+    return Row(
+      children: [
+        BlocConsumer<ChangePhotoCubit, ChangePhotoState>(
+          listener: onPhotoError,
+          builder: (context, state) => _Avatar(state: state),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                user.name,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 15.5,
+                  height: 1.25,
+                  fontWeight: FontWeight.w700,
+                  color: theme.textTheme.bodyMedium?.color,
+                ),
+              ),
+              if (caption.isNotEmpty)
+                Text(
+                  caption,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 11.5, color: scheme.secondary),
+                ),
+            ],
+          ),
+        ),
+        IconButton(
+          onPressed: onChangePhoto,
+          tooltip: l10n.changePhotoLabel,
+          icon: Icon(Icons.photo_camera_outlined, color: scheme.primary),
+        ),
+      ],
+    );
+  }
+}
+
+class _Avatar extends StatelessWidget {
+  const _Avatar({required this.state});
+  final ChangePhotoState state;
+
+  static const double _size = 56;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final placeholder = Container(
+      color: scheme.secondaryContainer,
+      alignment: Alignment.center,
+      child: Icon(Icons.person, size: 30, color: scheme.secondary),
+    );
+
+    return ClipOval(
+      child: SizedBox(
+        width: _size,
+        height: _size,
+        child: state.status == PhotoStatus.bytes
+            ? Image.memory(state.imageData!, fit: BoxFit.cover)
+            : CachedNetworkImage(
+                imageUrl: state.url ?? '',
+                fit: BoxFit.cover,
+                fadeInDuration: Duration.zero,
+                progressIndicatorBuilder: (_, __, ___) => placeholder,
+                errorWidget: (_, __, ___) => placeholder,
+              ),
+      ),
+    );
+  }
+}
+
+/// Переключатель ролей. Показывается только тем, у кого их больше одной.
+class _Tabs extends StatelessWidget {
+  const _Tabs({
+    required this.tabs,
+    required this.current,
+    required this.onChanged,
+  });
+  final List<String> tabs;
+  final int current;
+  final ValueChanged<int> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+
+    return Container(
+      padding: const EdgeInsets.all(2),
+      decoration: BoxDecoration(
+        color: scheme.onTertiary,
+        borderRadius: BorderRadius.circular(9),
+      ),
+      child: Row(
+        children: [
+          for (var i = 0; i < tabs.length; i++)
+            Expanded(
+              child: InkWell(
+                onTap: () => onChanged(i),
+                borderRadius: BorderRadius.circular(7),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 7),
+                  decoration: BoxDecoration(
+                    color: i == current ? scheme.tertiary : Colors.transparent,
+                    borderRadius: BorderRadius.circular(7),
+                  ),
+                  child: Text(
+                    tabs[i],
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 12.5,
+                      fontWeight:
+                          i == current ? FontWeight.w600 : FontWeight.w400,
+                      color: i == current
+                          ? theme.textTheme.bodyMedium?.color
+                          : scheme.secondary,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _AccountTab extends StatelessWidget {
+  const _AccountTab({
+    required this.user,
+    required this.gap,
+    required this.onDelete,
+  });
+  final UserModel user;
+  final double gap;
+  final VoidCallback onDelete;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final scheme = Theme.of(context).colorScheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _FactsCard(rows: [
+          [l10n.name, user.name],
+          if (user.phone != null) [l10n.telephone, user.phone!],
+          if (user.city != null) [l10n.location, user.city!.name],
+        ]),
+        SizedBox(height: gap),
+        ContentSection(
+          title: l10n.securityLabel,
+          padding: EdgeInsets.zero,
+          child: Column(
+            children: [
+              SettingsRow(
+                icon: Icons.phone_iphone,
+                title: l10n.change_phone_number,
+                trailing: const SettingsChevron(),
+                onTap: () => context.router.navigate(
+                  const ChangePhoneStartRoute(),
+                ),
+              ),
+              const SettingsRowDivider(),
+              SettingsRow(
+                icon: Icons.lock_outline,
+                title: l10n.change_password,
+                trailing: const SettingsChevron(),
+                onTap: () => context.router.navigate(
+                  const ChangePasswordRoute(),
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: gap + 8),
+        // Удаление аккаунта — не рядовой пункт настроек: отделено и набрано
+        // цветом ошибки, а не как «Сменить пароль».
+        Center(
+          child: TextButton(
+            onPressed: onDelete,
+            child: Text(
+              l10n.delete_account,
+              style: TextStyle(fontSize: 13, color: scheme.error),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ExecutorTab extends StatelessWidget {
+  const _ExecutorTab({required this.executor, required this.gap});
+  final ExecutorModel executor;
+  final double gap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final l10n = AppLocalizations.of(context)!;
+    final rating = executor.rating;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CardBox(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      executor.name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: theme.textTheme.bodyMedium?.color,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  _SubscriptionChip(executor: executor),
+                ],
+              ),
+              const SizedBox(height: 7),
+              Row(
+                children: [
+                  if (rating != null) ...[
+                    RatingStars(rate: rating, size: 13),
+                    const SizedBox(width: 6),
+                    Text(
+                      rating.toStringAsFixed(1),
+                      style: TextStyle(fontSize: 11.5, color: scheme.secondary),
+                    ),
+                  ] else
+                    Text(
+                      l10n.noRatings,
+                      style: TextStyle(fontSize: 11.5, color: scheme.secondary),
+                    ),
+                  if (executor.countOrders != null) ...[
+                    const SizedBox(width: 6),
+                    Text(
+                      '· ${executor.countOrders} ${l10n.metricOrders}',
+                      style: TextStyle(fontSize: 11.5, color: scheme.secondary),
+                    ),
+                  ],
+                ],
+              ),
+              const SizedBox(height: 11),
+              Container(height: 1, color: scheme.onTertiary),
+              const SizedBox(height: 11),
+              // bin объявлен String? и у части исполнителей не заполнен —
+              // раньше здесь стоял `executor.bin!`, и экран падал.
+              _Facts(rows: [
+                if (executor.bin != null && executor.bin!.isNotEmpty)
+                  [l10n.bIN, executor.bin!],
+                if (executor.fullAddress != null &&
+                    executor.fullAddress!.isNotEmpty)
+                  [l10n.address, executor.fullAddress!],
+                if (executor.services.isNotEmpty)
+                  [
+                    l10n.services,
+                    executor.services.map((s) => s.name).join(', '),
+                  ],
+              ]),
+            ],
+          ),
+        ),
+        SizedBox(height: gap),
+        CardBox(
+          padding: EdgeInsets.zero,
+          child: Column(
+            children: [
+              SettingsRow(
+                icon: Icons.edit_outlined,
+                title: l10n.change_executor,
+                trailing: const SettingsChevron(),
+                onTap: () =>
+                    context.router.navigate(const InitialRouter(children: [
+                  ProfileRouter(children: [ChangeExecutorRoute()])
+                ])),
+              ),
+              const SettingsRowDivider(),
+              SettingsRow(
+                icon: Icons.star_border,
+                title: l10n.my_reviews,
+                trailing: const SettingsChevron(),
+                onTap: () =>
+                    context.router.navigate(const InitialRouter(children: [
+                  ProfileRouter(children: [MyReviewsRoute()])
+                ])),
+              ),
+              const SettingsRowDivider(),
+              SettingsRow(
+                icon: Icons.workspace_premium_outlined,
+                title: l10n.subscriptions,
+                trailing: const SettingsChevron(),
+                onTap: () =>
+                    context.router.navigate(const InitialRouter(children: [
+                  OrderRouter(children: [SubscribeRoute()])
+                ])),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Подписка решает, может ли исполнитель откликаться и писать в чат, — но на
+/// профиле её статус не показывался вовсе.
+class _SubscriptionChip extends StatelessWidget {
+  const _SubscriptionChip({required this.executor});
+  final ExecutorModel executor;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
+    final active = executor.hasActiveSubscription;
+    final until = executor.subscriptionExpiredAt;
+
+    final text = active && until != null
+        ? l10n.subscriptionUntil(DateFormat('dd.MM.yyyy').format(until))
+        : l10n.subscriptionNone;
+    final color = active ? scheme.primary : scheme.secondary;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
+      decoration: BoxDecoration(
+        color: active ? color.withValues(alpha: 0.14) : scheme.onTertiary,
+        borderRadius: BorderRadius.circular(100),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(
+          fontSize: 10.5,
+          height: 1.3,
+          fontWeight: FontWeight.w600,
+          color: color,
+        ),
+      ),
+    );
+  }
+}
+
+class _StoreTab extends StatelessWidget {
+  const _StoreTab({required this.store, required this.gap});
+  final StoreModel store;
+  final double gap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final l10n = AppLocalizations.of(context)!;
+    final rating = store.rating;
+    final contacts = store.contacts ?? const [];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CardBox(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  if (rating != null) ...[
+                    RatingStars(rate: rating.toDouble(), size: 13),
+                    const SizedBox(width: 6),
+                    Text(
+                      rating.toStringAsFixed(1),
+                      style: TextStyle(fontSize: 11.5, color: scheme.secondary),
+                    ),
+                  ] else
+                    Text(
+                      l10n.noRatings,
+                      style: TextStyle(fontSize: 11.5, color: scheme.secondary),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 11),
+              Container(height: 1, color: scheme.onTertiary),
+              const SizedBox(height: 11),
+              _Facts(rows: [
+                if (store.fullAddress.isNotEmpty)
+                  [l10n.address, store.fullAddress],
+                if (store.city != null) [l10n.city, store.city!.name],
+                if (store.bin != null && store.bin!.isNotEmpty)
+                  [l10n.bIN, store.bin!],
+                if (store.type != null && store.type!.name.isNotEmpty)
+                  [l10n.typeLabel, store.type!.name],
+              ]),
+            ],
+          ),
+        ),
+        if (contacts.isNotEmpty) ...[
+          SizedBox(height: gap),
+          ContentSection(
+            title: l10n.contacts,
+            child: Column(
+              children: [
+                for (var i = 0; i < contacts.length; i++) ...[
+                  if (i > 0) Container(height: 1, color: scheme.onTertiary),
+                  ContactTile(contact: contacts[i]),
+                ],
+              ],
+            ),
+          ),
+        ],
+        SizedBox(height: gap),
+        const _PriceLists(),
+        SizedBox(height: gap),
+        CardBox(
+          padding: EdgeInsets.zero,
+          child: Column(
+            children: [
+              SettingsRow(
+                icon: Icons.edit_outlined,
+                title: l10n.change_store,
+                trailing: const SettingsChevron(),
+                onTap: () =>
+                    context.router.navigate(const InitialRouter(children: [
+                  ProfileRouter(children: [ChangeStoreRoute()])
+                ])),
+              ),
+              const SettingsRowDivider(),
+              SettingsRow(
+                icon: Icons.star_border,
+                title: l10n.store_reviews,
+                trailing: const SettingsChevron(),
+                onTap: () => context.router.navigate(InitialRouter(children: [
+                  ProfileRouter(
+                      children: [StoreMyReviewsRoute(storeId: store.id)])
+                ])),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Прайс-листы магазина. Раньше лежали посреди личных данных, а состояние
+/// файла показывалось красной и зелёной иконкой без единой подписи.
+class _PriceLists extends StatelessWidget {
+  const _PriceLists();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final scheme = Theme.of(context).colorScheme;
+
+    return BlocConsumer<PriceFormCubit, PriceFormState>(
+      listener: (context, state) {
+        if (state.error != null) {
+          CustomSnackBar.error(
+            Text(state.error?.messages.isNotEmpty == true
+                ? state.error!.messages.first
+                : l10n.unknown_error),
+          ).view(context);
+        }
+      },
+      builder: (context, state) {
+        final cubit = context.read<PriceFormCubit>();
+
+        return ContentSection(
+          title: l10n.price_lists,
+          padding: EdgeInsets.zero,
+          child: Column(
+            children: [
+              for (var i = 0; i < state.prices.length; i++) ...[
+                if (i > 0) const SettingsRowDivider(),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(13, 6, 6, 6),
+                  child: Row(
+                    children: [
+                      Icon(Icons.description_outlined,
+                          size: 19, color: scheme.secondary),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          state.prices[i].name,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(fontSize: 13.5),
+                        ),
+                      ),
+                      Switch.adaptive(
+                        value: state.prices[i].active,
+                        onChanged: (value) => value
+                            ? cubit.activate(state.prices[i].id)
+                            : cubit.deactivate(state.prices[i].id),
+                      ),
+                      IconButton(
+                        onPressed: () => cubit.delete(state.prices[i].id),
+                        tooltip: l10n.delete,
+                        icon: Icon(Icons.delete_outline, color: scheme.error),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+              if (state.prices.isNotEmpty) const SettingsRowDivider(),
+              Padding(
+                padding: const EdgeInsets.all(12),
+                child: ElevatedButtonApp(
+                  text: l10n.add_price,
+                  onPressed: cubit.addPrice,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+/// Данные парами «ключ → значение» вместо заблокированных полей ввода.
+class _FactsCard extends StatelessWidget {
+  const _FactsCard({required this.rows});
+  final List<List<String>> rows;
+
+  @override
+  Widget build(BuildContext context) => CardBox(child: _Facts(rows: rows));
+}
+
+class _Facts extends StatelessWidget {
+  const _Facts({required this.rows});
+  final List<List<String>> rows;
+
+  @override
+  Widget build(BuildContext context) {
+    if (rows.isEmpty) return const SizedBox.shrink();
+
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        for (var i = 0; i < rows.length; i++) ...[
+          if (i > 0) const SizedBox(height: 9),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 104,
+                child: Text(
+                  rows[i].first,
+                  style: TextStyle(fontSize: 13, color: scheme.secondary),
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  rows[i].last,
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: theme.textTheme.bodyMedium?.color,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ],
+    );
+  }
 }

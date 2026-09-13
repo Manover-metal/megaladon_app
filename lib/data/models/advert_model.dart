@@ -17,6 +17,7 @@ class AdvertModel extends Equatable {
       this.city,
       this.media = const [],
       this.user,
+      this.createdAt,
       this.type = AdvertType.advert});
 
   factory AdvertModel.fromJsonAll(Map<String, dynamic> data) => AdvertModel(
@@ -36,6 +37,9 @@ class AdvertModel extends Equatable {
       user: data['user'] != null
           ? UserModel.fromJson(data['user'] as Map<String, dynamic>)
           : null,
+      // Бэкенд отдаёт created_at и в списке, и в детальном ответе — до сих
+      // пор поле терялось здесь, и дату публикации показать было неоткуда.
+      createdAt: Parser.toDate(data['created_at']),
       type: AdvertType.parse(data['type'] as String?));
 
   final int id;
@@ -47,7 +51,14 @@ class AdvertModel extends Equatable {
   final String? additionalPhone;
   final List<FileModel> media;
   final UserModel? user;
+
+  /// Уже в виде `dd.MM.yyyy`; null, если дата не пришла или не разобралась.
+  final String? createdAt;
   final AdvertType type;
+
+  /// Цена с разделителями разрядов. Раньше карточка печатала `price` как
+  /// есть и показывала «450000 ₸».
+  String get priceFormatted => Parser.toPrice(price);
 
   static List<AdvertModel> listFromJsonMini(List<dynamic> data) => data
       .map<AdvertModel>(
@@ -55,6 +66,15 @@ class AdvertModel extends Equatable {
       .toList();
 
   @override
-  List<Object?> get props =>
-      [id, title, description, price, category, additionalPhone, media, type];
+  List<Object?> get props => [
+        id,
+        title,
+        description,
+        price,
+        category,
+        additionalPhone,
+        media,
+        createdAt,
+        type
+      ];
 }

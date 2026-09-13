@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:megaladon/core/utils/parser.dart';
 import 'package:megaladon/data/models/dictionary/subscribe_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/subscribe/subscribe_cubit.dart';
@@ -86,14 +87,14 @@ class SubscribeCard extends StatelessWidget {
           Text(
             _isFree
                 ? l10n.subscriptionBadgeFree
-                : l10n.tenge_price(_formatAmount(subscribe.price)),
+                : l10n.tenge_price(Parser.toPrice(subscribe.price)),
             style: theme.textTheme.bodyLarge?.copyWith(fontSize: 28),
           ),
           if (!_isFree && subscribe.duration > 1) ...[
             const SizedBox(height: 4),
             Text(
               l10n.subscriptionPerMonth(
-                  _formatAmount(subscribe.price / subscribe.duration)),
+                  Parser.toPrice(subscribe.price / subscribe.duration)),
               style: theme.textTheme.bodyMedium?.copyWith(
                 fontSize: 14,
                 color: theme.hintColor,
@@ -108,20 +109,6 @@ class SubscribeCard extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  /// Цены приходят числом с плавающей точкой, но в тенге копеек нет:
-  /// округляем и разбиваем на разряды неразрывным пробелом.
-  static String _formatAmount(double value) {
-    final digits = value.round().toString();
-    final buffer = StringBuffer();
-    for (var i = 0; i < digits.length; i++) {
-      if (i > 0 && (digits.length - i) % 3 == 0) {
-        buffer.write(' ');
-      }
-      buffer.write(digits[i]);
-    }
-    return buffer.toString();
   }
 }
 

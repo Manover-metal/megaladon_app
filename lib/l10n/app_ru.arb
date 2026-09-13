@@ -30,6 +30,10 @@
   "cut": "Вставить",
   "orders": "Заказы",
   "theshops": "Металлопрокат",
+  "tabOrders": "Заказы",
+  "tabStores": "Прокат",
+  "tabAds": "Объявления",
+  "tabProfile": "Профиль",
   "all": "Все",
   "active": "Активные",
   "moderate": "На проверке",
@@ -128,7 +132,7 @@
   "full_address": "Полный адрес",
   "latitude": "Широта",
   "longitude": "Долгота",
-  "by_clicking_on_the_Continue_button_you_accept": "Нажимая на кнопку 'Продолжить', вы принимаете ",
+  "by_clicking_on_the_Continue_button_you_accept": "Продолжая, вы принимаете ",
   "user_Agreement_Terms": "Условия пользовательского соглашения",
   "privacy_policy": "Политика конфиденциальности",
   "user_agreement": "Пользовательское соглашение",
@@ -189,27 +193,35 @@
   "orderWithId": "Заказ №{id}",
   "@orderWithId": {
     "placeholders": {
-      "id": {"type": "String"}
+      "id": {
+        "type": "String"
+      }
     }
   },
   "desired_budget_up_to": "Желаемый бюджет: до ",
   "desiredBudgetUpToAmount": "Желаемый бюджет: до {amount} ₸",
   "@desiredBudgetUpToAmount": {
     "placeholders": {
-      "amount": {"type": "String"}
+      "amount": {
+        "type": "String"
+      }
     }
   },
   "executionDaysValue": "Срок исполнения: {days} дн.",
   "@executionDaysValue": {
     "placeholders": {
-      "days": {"type": "String"}
+      "days": {
+        "type": "String"
+      }
     }
   },
   "valid_to": "Допустимый: до ",
   "validToAmount": "Допустимый: до {amount} ₸",
   "@validToAmount": {
     "placeholders": {
-      "amount": {"type": "String"}
+      "amount": {
+        "type": "String"
+      }
     }
   },
   "offer_services": "Предложить услуги",
@@ -223,12 +235,16 @@
   "offersWithCount": "Предложений: {count}",
   "@offersWithCount": {
     "placeholders": {
-      "count": {"type": "String"}
+      "count": {
+        "type": "String"
+      }
     }
   },
   "@offersCount": {
     "placeholders": {
-      "count": {"type": "String"}
+      "count": {
+        "type": "String"
+      }
     }
   },
   "discuss_in_chat2": "Обсудить в чате (5 новых)",
@@ -241,7 +257,9 @@
   "feedbackOnOrderId": "Отзыв по заказу №{id}",
   "@feedbackOnOrderId": {
     "placeholders": {
-      "id": {"type": "String"}
+      "id": {
+        "type": "String"
+      }
     }
   },
   "leave_feedback": "Оставить отзыв",
@@ -349,7 +367,7 @@
   "contact": "Контакт",
   "contacts": "Контакты",
   "failed_to_open_contact": "Не удалось открыть контакт",
-  "artist2": "Иполнитель: ",
+  "artist2": "Исполнитель: ",
   "address2": "Адрес: ",
   "en": "Английский",
   "ru": "Русский",
@@ -482,5 +500,62 @@
   "subscriptionBadgeFree": "Бесплатно",
   "subscriptionFootnote": "Подписка активируется сразу после оплаты. Продление — вручную, автосписаний нет.",
   "subscriptionPlansEmpty": "Тарифы пока недоступны",
-  "subscriptionNoFaces": "Подписки доступны исполнителям и магазинам. Заполните профиль исполнителя или магазина, чтобы выбрать тариф."
+  "subscriptionNoFaces": "Подписки доступны исполнителям и магазинам. Заполните профиль исполнителя или магазина, чтобы выбрать тариф.",
+  "cardPriceUpTo": "до {amount} ₸",
+  "cardDays": "{days} дн.",
+  "priceRecommendedNote": "рекомендуемая",
+  "priceMaxLabel": "Максимум",
+  "deadlineLabel": "Срок",
+  "offersLabel": "Отклики",
+  "priceFromAmount": "от {amount} ₸",
+  "sellerLabel": "Продавец",
+  "executorLabel": "Исполнитель",
+  "photosLabel": "Фотографии",
+  "publishedLabel": "Опубликовано",
+  "settingsGroupAppearance": "Оформление",
+  "settingsGroupNotifications": "Уведомления",
+  "settingsGroupApp": "Приложение",
+  "linkOpenError": "Не удалось открыть ссылку",
+  "storeLabel": "Магазин",
+  "addressLabel": "Адрес",
+  "binLabel": "БИН/ИИН",
+  "typeLabel": "Тип",
+  "pricesLabel": "Прайс-листы",
+  "chipPrice": "Прайс",
+  "chipPhone": "Телефон",
+  "no_contacts_yet": "Контакты не указаны",
+  "metricOrders": "заказов",
+  "metricRating": "рейтинг",
+  "metricServices": "услуги",
+  "requisitesLabel": "Реквизиты",
+  "writeMessage": "Написать",
+  "offersTitle": "Отклики",
+  "noOffersYet": "Пока никто не откликнулся",
+  "offerExpired": "Истёк",
+  "commentLabel": "Комментарий",
+  "conditionsLabel": "Условия",
+  "executionDateLabel": "Дата исполнения",
+  "accountTab": "Аккаунт",
+  "securityLabel": "Безопасность",
+  "changePhotoLabel": "Изменить фото",
+  "subscriptionUntil": "Подписка до {date}",
+  "subscriptionNone": "Нет подписки",
+  "showAllCount": "Показать все {count}",
+  "reviewsCount": "{count} отзывов",
+  "login_subtitle": "Номер телефона и пароль",
+  "create_account": "Создать аккаунт",
+  "register_user_subtitle": "Несколько полей — и можно размещать заказы",
+  "sms_code_title": "Код из СМС",
+  "code_sent_to": "Отправили на {phone}",
+  "change_number": "Изменить номер",
+  "resend_code_in": "Выслать код повторно через {time}",
+  "store_registration_subtitle": "Магазин появится в поиске у покупателей вашего города",
+  "executor_registration_subtitle": "Заказчики найдут вас по услугам и городу",
+  "map_point": "Точка на карте",
+  "store_location_hint": "Покупатели ищут склады рядом с собой. Координаты определим один раз, когда вы отправите форму.",
+  "executor_location_hint": "Заказчики ищут исполнителей рядом с собой. Координаты определим один раз, когда вы отправите форму.",
+  "location_service_disabled": "Включите геолокацию на телефоне, чтобы мы отметили вас на карте",
+  "location_permission_denied": "Разрешите приложению доступ к геопозиции, чтобы мы отметили вас на карте",
+  "form_error_contacts_empty": "Добавьте хотя бы один контакт",
+  "form_error_contacts_incomplete": "Контакты заполнены не полностью"
 }
