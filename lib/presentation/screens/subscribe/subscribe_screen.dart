@@ -14,7 +14,12 @@ import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/hint_text.dart';
 
 class SubscribeScreen extends StatelessWidget {
-  const SubscribeScreen({super.key});
+  const SubscribeScreen({super.key, this.initialType});
+
+  /// Вкладка, открытая первой, когда у пользователя обе роли. Пункт
+  /// «Подписки» во вкладке магазина профиля передаёт store — иначе экран
+  /// всегда открывался на исполнителе. null — первая по порядку.
+  final SubscribeType? initialType;
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +30,12 @@ class SubscribeScreen extends StatelessWidget {
     return BlocListener<SubscribeCubit, SubscribeState>(
       listener: (context, state) {
         if (state is SubscribeSuccess) {
+          // Покупка пока лишь создаёт инвойс со статусом CREATED: онлайн-оплаты
+          // в приложении нет, подписку включают вручную в админке, отметив
+          // инвойс оплаченным. Раньше здесь было «Вы подписались на N мес.»,
+          // хотя подписка не включалась и откликаться было нельзя.
           CustomSnackBar.success(
-            Text(l10n.subscribed_for_months(state.subscribe.duration)),
+            Text(l10n.subscriptionRequested),
           ).view(context);
           // Баннер статуса берёт дату окончания из профиля — перечитываем его,
           // иначе он останется с прежним «не активна».
@@ -67,10 +76,16 @@ class SubscribeScreen extends StatelessWidget {
               return _SubscribeFaceView(type: faces.first);
             }
 
+            // Нужной роли может не оказаться (профиль ещё обновляется) —
+            // тогда первая вкладка.
+            final initialIndex =
+                initialType != null ? faces.indexOf(initialType!) : 0;
+
             // DefaultTabController сам пересоздаёт контроллер при смене длины —
             // своего TabController с ручным dispose здесь не нужно.
             return DefaultTabController(
               length: faces.length,
+              initialIndex: initialIndex < 0 ? 0 : initialIndex,
               child: _FacesTabs(faces: faces),
             );
           },

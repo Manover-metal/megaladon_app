@@ -12,7 +12,13 @@ class ChatState extends Equatable {
     this.olderLoading = const {},
     this.hasMoreOlder = const {},
     this.activeChatId,
+    this.openRequest,
   });
+
+  /// Последняя просьба открыть чат («Написать», «Чат»). Переход делает
+  /// ChatOpenListener — по смене [ChatOpenRequest.id], поэтому поле не
+  /// сбрасываем.
+  final ChatOpenRequest? openRequest;
 
   /// Статус загрузки списка чатов.
   final ChatScreenMainStatus status;
@@ -49,6 +55,7 @@ class ChatState extends Equatable {
         olderLoading,
         hasMoreOlder,
         activeChatId,
+        openRequest,
       ];
 
   ChatState copyWith({
@@ -61,6 +68,7 @@ class ChatState extends Equatable {
     Map<int, bool>? hasMoreOlder,
     int? activeChatId,
     bool clearActiveChatId = false,
+    ChatOpenRequest? openRequest,
   }) =>
       ChatState(
         status: status ?? this.status,
@@ -72,5 +80,26 @@ class ChatState extends Equatable {
         hasMoreOlder: hasMoreOlder ?? this.hasMoreOlder,
         activeChatId:
             clearActiveChatId ? null : (activeChatId ?? this.activeChatId),
+        openRequest: openRequest ?? this.openRequest,
       );
+}
+
+/// Просьба открыть чат: либо [chat] (с заготовкой [draftMessage]), либо
+/// [error], если создать чат не вышло. [id] растёт с каждой просьбой —
+/// по нему listener отличает новую просьбу от уже обработанной.
+class ChatOpenRequest extends Equatable {
+  const ChatOpenRequest({
+    required this.id,
+    this.chat,
+    this.draftMessage,
+    this.error,
+  });
+
+  final int id;
+  final ChatModel? chat;
+  final String? draftMessage;
+  final ErrorModel? error;
+
+  @override
+  List<Object?> get props => [id, chat, draftMessage, error];
 }

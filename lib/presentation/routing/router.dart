@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:megaladon/data/models/advert_model.dart';
 import 'package:megaladon/data/models/chat/chat_model.dart';
 import 'package:megaladon/data/models/dictionary/advert_type.dart';
+import 'package:megaladon/data/models/dictionary/subscribe_model.dart';
 import 'package:megaladon/data/models/order_model.dart';
 import 'package:megaladon/presentation/routing/guards/auth_guard.dart';
 import 'package:megaladon/presentation/screens/ads/details_ad_screen.dart';

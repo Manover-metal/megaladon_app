@@ -396,24 +396,33 @@ class _StoreActionBar extends StatelessWidget {
               top: false,
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                child: Row(
+                // Колонка с min: кнопки держат текст в Container с
+                // alignment и иначе растягиваются на всю высоту, которую
+                // даёт bottomNavigationBar.
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    if (phone != null)
-                      Expanded(
-                        flex: 2,
-                        child: ElevatedButtonApp(
-                          text: l10n.call,
-                          onPressed: () => onCall(phone),
-                        ),
-                      ),
-                    if (phone != null && canRate) const SizedBox(width: 8),
-                    if (canRate)
-                      Expanded(
-                        child: OutlinedButtonApp(
-                          text: l10n.rate,
-                          onPressed: onRate,
-                        ),
-                      ),
+                    Row(
+                      children: [
+                        if (phone != null)
+                          Expanded(
+                            flex: 2,
+                            child: ElevatedButtonApp(
+                              text: l10n.call,
+                              onPressed: () => onCall(phone),
+                            ),
+                          ),
+                        if (phone != null && canRate)
+                          const SizedBox(width: 8),
+                        if (canRate)
+                          Expanded(
+                            child: OutlinedButtonApp(
+                              text: l10n.rate,
+                              onPressed: onRate,
+                            ),
+                          ),
+                      ],
+                    ),
                   ],
                 ),
               ),

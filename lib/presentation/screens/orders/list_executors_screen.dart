@@ -36,6 +36,15 @@ class _ListExecutorsScreenState extends State<ListExecutorsScreen> {
     await context.read<OfferScreenMainCubit>().fetch(orderId: widget.orderId);
   }
 
+  /// Кнопка обновления в шапке: пока список грузится, нажатие ничего не
+  /// делает — иконка там лишь меняется на крутилку, а запрос уходил снова.
+  Future<void> _refreshIfIdle() async {
+    if (context.read<OfferScreenMainCubit>().state is OfferScreenMainLoader) {
+      return;
+    }
+    await _refresh();
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
         // Шапка лежала в SliverToBoxAdapter с отступом 20 по бокам: она была
@@ -56,7 +65,7 @@ class _ListExecutorsScreenState extends State<ListExecutorsScreen> {
                 title: count == null
                     ? l10n.offersTitle
                     : '${l10n.offersTitle} · $count',
-                onTrailing: _refresh,
+                onTrailing: _refreshIfIdle,
                 trailing: state is! OfferScreenMainLoader
                     ? const Icon(Icons.refresh, size: 26)
                     : const CupertinoActivityIndicator(),

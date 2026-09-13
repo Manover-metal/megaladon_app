@@ -1003,7 +1003,7 @@ abstract class AppLocalizations {
   /// No description provided for @set_as_executor.
   ///
   /// In en, this message translates to:
-  /// **'Set as executor'**
+  /// **'Assign'**
   String get set_as_executor;
 
   /// No description provided for @order.
@@ -1864,6 +1864,12 @@ abstract class AppLocalizations {
   /// **'Buy'**
   String get buy;
 
+  /// No description provided for @subscriptionRequested.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription request created. It will be activated once the payment is confirmed.'**
+  String get subscriptionRequested;
+
   /// No description provided for @subscribed_for_months.
   ///
   /// In en, this message translates to:
@@ -2655,6 +2661,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Buyers look for warehouses near them. We will read the coordinates once, when you submit the form.'**
   String get store_location_hint;
+
+  /// No description provided for @change_store_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Buyers will see the changes in search and on your shop page right away'**
+  String get change_store_subtitle;
+
+  /// No description provided for @save_changes.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save_changes;
+
+  /// No description provided for @change_executor_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers will see the changes in contractor search and in your offers'**
+  String get change_executor_subtitle;
+
+  /// No description provided for @change_phone_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We will send a code to the new number. Enter your current password to confirm'**
+  String get change_phone_subtitle;
+
+  /// No description provided for @change_password_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your current password and choose a new one'**
+  String get change_password_subtitle;
+
+  /// No description provided for @offerPriceTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Price is for'**
+  String get offerPriceTypeLabel;
+
+  /// No description provided for @offerPriceTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'for the whole job'**
+  String get offerPriceTotal;
+
+  /// No description provided for @offerPricePerUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'per unit'**
+  String get offerPricePerUnit;
+
+  /// No description provided for @offer_create_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Your offer'**
+  String get offer_create_title;
+
+  /// No description provided for @offer_create_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The customer will see the price, timing and comment and can choose you as the contractor'**
+  String get offer_create_subtitle;
+
+  /// No description provided for @pushBannerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are off'**
+  String get pushBannerTitle;
+
+  /// No description provided for @pushBannerText.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn them on so you don\'t miss offers, messages and order status changes'**
+  String get pushBannerText;
+
+  /// No description provided for @pushBannerSystemText.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are blocked in your phone settings. Allow them so you don\'t miss offers, messages and order status changes'**
+  String get pushBannerSystemText;
+
+  /// No description provided for @pushBannerEnable.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on'**
+  String get pushBannerEnable;
+
+  /// No description provided for @pushBannerAllow.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow'**
+  String get pushBannerAllow;
+
+  /// No description provided for @pushBannerOpenSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open settings'**
+  String get pushBannerOpenSettings;
+
+  /// No description provided for @viewMyOffer.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer'**
+  String get viewMyOffer;
+
+  /// No description provided for @alreadyResponded.
+  ///
+  /// In en, this message translates to:
+  /// **'You have already responded to this order'**
+  String get alreadyResponded;
 
   /// No description provided for @executor_location_hint.
   ///

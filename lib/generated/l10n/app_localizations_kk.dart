@@ -471,7 +471,7 @@ class AppLocalizationsKk extends AppLocalizations {
   }
 
   @override
-  String get set_as_executor => 'Орындаушы болып тағайындалсын';
+  String get set_as_executor => 'Тағайындау';
 
   @override
   String get order => '№ тапсырыс';
@@ -947,6 +947,10 @@ class AppLocalizationsKk extends AppLocalizations {
   String get buy => 'Сатып алу';
 
   @override
+  String get subscriptionRequested =>
+      'Жазылымға өтінім жасалды. Төлем расталғаннан кейін жазылым қосылады.';
+
+  @override
   String subscribed_for_months(num count) {
     final intl.NumberFormat countNumberFormat =
         intl.NumberFormat.decimalPattern(localeName);
@@ -1401,6 +1405,67 @@ class AppLocalizationsKk extends AppLocalizations {
   @override
   String get store_location_hint =>
       'Сатып алушылар жақын маңдағы қоймаларды іздейді. Координаттарды форманы жібергенде бір рет анықтаймыз.';
+
+  @override
+  String get change_store_subtitle =>
+      'Өзгерістерді сатып алушылар іздеуде және дүкен бетінде бірден көреді';
+
+  @override
+  String get save_changes => 'Сақтау';
+
+  @override
+  String get change_executor_subtitle =>
+      'Тапсырыс берушілер өзгерістерді орындаушыларды іздеуде және сіздің ұсыныстарыңызда көреді';
+
+  @override
+  String get change_phone_subtitle =>
+      'Жаңа нөмірге код жібереміз. Растау үшін қазіргі құпия сөзді енгізіңіз';
+
+  @override
+  String get change_password_subtitle =>
+      'Қазіргі құпия сөзді енгізіп, жаңасын ойлап табыңыз';
+
+  @override
+  String get offerPriceTypeLabel => 'Баға көрсетілген';
+
+  @override
+  String get offerPriceTotal => 'бүкіл жұмысқа';
+
+  @override
+  String get offerPricePerUnit => 'дана үшін';
+
+  @override
+  String get offer_create_title => 'Сіздің ұсынысыңыз';
+
+  @override
+  String get offer_create_subtitle =>
+      'Тапсырыс беруші бағаны, мерзімді және пікірді көріп, сізді орындаушы ретінде таңдай алады';
+
+  @override
+  String get pushBannerTitle => 'Хабарландырулар өшірулі';
+
+  @override
+  String get pushBannerText =>
+      'Ұсыныстарды, хабарламаларды және тапсырыс мәртебесінің өзгерісін өткізіп алмау үшін оларды қосыңыз';
+
+  @override
+  String get pushBannerSystemText =>
+      'Хабарландыруларға телефон баптауларында тыйым салынған. Ұсыныстарды, хабарламаларды және тапсырыс мәртебесінің өзгерісін өткізіп алмау үшін оларға рұқсат беріңіз';
+
+  @override
+  String get pushBannerEnable => 'Қосу';
+
+  @override
+  String get pushBannerAllow => 'Рұқсат беру';
+
+  @override
+  String get pushBannerOpenSettings => 'Баптауларды ашу';
+
+  @override
+  String get viewMyOffer => 'Ұсыныс';
+
+  @override
+  String get alreadyResponded => 'Сіз бұл тапсырысқа ұсыныс жібердіңіз';
 
   @override
   String get executor_location_hint =>

@@ -23,6 +23,14 @@ class PriceFormCubit extends Cubit<PriceFormState> {
   final ProfileScreenCubit profileCubit;
   final AuthBloc authBloc;
 
+  /// Идёт выбор и загрузка нового прайса.
+  bool _adding = false;
+
+  /// Прайсы, по которым сейчас летит запрос (вкл/выкл/удаление). Раньше
+  /// запросы уходили «в фон» без всякой защиты, и двойное нажатие на
+  /// переключатель или корзину слало два запроса.
+  final Set<int> _busyIds = {};
+
   void _checkUpdate() {
     if (profileCubit.state.status == ProfileScreenStatus.success &&
         profileCubit.state.user?.store != null) {
@@ -31,64 +39,57 @@ class PriceFormCubit extends Cubit<PriceFormState> {
   }
 
   Future<void> addPrice() async {
-    var result = await FilePicker.pickFiles(
-        type: FileType.custom, allowedExtensions: ['pdf']);
-    if (result != null) {
-      final file = result.files.elementAtOrNull(0);
-      if (file == null) return;
+    if (_adding) return;
+    _adding = true;
+    try {
+      final result = await FilePicker.pickFiles(
+          type: FileType.custom, allowedExtensions: ['pdf']);
+      if (result == null || result.files.isEmpty) return;
+      final file = result.files.first;
       final contentType = DioMediaType('application', 'pdf');
-      var data = FormData.fromMap({
+      final data = FormData.fromMap({
         'file': MultipartFile.fromBytes(file.bytes!,
             filename: file.name, contentType: contentType)
       });
-      await _repository.addPrice(data).then((value) {
-        profileCubit.updateData();
-      }).catchError((error) {
-        if (error is DioException) {
-          emit(state.copyWith(error: ErrorModel.parseDio(error)));
-        } else {
-          emit(state.copyWith(error: ErrorModel.nothing));
-        }
-      });
+      await _repository.addPrice(data);
+      await profileCubit.updateData();
+    } catch (error) {
+      _emitError(error);
+    } finally {
+      _adding = false;
     }
   }
 
-  Future<void> deactivate(int id) async {
-    _repository.deactivatePrice(id).then((value) {
-      profileCubit.updateData();
-    }).catchError((error) {
-      if (error is DioException) {
-        emit(state.copyWith(error: ErrorModel.parseDio(error)));
-      } else {
-        emit(state.copyWith(error: ErrorModel.nothing));
-      }
-    });
+  Future<void> activate(int id) =>
+      _run(id, () => _repository.activatePrice(id));
+
+  Future<void> deactivate(int id) =>
+      _run(id, () => _repository.deactivatePrice(id));
+
+  Future<void> delete(int id) => _run(id, () => _repository.delete(id));
+
+  /// Один запрос на прайс за раз; после ответа перечитываем профиль, чтобы
+  /// список прайсов обновился.
+  Future<void> _run(int id, Future<dynamic> Function() request) async {
+    if (!_busyIds.add(id)) return;
+    try {
+      await request();
+      await profileCubit.updateData();
+    } catch (error) {
+      _emitError(error);
+    } finally {
+      _busyIds.remove(id);
+    }
   }
 
-  Future<void> delete(int id) async {
-    _repository.delete(id).then((value) {
-      profileCubit.updateData();
-    }).catchError((error) {
-      if (error is DioException) {
-        emit(state.copyWith(error: ErrorModel.parseDio(error)));
-      } else {
-        emit(state.copyWith(error: ErrorModel.nothing));
+  void _emitError(Object error) {
+    if (error is DioException) {
+      if (error.response?.statusCode == 403) {
+        authBloc.add(AuthLogoutEvent());
       }
-    });
-  }
-
-  Future<void> activate(int id) async {
-    _repository.activatePrice(id).then((value) {
-      profileCubit.updateData();
-    }).catchError((error) {
-      if (error is DioException) {
-        if (error.response?.statusCode == 403) {
-          authBloc.add(AuthLogoutEvent());
-        }
-        emit(state.copyWith(error: ErrorModel.parseDio(error)));
-      } else {
-        emit(state.copyWith(error: ErrorModel.nothing));
-      }
-    });
+      emit(state.copyWith(error: ErrorModel.parseDio(error)));
+    } else {
+      emit(state.copyWith(error: ErrorModel.nothing));
+    }
   }
 }

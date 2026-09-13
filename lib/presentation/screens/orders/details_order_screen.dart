@@ -36,34 +36,45 @@ class DetailsOrderScreen extends StatefulWidget {
 class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
   static const double _sectionGap = 18;
 
-  void _createOffer() {
-    context.router.push(CreateOfferRoute(orderId: widget.orderId));
+  /// После возврата с экрана отклика перечитываем заказ: если отклик ушёл,
+  /// кнопка сразу сменится на «Посмотреть предложение».
+  Future<void> _createOffer() async {
+    await context.router.push(CreateOfferRoute(orderId: widget.orderId));
+    if (!mounted) return;
+    await context
+        .read<OrderScreenDetailsCubit>()
+        .refresh(id: widget.orderId);
+  }
+
+  /// Свой отклик — только для чтения: изменить его нельзя, а второй
+  /// бэкенд не примет.
+  void _viewOffer(int offerId) {
+    context.router
+        .push(DetailsOfferRoute(orderId: widget.orderId, offerId: offerId));
   }
 
   void _checkExecutors() {
     context.router.push(ListExecutorsRoute(orderId: widget.orderId));
   }
 
-  Null Function() _complete(OrderModel order) => () {
-        context.read<OrderScreenDetailsCubit>().complete().then((value) {
-          context.router.push(ReviewRoute(order: order));
-        });
-      };
+  /// Future до конца перехода — кнопка держит крутилку. К отзыву ведём
+  /// только если заказ действительно завершён.
+  /// Отдаём кнопке Future запроса — она держит крутилку и не шлёт второй
+  /// запрос. К отзыву ведёт _listener по статусу completed.
+  Future<void> _complete() =>
+      context.read<OrderScreenDetailsCubit>().complete();
 
-  void _toChat(OrderModel order) {
+  /// Отдаём кнопке Future запроса — «Чат» держит крутилку. Переписку
+  /// открывает ChatOpenListener; заготовку ChatCubit подставит, только если
+  /// с этим заказчиком ещё не общались.
+  Future<void> _toChat(OrderModel order) async {
     final companionId = order.user?.id;
     if (companionId == null) return;
-    final greeting =
-        AppLocalizations.of(context)!.chatOrderGreeting(order.title);
-    context.read<ChatCubit>().createChat(companionId).then((chat) {
-      if (!mounted || chat == null) return;
-      // Заготовку подставляем только в чат, где переписки ещё не было:
-      // если с этим заказчиком уже общались, поле остаётся пустым.
-      context.router.push(DetailsChatRouter(
-        chat: chat,
-        draftMessage: chat.lastMessage == null ? greeting : null,
-      ));
-    });
+    await context.read<ChatCubit>().openChatWith(
+          companionId,
+          greeting:
+              AppLocalizations.of(context)!.chatOrderGreeting(order.title),
+        );
   }
 
   late OrderBadgesCubit _badgesCubit;
@@ -89,6 +100,12 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
   }
 
   void _listener(BuildContext context, OrderScreenDetailsState state) {
+    // Заказ завершён — сразу к отзыву об исполнителе.
+    if (state.status == OrderScreenDetailsStateStatus.completed &&
+        state.order != null) {
+      context.router.push(ReviewRoute(order: state.order!));
+      return;
+    }
     if (state.status == OrderScreenDetailsStateStatus.errorMessage) {
       CustomSnackBar.error(
         Text(
@@ -209,12 +226,17 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
               final order = state.order;
               if (order == null) return const SizedBox.shrink();
 
+              final myOfferId = state.myOfferId;
+
               return _ActionBar(
                 order: order,
+                myOfferId: myOfferId,
+                onViewOffer:
+                    myOfferId != null ? () => _viewOffer(myOfferId) : null,
                 onOffer: _createOffer,
                 onChat: () => _toChat(order),
                 onExecutors: _checkExecutors,
-                onComplete: _complete(order),
+                onComplete: _complete,
               );
             },
           ),
@@ -363,12 +385,18 @@ class _Participant extends StatelessWidget {
 class _ActionBar extends StatelessWidget {
   const _ActionBar({
     required this.order,
+    required this.myOfferId,
+    required this.onViewOffer,
     required this.onOffer,
     required this.onChat,
     required this.onExecutors,
     required this.onComplete,
   });
   final OrderModel order;
+
+  /// Отклик текущего пользователя на этот заказ; null — не откликался.
+  final int? myOfferId;
+  final VoidCallback? onViewOffer;
   final VoidCallback onOffer;
   final VoidCallback onChat;
   final VoidCallback onExecutors;
@@ -389,6 +417,40 @@ class _ActionBar extends StatelessWidget {
     }
 
     final isOwner = order.user?.id == user.id;
+
+    // Уже откликался: второго отклика бэкенд не примет, а изменить отклик
+    // нельзя — вместо «Предложить услуги» даём посмотреть свой. Чат — как
+    // и раньше: пока заказ активен, заказчик не удалён и есть подписка.
+    if (!isOwner && myOfferId != null) {
+      final canChat = order.status == OrderStatus.active &&
+          order.user?.isDeleted != true &&
+          (user.executor?.hasActiveSubscription ?? false);
+
+      return [
+        Row(
+          children: [
+            Expanded(
+              flex: 2,
+              child: ElevatedButtonApp(
+                text: l10n.viewMyOffer,
+                onPressed: onViewOffer,
+              ),
+            ),
+            if (order.status == OrderStatus.active &&
+                order.user?.isDeleted != true) ...[
+              const SizedBox(width: 8),
+              Expanded(
+                child: OutlinedButtonApp(
+                  text: l10n.chat,
+                  onPressed: canChat ? onChat : null,
+                ),
+              ),
+            ],
+          ],
+        ),
+        HintText(l10n.alreadyResponded),
+      ];
+    }
 
     // Заказчик удалил аккаунт: ни откликнуться, ни написать ему уже нельзя.
     if (!isOwner &&

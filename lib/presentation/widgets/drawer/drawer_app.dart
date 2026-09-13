@@ -10,8 +10,6 @@ import 'package:megaladon/logic/screens/chats/chat_cubit.dart';
 import 'package:megaladon/logic/screens/orders/badges/order_badges_cubit.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
-import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
-import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/tiles/drawer_route_tile.dart';
 import 'package:megaladon/presentation/widgets/tiles/drawer_tile.dart';
 
@@ -135,7 +133,7 @@ class DrawerApp extends StatelessWidget {
                                   icon: Icons.workspace_premium_outlined,
                                   text: l10n.subscriptions,
                                   activeRouteName: SubscribeRoute.name,
-                                  page: const InitialRouter(
+                                  page:  InitialRouter(
                                     children: [
                                       OrderRouter(children: [SubscribeRoute()])
                                     ],
@@ -358,7 +356,8 @@ class _InitialsText extends StatelessWidget {
       );
 }
 
-/// Гость: вместо строки профиля — вход и регистрация в одну строку.
+/// Гость: вместо строки профиля — вход и регистрация. Обычными пунктами
+/// меню, а не кнопками старого дизайна: список читается единым ритмом.
 class _GuestHeader extends StatelessWidget {
   const _GuestHeader({required this.onLogin, required this.onRegister});
   final VoidCallback onLogin;
@@ -369,17 +368,19 @@ class _GuestHeader extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-      child: Row(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Column(
         children: [
-          Expanded(
-            child: ElevatedButtonApp(text: l10n.sign_in, onPressed: onLogin),
+          DrawerTile(
+            icon: Icons.login,
+            text: l10n.sign_in,
+            callback: onLogin,
           ),
-          const SizedBox(width: 8),
-          Expanded(
-            // Та же подпись, что на экране входа: «Создать аккаунт».
-            child: OutlinedButtonApp(
-                text: l10n.create_account, onPressed: onRegister),
+          // Та же подпись, что на экране входа: «Создать аккаунт».
+          DrawerTile(
+            icon: Icons.person_add_alt_outlined,
+            text: l10n.create_account,
+            callback: onRegister,
           ),
         ],
       ),

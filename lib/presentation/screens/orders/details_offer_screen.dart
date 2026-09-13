@@ -10,6 +10,7 @@ import 'package:megaladon/logic/screens/executors/favorite/add_favorite_cubit.da
 import 'package:megaladon/logic/screens/executors/my/executor_screen_my_cubit.dart';
 import 'package:megaladon/logic/screens/offers/details/offer_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/orders/details/order_screen_details_cubit.dart';
+import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
@@ -41,25 +42,26 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
     super.initState();
   }
 
-  void _acceptOffer() {
-    context
-        .read<OrderScreenDetailsCubit>()
-        .acceptOffer(orderId: widget.orderId, offerId: widget.offerId)
-        .then((value) {
+  /// Отдаём кнопке Future запроса — «Назначить» держит крутилку и не шлёт
+  /// второй запрос. Переход к заказу делает _listenOrder по статусу
+  /// offerAccepted.
+  Future<void> _acceptOffer() => context
+      .read<OrderScreenDetailsCubit>()
+      .acceptOffer(orderId: widget.orderId, offerId: widget.offerId);
+
+  /// Отдаём кнопке Future запроса — «Чат» держит крутилку. Переписку
+  /// открывает ChatOpenListener.
+  Future<void> _toChat(int userId) =>
+      context.read<ChatCubit>().openChatWith(userId);
+
+  void _listenOrder(BuildContext context, OrderScreenDetailsState state) {
+    // Исполнитель назначен — уходим к заказу.
+    if (state.status == OrderScreenDetailsStateStatus.offerAccepted) {
       context.router.navigate(InitialRouter(children: [
         OrderRouter(children: [DetailsOrderRoute(orderId: widget.orderId)])
       ]));
-    });
-  }
-
-  void _toChat(int userId) {
-    context.read<ChatCubit>().createChat(userId).then((chat) {
-      if (!mounted || chat == null) return;
-      context.router.push(DetailsChatRouter(chat: chat));
-    });
-  }
-
-  void _listenOrder(BuildContext context, OrderScreenDetailsState state) {
+      return;
+    }
     if (state.status == OrderScreenDetailsStateStatus.errorMessage) {
       CustomSnackBar.error(
         Text(
@@ -71,8 +73,13 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
     }
   }
 
+  /// Добавили в избранное на этом экране. Отклик заново не грузим (экран
+  /// мигнул бы загрузкой), поэтому отметку держим здесь.
+  bool _favoriteAdded = false;
+
   void _listenFavorite(BuildContext context, AddFavoriteState state) {
     if (state is AddFavoriteSuccess) {
+      setState(() => _favoriteAdded = true);
       context.read<ExecutorScreenMyCubit>().fetch();
       CustomSnackBar.success(
         Text(AppLocalizations.of(context)!.executorAddedToFavorites),
@@ -88,10 +95,22 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
     }
   }
 
-  Null Function() _addToFavorite(ExecutorModel executor) => () {
+  /// Исполнитель открыл собственный отклик — с карточки заказа, кнопкой
+  /// «Посмотреть предложение». Смотрит только для чтения: назначать себя,
+  /// писать себе и добавлять себя в избранное незачем, а изменить отклик
+  /// нельзя вовсе. В отклике автор приходит через UserPresenter::short(),
+  /// так что сравниваем с id пользователя.
+  bool _isOwn(OfferModel offer) {
+    final me = context.read<ProfileScreenCubit>().state.user?.id;
+    return me != null && offer.executor?.id == me;
+  }
+
+  /// [executorId] — id исполнителя (OfferModel.executorId), не пользователя:
+  /// бэкенд проверяет его по таблице исполнителей.
+  Null Function() _addToFavorite(int executorId) => () {
         context.read<AddFavoriteCubit>().add(
               orderId: widget.orderId,
-              executorId: executor.id,
+              executorId: executorId,
             );
       };
 
@@ -116,12 +135,18 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
                   return ErrorMessage(error: state.error);
                 }
                 if (state is OfferScreenDetailsSuccess) {
+                  final offer = state.offer;
+                  final executorId = offer.executorId;
+                  final isFavorite = offer.isFavorite || _favoriteAdded;
+
                   return _OfferBody(
-                    offer: state.offer,
+                    offer: offer,
                     gap: _sectionGap,
-                    onFavorite: state.offer.executor != null
-                        ? _addToFavorite(state.offer.executor!)
-                        : null,
+                    isFavorite: isFavorite,
+                    onFavorite:
+                        executorId != null && !_isOwn(offer) && !isFavorite
+                            ? _addToFavorite(executorId)
+                            : null,
                   );
                 }
                 return const SizedBox.shrink();
@@ -130,7 +155,8 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
             bottomNavigationBar:
                 BlocBuilder<OfferScreenDetailsCubit, OfferScreenDetailsState>(
               builder: (context, state) {
-                if (state is! OfferScreenDetailsSuccess) {
+                if (state is! OfferScreenDetailsSuccess ||
+                    _isOwn(state.offer)) {
                   return const SizedBox.shrink();
                 }
 
@@ -154,10 +180,12 @@ class _OfferBody extends StatelessWidget {
   const _OfferBody({
     required this.offer,
     required this.gap,
+    required this.isFavorite,
     required this.onFavorite,
   });
   final OfferModel offer;
   final double gap;
+  final bool isFavorite;
   final VoidCallback? onFavorite;
 
   @override
@@ -192,6 +220,16 @@ class _OfferBody extends StatelessWidget {
                   color: scheme.primary,
                 ),
               ),
+              const SizedBox(width: 8),
+              // «за шт.» меняет смысл суммы — подпись стоит вплотную к ней.
+              Flexible(
+                child: Text(
+                  offer.priceType.localize(l10n),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 13, color: scheme.secondary),
+                ),
+              ),
               if (offer.isExpired) ...[
                 const SizedBox(width: 9),
                 Container(
@@ -212,7 +250,11 @@ class _OfferBody extends StatelessWidget {
           ),
           if (executor != null) ...[
             SizedBox(height: gap),
-            _AuthorCard(executor: executor, onFavorite: onFavorite),
+            _AuthorCard(
+              executor: executor,
+              isFavorite: isFavorite,
+              onFavorite: onFavorite,
+            ),
           ],
           if (offer.comment != null && offer.comment!.isNotEmpty) ...[
             SizedBox(height: gap),
@@ -280,8 +322,18 @@ class _OfferBody extends StatelessWidget {
 /// Кто предложил. «Добавить в избранное» было текстовой кнопкой по центру —
 /// стало действием с иконкой прямо в карточке автора.
 class _AuthorCard extends StatelessWidget {
-  const _AuthorCard({required this.executor, required this.onFavorite});
+  const _AuthorCard({
+    required this.executor,
+    required this.isFavorite,
+    required this.onFavorite,
+  });
   final ExecutorModel executor;
+
+  /// Уже в избранном: сердечко закрашено и не нажимается.
+  final bool isFavorite;
+
+  /// null и не [isFavorite] — сердечка нет (свой отклик, нет профиля
+  /// исполнителя).
   final VoidCallback? onFavorite;
 
   @override
@@ -332,11 +384,14 @@ class _AuthorCard extends StatelessWidget {
               ),
             ),
           ),
-          if (!executor.isDeleted && onFavorite != null)
+          if (!executor.isDeleted && (onFavorite != null || isFavorite))
             IconButton(
-              onPressed: onFavorite,
-              tooltip: l10n.add_to_Favorite,
-              icon: Icon(Icons.favorite_border, color: scheme.primary),
+              onPressed: isFavorite ? null : onFavorite,
+              tooltip: isFavorite ? null : l10n.add_to_Favorite,
+              icon: Icon(
+                isFavorite ? Icons.favorite : Icons.favorite_border,
+                color: scheme.primary,
+              ),
             ),
         ],
       ),
@@ -408,21 +463,30 @@ class _DecisionBar extends StatelessWidget {
         top: false,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-          child: Row(
+          // Колонка с min — как у _ActionBar на экране заказа. Кнопки держат
+          // текст в Container с alignment, а он растягивается на всю высоту,
+          // которую даёт bottomNavigationBar, — без колонки обе кнопки
+          // вытягивались на весь экран.
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Expanded(
-                flex: 2,
-                child: ElevatedButtonApp(
-                  text: l10n.set_as_executor,
-                  onPressed: onAccept,
-                ),
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: OutlinedButtonApp(
-                  text: l10n.chat,
-                  onPressed: () => onChat(executor.id),
-                ),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: ElevatedButtonApp(
+                      text: l10n.set_as_executor,
+                      onPressed: onAccept,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: OutlinedButtonApp(
+                      text: l10n.chat,
+                      onPressed: () => onChat(executor.id),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

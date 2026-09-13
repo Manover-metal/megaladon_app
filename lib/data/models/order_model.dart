@@ -109,11 +109,14 @@ class OrderModel extends Equatable {
   bool get hasUpdates => statusChanged || newOffersCount > 0;
 
   /// Цены с разделителями разрядов — то, что показывают карточка и экран.
-  String? get priceRecommendedText =>
-      priceRecommended != null ? Parser.toPrice(priceRecommended) : null;
+  /// Ноль бэкенд присылает вместо «не указана», поэтому показывать его как
+  /// цену нельзя: для пустой и нулевой цены текста нет.
+  String? get priceRecommendedText => _priceText(priceRecommended);
 
-  String? get priceMaxText =>
-      priceMax != null ? Parser.toPrice(priceMax) : null;
+  String? get priceMaxText => _priceText(priceMax);
+
+  static String? _priceText(double? price) =>
+      price != null && price > 0 ? Parser.toPrice(price) : null;
 
   static OrderStatus _statusFrom(Object? code) => code != null
       ? OrderStatus.values[Parser.toInt(code)]

@@ -90,11 +90,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
   }
 
+  /// Выход уже идёт. Двойное нажатие «Выход» слало два DELETE /auth/logout;
+  /// заодно склеиваем одновременные AuthLogoutEvent от ответов 403.
+  bool _loggingOut = false;
+
   Future<void> _logout(AuthLogoutEvent event, Emitter emit) async {
-    await _authRepository.logout();
-    // AuthLogoutState (а не AuthInitial): отличает «осознанный выход» от
-    // «холодного старта». На него реагируют ChatCubit (_dispose),
-    // ProfileScreenCubit (notAuth) и навигация в SplashScreen (уход на логин).
-    emit(AuthLogoutState());
+    if (_loggingOut) return;
+    _loggingOut = true;
+    try {
+      await _authRepository.logout();
+      // AuthLogoutState (а не AuthInitial): отличает «осознанный выход» от
+      // «холодного старта». На него реагируют ChatCubit (_dispose),
+      // ProfileScreenCubit (notAuth) и навигация в SplashScreen (уход на
+      // логин).
+      emit(AuthLogoutState());
+    } finally {
+      _loggingOut = false;
+    }
   }
 }

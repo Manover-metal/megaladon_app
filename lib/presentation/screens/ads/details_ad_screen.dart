@@ -46,17 +46,19 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
         launchUrl(uri);
       };
 
-  void _toChat(AdvertModel advert) {
+  /// Отдаём кнопке Future запроса — «Чат» держит крутилку и не принимает
+  /// второе нажатие. Переписку открывает ChatOpenListener.
+  Future<void> _toChat(AdvertModel advert) async {
     final companionId = advert.user?.id;
     if (companionId == null) return;
-    context.read<ChatCubit>().createChat(companionId).then((chat) {
-      if (!mounted || chat == null) return;
-      context.router.push(DetailsChatRouter(chat: chat));
-    });
+    await context.read<ChatCubit>().openChatWith(companionId);
   }
 
   void _refresh() {
-    context.read<AdvertScreenDetailsCubit>().fetch(id: widget.id);
+    final cubit = context.read<AdvertScreenDetailsCubit>();
+    // Уже грузится — повторное нажатие не шлёт второй запрос.
+    if (cubit.state is AdvertScreenDetailsLoader) return;
+    cubit.fetch(id: widget.id);
   }
 
   Future<void> Function() _onTrailing(AdvertModel advert) =>

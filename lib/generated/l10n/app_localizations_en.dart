@@ -471,7 +471,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get set_as_executor => 'Set as executor';
+  String get set_as_executor => 'Assign';
 
   @override
   String get order => 'Order №';
@@ -946,6 +946,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get buy => 'Buy';
 
   @override
+  String get subscriptionRequested =>
+      'Subscription request created. It will be activated once the payment is confirmed.';
+
+  @override
   String subscribed_for_months(num count) {
     final intl.NumberFormat countNumberFormat =
         intl.NumberFormat.decimalPattern(localeName);
@@ -1401,6 +1405,67 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get store_location_hint =>
       'Buyers look for warehouses near them. We will read the coordinates once, when you submit the form.';
+
+  @override
+  String get change_store_subtitle =>
+      'Buyers will see the changes in search and on your shop page right away';
+
+  @override
+  String get save_changes => 'Save';
+
+  @override
+  String get change_executor_subtitle =>
+      'Customers will see the changes in contractor search and in your offers';
+
+  @override
+  String get change_phone_subtitle =>
+      'We will send a code to the new number. Enter your current password to confirm';
+
+  @override
+  String get change_password_subtitle =>
+      'Enter your current password and choose a new one';
+
+  @override
+  String get offerPriceTypeLabel => 'Price is for';
+
+  @override
+  String get offerPriceTotal => 'for the whole job';
+
+  @override
+  String get offerPricePerUnit => 'per unit';
+
+  @override
+  String get offer_create_title => 'Your offer';
+
+  @override
+  String get offer_create_subtitle =>
+      'The customer will see the price, timing and comment and can choose you as the contractor';
+
+  @override
+  String get pushBannerTitle => 'Notifications are off';
+
+  @override
+  String get pushBannerText =>
+      'Turn them on so you don\'t miss offers, messages and order status changes';
+
+  @override
+  String get pushBannerSystemText =>
+      'Notifications are blocked in your phone settings. Allow them so you don\'t miss offers, messages and order status changes';
+
+  @override
+  String get pushBannerEnable => 'Turn on';
+
+  @override
+  String get pushBannerAllow => 'Allow';
+
+  @override
+  String get pushBannerOpenSettings => 'Open settings';
+
+  @override
+  String get viewMyOffer => 'Offer';
+
+  @override
+  String get alreadyResponded => 'You have already responded to this order';
 
   @override
   String get executor_location_hint =>

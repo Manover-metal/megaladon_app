@@ -19,6 +19,7 @@ class StoreModel {
     this.name,
     this.city,
     this.type,
+    this.subscriptionExpiredAt,
   });
 
   final int id;
@@ -35,6 +36,24 @@ class StoreModel {
   final CityModel? city;
   final StoreTypeModel? type;
   final List<ContactModel>? contacts;
+
+  /// Окончание оплаченной подписки. Бэкенд отдаёт его unix-временем в
+  /// секундах только для своего магазина (`StorePresenter::edited()`, через
+  /// профиль); в каталоге и на чужой карточке поля нет — там всегда null.
+  final DateTime? subscriptionExpiredAt;
+
+  /// Подписка куплена и не истекла. Без неё магазин скрыт из каталога.
+  bool get hasActiveSubscription =>
+      subscriptionExpiredAt?.isAfter(DateTime.now()) ?? false;
+
+  /// Секунды, а не миллисекунды — как у [ExecutorModel]: в таком виде поле
+  /// приходит с бэкенда и в таком же уходит в localStorage через [toJson].
+  static DateTime? _expiredAtFromJson(Object? value) {
+    if (value == null) return null;
+    final seconds = Parser.toInt(value);
+    if (seconds == 0) return null;
+    return DateTime.fromMillisecondsSinceEpoch(seconds * 1000);
+  }
 
   /// Первый телефон магазина — по нему звонят из ленты и с карточки.
   ContactModel? get primaryPhone {
@@ -79,7 +98,9 @@ class StoreModel {
         city: data['city'] != null
             ? CityModel.fromJson(data['city'] as Map<String, dynamic>)
             : null,
-        type: StoreTypeModel.fromJsonOrNull(data['type']));
+        type: StoreTypeModel.fromJsonOrNull(data['type']),
+        subscriptionExpiredAt:
+            _expiredAtFromJson(data['subscription_expired_at']));
   }
 
   static StoreModel? fromJsonOrNull(Map<String, dynamic>? data) =>
@@ -102,5 +123,8 @@ class StoreModel {
         'city': city?.toJson(),
         'type': type?.toJson(),
         'contacts': contacts?.map((c) => c.toJson()).toList(),
+        'subscription_expired_at': subscriptionExpiredAt == null
+            ? null
+            : subscriptionExpiredAt!.millisecondsSinceEpoch ~/ 1000,
       };
 }

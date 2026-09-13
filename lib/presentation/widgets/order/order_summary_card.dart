@@ -15,17 +15,19 @@ class OrderSummaryCard extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final scheme = Theme.of(context).colorScheme;
 
-    // Крупной строкой показываем рекомендованную цену; если её нет, ту, что
-    // есть. Раньше обе печатались через .toString() и у пустой цены на
-    // экране появлялось слово «null».
-    final headline = order.priceRecommendedText ?? order.priceMaxText;
-    final headlineNote = order.priceRecommended != null
+    // Крупной строкой показываем рекомендованную цену; если её нет или она
+    // нулевая, ту, что есть. Раньше обе печатались через .toString() и у
+    // пустой цены на экране появлялось слово «null».
+    final recommended = order.priceRecommendedText;
+    final max = order.priceMaxText;
+    final headline = recommended ?? max;
+    final headlineNote = recommended != null
         ? l10n.priceRecommendedNote
         : l10n.priceMaxLabel.toLowerCase();
 
     final rows = <_Row>[
-      if (order.priceRecommended != null && order.priceMax != null)
-        _Row(l10n.priceMaxLabel, l10n.priceAmount(order.priceMaxText!)),
+      if (recommended != null && max != null)
+        _Row(l10n.priceMaxLabel, l10n.priceAmount(max)),
       if (order.executionDays != null)
         _Row(l10n.deadlineLabel, l10n.cardDays(order.executionDays.toString())),
       if (order.city != null) _Row(l10n.city, order.city!.name),

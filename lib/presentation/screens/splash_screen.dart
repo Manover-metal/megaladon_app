@@ -10,6 +10,7 @@ import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/bottom_sheet/add_anything_bottom_sheet.dart';
+import 'package:megaladon/presentation/widgets/chat/chat_open_listener.dart';
 import 'package:megaladon/presentation/widgets/drawer/drawer_app.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -79,7 +80,10 @@ class _SplashScreenState extends State<SplashScreen> {
       listener: (context, state) => context.router.replaceAll([
             const InitialRouter(children: [OrderRouter()])
           ]),
-      child: Intro(
+      // «Написать» / «Чат» со всех экранов открывают переписку отсюда —
+      // один listener на приложение, см. ChatOpenListener.
+      child: ChatOpenListener(
+        child: Intro(
           padding: const EdgeInsets.all(20),
           borderRadius: BorderRadius.circular(100),
           maskClosable: true,
@@ -199,7 +203,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 ],
               ),
             ),
-          )));
+          ))));
 }
 
 class Tab extends StatelessWidget {

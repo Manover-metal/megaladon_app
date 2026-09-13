@@ -261,9 +261,14 @@ class _$AppRouter extends RootStackRouter {
       );
     },
     SubscribeRoute.name: (routeData) {
+      final args = routeData.argsAs<SubscribeRouteArgs>(
+          orElse: () => const SubscribeRouteArgs());
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const SubscribeScreen(),
+        child: SubscribeScreen(
+          key: args.key,
+          initialType: args.initialType,
+        ),
       );
     },
     ListStoresRoute.name: (routeData) {
@@ -1283,14 +1288,36 @@ class ReviewRouteArgs {
 
 /// generated route for
 /// [SubscribeScreen]
-class SubscribeRoute extends PageRouteInfo<void> {
-  const SubscribeRoute()
-      : super(
+class SubscribeRoute extends PageRouteInfo<SubscribeRouteArgs> {
+  SubscribeRoute({
+    Key? key,
+    SubscribeType? initialType,
+  }) : super(
           SubscribeRoute.name,
           path: 'subscribe-screen',
+          args: SubscribeRouteArgs(
+            key: key,
+            initialType: initialType,
+          ),
         );
 
   static const String name = 'SubscribeRoute';
+}
+
+class SubscribeRouteArgs {
+  const SubscribeRouteArgs({
+    this.key,
+    this.initialType,
+  });
+
+  final Key? key;
+
+  final SubscribeType? initialType;
+
+  @override
+  String toString() {
+    return 'SubscribeRouteArgs{key: $key, initialType: $initialType}';
+  }
 }
 
 /// generated route for

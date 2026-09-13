@@ -471,7 +471,7 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get set_as_executor => 'Назначить исполнителем';
+  String get set_as_executor => 'Назначить';
 
   @override
   String get order => 'Заказ №';
@@ -949,6 +949,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get buy => 'Купить';
 
   @override
+  String get subscriptionRequested =>
+      'Заявка на подписку создана. Подписка включится после подтверждения оплаты.';
+
+  @override
   String subscribed_for_months(num count) {
     final intl.NumberFormat countNumberFormat =
         intl.NumberFormat.decimalPattern(localeName);
@@ -1404,6 +1408,67 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get store_location_hint =>
       'Покупатели ищут склады рядом с собой. Координаты определим один раз, когда вы отправите форму.';
+
+  @override
+  String get change_store_subtitle =>
+      'Изменения сразу увидят покупатели в поиске и на странице магазина';
+
+  @override
+  String get save_changes => 'Сохранить';
+
+  @override
+  String get change_executor_subtitle =>
+      'Заказчики увидят изменения в поиске исполнителей и в ваших откликах';
+
+  @override
+  String get change_phone_subtitle =>
+      'Пришлём код на новый номер. Для подтверждения введите текущий пароль';
+
+  @override
+  String get change_password_subtitle =>
+      'Введите текущий пароль и придумайте новый';
+
+  @override
+  String get offerPriceTypeLabel => 'Цена указана';
+
+  @override
+  String get offerPriceTotal => 'за всю работу';
+
+  @override
+  String get offerPricePerUnit => 'за шт.';
+
+  @override
+  String get offer_create_title => 'Ваше предложение';
+
+  @override
+  String get offer_create_subtitle =>
+      'Заказчик увидит цену, срок и комментарий и сможет выбрать вас исполнителем';
+
+  @override
+  String get pushBannerTitle => 'Уведомления выключены';
+
+  @override
+  String get pushBannerText =>
+      'Включите их, чтобы не пропустить отклики, сообщения и смену статуса заказов';
+
+  @override
+  String get pushBannerSystemText =>
+      'Уведомления запрещены в настройках телефона. Разрешите их, чтобы не пропустить отклики, сообщения и смену статуса заказов';
+
+  @override
+  String get pushBannerEnable => 'Включить';
+
+  @override
+  String get pushBannerAllow => 'Разрешить';
+
+  @override
+  String get pushBannerOpenSettings => 'Открыть настройки';
+
+  @override
+  String get viewMyOffer => 'Отклик';
+
+  @override
+  String get alreadyResponded => 'Вы уже откликнулись на этот заказ';
 
   @override
   String get executor_location_hint =>

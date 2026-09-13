@@ -1,21 +1,23 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:formz/formz.dart';
 import 'package:megaladon/data/models/enum_form_state.dart';
-import 'package:megaladon/data/models/form/localizable_error.dart';
 import 'package:megaladon/data/models/form/price_editing_controller.dart';
+import 'package:megaladon/data/models/offer_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/form/create/offer/create_offer_form_cubit.dart';
+import 'package:megaladon/presentation/widgets/auth/auth_scaffold.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
-import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/price_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
+import 'package:megaladon/presentation/widgets/form/picker/offer_price_type_picker.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
-import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
 
+/// Отклик на заказ. Собран так же, как экраны регистрации: заголовок с
+/// пояснением, поля карточками. Под ценой — за что она: за всю работу или
+/// за штуку; это видит заказчик в карточке и на странице отклика.
 class CreateOfferScreen extends StatefulWidget {
   const CreateOfferScreen({required this.orderId, super.key});
   final int orderId;
@@ -30,54 +32,38 @@ class _CreateOfferScreenState extends State<CreateOfferScreen> {
   late TextEditingController _dateController;
   late PriceEditingController _priceController;
 
-  void _back() {
-    context.router.pop();
-  }
+  /// Как умолчание в `order_offers.price_type` — за всю работу.
+  OfferPriceType _priceType = OfferPriceType.total;
 
   Future<void> _create() async {
-    if (_checkForm()) {
-      await context.read<CreateOfferFormCubit>().createFetch(widget.orderId);
-    }
-  }
-
-  bool _checkForm() {
-    var form = context.read<CreateOfferFormCubit>();
-    return form.checkCreate(
+    final cubit = context.read<CreateOfferFormCubit>();
+    if (!cubit.checkCreate(
       description: _descriptionController.value.text,
       price: _priceController.number,
       city: _cityController.value,
       date: _dateController.value.text,
-    );
+    )) {
+      return;
+    }
+
+    await cubit.createFetch(widget.orderId, priceType: _priceType);
   }
 
-  void _listenerForm(BuildContext context, CreateOfferFormState state) {
+  // Ошибки полей рисуются под полями, снекбар — только за ответом сервера.
+  void _listen(BuildContext context, CreateOfferFormState state) {
     if (state.formState == EnumFormState.success) {
       CustomSnackBar.success(
         Text(AppLocalizations.of(context)!.responseSent),
       ).view(context);
       context.router.pop();
-    } else if (state.formState == EnumFormState.error) {
-      if (state.error != null) {
-        CustomSnackBar.error(
-          Text(
-            state.error?.messages.isNotEmpty == true
-                ? state.error!.messages.first
-                : AppLocalizations.of(context)!.unknown_error,
-          ),
-        ).view(context);
-      }
-    }
-    if (!state.status) {
-      for (final element in state.props) {
-        if (element is FormzInput && element.isNotValid) {
-          final err = element.error;
-          return CustomSnackBar.error(
-            Text(err is LocalizableError
-                ? err.localize(AppLocalizations.of(context)!)
-                : err.toString()),
-          ).view(context);
-        }
-      }
+    } else if (state.formState == EnumFormState.error && state.error != null) {
+      CustomSnackBar.error(
+        Text(
+          state.error!.messages.isNotEmpty
+              ? state.error!.messages.first
+              : AppLocalizations.of(context)!.unknown_error,
+        ),
+      ).view(context);
     }
   }
 
@@ -100,72 +86,80 @@ class _CreateOfferScreenState extends State<CreateOfferScreen> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: HeaderAppBar(
-            isBack: true,
-            title: AppLocalizations.of(context)!
-                .responseToOrderId(widget.orderId.toString())),
-        body: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    return BlocListener<CreateOfferFormCubit, CreateOfferFormState>(
+      listenWhen: (a, b) => a.formState != b.formState,
+      listener: _listen,
+      child: AuthScaffold(
+        title: l10n.responseToOrderId(widget.orderId.toString()),
+        children: [
+          AuthHeading(
+            title: l10n.offer_create_title,
+            subtitle: l10n.offer_create_subtitle,
+          ),
+          const SizedBox(height: 20),
+          BlocBuilder<CreateOfferFormCubit, CreateOfferFormState>(
+            builder: (context, state) => Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const SizedBox(
-                  height: 20,
+                AuthFieldGroup(
+                  children: [
+                    PriceFieldApp(
+                      label: l10n.price,
+                      controller: _priceController,
+                      errorText: state.price.displayError?.localize(l10n),
+                    ),
+                    OfferPriceTypePicker(
+                      label: l10n.offerPriceTypeLabel,
+                      value: _priceType,
+                      onChanged: (type) => setState(() => _priceType = type),
+                    ),
+                  ],
                 ),
-                BlocConsumer<CreateOfferFormCubit, CreateOfferFormState>(
-                    listener: _listenerForm,
-                    builder: (context, state) => Column(
-                          children: [
-                            TextFieldApp(
-                              label: AppLocalizations.of(context)!.time_to_work,
-                              icon: const Icon(Icons.watch_later_outlined),
-                              controller: _dateController,
-                              errorText: state.date.displayError
-                                  ?.localize(AppLocalizations.of(context)!),
-                            ),
-                            PriceFieldApp(
-                              label: AppLocalizations.of(context)!.price,
-                              icon: const Icon(Icons.credit_card),
-                              controller: _priceController,
-                              errorText: state.price.displayError
-                                  ?.localize(AppLocalizations.of(context)!),
-                            ),
-                            TextFieldApp(
-                              label: AppLocalizations.of(context)!
-                                  .description_field,
-                              icon: const Icon(Icons.message),
-                              controller: _descriptionController,
-                              errorText: state.description.displayError
-                                  ?.localize(AppLocalizations.of(context)!),
-                            ),
-                            CityPicker(
-                                label: AppLocalizations.of(context)!.city,
-                                icon: const Icon(Icons.place),
-                                controller: _cityController,
-                                errorText: state.city.displayError
-                                    ?.localize(AppLocalizations.of(context)!)),
-                            if (state.formState == EnumFormState.fetch)
-                              ElevatedButtonApp(
-                                child: Loader(
-                                    color:
-                                        Theme.of(context).colorScheme.surface),
-                                onPressed: () {},
-                              )
-                            else
-                              ElevatedButtonApp(
-                                text: AppLocalizations.of(context)!.respond,
-                                onPressed: _create,
-                              ),
-                          ],
-                        )),
-                OutlinedButtonApp(
-                  text: AppLocalizations.of(context)!.cancel,
-                  onPressed: _back,
-                )
+                const SizedBox(height: 20),
+                AuthFieldGroup(
+                  title: l10n.conditionsLabel,
+                  children: [
+                    TextFieldApp(
+                      label: l10n.time_to_work,
+                      controller: _dateController,
+                      errorText: state.date.displayError?.localize(l10n),
+                    ),
+                    CityPicker(
+                      label: l10n.city,
+                      controller: _cityController,
+                      errorText: state.city.displayError?.localize(l10n),
+                    ),
+                    TextFieldApp(
+                      label: l10n.commentLabel,
+                      controller: _descriptionController,
+                      errorText:
+                          state.description.displayError?.localize(l10n),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
-        ),
-      );
+          const SizedBox(height: 20),
+          BlocBuilder<CreateOfferFormCubit, CreateOfferFormState>(
+            builder: (context, state) {
+              if (state.formState == EnumFormState.fetch) {
+                return ElevatedButtonApp(
+                  onPressed: () {},
+                  child: Loader(color: Theme.of(context).colorScheme.surface),
+                );
+              }
+              return ElevatedButtonApp(
+                text: l10n.respond,
+                onPressed: _create,
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
 }

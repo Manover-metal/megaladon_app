@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,7 +7,6 @@ import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/screens/chats/chat_cubit.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/logic/screens/user/user_profile_cubit.dart';
-import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/card/ad_card.dart';
@@ -357,18 +355,13 @@ class _ContactBar extends StatelessWidget {
                     Expanded(
                       child: OutlinedButtonApp(
                         text: l10n.write,
+                        // Future запроса — кнопка держит крутилку и не
+                        // шлёт второй. Переписку открывает ChatOpenListener.
                         onPressed: contactBlocked
                             ? null
                             : () => context
-                                    .read<ChatCubit>()
-                                    .createChat(user.id)
-                                    .then((chat) {
-                                  // context.mounted — экран могли закрыть,
-                                  // пока создавался чат.
-                                  if (chat == null || !context.mounted) return;
-                                  context.router
-                                      .push(DetailsChatRouter(chat: chat));
-                                }),
+                                .read<ChatCubit>()
+                                .openChatWith(user.id),
                       ),
                     ),
                 ],

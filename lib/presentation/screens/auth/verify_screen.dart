@@ -35,6 +35,9 @@ class _VerifyScreenState extends State<VerifyScreen> {
       context.read<VerifyFormCubit>().checkForm(_pinController.text);
 
   void _verify() {
+    // Код уже проверяется: второе нажатие в тот же кадр, до смены кнопки на
+    // крутилку, отправило бы второй запрос.
+    if (context.read<AuthBloc>().state is AuthLoadingState) return;
     if (_checkForm()) {
       context
           .read<AuthBloc>()

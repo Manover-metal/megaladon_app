@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:megaladon/data/models/dictionary/subscribe_model.dart';
 import 'package:megaladon/data/models/executor_model.dart';
 import 'package:megaladon/data/models/store_model.dart';
 import 'package:megaladon/data/models/user_model.dart';
@@ -19,6 +20,7 @@ import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/message/auth_message.dart';
 import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
+import 'package:megaladon/presentation/widgets/notifications/push_disabled_banner.dart';
 import 'package:megaladon/presentation/widgets/rating/rating_stars.dart';
 import 'package:megaladon/presentation/widgets/section/content_section.dart';
 import 'package:megaladon/presentation/widgets/settings/settings_row.dart';
@@ -177,6 +179,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             user: user,
             onChangePhoto: _changePhoto,
             onPhotoError: _photoListener),
+        // Пуши запрещены в системе или выключены в приложении — без них не
+        // узнать об откликах и смене статуса. Когда всё включено, плашки нет.
+        const PushDisabledBanner(),
         // Одна роль — переключать нечего.
         if (tabs.length > 1) ...[
           const SizedBox(height: _gap),
@@ -466,7 +471,7 @@ class _ExecutorTab extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 8),
-                  _SubscriptionChip(executor: executor),
+                  _SubscriptionChip(expiredAt: executor.subscriptionExpiredAt),
                 ],
               ),
               const SizedBox(height: 7),
@@ -543,8 +548,10 @@ class _ExecutorTab extends StatelessWidget {
                 title: l10n.subscriptions,
                 trailing: const SettingsChevron(),
                 onTap: () =>
-                    context.router.navigate(const InitialRouter(children: [
-                  OrderRouter(children: [SubscribeRoute()])
+                    context.router.navigate(InitialRouter(children: [
+                  OrderRouter(children: [
+                    SubscribeRoute(initialType: SubscribeType.executor)
+                  ])
                 ])),
               ),
             ],
@@ -555,18 +562,19 @@ class _ExecutorTab extends StatelessWidget {
   }
 }
 
-/// Подписка решает, может ли исполнитель откликаться и писать в чат, — но на
-/// профиле её статус не показывался вовсе.
+/// Статус подписки. У исполнителя она решает, может ли он откликаться и
+/// писать в чат, у магазина — виден ли он в каталоге. На профиле её статус
+/// раньше не показывался вовсе.
 class _SubscriptionChip extends StatelessWidget {
-  const _SubscriptionChip({required this.executor});
-  final ExecutorModel executor;
+  const _SubscriptionChip({required this.expiredAt});
+  final DateTime? expiredAt;
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final l10n = AppLocalizations.of(context)!;
-    final active = executor.hasActiveSubscription;
-    final until = executor.subscriptionExpiredAt;
+    final until = expiredAt;
+    final active = until?.isAfter(DateTime.now()) ?? false;
 
     final text = active && until != null
         ? l10n.subscriptionUntil(DateFormat('dd.MM.yyyy').format(until))
@@ -626,6 +634,9 @@ class _StoreTab extends StatelessWidget {
                       l10n.noRatings,
                       style: TextStyle(fontSize: 11.5, color: scheme.secondary),
                     ),
+                  const Spacer(),
+                  const SizedBox(width: 8),
+                  _SubscriptionChip(expiredAt: store.subscriptionExpiredAt),
                 ],
               ),
               const SizedBox(height: 11),
@@ -681,6 +692,18 @@ class _StoreTab extends StatelessWidget {
                 onTap: () => context.router.navigate(InitialRouter(children: [
                   ProfileRouter(
                       children: [StoreMyReviewsRoute(storeId: store.id)])
+                ])),
+              ),
+              const SettingsRowDivider(),
+              SettingsRow(
+                icon: Icons.workspace_premium_outlined,
+                title: l10n.subscriptions,
+                trailing: const SettingsChevron(),
+                onTap: () =>
+                    context.router.navigate(InitialRouter(children: [
+                  OrderRouter(children: [
+                    SubscribeRoute(initialType: SubscribeType.store)
+                  ])
                 ])),
               ),
             ],

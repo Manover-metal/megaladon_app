@@ -67,6 +67,8 @@ class AdUpdateFormCubit extends Cubit<AdUpdateFormState> {
   }
 
   Future updateFetch(int id) async {
+    // Уже отправляем — второе нажатие не шлёт второй запрос.
+    if (state.formState == EnumFormState.fetch) return;
     emit(state.copyWith(formState: EnumFormState.fetch));
 
     var files = <MultipartFile>[];

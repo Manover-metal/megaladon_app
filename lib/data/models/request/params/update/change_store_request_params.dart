@@ -1,17 +1,17 @@
 import 'package:megaladon/data/models/contact_model.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
 
+/// Изменение магазина. БИН не отправляем: с экрана он не редактируется, а
+/// бэкенд обновляет только пришедшие поля — сохранённый БИН остаётся.
 class ChangeStoreRequestParams {
   const ChangeStoreRequestParams(
       {required this.name,
-      required this.bin,
       required this.fullAddress,
       required this.lon,
       required this.lat,
       required this.city,
       required this.contacts});
   final String name;
-  final String bin;
   final String fullAddress;
   final double lon;
   final double lat;
@@ -21,7 +21,6 @@ class ChangeStoreRequestParams {
   Map<String, Object> toData() {
     final data = {
       'name': name,
-      'bin': bin,
       'full_address': fullAddress,
       'lon': lon,
       'lat': lat,

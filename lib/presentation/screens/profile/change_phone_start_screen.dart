@@ -4,13 +4,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/screens/profile/change_phone/change_phone_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
+import 'package:megaladon/presentation/widgets/auth/auth_scaffold.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
+import 'package:megaladon/presentation/widgets/form/field/password_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/phone_field.dart';
-import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
-import 'package:megaladon/presentation/widgets/text/title.dart';
 
+/// Смена номера, шаг 1: новый номер и текущий пароль. Бэкенд проверяет
+/// пароль и шлёт СМС с кодом на новый номер. Собран так же, как экраны
+/// регистрации. Раньше пароль вводился открытым текстом, а у экрана не было
+/// шапки и кнопки «назад».
 class ChangePhoneStartScreen extends StatefulWidget {
   const ChangePhoneStartScreen({super.key});
 
@@ -22,44 +26,27 @@ class _ChangePhoneStartScreenState extends State<ChangePhoneStartScreen> {
   late TextEditingController _newPhone;
   late TextEditingController _password;
 
-  void _login() {
-    if (_checkForm()) {
-      context.read<ChangePhoneCubit>().changePhoneStart(
-            phone: _newPhone.value.text,
-            password: _password.value.text,
-          );
+  void _sendCode() {
+    final cubit = context.read<ChangePhoneCubit>();
+    if (!cubit.checkStep1(
+      phone: _newPhone.value.text,
+      password: _password.value.text,
+    )) {
+      return;
     }
-  }
 
-  @override
-  void initState() {
-    _password = TextEditingController();
-    _newPhone = TextEditingController(text: '+7');
-
-    super.initState();
-  }
-
-  bool _checkForm() {
-    var form = context.read<ChangePhoneCubit>();
-    return form.checkStep1(
+    cubit.changePhoneStart(
       phone: _newPhone.value.text,
       password: _password.value.text,
     );
   }
 
-  @override
-  void dispose() {
-    _password.dispose();
-    _newPhone.dispose();
-    super.dispose();
-  }
-
-  dynamic _listenerForm(BuildContext context, ChangePhoneState state) {
-    if (state.status == ChangePhoneStatus.success ||
-        state.status == ChangePhoneStatus.initial2) {
+  // Ошибки полей рисуются под полями, снекбар — только за ответом сервера.
+  void _listen(BuildContext context, ChangePhoneState state) {
+    if (state.status == ChangePhoneStatus.success) {
       context.router.popAndPush(const ChangePhoneEndRoute());
     } else if (state.status == ChangePhoneStatus.error) {
-      return CustomSnackBar.error(
+      CustomSnackBar.error(
         Text(
           state.error?.messages.isNotEmpty == true
               ? state.error!.messages.first
@@ -70,62 +57,66 @@ class _ChangePhoneStartScreenState extends State<ChangePhoneStartScreen> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        body: SafeArea(
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            child: MultiBlocListener(
-              listeners: [
-                BlocListener<ChangePhoneCubit, ChangePhoneState>(
-                    listener: _listenerForm)
+  void initState() {
+    _password = TextEditingController();
+    _newPhone = TextEditingController(text: '+7');
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _password.dispose();
+    _newPhone.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    return BlocListener<ChangePhoneCubit, ChangePhoneState>(
+      listener: _listen,
+      child: AuthScaffold(
+        title: l10n.change_phone_number,
+        children: [
+          AuthHeading(
+            title: l10n.change_phone_number,
+            subtitle: l10n.change_phone_subtitle,
+          ),
+          const SizedBox(height: 20),
+          BlocBuilder<ChangePhoneCubit, ChangePhoneState>(
+            builder: (context, state) => AuthFieldGroup(
+              children: [
+                PhoneField(
+                  label: l10n.new_phone,
+                  controller: _newPhone,
+                  errorText: state.phone.displayError?.localize(l10n),
+                ),
+                PasswordFieldApp(
+                  label: l10n.your_password,
+                  controller: _password,
+                  errorText: state.password.displayError?.localize(l10n),
+                ),
               ],
-              child: Column(
-                children: [
-                  const Spacer(),
-                  TitleApp(AppLocalizations.of(context)!.change_phone_number),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  BlocBuilder<ChangePhoneCubit, ChangePhoneState>(
-                    builder: (context, state) => Column(
-                      children: [
-                        PhoneField(
-                          icon: const Icon(Icons.phone),
-                          label: AppLocalizations.of(context)!.new_phone,
-                          controller: _newPhone,
-                          errorText: state.phone.displayError
-                              ?.localize(AppLocalizations.of(context)!),
-                        ),
-                        TextFieldApp(
-                          icon: const Icon(Icons.lock),
-                          label: AppLocalizations.of(context)!.your_password,
-                          controller: _password,
-                          errorText: state.password.displayError
-                              ?.localize(AppLocalizations.of(context)!),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  BlocBuilder<ChangePhoneCubit, ChangePhoneState>(
-                      builder: (context, state) {
-                    if (state.status == ChangePhoneStatus.loading) {
-                      return ElevatedButtonApp(
-                          child: Loader(
-                              color: Theme.of(context).colorScheme.surface),
-                          onPressed: () {});
-                    }
-                    return ElevatedButtonApp(
-                        text: AppLocalizations.of(context)!.submit_Code,
-                        onPressed: _login);
-                  }),
-                  const Spacer(flex: 3),
-                ],
-              ),
             ),
           ),
-        ),
-      );
+          const SizedBox(height: 20),
+          BlocBuilder<ChangePhoneCubit, ChangePhoneState>(
+            builder: (context, state) {
+              if (state.status == ChangePhoneStatus.loading) {
+                return ElevatedButtonApp(
+                  onPressed: () {},
+                  child: Loader(color: Theme.of(context).colorScheme.surface),
+                );
+              }
+              return ElevatedButtonApp(
+                text: l10n.submit_Code,
+                onPressed: _sendCode,
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
 }

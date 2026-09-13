@@ -24,15 +24,14 @@ class OfferCard extends StatelessWidget {
             .push(DetailsOfferRoute(orderId: orderId, offerId: offer.id));
       };
 
-  void Function() _createChat(BuildContext context) => () {
+  /// Отдаём кнопке Future запроса — она держит крутилку и не принимает
+  /// второе нажатие. Переписку открывает ChatOpenListener.
+  Future<void> Function() _createChat(BuildContext context) => () async {
         // В отклике приходит UserPresenter::short(), то есть id здесь —
-        // пользовательский, а его createChat и ждёт.
+        // пользовательский, а openChatWith его и ждёт.
         final companionId = offer.executor?.id;
         if (companionId == null) return;
-        context.read<ChatCubit>().createChat(companionId).then((chat) {
-          if (chat == null || !context.mounted) return;
-          context.router.push(DetailsChatRouter(chat: chat));
-        });
+        await context.read<ChatCubit>().openChatWith(companionId);
       };
 
   @override
@@ -67,9 +66,13 @@ class OfferCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 9),
+                // За что цена — сразу за числом: «за шт.» меняет смысл суммы.
                 Flexible(
                   child: Text(
-                    offer.date,
+                    [
+                      offer.priceType.localize(l10n),
+                      if (offer.date.isNotEmpty) offer.date,
+                    ].join(' · '),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(fontSize: 11.5, color: scheme.secondary),

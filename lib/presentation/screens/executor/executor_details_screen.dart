@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,7 +6,6 @@ import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/screens/chats/chat_cubit.dart';
 import 'package:megaladon/logic/screens/executors/details/executor_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
-import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/message/error_message.dart';
@@ -35,12 +33,10 @@ class _DetailsExecutorScreenState extends State<DetailsExecutorScreen> {
     super.initState();
   }
 
-  void _toChat(int userId) {
-    context.read<ChatCubit>().createChat(userId).then((chat) {
-      if (!mounted || chat == null) return;
-      context.router.push(DetailsChatRouter(chat: chat));
-    });
-  }
+  /// Отдаём кнопке Future запроса — «Написать» держит крутилку и не
+  /// принимает второе нажатие. Переписку открывает ChatOpenListener.
+  Future<void> _toChat(int userId) =>
+      context.read<ChatCubit>().openChatWith(userId);
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -391,9 +387,17 @@ class _ContactBar extends StatelessWidget {
               top: false,
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                child: ElevatedButtonApp(
-                  text: AppLocalizations.of(context)!.writeMessage,
-                  onPressed: () => onWrite(userId),
+                // Колонка с min: кнопка держит текст в Container с
+                // alignment и иначе растягивается на всю высоту, которую
+                // даёт bottomNavigationBar.
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ElevatedButtonApp(
+                      text: AppLocalizations.of(context)!.writeMessage,
+                      onPressed: () => onWrite(userId),
+                    ),
+                  ],
                 ),
               ),
             ),

@@ -32,6 +32,9 @@ class OrderBadgesCubit extends Cubit<OrderBadgesState>
   Timer? _timer;
   bool _inFlight = false;
 
+  /// Пока шёл запрос, счётчики попросили перечитать ещё раз.
+  bool _pending = false;
+
   void _listenAuth(AuthState state) {
     if (state is AuthLoginState) {
       fetch();
@@ -45,8 +48,17 @@ class OrderBadgesCubit extends Cubit<OrderBadgesState>
   /// Перечитывает счётчики. Зовётся по таймеру, при возврате из фона и после
   /// того, как пользователь закрыл карточку заказа: открытие карточки гасит
   /// отметку на бэкенде, и бейдж должен погаснуть сразу, а не через две минуты.
+  ///
+  /// Если запрос уже идёт — например, опрос по таймеру, — повторный вызов не
+  /// выбрасываем, а выполняем сразу после текущего: тот мог уйти раньше, чем
+  /// бэкенд записал просмотр, и принёс бы старое число. Раньше такой вызов
+  /// молча терялся, и бейдж висел до следующего опроса.
   Future<void> fetch() async {
-    if (_inFlight || authBloc.state is! AuthLoginState) return;
+    if (authBloc.state is! AuthLoginState) return;
+    if (_inFlight) {
+      _pending = true;
+      return;
+    }
     _inFlight = true;
     try {
       final badges = await _repository.badges();
@@ -57,6 +69,10 @@ class OrderBadgesCubit extends Cubit<OrderBadgesState>
       print('order badges error: $error');
     } finally {
       _inFlight = false;
+      if (_pending && !isClosed) {
+        _pending = false;
+        unawaited(fetch());
+      }
     }
   }
 

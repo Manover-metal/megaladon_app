@@ -57,33 +57,37 @@ class _OrderCategoryMultiPickerState extends State<OrderCategoryMultiPicker> {
         widget.controllers._removeByIndex(index);
       };
 
+  // Column, а не ListView(shrinkWrap): пикер стоит в AuthScaffold на
+  // регистрации исполнителя, а его SliverFillRemaining(hasScrollBody: false)
+  // меряет содержимое intrinsic-высотой, которую вьюпорт ListView не отдаёт.
   @override
   Widget build(BuildContext context) => Column(
         children: [
           ValueListenableBuilder(
             valueListenable: widget.controllers,
-            builder: (context, categories, child) => ListView.builder(
-                itemCount: categories.length,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, item) => Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: OrderCategoryPicker(
-                            label: AppLocalizations.of(context)!.order_category,
-                            controller: widget.controllers.value[item],
-                          ),
+            builder: (context, categories, child) => Column(
+              children: [
+                for (var item = 0; item < categories.length; item++)
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: OrderCategoryPicker(
+                          label: AppLocalizations.of(context)!.order_category,
+                          controller: categories[item],
                         ),
-                        IconButton(
-                          onPressed: _removeByIndex(item),
-                          icon: Icon(
-                            Icons.remove_circle_outline_rounded,
-                            color: Theme.of(context).colorScheme.error,
-                          ),
-                        )
-                      ],
-                    )),
+                      ),
+                      IconButton(
+                        onPressed: _removeByIndex(item),
+                        icon: Icon(
+                          Icons.remove_circle_outline_rounded,
+                          color: Theme.of(context).colorScheme.error,
+                        ),
+                      )
+                    ],
+                  ),
+              ],
+            ),
           ),
           OutlinedButtonApp(
             text: AppLocalizations.of(context)!.add_order_category,
