@@ -163,7 +163,10 @@ class _StatusLine extends StatelessWidget {
           ),
         ],
         const Spacer(),
-        if (order.statusChanged) ...[
+        // Точка «в заказе что-то изменилось»: смена статуса или правка
+        // заказчиком. Новые отклики сюда не входят — их показывает
+        // отдельный счётчик выше, иначе на карточке было бы две метки.
+        if (order.statusChanged || order.contentChanged) ...[
           const UnreadBadge.dot(visible: true),
           const SizedBox(width: 6),
         ],

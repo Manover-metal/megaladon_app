@@ -74,6 +74,7 @@ class OrderModel extends Equatable {
       this.city,
       this.status = OrderStatus.nothing,
       this.statusChanged = false,
+      this.contentChanged = false,
       this.newOffersCount = 0});
   final int id;
   final String title;
@@ -101,12 +102,18 @@ class OrderModel extends Equatable {
   /// `order_views`; в общей ленте поля нет — там бейджей не показываем.
   final bool statusChanged;
 
+  /// Заказчик поправил заказ с последнего просмотра. Считает бэкенд по
+  /// `order_views.seen_updated_at`; при смене статуса не выставляется —
+  /// иначе карточка показала бы две метки об одном событии.
+  final bool contentChanged;
+
   /// Сколько откликов прибавилось с последнего просмотра. Осмысленно только
   /// в списке своих заказов.
   final int newOffersCount;
 
   /// Заказ изменился с тех пор, как пользователь его открывал.
-  bool get hasUpdates => statusChanged || newOffersCount > 0;
+  bool get hasUpdates =>
+      statusChanged || contentChanged || newOffersCount > 0;
 
   /// Цены с разделителями разрядов — то, что показывают карточка и экран.
   /// Ноль бэкенд присылает вместо «не указана», поэтому показывать его как
@@ -151,6 +158,7 @@ class OrderModel extends Equatable {
         // по-русски в Order::getStatusName().
         status: _statusFrom(data['status_code']),
         statusChanged: data['status_changed'] == true,
+        contentChanged: data['content_changed'] == true,
         newOffersCount: data['new_offers_count'] is num
             ? (data['new_offers_count'] as num).toInt()
             : 0,
@@ -237,6 +245,7 @@ class OrderModel extends Equatable {
         city,
         status,
         statusChanged,
+        contentChanged,
         newOffersCount
       ];
 }
