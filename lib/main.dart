@@ -156,7 +156,15 @@ class App extends StatelessWidget {
                   create: (context) => OrderScreenMainCubit()),
               BlocProvider<ExecutorScreenMyCubit>(
                   create: (context) => ExecutorScreenMyCubit(authBloc)),
+              // lazy: false — cubit подписывается на authBloc.stream в
+              // конструкторе, и только эта подписка запускает загрузку
+              // профиля по AuthLoginState. Пока провайдер был ленивым, у
+              // гостя cubit не существовал вовсе (в DrawerApp всё, что его
+              // читает, спрятано за `authState is AuthLoginState`), событие
+              // входа уходило в никуда, и данные подтягивались лишь когда
+              // ProfileScreen впервые читал cubit из context.
               BlocProvider<ProfileScreenCubit>(
+                lazy: false,
                 create: (context) => profileCubit,
               ),
               BlocProvider<OrderScreenMyCubit>(

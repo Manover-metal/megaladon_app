@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_intro/flutter_intro.dart';
@@ -11,6 +10,7 @@ import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/bottom_sheet/add_anything_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/chat/chat_open_listener.dart';
 import 'package:megaladon/presentation/widgets/drawer/drawer_app.dart';
+import 'package:megaladon/presentation/widgets/notifications/push_open_listener.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -42,33 +42,6 @@ class _SplashScreenState extends State<SplashScreen> {
         if (await IsFirstRun.isFirstCall()) Intro.of(context).start();
       };
 
-  void listenFB() {
-    FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      print('Got a message whilst in the foreground!');
-      print('Message data: ${message.data}');
-
-      if (message.notification != null) {
-        print('Message also contained a notification: ${message.notification}');
-      }
-      if (!mounted) return;
-
-      /// TODO: handle notification
-      // context.router.navigate(InitialRouter(children: [
-      //   OrderRouter(
-      //       children: [DetailsOrderRoute(orderId: message.data['order_id'])])
-      // ]));
-    });
-
-    FirebaseMessaging.onMessage.listen((message) {
-      print('Got a message whilst in the foreground!');
-      print('Message data: ${message.data}');
-
-      if (message.notification != null) {
-        print('Message also contained a notification: ${message.notification}');
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) => BlocListener<AuthBloc, AuthState>(
       // После выхода из аккаунта уводим на главную (таб заказов), а не на логин.
@@ -81,127 +54,142 @@ class _SplashScreenState extends State<SplashScreen> {
           ]),
       // «Написать» / «Чат» со всех экранов открывают переписку отсюда —
       // один listener на приложение, см. ChatOpenListener.
-      child: ChatOpenListener(
-        child: Intro(
-          padding: const EdgeInsets.all(20),
-          borderRadius: BorderRadius.circular(100),
-          maskClosable: true,
-          maskColor: const Color.fromRGBO(19, 78, 74, 0.9),
-          child: AutoTabsScaffold(
-            lazyLoad: true,
-            drawer: const DrawerApp(),
-            routes: const [
-              OrderRouter(),
-              StoreRouter(),
-              AdRouter(),
-              ProfileRouter(),
-            ],
-            bottomNavigationBuilder: (context, tabsRouter) => SafeArea(
-              top: false,
-              child: Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  SizedBox(
-                      // Иконка (25) + подпись (10pt) + индикатор активного таба
-                      // с отступами. Табы делят ширину поровну через Expanded,
-                      // пятая доля — пустая, под центральной кнопкой «+».
-                      height: 66,
-                      child: Row(
+      child: PushOpenListener(
+          child: ChatOpenListener(
+              child: Intro(
+                  padding: const EdgeInsets.all(20),
+                  borderRadius: BorderRadius.circular(100),
+                  maskClosable: true,
+                  maskColor: const Color.fromRGBO(19, 78, 74, 0.9),
+                  child: AutoTabsScaffold(
+                    lazyLoad: true,
+                    drawer: const DrawerApp(),
+                    routes: const [
+                      OrderRouter(),
+                      StoreRouter(),
+                      AdRouter(),
+                      ProfileRouter(),
+                    ],
+                    bottomNavigationBuilder: (context, tabsRouter) => SafeArea(
+                      top: false,
+                      child: Stack(
+                        alignment: Alignment.bottomCenter,
                         children: [
-                          Expanded(
-                            child: IntroStepBuilder(
-                                builder: (context, key) => Tab(
-                                      key: key,
-                                      icon: IconPack.basket,
-                                      label: AppLocalizations.of(context)!
-                                          .tabOrders,
-                                      isActive: 0 == tabsRouter.activeIndex,
-                                      click: _handleClick(tabsRouter, 0),
-                                      doubleClick: _doubleTap(
-                                          context,
-                                          const InitialRouter(
-                                              children: [OrderRouter()])),
+                          SizedBox(
+                              // Иконка (25) + подпись (10pt) + индикатор активного таба
+                              // с отступами. Табы делят ширину поровну через Expanded,
+                              // пятая доля — пустая, под центральной кнопкой «+».
+                              height: 66,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: IntroStepBuilder(
+                                        builder: (context, key) => Tab(
+                                              key: key,
+                                              icon: IconPack.basket,
+                                              label:
+                                                  AppLocalizations.of(context)!
+                                                      .tabOrders,
+                                              isActive:
+                                                  0 == tabsRouter.activeIndex,
+                                              click:
+                                                  _handleClick(tabsRouter, 0),
+                                              doubleClick: _doubleTap(
+                                                  context,
+                                                  const InitialRouter(
+                                                      children: [
+                                                        OrderRouter()
+                                                      ])),
+                                            ),
+                                        order: 1,
+                                        overlayBuilder: (params) => Text(
+                                            AppLocalizations.of(context)!
+                                                .introOrders),
+                                        onWidgetLoad: _introStart(context)),
+                                  ),
+                                  Expanded(
+                                    child: IntroStepBuilder(
+                                      builder: (context, key) => Tab(
+                                        key: key,
+                                        icon: IconPack.market,
+                                        label: AppLocalizations.of(context)!
+                                            .tabStores,
+                                        isActive: 1 == tabsRouter.activeIndex,
+                                        click: _handleClick(tabsRouter, 1),
+                                        doubleClick: _doubleTap(
+                                            context,
+                                            const InitialRouter(
+                                                children: [StoreRouter()])),
+                                      ),
+                                      order: 2,
+                                      overlayBuilder: (params) => Text(
+                                          AppLocalizations.of(context)!
+                                              .introStores),
                                     ),
-                                order: 1,
-                                overlayBuilder: (params) => Text(
-                                    AppLocalizations.of(context)!.introOrders),
-                                onWidgetLoad: _introStart(context)),
-                          ),
-                          Expanded(
-                            child: IntroStepBuilder(
-                              builder: (context, key) => Tab(
-                                key: key,
-                                icon: IconPack.market,
-                                label: AppLocalizations.of(context)!.tabStores,
-                                isActive: 1 == tabsRouter.activeIndex,
-                                click: _handleClick(tabsRouter, 1),
-                                doubleClick: _doubleTap(
-                                    context,
-                                    const InitialRouter(
-                                        children: [StoreRouter()])),
+                                  ),
+                                  const Expanded(child: SizedBox.shrink()),
+                                  Expanded(
+                                    child: IntroStepBuilder(
+                                      builder: (context, key) => Tab(
+                                        key: key,
+                                        icon: Icons
+                                            .account_balance_wallet_outlined,
+                                        label: AppLocalizations.of(context)!
+                                            .tabAds,
+                                        isActive: 2 == tabsRouter.activeIndex,
+                                        click: _handleClick(tabsRouter, 2),
+                                        doubleClick: _doubleTap(
+                                            context,
+                                            const InitialRouter(
+                                                children: [AdRouter()])),
+                                      ),
+                                      order: 3,
+                                      overlayBuilder: (params) => Text(
+                                          AppLocalizations.of(context)!
+                                              .introAds),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: IntroStepBuilder(
+                                      builder: (context, key) => Tab(
+                                        key: key,
+                                        icon: IconPack.profile,
+                                        label: AppLocalizations.of(context)!
+                                            .tabProfile,
+                                        isActive: 3 == tabsRouter.activeIndex,
+                                        click: _handleClick(tabsRouter, 3),
+                                        doubleClick: _doubleTap(
+                                            context,
+                                            const InitialRouter(
+                                                children: [ProfileRouter()])),
+                                      ),
+                                      order: 4,
+                                      overlayBuilder: (params) => Text(
+                                          AppLocalizations.of(context)!
+                                              .introProfile),
+                                    ),
+                                  ),
+                                ],
+                              )),
+                          Positioned(
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 10),
+                              child: FloatingActionButton(
+                                onPressed: _add(context),
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.primary,
+                                child: Icon(
+                                  Icons.add,
+                                  color: Theme.of(context).colorScheme.surface,
+                                  size: 40,
+                                ),
                               ),
-                              order: 2,
-                              overlayBuilder: (params) => Text(
-                                  AppLocalizations.of(context)!.introStores),
                             ),
-                          ),
-                          const Expanded(child: SizedBox.shrink()),
-                          Expanded(
-                            child: IntroStepBuilder(
-                              builder: (context, key) => Tab(
-                                key: key,
-                                icon: Icons.account_balance_wallet_outlined,
-                                label: AppLocalizations.of(context)!.tabAds,
-                                isActive: 2 == tabsRouter.activeIndex,
-                                click: _handleClick(tabsRouter, 2),
-                                doubleClick: _doubleTap(
-                                    context,
-                                    const InitialRouter(
-                                        children: [AdRouter()])),
-                              ),
-                              order: 3,
-                              overlayBuilder: (params) =>
-                                  Text(AppLocalizations.of(context)!.introAds),
-                            ),
-                          ),
-                          Expanded(
-                            child: IntroStepBuilder(
-                              builder: (context, key) => Tab(
-                                key: key,
-                                icon: IconPack.profile,
-                                label: AppLocalizations.of(context)!.tabProfile,
-                                isActive: 3 == tabsRouter.activeIndex,
-                                click: _handleClick(tabsRouter, 3),
-                                doubleClick: _doubleTap(
-                                    context,
-                                    const InitialRouter(
-                                        children: [ProfileRouter()])),
-                              ),
-                              order: 4,
-                              overlayBuilder: (params) => Text(
-                                  AppLocalizations.of(context)!.introProfile),
-                            ),
-                          ),
+                          )
                         ],
-                      )),
-                  Positioned(
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      child: FloatingActionButton(
-                        onPressed: _add(context),
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                        child: Icon(
-                          Icons.add,
-                          color: Theme.of(context).colorScheme.surface,
-                          size: 40,
-                        ),
                       ),
                     ),
-                  )
-                ],
-              ),
-            ),
-          ))));
+                  )))));
 }
 
 class Tab extends StatelessWidget {

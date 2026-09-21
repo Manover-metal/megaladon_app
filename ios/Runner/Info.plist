@@ -20,60 +20,28 @@
 		<string>APPL</string>
 		<key>CFBundleShortVersionString</key>
 		<string>$(FLUTTER_BUILD_NAME)</string>
-		<key>CFBundleSignature</key>
-		<string>????</string>
 		<key>CFBundleVersion</key>
 		<string>$(FLUTTER_BUILD_NUMBER)</string>
 		<key>LSApplicationQueriesSchemes</key>
 		<array>
 			<string>tel</string>
-			<string>telprompt</string>
 			<string>mailto</string>
-			<string>sms</string>
-			<string>https</string>
 			<string>http</string>
+			<string>https</string>
 		</array>
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
-		<key>LSSupportsOpeningDocumentsInPlace</key>
-		<true/>
 		<key>NSAppTransportSecurity</key>
 		<dict>
-			<key>NSAllowsArbitraryLoads</key>
+			<key>NSAllowsLocalNetworking</key>
 			<true/>
 		</dict>
-		<key>NSAppleMusicUsageDescription</key>
-		<string>Music!</string>
-		<key>NSBluetoothAlwaysUsageDescription</key>
-		<string>bluetooth</string>
-		<key>NSBluetoothPeripheralUsageDescription</key>
-		<string>bluetooth</string>
-		<key>NSCalendarsUsageDescription</key>
-		<string>Calendars</string>
 		<key>NSCameraUsageDescription</key>
-		<string>camera</string>
-		<key>NSContactsUsageDescription</key>
-		<string>contacts</string>
-		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-		<string>Always and when in use!</string>
-		<key>NSLocationAlwaysUsageDescription</key>
-		<string>This app needs access to location when in the background.</string>
-		<key>NSLocationUsageDescription</key>
-		<string>Older devices need location.</string>
-		<key>NSLocationWhenInUseUsageDescription</key>
-		<string>This app needs access to location when open.</string>
-		<key>NSMicrophoneUsageDescription</key>
-		<string>microphone</string>
-		<key>NSMotionUsageDescription</key>
-		<string>motion</string>
+		<string>Manover uses the camera so you can photograph metal products, documents and order details and attach them to your listings, orders and chat messages.</string>
 		<key>NSPhotoLibraryUsageDescription</key>
-		<string>photos</string>
-		<key>NSRemindersUsageDescription</key>
-		<string>reminders</string>
-		<key>NSSpeechRecognitionUsageDescription</key>
-		<string>speech</string>
-		<key>NSUserTrackingUsageDescription</key>
-		<string>appTrackingTransparency</string>
+		<string>Manover needs access to your photo library so you can attach saved photos to your listings, orders and chat messages.</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>Manover uses your current location to fill in the address of your company or workshop and to show orders and suppliers nearby.</string>
 		<key>UIApplicationSceneManifest</key>
 		<dict>
 			<key>UIApplicationSupportsMultipleScenes</key>
@@ -99,8 +67,6 @@
 		<true/>
 		<key>UIBackgroundModes</key>
 		<array>
-			<string>processing</string>
-			<string>fetch</string>
 			<string>remote-notification</string>
 		</array>
 		<key>UILaunchStoryboardName</key>
@@ -120,11 +86,5 @@
 			<string>UIInterfaceOrientationLandscapeLeft</string>
 			<string>UIInterfaceOrientationLandscapeRight</string>
 		</array>
-		<key>UISupportsDocumentBrowser</key>
-		<true/>
-		<key>kTCCServiceMediaLibrary</key>
-		<string>media</string>
-		<key>UIStatusBarHidden</key>
-		<false/>
 	</dict>
 </plist>

@@ -62,6 +62,6 @@ class DefaultFirebaseOptions {
     messagingSenderId: '262839631693',
     projectId: 'manover-metal',
     storageBucket: 'manover-metal.firebasestorage.app',
-    iosBundleId: 'com.bangert.manover',
+    iosBundleId: 'com.bangertstudio.manover',
   );
 }

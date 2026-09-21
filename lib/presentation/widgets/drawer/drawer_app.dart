@@ -9,6 +9,7 @@ import 'package:megaladon/logic/screens/orders/badges/order_badges_cubit.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/avatar/avatar.dart';
+import 'package:megaladon/presentation/widgets/drawer/drawer_push_notice.dart';
 import 'package:megaladon/presentation/widgets/tiles/drawer_route_tile.dart';
 import 'package:megaladon/presentation/widgets/tiles/drawer_tile.dart';
 
@@ -62,6 +63,10 @@ class DrawerApp extends StatelessWidget {
 
                         return Column(
                           children: [
+                            // Пуши выключены — короткая плашка сверху меню.
+                            // Гостю не показываем: серверный флаг ему всё
+                            // равно не принадлежит, а чинить нечего.
+                            const DrawerPushNotice(),
                             // Заказы, где с последнего просмотра сменился
                             // статус или прибавились отклики — обе вкладки
                             // экрана сразу.

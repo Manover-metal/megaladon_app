@@ -11,11 +11,15 @@ import 'package:megaladon/logic/auth/auth_bloc.dart';
 part 'profile_screen_state.dart';
 
 class ProfileScreenCubit extends Cubit<ProfileScreenState> {
-  ProfileScreenCubit(this.authBloc) : super(const ProfileScreenState()) {
+  /// [repository] подменяется только в тестах: в приложении cubit собирает
+  /// зависимость сам. Так же устроен AuthBloc.
+  ProfileScreenCubit(this.authBloc, {UserRepository? repository})
+      : _repository = repository ?? UserRepository(),
+        super(const ProfileScreenState()) {
     _listen(authBloc.state);
     authBloc.stream.listen(_listen);
   }
-  final UserRepository _repository = UserRepository();
+  final UserRepository _repository;
   final AuthBloc authBloc;
 
   void _listen(AuthState state) {
