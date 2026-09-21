@@ -25,10 +25,14 @@ class AdCard extends StatelessWidget {
     final scheme = theme.colorScheme;
     final l10n = AppLocalizations.of(context)!;
 
-    // У услуги цена — стартовая: работа считается по объёму.
-    final price = advert.type == AdvertType.service
-        ? l10n.priceFromAmount(advert.priceFormatted)
-        : l10n.tenge_price(advert.priceFormatted);
+    // У услуги цена — стартовая: работа считается по объёму. Цена
+    // необязательна, и без неё строка не рисуется вовсе.
+    final amount = advert.priceFormatted;
+    final price = amount == null
+        ? null
+        : advert.type == AdvertType.service
+            ? l10n.priceFromAmount(amount)
+            : l10n.tenge_price(amount);
 
     // Услуги почти всегда публикуют без фотографии. Заглушка-квадрат в такой
     // ленте превращается в колонку одинаковых серых плашек, поэтому позиция
@@ -78,15 +82,17 @@ class AdCard extends StatelessWidget {
                           color: theme.textTheme.bodyMedium?.color,
                         ),
                       ),
-                      const SizedBox(height: 5),
-                      Text(
-                        price,
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700,
-                          color: scheme.primary,
+                      if (price != null) ...[
+                        const SizedBox(height: 5),
+                        Text(
+                          price,
+                          style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w700,
+                            color: scheme.primary,
+                          ),
                         ),
-                      ),
+                      ],
                       if (meta.isNotEmpty) ...[
                         const SizedBox(height: 5),
                         // Wrap, а не Row: длинное название категории вместе

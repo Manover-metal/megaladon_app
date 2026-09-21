@@ -10,7 +10,7 @@ class AdCreateFormState extends Equatable {
       this.category = const AdvertCategoryFormModel.pure(),
       this.city = const CityFormModel.pure(),
       this.countTry = 0,
-      this.price = const PriceFormModel.pure(),
+      this.price = const PriceFormModel.pure(false),
       this.phone = const PhoneFormModel.pure(),
       this.media = const [],
       this.formState = EnumFormState.filled,

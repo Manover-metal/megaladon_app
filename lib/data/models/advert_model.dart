@@ -11,7 +11,7 @@ class AdvertModel extends Equatable {
       {required this.id,
       required this.title,
       required this.description,
-      required this.price,
+      this.price,
       this.category,
       this.additionalPhone,
       this.city,
@@ -24,7 +24,7 @@ class AdvertModel extends Equatable {
       id: data['id'] as int,
       title: data['title'] as String,
       description: data['description'] as String,
-      price: Parser.toInt(data['price']),
+      price: data['price'] != null ? Parser.toInt(data['price']) : null,
       media: data['media'] != null ? FileModel.listFromJson(data['media']) : [],
       category: data['category'] != null
           ? AdvertCategoryModel.fromJson(
@@ -45,7 +45,7 @@ class AdvertModel extends Equatable {
   final int id;
   final String title;
   final String description;
-  final int price;
+  final int? price;
   final AdvertCategoryModel? category;
   final CityModel? city;
   final String? additionalPhone;
@@ -56,9 +56,12 @@ class AdvertModel extends Equatable {
   final String? createdAt;
   final AdvertType type;
 
-  /// Цена с разделителями разрядов. Раньше карточка печатала `price` как
-  /// есть и показывала «450000 ₸».
-  String get priceFormatted => Parser.toPrice(price);
+  /// Цена с разделителями разрядов; `null`, если цену не указали — тогда
+  /// карточка и экран деталей просто не рисуют строку цены. Раньше карточка
+  /// печатала `price` как есть и показывала «450000 ₸», а отсутствие цены
+  /// превращалось в «0 ₸».
+  String? get priceFormatted =>
+      price != null && price! > 0 ? Parser.toPrice(price) : null;
 
   static List<AdvertModel> listFromJsonMini(List<dynamic> data) => data
       .map<AdvertModel>(

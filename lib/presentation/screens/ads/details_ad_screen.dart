@@ -313,26 +313,35 @@ class _SummaryCard extends StatelessWidget {
       if (advert.createdAt != null) [l10n.publishedLabel, advert.createdAt!],
     ];
 
+    // «Цена: до» здесь стояла ошибочно: вилки у объявления нет, а у услуги
+    // цена стартовая. Цена необязательна — без неё карточка начинается сразу
+    // с характеристик, поэтому и разделитель над ними не нужен.
+    final amount = advert.priceFormatted;
+    final price = amount == null
+        ? null
+        : isService
+            ? l10n.priceFromAmount(amount)
+            : l10n.priceAmount(amount);
+
     return CardBox(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            // «Цена: до» здесь стояла ошибочно: вилки у объявления нет,
-            // а у услуги цена стартовая.
-            isService
-                ? l10n.priceFromAmount(advert.priceFormatted)
-                : l10n.priceAmount(advert.priceFormatted),
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.w700,
-              color: scheme.primary,
+          if (price != null)
+            Text(
+              price,
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w700,
+                color: scheme.primary,
+              ),
             ),
-          ),
           if (rows.isNotEmpty) ...[
-            const SizedBox(height: 12),
-            Container(height: 1, color: scheme.onTertiary),
-            const SizedBox(height: 12),
+            if (price != null) ...[
+              const SizedBox(height: 12),
+              Container(height: 1, color: scheme.onTertiary),
+              const SizedBox(height: 12),
+            ],
             for (var i = 0; i < rows.length; i++) ...[
               if (i > 0) const SizedBox(height: 9),
               Row(

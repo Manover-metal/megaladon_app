@@ -36,7 +36,7 @@ class AdCreateFormCubit extends Cubit<AdCreateFormState> {
     required AdvertType type,
   }) {
     var titleForm = TitleFormModel.dirty(title);
-    var priceForm = PriceFormModel.dirty(price);
+    var priceForm = PriceFormModel.dirty(price, false);
     var descriptionForm = DescriptionFormModel.dirty(description);
     var cityForm = CityFormModel.dirty(city?.id);
     var categoryForm = AdvertCategoryFormModel.dirty(category?.id);
