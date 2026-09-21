@@ -93,9 +93,6 @@ class AdCreateFormCubit extends Cubit<AdCreateFormState> {
         emit(state.copyWith(formState: EnumFormState.success));
       }).catchError((error) {
         if (error is DioException) {
-          if (error.response?.statusCode == 403) {
-            authBloc.add(AuthLogoutEvent());
-          }
           emit(state.copyWith(
               formState: EnumFormState.error,
               error: ErrorModel.parseDio(error)));

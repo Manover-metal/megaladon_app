@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_intro/flutter_intro.dart';
 import 'package:is_first_run/is_first_run.dart';
-import 'package:megaladon/core/get.dart';
 import 'package:megaladon/core/icons/icons.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
@@ -89,7 +88,6 @@ class _SplashScreenState extends State<SplashScreen> {
           maskClosable: true,
           maskColor: const Color.fromRGBO(19, 78, 74, 0.9),
           child: AutoTabsScaffold(
-            scaffoldKey: getItApp.get<GlobalKey<ScaffoldState>>(),
             lazyLoad: true,
             drawer: const DrawerApp(),
             routes: const [

@@ -28,6 +28,12 @@ class AuthVerifyEvent extends AuthEvent {
 }
 
 class AuthLogoutEvent extends AuthEvent {
+  const AuthLogoutEvent({this.notifyServer = true});
+
+  /// false — выход не по кнопке, а по 401 от бэкенда: токен уже недействителен,
+  /// дёргать DELETE /auth/logout нечем и незачем.
+  final bool notifyServer;
+
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [notifyServer];
 }

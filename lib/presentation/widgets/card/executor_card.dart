@@ -1,10 +1,10 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/data/models/dictionary/service_type_model.dart';
 import 'package:megaladon/data/models/executor_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/presentation/routing/router.dart';
+import 'package:megaladon/presentation/widgets/avatar/avatar.dart';
 import 'package:megaladon/presentation/widgets/rating/rating_stars.dart';
 
 /// Строка исполнителя в списке. Главное здесь — какие работы человек делает:
@@ -48,7 +48,11 @@ class ExecutorCard extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _Avatar(executor: executor, size: _avatar),
+                Avatar(
+                  name: executor.name,
+                  photoUrl: executor.photo,
+                  size: _avatar,
+                ),
                 const SizedBox(width: 11),
                 Expanded(
                   child: Column(
@@ -87,38 +91,6 @@ class ExecutorCard extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _Avatar extends StatelessWidget {
-  const _Avatar({required this.executor, required this.size});
-  final ExecutorModel executor;
-  final double size;
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    final photo = executor.photo;
-    final placeholder = Container(
-      color: scheme.secondaryContainer,
-      alignment: Alignment.center,
-      child: Icon(Icons.person, size: size * 0.5, color: scheme.secondary),
-    );
-
-    return ClipOval(
-      child: SizedBox(
-        width: size,
-        height: size,
-        child: photo == null || photo.isEmpty
-            ? placeholder
-            : CachedNetworkImage(
-                imageUrl: photo,
-                fit: BoxFit.cover,
-                progressIndicatorBuilder: (_, __, ___) => placeholder,
-                errorWidget: (_, __, ___) => placeholder,
-              ),
       ),
     );
   }
@@ -168,6 +140,7 @@ class _Services extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final shown = services.take(visible).toList();
     final rest = services.length - shown.length;
 
@@ -176,7 +149,7 @@ class _Services extends StatelessWidget {
       runSpacing: 5,
       children: [
         for (final service in shown) _Chip(text: service.name),
-        if (rest > 0) _Chip(text: '+$rest'),
+        if (rest > 0) _Chip(text: l10n.plusCount(rest.toString())),
       ],
     );
   }

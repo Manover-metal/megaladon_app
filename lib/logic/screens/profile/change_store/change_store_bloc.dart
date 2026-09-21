@@ -30,9 +30,6 @@ class ChangeStoreBloc extends Bloc<ChangeStoreEvent, ChangeStoreState> {
       emit(const ChangeStoreSuccess());
     }).catchError((error) {
       if (error is DioException) {
-        if (error.response?.statusCode == 403) {
-          authBloc.add(AuthLogoutEvent());
-        }
         emit(ChangeStoreError(ErrorModel.parseDio(error)));
       } else {
         emit(ChangeStoreError(ErrorModel.nothing));

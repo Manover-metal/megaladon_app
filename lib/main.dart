@@ -1,9 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:megaladon/core/dio/index.dart';
 import 'package:megaladon/core/fb_notification/index.dart';
 import 'package:megaladon/core/get.dart';
@@ -75,7 +77,25 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+
+  // Нативный сплеш держим до первого кадра Flutter-а: между ним и UI лежит
+  // асинхронная инициализация (dotenv, GetIt, Firebase, пуши), без preserve
+  // на её время показался бы пустой экран.
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+  // ВРЕМЕННАЯ ДИАГНОСТИКА. Flutter печатает подробности ошибки целиком только
+  // для первой в серии, остальные схлопывает в одну строку «Multiple widgets
+  // used the same GlobalKey.» без имени ключа и родителей. Сброс счётчика
+  // перед каждым выводом возвращает полный текст каждый раз.
+  if (kDebugMode) {
+    final presentError = FlutterError.onError;
+    FlutterError.onError = (details) {
+      FlutterError.resetErrorCount();
+      presentError?.call(details);
+    };
+  }
+
   // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await dotenv.load(fileName: '.env');
   await initializeGetIt();
@@ -243,6 +263,10 @@ class _AppStateState extends State<AppState> {
   void initState() {
     _appRouter = AppRouter(
         notAuthGuard: NotAuthGuard(context), authGuard: AuthGuard(context));
+    // Убираем нативный сплеш только после того, как первый кадр приложения
+    // отрисован, иначе на стыке мелькает пустой фон MaterialApp.
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => FlutterNativeSplash.remove());
     super.initState();
   }
 

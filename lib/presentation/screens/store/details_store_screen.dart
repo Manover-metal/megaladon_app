@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/core/icons/icons.dart';
@@ -9,6 +8,7 @@ import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/screens/store/details/store_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/store/rate/rate_store_cubit.dart';
 import 'package:megaladon/logic/screens/store/reviews/store_reviews_cubit.dart';
+import 'package:megaladon/presentation/widgets/avatar/avatar.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/review/reviews_list.dart';
@@ -210,7 +210,13 @@ class _Header extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _Logo(photo: store.photo),
+        Avatar(
+          name: store.name ?? '',
+          photoUrl: store.photo,
+          size: 64,
+          shape: AvatarShape.rounded,
+          fallbackIcon: IconPack.market,
+        ),
         const SizedBox(width: 12),
         Expanded(
           child: Column(
@@ -255,39 +261,6 @@ class _Header extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class _Logo extends StatelessWidget {
-  const _Logo({required this.photo});
-  final String? photo;
-
-  static const double _size = 64;
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    final placeholder = Container(
-      color: scheme.secondaryContainer,
-      alignment: Alignment.center,
-      child: Icon(IconPack.market, size: 26, color: scheme.secondary),
-    );
-
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(10),
-      child: SizedBox(
-        width: _size,
-        height: _size,
-        child: photo == null || photo!.isEmpty
-            ? placeholder
-            : CachedNetworkImage(
-                imageUrl: photo!,
-                fit: BoxFit.cover,
-                progressIndicatorBuilder: (_, __, ___) => placeholder,
-                errorWidget: (_, __, ___) => placeholder,
-              ),
-      ),
     );
   }
 }
@@ -412,8 +385,7 @@ class _StoreActionBar extends StatelessWidget {
                               onPressed: () => onCall(phone),
                             ),
                           ),
-                        if (phone != null && canRate)
-                          const SizedBox(width: 8),
+                        if (phone != null && canRate) const SizedBox(width: 8),
                         if (canRate)
                           Expanded(
                             child: OutlinedButtonApp(

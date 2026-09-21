@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/executor_model.dart';
@@ -12,6 +11,7 @@ import 'package:megaladon/logic/screens/offers/details/offer_screen_details_cubi
 import 'package:megaladon/logic/screens/orders/details/order_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
+import 'package:megaladon/presentation/widgets/avatar/avatar.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
@@ -347,7 +347,7 @@ class _AuthorCard extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(12, 8, 8, 8),
       child: Row(
         children: [
-          _Avatar(photo: executor.photo),
+          Avatar(name: executor.name, photoUrl: executor.photo, size: 38),
           const SizedBox(width: 10),
           Expanded(
             child: InkWell(
@@ -376,7 +376,7 @@ class _AuthorCard extends StatelessWidget {
                     ),
                     if (orders != null)
                       Text(
-                        '$orders ${l10n.metricOrders}',
+                        l10n.metricOrdersCount(orders.toString()),
                         style: TextStyle(fontSize: 11, color: scheme.secondary),
                       ),
                   ],
@@ -394,38 +394,6 @@ class _AuthorCard extends StatelessWidget {
               ),
             ),
         ],
-      ),
-    );
-  }
-}
-
-class _Avatar extends StatelessWidget {
-  const _Avatar({required this.photo});
-  final String? photo;
-
-  static const double _size = 38;
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    final placeholder = Container(
-      color: scheme.secondaryContainer,
-      alignment: Alignment.center,
-      child: Icon(Icons.person, size: 20, color: scheme.secondary),
-    );
-
-    return ClipOval(
-      child: SizedBox(
-        width: _size,
-        height: _size,
-        child: photo == null || photo!.isEmpty
-            ? placeholder
-            : CachedNetworkImage(
-                imageUrl: photo!,
-                fit: BoxFit.cover,
-                progressIndicatorBuilder: (_, __, ___) => placeholder,
-                errorWidget: (_, __, ___) => placeholder,
-              ),
       ),
     );
   }

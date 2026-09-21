@@ -52,9 +52,6 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
       emit(state.copyWith(status: ChangePasswordStatus.success));
     }).catchError((Object error) {
       if (error is DioException) {
-        if (error.response?.statusCode == 403) {
-          authBloc.add(AuthLogoutEvent());
-        }
         emit(state.copyWith(
             error: ErrorModel.parseDio(error),
             status: ChangePasswordStatus.error));

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:megaladon/data/models/chat/chat_model.dart';
-import 'package:megaladon/presentation/widgets/chat/companion_avatar.dart';
+import 'package:megaladon/presentation/widgets/avatar/avatar.dart';
 
 /// Заголовок AppBar экрана переписки: аватар и имя собеседника.
 /// Если собеседник неизвестен — показывает [fallbackTitle].
@@ -25,7 +25,7 @@ class ChatAppBarTitle extends StatelessWidget {
     final title = Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        CompanionAvatar(photoUrl: companion?.photoUrl),
+        Avatar(name: name, photoUrl: companion?.photoUrl),
         const SizedBox(width: 12),
         Flexible(
           child: Text(

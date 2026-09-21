@@ -129,7 +129,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get comment_optional => 'Комментарий (необязательно)';
 
   @override
-  String get location => 'Местоположение';
+  String get location => 'Город';
 
   @override
   String get create_an_order => 'Создание заказа';
@@ -451,7 +451,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get createChat => 'Создать чат';
 
   @override
-  String get location2 => 'Местоположение: ';
+  String get location2 => 'Город: ';
 
   @override
   String get description2 => 'Описание: ';
@@ -636,10 +636,6 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get account_deleted_successfully => 'Аккаунт удалён';
-
-  @override
-  String get aboutText =>
-      '\"Заказы\" — список размещённых на платформе заказов для поиска лучшего предложения от исполнителей.\n\"Металлопрокат\" — список компаний, занимающихся продажей готовой продукции.\n\"+\" (Заказ) — создание заказа для поиска исполнителей.\n\"+\" (Услуги) — создание услуг для распространения своих услуг.\n\"+\" (Объявление) — создание объявления для продажи товаров или оказания услуг машиностроения.\n\"Торговая площадка\" — список объявлений о продаже товара или оказании услуг машиностроения.\n\"Профиль\" — профиль пользователя.';
 
   @override
   String get introOrders =>
@@ -1148,14 +1144,14 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get subscriptionActiveHint =>
-      'Все возможности исполнителя открыты. Продлите заранее, чтобы не потерять доступ.';
+      'Отклик на заказы, звонки, чат и объявления об услугах доступны.';
 
   @override
   String get subscriptionInactive => 'Подписка не активна';
 
   @override
   String get subscriptionInactiveHint =>
-      'Выберите срок ниже — доступ откроется сразу после оплаты.';
+      'Выберите срок ниже. Подписка включится после подтверждения оплаты.';
 
   @override
   String get subscriptionExecutorBenefitsTitle =>
@@ -1165,46 +1161,39 @@ class AppLocalizationsRu extends AppLocalizations {
   String get subscriptionStoreBenefitsTitle => 'Что даёт подписка магазина';
 
   @override
-  String get subscriptionExecutorBenefit1Title => 'Звонки и чат с заказчиком';
+  String get subscriptionExecutorBenefit1Title => 'Отклик на заказ';
 
   @override
   String get subscriptionExecutorBenefit1Text =>
-      'Контакты автора объявления открыты: звоните и пишите напрямую, без посредников.';
+      'Кнопка «Предложить услуги» в карточке заказа работает только с активной подпиской.';
 
   @override
-  String get subscriptionExecutorBenefit2Title => 'Свои объявления';
+  String get subscriptionExecutorBenefit2Title => 'Звонок и чат';
 
   @override
   String get subscriptionExecutorBenefit2Text =>
-      'Публикуйте и редактируйте объявления об услугах, чтобы заказчики находили вас сами.';
+      'Звонок по номеру и переписка с заказчиком, автором объявления и в профиле пользователя.';
 
   @override
-  String get subscriptionExecutorBenefit3Title => 'Все заказы под рукой';
+  String get subscriptionExecutorBenefit3Title => 'Объявления об услугах';
 
   @override
   String get subscriptionExecutorBenefit3Text =>
-      'Откликайтесь на заказы первым и берите столько работы, сколько потянете.';
+      'Создание и редактирование объявлений типа «услуга».';
 
   @override
   String get subscriptionStoreBenefit1Title => 'Магазин в каталоге';
 
   @override
   String get subscriptionStoreBenefit1Text =>
-      'Без активной подписки магазин не показывается в разделе металлопроката и его не найдут.';
+      'Без активной подписки магазин не показывается в разделе металлопроката.';
 
   @override
-  String get subscriptionStoreBenefit2Title => 'Прайсы и контакты';
+  String get subscriptionStoreBenefit2Title => 'Объявления об услугах';
 
   @override
   String get subscriptionStoreBenefit2Text =>
-      'Покупатели видят адрес, телефон и загруженные прайс-листы вашего магазина.';
-
-  @override
-  String get subscriptionStoreBenefit3Title => 'Заявки напрямую';
-
-  @override
-  String get subscriptionStoreBenefit3Text =>
-      'Клиенты звонят и пишут вам сами — никакой комиссии за сделку.';
+      'Создание и редактирование объявлений типа «услуга».';
 
   @override
   String get subscriptionChoosePeriod => 'Выберите срок';
@@ -1216,7 +1205,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String subscriptionBadgeBest(String percent) {
-    return 'Выгодно −$percent%';
+    return '−$percent% за месяц';
   }
 
   @override
@@ -1224,7 +1213,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get subscriptionFootnote =>
-      'Подписка активируется сразу после оплаты. Продление — вручную, автосписаний нет.';
+      'Подписка включается после подтверждения оплаты. Продление — вручную, автосписаний нет.';
 
   @override
   String get subscriptionPlansEmpty => 'Тарифы пока недоступны';
@@ -1488,4 +1477,50 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get form_error_contacts_incomplete =>
       'Контакты заполнены не полностью';
+
+  @override
+  String get fileDownloadFailed => 'Не удалось загрузить файл';
+
+  @override
+  String metricOrdersCount(String count) {
+    return '$count заказов';
+  }
+
+  @override
+  String metricOrdersCountDot(String count) {
+    return '· $count заказов';
+  }
+
+  @override
+  String dotSeparated(String left, String right) {
+    return '$left · $right';
+  }
+
+  @override
+  String plusCount(String count) {
+    return '+$count';
+  }
+
+  @override
+  String get aboutOrdersText =>
+      'Заказы, размещённые на платформе. Откройте карточку, сравните отклики исполнителей с ценой и сроком и выберите лучшее предложение.';
+
+  @override
+  String get aboutStoresText =>
+      'Компании, которые продают готовую продукцию: прайс-листы, адреса, контакты и рейтинг.';
+
+  @override
+  String get aboutAdsText =>
+      'Торговая площадка: объявления о продаже товара и услугах машиностроения.';
+
+  @override
+  String get aboutProfileText =>
+      'Ваши данные, роли заказчика, исполнителя и магазина, подписка и история заказов.';
+
+  @override
+  String get aboutCreateTitle => 'Кнопка «+»';
+
+  @override
+  String get aboutCreateText =>
+      'Создаёт новое: заказ для поиска исполнителей, категорию услуг или объявление.';
 }

@@ -129,7 +129,7 @@ class AppLocalizationsKk extends AppLocalizations {
   String get comment_optional => 'Пікір (міндетті емес)';
 
   @override
-  String get location => 'Орналасқан жері';
+  String get location => 'Қала';
 
   @override
   String get create_an_order => 'Тапсырысты құру';
@@ -451,7 +451,7 @@ class AppLocalizationsKk extends AppLocalizations {
   String get createChat => 'Чат жасау';
 
   @override
-  String get location2 => 'Орналасқан жері: ';
+  String get location2 => 'Қала: ';
 
   @override
   String get description2 => 'Сипаттамасы: ';
@@ -636,10 +636,6 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get account_deleted_successfully => 'Аккаунт жойылды';
-
-  @override
-  String get aboutText =>
-      '\"Тапсырыстар\" — орындаушылардан ең жақсы ұсынысты іздеу үшін платформада орналастырылған тапсырыстар тізімі.\n\"Металл прокаты\" — дайын өнімдерді сататын компаниялар тізімі.\n\"+\" (Тапсырыс) — орындаушыларды іздеу үшін тапсырыс жасау.\n\"+\" (Қызметтер) — қызметтерді таратуға арналған қызмет жасау.\n\"+\" (Хабарландыру) — тауарларды сату немесе машина жасау қызметтерін ұсыну үшін хабарландыру жасау.\n\"Сауда алаңы\" — тауарларды сату немесе машина жасау қызметтерін ұсыну туралы хабарландырулар тізімі.\n\"Профиль\" — пайдаланушы профилі.';
 
   @override
   String get introOrders =>
@@ -1144,14 +1140,14 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get subscriptionActiveHint =>
-      'Орындаушының барлық мүмкіндіктері ашық. Қолжетімділікті жоғалтпау үшін алдын ала ұзартыңыз.';
+      'Тапсырыстарға жауап беру, қоңыраулар, чат және қызмет туралы хабарландырулар қолжетімді.';
 
   @override
   String get subscriptionInactive => 'Жазылым белсенді емес';
 
   @override
   String get subscriptionInactiveHint =>
-      'Төменнен мерзімді таңдаңыз — қолжетімділік төлемнен кейін бірден ашылады.';
+      'Төменнен мерзімді таңдаңыз. Жазылым төлем расталғаннан кейін қосылады.';
 
   @override
   String get subscriptionExecutorBenefitsTitle =>
@@ -1161,47 +1157,40 @@ class AppLocalizationsKk extends AppLocalizations {
   String get subscriptionStoreBenefitsTitle => 'Дүкен жазылымы не береді';
 
   @override
-  String get subscriptionExecutorBenefit1Title =>
-      'Тапсырыс берушімен қоңырау және чат';
+  String get subscriptionExecutorBenefit1Title => 'Тапсырысқа жауап беру';
 
   @override
   String get subscriptionExecutorBenefit1Text =>
-      'Хабарландыру авторының байланыстары ашық: делдалсыз тікелей қоңырау шалыңыз және жазыңыз.';
+      'Тапсырыс картасындағы «Қызметтерді ұсыну» түймесі тек белсенді жазылыммен жұмыс істейді.';
 
   @override
-  String get subscriptionExecutorBenefit2Title => 'Өз хабарландыруларыңыз';
+  String get subscriptionExecutorBenefit2Title => 'Қоңырау және чат';
 
   @override
   String get subscriptionExecutorBenefit2Text =>
-      'Тапсырыс берушілер сізді өздері табуы үшін қызметтер туралы хабарландыруларды жариялаңыз және өңдеңіз.';
+      'Тапсырыс берушіге, хабарландыру авторына және пайдаланушы профилінде қоңырау шалу және жазысу.';
 
   @override
-  String get subscriptionExecutorBenefit3Title => 'Барлық тапсырыс қол астында';
+  String get subscriptionExecutorBenefit3Title =>
+      'Қызмет туралы хабарландырулар';
 
   @override
   String get subscriptionExecutorBenefit3Text =>
-      'Тапсырыстарға бірінші болып жауап беріңіз және қалағаныңызша жұмыс алыңыз.';
+      '«Қызмет» түріндегі хабарландыруларды жасау және өңдеу.';
 
   @override
   String get subscriptionStoreBenefit1Title => 'Дүкен каталогта';
 
   @override
   String get subscriptionStoreBenefit1Text =>
-      'Белсенді жазылымсыз дүкен металл прокаты бөлімінде көрсетілмейді және оны ешкім таппайды.';
+      'Белсенді жазылымсыз дүкен металл прокаты бөлімінде көрсетілмейді.';
 
   @override
-  String get subscriptionStoreBenefit2Title => 'Прайстар мен байланыстар';
+  String get subscriptionStoreBenefit2Title => 'Қызмет туралы хабарландырулар';
 
   @override
   String get subscriptionStoreBenefit2Text =>
-      'Сатып алушылар дүкеніңіздің мекенжайын, телефонын және жүктелген прайс-парақтарын көреді.';
-
-  @override
-  String get subscriptionStoreBenefit3Title => 'Тікелей өтінімдер';
-
-  @override
-  String get subscriptionStoreBenefit3Text =>
-      'Клиенттер сізге өздері қоңырау шалады және жазады — мәміле үшін комиссия жоқ.';
+      '«Қызмет» түріндегі хабарландыруларды жасау және өңдеу.';
 
   @override
   String get subscriptionChoosePeriod => 'Мерзімді таңдаңыз';
@@ -1213,7 +1202,7 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String subscriptionBadgeBest(String percent) {
-    return 'Тиімді −$percent%';
+    return 'Айына −$percent%';
   }
 
   @override
@@ -1221,7 +1210,7 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get subscriptionFootnote =>
-      'Жазылым төлемнен кейін бірден іске қосылады. Ұзарту — қолмен, автоматты түрде ақша алынбайды.';
+      'Жазылым төлем расталғаннан кейін қосылады. Ұзарту — қолмен, автоматты түрде ақша алынбайды.';
 
   @override
   String get subscriptionPlansEmpty => 'Тарифтер әзірге қолжетімді емес';
@@ -1485,4 +1474,50 @@ class AppLocalizationsKk extends AppLocalizations {
   @override
   String get form_error_contacts_incomplete =>
       'Байланыстар толық толтырылмаған';
+
+  @override
+  String get fileDownloadFailed => 'Файлды жүктеу мүмкін болмады';
+
+  @override
+  String metricOrdersCount(String count) {
+    return '$count тапсырыс';
+  }
+
+  @override
+  String metricOrdersCountDot(String count) {
+    return '· $count тапсырыс';
+  }
+
+  @override
+  String dotSeparated(String left, String right) {
+    return '$left · $right';
+  }
+
+  @override
+  String plusCount(String count) {
+    return '+$count';
+  }
+
+  @override
+  String get aboutOrdersText =>
+      'Платформада орналастырылған тапсырыстар. Картаны ашып, орындаушылардың бағасы мен мерзімі көрсетілген ұсыныстарын салыстырыңыз да, ең жақсысын таңдаңыз.';
+
+  @override
+  String get aboutStoresText =>
+      'Дайын өнім сататын компаниялар: прайс-парақтар, мекенжайлар, байланыстар және рейтинг.';
+
+  @override
+  String get aboutAdsText =>
+      'Сауда алаңы: тауар сату және машина жасау қызметтері туралы хабарландырулар.';
+
+  @override
+  String get aboutProfileText =>
+      'Сіздің деректеріңіз, тапсырыс беруші, орындаушы және дүкен рөлдері, жазылым мен тапсырыстар тарихы.';
+
+  @override
+  String get aboutCreateTitle => '«+» түймесі';
+
+  @override
+  String get aboutCreateText =>
+      'Жаңасын жасайды: орындаушыларды іздеуге арналған тапсырыс, қызмет санаты немесе хабарландыру.';
 }

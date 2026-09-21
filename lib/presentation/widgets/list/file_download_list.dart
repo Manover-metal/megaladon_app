@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:megaladon/core/download/download_service.dart';
 import 'package:megaladon/data/models/dictionary/file_model.dart';
+import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:share_plus/share_plus.dart';
 
 class FileDownloadList extends StatefulWidget {
@@ -33,8 +34,9 @@ class _FileDownloadListState extends State<FileDownloadList> {
       );
     } catch (_) {
       if (!mounted) return;
+      final l10n = AppLocalizations.of(context)!;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Не удалось загрузить файл')),
+        SnackBar(content: Text(l10n.fileDownloadFailed)),
       );
     } finally {
       _downloading.remove(file);

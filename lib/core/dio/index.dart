@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:megaladon/core/dio/interceptors/auth_interceptors.dart';
 import 'package:megaladon/core/dio/interceptors/error_interceptors.dart';
 import 'package:megaladon/core/dio/interceptors/language_interceptor.dart';
 import 'package:talker/talker.dart';
@@ -19,6 +20,10 @@ class ApiService {
     _languageInterceptor =
         LanguageInterceptor(WidgetsBinding.instance.platformDispatcher.locale);
     addInterceptors(_languageInterceptor);
+    // Один на всё приложение: токен в него кладёт AuthRepository, он же
+    // сообщает об 401. См. AuthInterceptor.
+    _authInterceptor = AuthInterceptor();
+    addInterceptors(_authInterceptor);
     addInterceptors(AdvancedDioLogger(
       talker: Talker(),
       settings: AdvancedDioLoggerSettings(
@@ -40,8 +45,11 @@ class ApiService {
   }
   static late Dio _dio;
   static late LanguageInterceptor _languageInterceptor;
+  static late AuthInterceptor _authInterceptor;
 
   static Dio get I => _dio;
+
+  static AuthInterceptor get auth => _authInterceptor;
 
   static void setLocale(Locale locale) =>
       _languageInterceptor.changeLocale(locale);

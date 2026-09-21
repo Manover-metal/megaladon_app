@@ -71,9 +71,6 @@ class CreateOfferFormCubit extends Cubit<CreateOfferFormState> {
       }).catchError((error) {
         print(error);
         if (error is DioException) {
-          if (error.response?.statusCode == 403) {
-            authBloc.add(AuthLogoutEvent());
-          }
           emit(state.copyWith(
               formState: EnumFormState.error,
               error: ErrorModel.parseDio(error)));

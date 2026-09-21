@@ -28,9 +28,6 @@ class ChangeExecutorBloc
       emit(ChangeExecutorSuccess());
     }).catchError((error) {
       if (error is DioException) {
-        if (error.response?.statusCode == 403) {
-          authBloc.add(AuthLogoutEvent());
-        }
         emit(ChangeExecutorError(ErrorModel.parseDio(error)));
       } else {
         emit(ChangeExecutorError(ErrorModel.nothing));

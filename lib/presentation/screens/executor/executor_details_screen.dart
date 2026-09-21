@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/executor_model.dart';
@@ -6,6 +5,7 @@ import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/screens/chats/chat_cubit.dart';
 import 'package:megaladon/logic/screens/executors/details/executor_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
+import 'package:megaladon/presentation/widgets/avatar/avatar.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/message/error_message.dart';
@@ -106,7 +106,11 @@ class _ExecutorBody extends StatelessWidget {
           Center(
             child: Column(
               children: [
-                _Avatar(executor: executor),
+                Avatar(
+                  name: executor.name,
+                  photoUrl: executor.photo,
+                  size: 88,
+                ),
                 const SizedBox(height: 10),
                 Text(
                   executor.name,
@@ -294,39 +298,6 @@ class _Metric extends StatelessWidget {
                 TextStyle(fontSize: 10.5, color: theme.colorScheme.secondary),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _Avatar extends StatelessWidget {
-  const _Avatar({required this.executor});
-  final ExecutorModel executor;
-
-  static const double _size = 88;
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    final photo = executor.photo;
-    final placeholder = Container(
-      color: scheme.secondaryContainer,
-      alignment: Alignment.center,
-      child: Icon(Icons.person, size: 40, color: scheme.secondary),
-    );
-
-    return ClipOval(
-      child: SizedBox(
-        width: _size,
-        height: _size,
-        child: photo == null || photo.isEmpty
-            ? placeholder
-            : CachedNetworkImage(
-                imageUrl: photo,
-                fit: BoxFit.cover,
-                progressIndicatorBuilder: (_, __, ___) => placeholder,
-                errorWidget: (_, __, ___) => placeholder,
-              ),
       ),
     );
   }

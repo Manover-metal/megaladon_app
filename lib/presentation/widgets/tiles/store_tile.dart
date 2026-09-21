@@ -1,7 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/core/icons/icons.dart';
 import 'package:megaladon/data/models/store_model.dart';
+import 'package:megaladon/presentation/widgets/avatar/avatar.dart';
 
 class StoreTile extends StatelessWidget {
   const StoreTile({required this.store, super.key});
@@ -12,22 +12,12 @@ class StoreTile extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Container(
-                width: MediaQuery.of(context).size.height / 10,
-                height: MediaQuery.of(context).size.height / 10,
-                color: Theme.of(context).colorScheme.secondary,
-                child: CachedNetworkImage(
-                  imageUrl: store.photo ?? '',
-                  progressIndicatorBuilder: (context, url, downloadProgress) =>
-                      Icon(IconPack.market,
-                          size: MediaQuery.of(context).size.width / 10),
-                  errorWidget: (context, url, error) => Icon(IconPack.market,
-                      size: MediaQuery.of(context).size.width / 10),
-                  fit: BoxFit.cover,
-                ),
-              ),
+            Avatar(
+              name: store.name ?? '',
+              photoUrl: store.photo,
+              size: MediaQuery.of(context).size.height / 10,
+              shape: AvatarShape.rounded,
+              fallbackIcon: IconPack.market,
             ),
             const SizedBox(
               width: 10,

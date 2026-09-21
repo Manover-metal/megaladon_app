@@ -57,11 +57,7 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
       print(error);
       print(stackTrace);
       if (error is DioException) {
-        if (error.response?.statusCode == 403) {
-          authBloc.add(AuthLogoutEvent());
-        } else {
-          _emitError(ErrorModel.parseDio(error));
-        }
+        _emitError(ErrorModel.parseDio(error));
       } else {
         _emitError(ErrorModel.nothing);
       }
@@ -100,11 +96,7 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
     }).catchError((error) {
       print('Error Responded: $error');
       if (error is DioException) {
-        if (error.response?.statusCode == 403) {
-          authBloc.add(AuthLogoutEvent());
-        } else {
-          _emitError(ErrorModel.parseDio(error));
-        }
+        _emitError(ErrorModel.parseDio(error));
       } else {
         _emitError(ErrorModel.nothing);
       }

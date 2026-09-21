@@ -68,9 +68,6 @@ class ChangePhoneCubit extends Cubit<ChangePhoneState> {
       emit(state.copyWith(status: ChangePhoneStatus.success));
     }).catchError((Object error) {
       if (error is DioException) {
-        if (error.response?.statusCode == 403) {
-          authBloc.add(AuthLogoutEvent());
-        }
         emit(state.copyWith(
             error: ErrorModel.parseDio(error),
             status: ChangePhoneStatus.error));
@@ -95,9 +92,6 @@ class ChangePhoneCubit extends Cubit<ChangePhoneState> {
       emit(state.copyWith(status: ChangePhoneStatus.success2));
     }).catchError((Object error) {
       if (error is DioException) {
-        if (error.response?.statusCode == 403) {
-          authBloc.add(AuthLogoutEvent());
-        }
         emit(state.copyWith(
             error: ErrorModel.parseDio(error),
             status: ChangePhoneStatus.error2));

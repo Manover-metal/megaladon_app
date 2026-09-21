@@ -1,15 +1,14 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/core/icons/icons.dart';
-import 'package:megaladon/data/models/user_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/screens/chats/chat_cubit.dart';
 import 'package:megaladon/logic/screens/orders/badges/order_badges_cubit.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
+import 'package:megaladon/presentation/widgets/avatar/avatar.dart';
 import 'package:megaladon/presentation/widgets/tiles/drawer_route_tile.dart';
 import 'package:megaladon/presentation/widgets/tiles/drawer_tile.dart';
 
@@ -133,7 +132,7 @@ class DrawerApp extends StatelessWidget {
                                   icon: Icons.workspace_premium_outlined,
                                   text: l10n.subscriptions,
                                   activeRouteName: SubscribeRoute.name,
-                                  page:  InitialRouter(
+                                  page: InitialRouter(
                                     children: [
                                       OrderRouter(children: [SubscribeRoute()])
                                     ],
@@ -257,7 +256,11 @@ class _ProfileRow extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
               child: Row(
                 children: [
-                  _Avatar(user: user),
+                  Avatar(
+                    name: user?.name ?? '',
+                    photoUrl: user?.photo,
+                    size: 36,
+                  ),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Column(
@@ -293,66 +296,6 @@ class _ProfileRow extends StatelessWidget {
             ),
           );
         },
-      );
-}
-
-class _Avatar extends StatelessWidget {
-  const _Avatar({required this.user});
-  final UserModel? user;
-
-  /// Инициалы из имени: «Асхат Кенжебаев» → «АК». Фотография есть далеко не
-  /// у всех, а пустой серый круг ничего не говорит.
-  String get _initials {
-    final parts = (user?.name ?? '')
-        .split(' ')
-        .where((part) => part.isNotEmpty)
-        .take(2)
-        .toList();
-
-    return parts.map((part) => part[0].toUpperCase()).join();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    final photo = user?.photo;
-
-    return ClipOval(
-      child: Container(
-        width: 36,
-        height: 36,
-        color: scheme.secondaryContainer,
-        alignment: Alignment.center,
-        child: photo != null && photo.isNotEmpty
-            ? CachedNetworkImage(
-                imageUrl: photo,
-                width: 36,
-                height: 36,
-                fit: BoxFit.cover,
-                errorWidget: (_, __, ___) => _InitialsText(_initials),
-                progressIndicatorBuilder: (_, __, ___) =>
-                    _InitialsText(_initials),
-              )
-            : _InitialsText(_initials),
-      ),
-    );
-  }
-}
-
-class _InitialsText extends StatelessWidget {
-  const _InitialsText(this.text);
-  final String text;
-
-  @override
-  Widget build(BuildContext context) => Center(
-        child: Text(
-          text,
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w700,
-            color: Theme.of(context).colorScheme.primary,
-          ),
-        ),
       );
 }
 

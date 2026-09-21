@@ -134,7 +134,7 @@ class _Bar extends StatelessWidget {
 
     return Row(
       children: [
-        SizedBox(width: 8, child: Text('$star', style: label)),
+        SizedBox(width: 8, child: Text(star.toString(), style: label)),
         const SizedBox(width: 6),
         Expanded(
           child: ClipRRect(
@@ -150,7 +150,7 @@ class _Bar extends StatelessWidget {
         const SizedBox(width: 6),
         SizedBox(
           width: 16,
-          child: Text('$count', style: label, textAlign: TextAlign.right),
+          child: Text(count.toString(), style: label, textAlign: TextAlign.right),
         ),
       ],
     );

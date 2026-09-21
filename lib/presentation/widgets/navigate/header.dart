@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:megaladon/core/get.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
 
 class HeaderAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -55,9 +54,15 @@ class HeaderAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: isMenu
           ? IconButton(
               icon: const Icon(Icons.menu, size: 30),
-              onPressed: () => getItApp
-                  .get<GlobalKey<ScaffoldState>>()
-                  .currentState
+              // Ищем корневой Scaffold: drawer висит на AutoTabsScaffold в
+              // SplashScreen, а сама шапка стоит во вложенном Scaffold'е
+              // экрана таба, поэтому Scaffold.of(context) нашёл бы не тот.
+              // Раньше здесь был общий GlobalKey<ScaffoldState> из get_it —
+              // из-за него два одновременно живых SplashScreen (старый и
+              // новый во время replaceAll) роняли дерево с «Multiple widgets
+              // used the same GlobalKey».
+              onPressed: () => context
+                  .findRootAncestorStateOfType<ScaffoldState>()
                   ?.openDrawer(),
             )
           : isBack

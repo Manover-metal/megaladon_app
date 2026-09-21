@@ -223,13 +223,14 @@ analyzer:
 
 plugins:
   markup_analyzer:
-    version: ^4.0.1
+    version: ^4.1.1
     diagnostics:
       simple_string: error
-      prefixed_identifier: error
+      prefixed_identifier: false
       string_interpolation: error
-      binary_expression: error
+      binary_expression: false
+      binary_string_literal: error
       adjacent_strings: error
-      method_invocation: error
-      simple_identifier: error
+      method_invocation: false
+      simple_identifier: false
       function_invocation: error

@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:megaladon/data/models/dictionary/subscribe_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 
-/// Что даёт подписка: заголовок и список выгод с иконками.
+/// Что даёт подписка: заголовок и список того, что без неё закрыто.
 ///
-/// Формулировки описывают ровно то, что закрыто без активной подписки:
-/// исполнителю — звонок и чат по объявлению (`contact_requires_subscription`)
-/// и создание объявлений (`AdvertService::store`), магазину — показ в каталоге
-/// металлопроката (`Store::scopeHasActiveSubscription`).
+/// Здесь только то, что реально проверяется в коде, без обещаний:
+/// исполнителю — отклик на заказ и чат с заказчиком
+/// (`DetailsOrderScreen`, `respond_requires_subscription`), звонок и чат по
+/// объявлению и в профиле пользователя (`contact_requires_subscription`),
+/// объявления типа «услуга» (`AdvertService::checkServiceAuthor`);
+/// магазину — показ в каталоге металлопроката (`StoreRepo::applyFilter`)
+/// и те же объявления об услугах.
 class SubscriptionBenefits extends StatelessWidget {
   const SubscriptionBenefits({required this.type, super.key});
 
@@ -17,21 +20,24 @@ class SubscriptionBenefits extends StatelessWidget {
       type == SubscribeType.executor
           ? [
               _Benefit(
-                icon: Icons.phone_in_talk_rounded,
+                icon: Icons.assignment_turned_in_rounded,
                 title: l10n.subscriptionExecutorBenefit1Title,
                 text: l10n.subscriptionExecutorBenefit1Text,
               ),
               _Benefit(
-                icon: Icons.campaign_rounded,
+                icon: Icons.phone_in_talk_rounded,
                 title: l10n.subscriptionExecutorBenefit2Title,
                 text: l10n.subscriptionExecutorBenefit2Text,
               ),
               _Benefit(
-                icon: Icons.assignment_turned_in_rounded,
+                icon: Icons.campaign_rounded,
                 title: l10n.subscriptionExecutorBenefit3Title,
                 text: l10n.subscriptionExecutorBenefit3Text,
               ),
             ]
+          // У магазина подписка закрывает ровно два пункта. Третьего здесь
+          // больше нет: «клиенты пишут сами, никакой комиссии за сделку» —
+          // это было обещание, а не проверка в коде.
           : [
               _Benefit(
                 icon: Icons.storefront_rounded,
@@ -39,14 +45,9 @@ class SubscriptionBenefits extends StatelessWidget {
                 text: l10n.subscriptionStoreBenefit1Text,
               ),
               _Benefit(
-                icon: Icons.receipt_long_rounded,
+                icon: Icons.campaign_rounded,
                 title: l10n.subscriptionStoreBenefit2Title,
                 text: l10n.subscriptionStoreBenefit2Text,
-              ),
-              _Benefit(
-                icon: Icons.handshake_rounded,
-                title: l10n.subscriptionStoreBenefit3Title,
-                text: l10n.subscriptionStoreBenefit3Text,
               ),
             ];
 

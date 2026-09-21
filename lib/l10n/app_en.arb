@@ -73,7 +73,7 @@
   "@noRatings": {},
   "comment_optional": "Comment (optional)",
   "@comment_optional": {},
-  "location": "Location",
+  "location": "City",
   "@location": {},
   "create_an_order": "Create an order",
   "@create_an_order": {},
@@ -305,7 +305,7 @@
   "@terms": {},
   "createChat": "Create chat",
   "@createChat": {},
-  "location2": "Location: ",
+  "location2": "City: ",
   "@location2": {},
   "description2": "Description: ",
   "@description2": {},
@@ -463,8 +463,6 @@
   "@delete_account_warning": {},
   "account_deleted_successfully": "Account deleted",
   "@account_deleted_successfully": {},
-  "aboutText": "\"Orders\" — a list of orders placed on the platform to find the best offer from executors.\n\"Rolled metal\" — a list of companies selling finished products.\n\"+\" (Order) — create an order to find executors.\n\"+\" (Services) — create services to promote your offerings.\n\"+\" (Ad) — create an ad to sell goods or provide mechanical engineering services.\n\"Marketplace\" — a list of ads for selling goods or providing mechanical engineering services.\n\"Profile\" — user profile.",
-  "@aboutText": {},
   "introOrders": "A list of orders placed on the platform to find the best offer from executors.",
   "@introOrders": {},
   "introStores": "A list of companies selling finished products.",
@@ -811,23 +809,21 @@
       }
     }
   },
-  "subscriptionActiveHint": "All executor features are unlocked. Renew in advance so you don't lose access.",
+  "subscriptionActiveHint": "Responding to orders, calls, chat and service adverts are available.",
   "subscriptionInactive": "Subscription is not active",
-  "subscriptionInactiveHint": "Pick a period below — access opens right after payment.",
+  "subscriptionInactiveHint": "Pick a period below. The subscription is enabled once the payment is confirmed.",
   "subscriptionExecutorBenefitsTitle": "What the executor subscription gives you",
   "subscriptionStoreBenefitsTitle": "What the store subscription gives you",
-  "subscriptionExecutorBenefit1Title": "Calls and chat with customers",
-  "subscriptionExecutorBenefit1Text": "The advert author's contacts are open: call and message them directly, with no middlemen.",
-  "subscriptionExecutorBenefit2Title": "Your own adverts",
-  "subscriptionExecutorBenefit2Text": "Publish and edit service adverts so customers find you on their own.",
-  "subscriptionExecutorBenefit3Title": "Every order at hand",
-  "subscriptionExecutorBenefit3Text": "Respond to orders first and take on as much work as you can handle.",
-  "subscriptionStoreBenefit1Title": "Your store in the catalogue",
-  "subscriptionStoreBenefit1Text": "Without an active subscription the store is hidden from the metal rolling section and nobody can find it.",
-  "subscriptionStoreBenefit2Title": "Price lists and contacts",
-  "subscriptionStoreBenefit2Text": "Buyers see your store's address, phone number and uploaded price lists.",
-  "subscriptionStoreBenefit3Title": "Direct enquiries",
-  "subscriptionStoreBenefit3Text": "Customers call and message you themselves — no commission on deals.",
+  "subscriptionExecutorBenefit1Title": "Responding to an order",
+  "subscriptionExecutorBenefit1Text": "The “Offer services” button on an order works only with an active subscription.",
+  "subscriptionExecutorBenefit2Title": "Calls and chat",
+  "subscriptionExecutorBenefit2Text": "Calling the phone number and messaging the customer, the advert author and a user profile.",
+  "subscriptionExecutorBenefit3Title": "Service adverts",
+  "subscriptionExecutorBenefit3Text": "Creating and editing adverts of the “service” type.",
+  "subscriptionStoreBenefit1Title": "Store in the catalogue",
+  "subscriptionStoreBenefit1Text": "Without an active subscription the store is not shown in the metal rolling section.",
+  "subscriptionStoreBenefit2Title": "Service adverts",
+  "subscriptionStoreBenefit2Text": "Creating and editing adverts of the “service” type.",
   "subscriptionChoosePeriod": "Choose a period",
   "subscriptionPerMonth": "≈ {amount} ₸ per month",
   "@subscriptionPerMonth": {
@@ -837,7 +833,7 @@
       }
     }
   },
-  "subscriptionBadgeBest": "Save {percent}%",
+  "subscriptionBadgeBest": "−{percent}% per month",
   "@subscriptionBadgeBest": {
     "placeholders": {
       "percent": {
@@ -846,7 +842,7 @@
     }
   },
   "subscriptionBadgeFree": "Free",
-  "subscriptionFootnote": "The subscription activates right after payment. Renewal is manual — no automatic charges.",
+  "subscriptionFootnote": "The subscription is enabled once the payment is confirmed. Renewal is manual — no automatic charges.",
   "subscriptionPlansEmpty": "No plans available yet",
   "subscriptionNoFaces": "Subscriptions are available to executors and stores. Fill in your executor or store profile to pick a plan.",
   "cardPriceUpTo": "up to {amount} ₸",
@@ -1011,5 +1007,54 @@
   "form_error_contacts_empty": "Add at least one contact",
   "@form_error_contacts_empty": {},
   "form_error_contacts_incomplete": "Contacts are not fully filled out",
-  "@form_error_contacts_incomplete": {}
+  "@form_error_contacts_incomplete": {},
+  "fileDownloadFailed": "Failed to download file",
+  "@fileDownloadFailed": {},
+  "metricOrdersCount": "{count} orders",
+  "@metricOrdersCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "metricOrdersCountDot": "· {count} orders",
+  "@metricOrdersCountDot": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "dotSeparated": "{left} · {right}",
+  "@dotSeparated": {
+    "placeholders": {
+      "left": {
+        "type": "String"
+      },
+      "right": {
+        "type": "String"
+      }
+    }
+  },
+  "plusCount": "+{count}",
+  "@plusCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "aboutOrdersText": "Orders placed on the platform. Open a card, compare offers from executors with their price and lead time, and pick the best one.",
+  "@aboutOrdersText": {},
+  "aboutStoresText": "Companies selling finished products: price lists, addresses, contacts and ratings.",
+  "@aboutStoresText": {},
+  "aboutAdsText": "The marketplace: ads for selling goods and offering mechanical engineering services.",
+  "@aboutAdsText": {},
+  "aboutProfileText": "Your details, your customer, executor and store roles, subscription and order history.",
+  "@aboutProfileText": {},
+  "aboutCreateTitle": "The “+” button",
+  "@aboutCreateTitle": {},
+  "aboutCreateText": "Creates something new: an order to find executors, a service category, or an ad.",
+  "@aboutCreateText": {}
 }

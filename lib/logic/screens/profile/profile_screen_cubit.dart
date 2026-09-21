@@ -50,15 +50,13 @@ class ProfileScreenCubit extends Cubit<ProfileScreenState> {
         ProfileScreenState(status: ProfileScreenStatus.success, user: result),
       );
     } catch (err) {
+      // Выход из аккаунта здесь не делаем: 401 перехватывает AuthInterceptor,
+      // а этот cubit уйдёт в notAuth по AuthLogoutState из _listen(). Раньше
+      // 403 («нет доступа») трактовался как мёртвый токен и разлогинивал.
       if (err is DioException) {
-        if (err.response?.statusCode == 403) {
-          authBloc.add(AuthLogoutEvent());
-          emit(const ProfileScreenState(status: ProfileScreenStatus.notAuth));
-        } else {
-          emit(ProfileScreenState(
-              status: ProfileScreenStatus.error,
-              error: ErrorModel.parseDio(err)));
-        }
+        emit(ProfileScreenState(
+            status: ProfileScreenStatus.error,
+            error: ErrorModel.parseDio(err)));
       } else {
         emit(ProfileScreenState(
             status: ProfileScreenStatus.error, error: ErrorModel.nothing));

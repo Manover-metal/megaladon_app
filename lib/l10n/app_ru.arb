@@ -46,7 +46,7 @@
   "rating": "Рейтинг ",
   "noRatings": "Нет оценок",
   "comment_optional": "Комментарий (необязательно)",
-  "location": "Местоположение",
+  "location": "Город",
   "create_an_order": "Создание заказа",
   "select_a_category": "Выберите категорию",
   "job_title": "Название работы",
@@ -175,7 +175,7 @@
   "price2": "Цена: ",
   "terms": "Сроки: ",
   "createChat": "Создать чат",
-  "location2": "Местоположение: ",
+  "location2": "Город: ",
   "description2": "Описание: ",
   "executorAddedToFavorites": "Исполнитель добавлен в избранное",
   "executorSuggestedPrice": "Предложенная исполнителем цена: ",
@@ -286,7 +286,6 @@
   "delete_account": "Удалить аккаунт",
   "delete_account_warning": "Действие необратимо. Аккаунт будет удалён, и вы выйдете из него. Введите пароль для подтверждения.",
   "account_deleted_successfully": "Аккаунт удалён",
-  "aboutText": "\"Заказы\" — список размещённых на платформе заказов для поиска лучшего предложения от исполнителей.\n\"Металлопрокат\" — список компаний, занимающихся продажей готовой продукции.\n\"+\" (Заказ) — создание заказа для поиска исполнителей.\n\"+\" (Услуги) — создание услуг для распространения своих услуг.\n\"+\" (Объявление) — создание объявления для продажи товаров или оказания услуг машиностроения.\n\"Торговая площадка\" — список объявлений о продаже товара или оказании услуг машиностроения.\n\"Профиль\" — профиль пользователя.",
   "introOrders": "Список размещённых на платформе заказов для поиска лучшего предложения от исполнителей.",
   "introStores": "Список компаний, занимающихся продажей готовой продукции.",
   "introAds": "Список объявлений о продаже товара или оказании услуг машиностроения.",
@@ -464,23 +463,21 @@
       }
     }
   },
-  "subscriptionActiveHint": "Все возможности исполнителя открыты. Продлите заранее, чтобы не потерять доступ.",
+  "subscriptionActiveHint": "Отклик на заказы, звонки, чат и объявления об услугах доступны.",
   "subscriptionInactive": "Подписка не активна",
-  "subscriptionInactiveHint": "Выберите срок ниже — доступ откроется сразу после оплаты.",
+  "subscriptionInactiveHint": "Выберите срок ниже. Подписка включится после подтверждения оплаты.",
   "subscriptionExecutorBenefitsTitle": "Что даёт подписка исполнителя",
   "subscriptionStoreBenefitsTitle": "Что даёт подписка магазина",
-  "subscriptionExecutorBenefit1Title": "Звонки и чат с заказчиком",
-  "subscriptionExecutorBenefit1Text": "Контакты автора объявления открыты: звоните и пишите напрямую, без посредников.",
-  "subscriptionExecutorBenefit2Title": "Свои объявления",
-  "subscriptionExecutorBenefit2Text": "Публикуйте и редактируйте объявления об услугах, чтобы заказчики находили вас сами.",
-  "subscriptionExecutorBenefit3Title": "Все заказы под рукой",
-  "subscriptionExecutorBenefit3Text": "Откликайтесь на заказы первым и берите столько работы, сколько потянете.",
+  "subscriptionExecutorBenefit1Title": "Отклик на заказ",
+  "subscriptionExecutorBenefit1Text": "Кнопка «Предложить услуги» в карточке заказа работает только с активной подпиской.",
+  "subscriptionExecutorBenefit2Title": "Звонок и чат",
+  "subscriptionExecutorBenefit2Text": "Звонок по номеру и переписка с заказчиком, автором объявления и в профиле пользователя.",
+  "subscriptionExecutorBenefit3Title": "Объявления об услугах",
+  "subscriptionExecutorBenefit3Text": "Создание и редактирование объявлений типа «услуга».",
   "subscriptionStoreBenefit1Title": "Магазин в каталоге",
-  "subscriptionStoreBenefit1Text": "Без активной подписки магазин не показывается в разделе металлопроката и его не найдут.",
-  "subscriptionStoreBenefit2Title": "Прайсы и контакты",
-  "subscriptionStoreBenefit2Text": "Покупатели видят адрес, телефон и загруженные прайс-листы вашего магазина.",
-  "subscriptionStoreBenefit3Title": "Заявки напрямую",
-  "subscriptionStoreBenefit3Text": "Клиенты звонят и пишут вам сами — никакой комиссии за сделку.",
+  "subscriptionStoreBenefit1Text": "Без активной подписки магазин не показывается в разделе металлопроката.",
+  "subscriptionStoreBenefit2Title": "Объявления об услугах",
+  "subscriptionStoreBenefit2Text": "Создание и редактирование объявлений типа «услуга».",
   "subscriptionChoosePeriod": "Выберите срок",
   "subscriptionPerMonth": "≈ {amount} ₸ в месяц",
   "@subscriptionPerMonth": {
@@ -490,7 +487,7 @@
       }
     }
   },
-  "subscriptionBadgeBest": "Выгодно −{percent}%",
+  "subscriptionBadgeBest": "−{percent}% за месяц",
   "@subscriptionBadgeBest": {
     "placeholders": {
       "percent": {
@@ -499,7 +496,7 @@
     }
   },
   "subscriptionBadgeFree": "Бесплатно",
-  "subscriptionFootnote": "Подписка активируется сразу после оплаты. Продление — вручную, автосписаний нет.",
+  "subscriptionFootnote": "Подписка включается после подтверждения оплаты. Продление — вручную, автосписаний нет.",
   "subscriptionPlansEmpty": "Тарифы пока недоступны",
   "subscriptionNoFaces": "Подписки доступны исполнителям и магазинам. Заполните профиль исполнителя или магазина, чтобы выбрать тариф.",
   "cardPriceUpTo": "до {amount} ₸",
@@ -576,5 +573,16 @@
   "location_service_disabled": "Включите геолокацию на телефоне, чтобы мы отметили вас на карте",
   "location_permission_denied": "Разрешите приложению доступ к геопозиции, чтобы мы отметили вас на карте",
   "form_error_contacts_empty": "Добавьте хотя бы один контакт",
-  "form_error_contacts_incomplete": "Контакты заполнены не полностью"
+  "form_error_contacts_incomplete": "Контакты заполнены не полностью",
+  "fileDownloadFailed": "Не удалось загрузить файл",
+  "metricOrdersCount": "{count} заказов",
+  "metricOrdersCountDot": "· {count} заказов",
+  "dotSeparated": "{left} · {right}",
+  "plusCount": "+{count}",
+  "aboutOrdersText": "Заказы, размещённые на платформе. Откройте карточку, сравните отклики исполнителей с ценой и сроком и выберите лучшее предложение.",
+  "aboutStoresText": "Компании, которые продают готовую продукцию: прайс-листы, адреса, контакты и рейтинг.",
+  "aboutAdsText": "Торговая площадка: объявления о продаже товара и услугах машиностроения.",
+  "aboutProfileText": "Ваши данные, роли заказчика, исполнителя и магазина, подписка и история заказов.",
+  "aboutCreateTitle": "Кнопка «+»",
+  "aboutCreateText": "Создаёт новое: заказ для поиска исполнителей, категорию услуг или объявление."
 }

@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -7,6 +6,7 @@ import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/screens/chats/chat_cubit.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/logic/screens/user/user_profile_cubit.dart';
+import 'package:megaladon/presentation/widgets/avatar/avatar.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/card/ad_card.dart';
@@ -192,7 +192,7 @@ class _UserProfileViewState extends State<_UserProfileView> {
     final shown = expanded ? items : items.take(_preview).toList();
 
     return ContentSection(
-      title: '$title · $total',
+      title: l10n.dotSeparated(title, total.toString()),
       boxed: false,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -235,7 +235,7 @@ class _Header extends StatelessWidget {
 
     return Row(
       children: [
-        _Avatar(photo: user.photo),
+        Avatar(name: user.name, photoUrl: user.photo, size: 64),
         const SizedBox(width: 12),
         Expanded(
           child: Column(
@@ -263,40 +263,6 @@ class _Header extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class _Avatar extends StatelessWidget {
-  const _Avatar({required this.photo});
-  final String? photo;
-
-  static const double _size = 64;
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    final placeholder = Container(
-      color: scheme.secondaryContainer,
-      alignment: Alignment.center,
-      child: Icon(Icons.person, size: 32, color: scheme.secondary),
-    );
-
-    // Круг, как в профиле, отклике и карточке исполнителя: раньше здесь был
-    // единственный на всё приложение квадратный аватар.
-    return ClipOval(
-      child: SizedBox(
-        width: _size,
-        height: _size,
-        child: photo == null || photo!.isEmpty
-            ? placeholder
-            : CachedNetworkImage(
-                imageUrl: photo!,
-                fit: BoxFit.cover,
-                progressIndicatorBuilder: (_, __, ___) => placeholder,
-                errorWidget: (_, __, ___) => placeholder,
-              ),
-      ),
     );
   }
 }
@@ -359,9 +325,8 @@ class _ContactBar extends StatelessWidget {
                         // шлёт второй. Переписку открывает ChatOpenListener.
                         onPressed: contactBlocked
                             ? null
-                            : () => context
-                                .read<ChatCubit>()
-                                .openChatWith(user.id),
+                            : () =>
+                                context.read<ChatCubit>().openChatWith(user.id),
                       ),
                     ),
                 ],

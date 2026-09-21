@@ -62,13 +62,17 @@ void main() {
     final controller = StatusPickerController(OrderStatus.hasExecutor);
     addTearDown(controller.dispose);
 
+    // Подпись задаём переменной: markup_analyzer запрещает строковые литералы
+    // в параметрах виджетов, а локализовать тестовые данные незачем.
+    const label = 'Status';
+
     await tester.pumpWidget(MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       locale: const Locale('en'),
       home: Scaffold(
         body: StatusPicker(
-          label: 'Status',
+          label: label,
           controller: controller,
           options: all,
         ),
@@ -76,7 +80,7 @@ void main() {
     ));
     await tester.pumpAndSettle();
 
-    expect(find.text('Status'), findsOneWidget);
+    expect(find.text(label), findsOneWidget);
     expect(find.text('In work'), findsOneWidget);
   });
 }

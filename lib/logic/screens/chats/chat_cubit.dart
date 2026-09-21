@@ -394,10 +394,6 @@ class ChatCubit extends Cubit<ChatState> with WidgetsBindingObserver {
         ),
       ));
     } catch (error) {
-      if (error is DioException && error.response?.statusCode == 403) {
-        authBloc.add(AuthLogoutEvent());
-        return;
-      }
       // Раньше ошибка создания чата никуда не доходила: кнопка просто
       // ничего не делала.
       emit(state.copyWith(
@@ -426,10 +422,9 @@ class ChatCubit extends Cubit<ChatState> with WidgetsBindingObserver {
   }
 
   void _handleError(Object error, {bool silent = false}) {
-    if (error is DioException && error.response?.statusCode == 403) {
-      authBloc.add(AuthLogoutEvent());
-      return;
-    }
+    // Никакого выхода из аккаунта отсюда: список чатов опрашивается таймером
+    // каждые 30 секунд, и 403 («не участник чата») выбрасывал пользователя из
+    // аккаунта в фоне. Мёртвый токен — это 401, его ловит AuthInterceptor.
     if (silent) {
       // Фоновый опрос не должен ронять экран — просто логируем.
       // ignore: avoid_print

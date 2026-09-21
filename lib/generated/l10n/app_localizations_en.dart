@@ -129,7 +129,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get comment_optional => 'Comment (optional)';
 
   @override
-  String get location => 'Location';
+  String get location => 'City';
 
   @override
   String get create_an_order => 'Create an order';
@@ -451,7 +451,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get createChat => 'Create chat';
 
   @override
-  String get location2 => 'Location: ';
+  String get location2 => 'City: ';
 
   @override
   String get description2 => 'Description: ';
@@ -636,10 +636,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get account_deleted_successfully => 'Account deleted';
-
-  @override
-  String get aboutText =>
-      '\"Orders\" — a list of orders placed on the platform to find the best offer from executors.\n\"Rolled metal\" — a list of companies selling finished products.\n\"+\" (Order) — create an order to find executors.\n\"+\" (Services) — create services to promote your offerings.\n\"+\" (Ad) — create an ad to sell goods or provide mechanical engineering services.\n\"Marketplace\" — a list of ads for selling goods or providing mechanical engineering services.\n\"Profile\" — user profile.';
 
   @override
   String get introOrders =>
@@ -1144,14 +1140,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get subscriptionActiveHint =>
-      'All executor features are unlocked. Renew in advance so you don\'t lose access.';
+      'Responding to orders, calls, chat and service adverts are available.';
 
   @override
   String get subscriptionInactive => 'Subscription is not active';
 
   @override
   String get subscriptionInactiveHint =>
-      'Pick a period below — access opens right after payment.';
+      'Pick a period below. The subscription is enabled once the payment is confirmed.';
 
   @override
   String get subscriptionExecutorBenefitsTitle =>
@@ -1162,47 +1158,39 @@ class AppLocalizationsEn extends AppLocalizations {
       'What the store subscription gives you';
 
   @override
-  String get subscriptionExecutorBenefit1Title =>
-      'Calls and chat with customers';
+  String get subscriptionExecutorBenefit1Title => 'Responding to an order';
 
   @override
   String get subscriptionExecutorBenefit1Text =>
-      'The advert author\'s contacts are open: call and message them directly, with no middlemen.';
+      'The “Offer services” button on an order works only with an active subscription.';
 
   @override
-  String get subscriptionExecutorBenefit2Title => 'Your own adverts';
+  String get subscriptionExecutorBenefit2Title => 'Calls and chat';
 
   @override
   String get subscriptionExecutorBenefit2Text =>
-      'Publish and edit service adverts so customers find you on their own.';
+      'Calling the phone number and messaging the customer, the advert author and a user profile.';
 
   @override
-  String get subscriptionExecutorBenefit3Title => 'Every order at hand';
+  String get subscriptionExecutorBenefit3Title => 'Service adverts';
 
   @override
   String get subscriptionExecutorBenefit3Text =>
-      'Respond to orders first and take on as much work as you can handle.';
+      'Creating and editing adverts of the “service” type.';
 
   @override
-  String get subscriptionStoreBenefit1Title => 'Your store in the catalogue';
+  String get subscriptionStoreBenefit1Title => 'Store in the catalogue';
 
   @override
   String get subscriptionStoreBenefit1Text =>
-      'Without an active subscription the store is hidden from the metal rolling section and nobody can find it.';
+      'Without an active subscription the store is not shown in the metal rolling section.';
 
   @override
-  String get subscriptionStoreBenefit2Title => 'Price lists and contacts';
+  String get subscriptionStoreBenefit2Title => 'Service adverts';
 
   @override
   String get subscriptionStoreBenefit2Text =>
-      'Buyers see your store\'s address, phone number and uploaded price lists.';
-
-  @override
-  String get subscriptionStoreBenefit3Title => 'Direct enquiries';
-
-  @override
-  String get subscriptionStoreBenefit3Text =>
-      'Customers call and message you themselves — no commission on deals.';
+      'Creating and editing adverts of the “service” type.';
 
   @override
   String get subscriptionChoosePeriod => 'Choose a period';
@@ -1214,7 +1202,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String subscriptionBadgeBest(String percent) {
-    return 'Save $percent%';
+    return '−$percent% per month';
   }
 
   @override
@@ -1222,7 +1210,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get subscriptionFootnote =>
-      'The subscription activates right after payment. Renewal is manual — no automatic charges.';
+      'The subscription is enabled once the payment is confirmed. Renewal is manual — no automatic charges.';
 
   @override
   String get subscriptionPlansEmpty => 'No plans available yet';
@@ -1485,4 +1473,50 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get form_error_contacts_incomplete =>
       'Contacts are not fully filled out';
+
+  @override
+  String get fileDownloadFailed => 'Failed to download file';
+
+  @override
+  String metricOrdersCount(String count) {
+    return '$count orders';
+  }
+
+  @override
+  String metricOrdersCountDot(String count) {
+    return '· $count orders';
+  }
+
+  @override
+  String dotSeparated(String left, String right) {
+    return '$left · $right';
+  }
+
+  @override
+  String plusCount(String count) {
+    return '+$count';
+  }
+
+  @override
+  String get aboutOrdersText =>
+      'Orders placed on the platform. Open a card, compare offers from executors with their price and lead time, and pick the best one.';
+
+  @override
+  String get aboutStoresText =>
+      'Companies selling finished products: price lists, addresses, contacts and ratings.';
+
+  @override
+  String get aboutAdsText =>
+      'The marketplace: ads for selling goods and offering mechanical engineering services.';
+
+  @override
+  String get aboutProfileText =>
+      'Your details, your customer, executor and store roles, subscription and order history.';
+
+  @override
+  String get aboutCreateTitle => 'The “+” button';
+
+  @override
+  String get aboutCreateText =>
+      'Creates something new: an order to find executors, a service category, or an ad.';
 }

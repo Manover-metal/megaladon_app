@@ -84,9 +84,6 @@ class PriceFormCubit extends Cubit<PriceFormState> {
 
   void _emitError(Object error) {
     if (error is DioException) {
-      if (error.response?.statusCode == 403) {
-        authBloc.add(AuthLogoutEvent());
-      }
       emit(state.copyWith(error: ErrorModel.parseDio(error)));
     } else {
       emit(state.copyWith(error: ErrorModel.nothing));

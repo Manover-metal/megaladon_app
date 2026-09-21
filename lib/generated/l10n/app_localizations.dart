@@ -343,7 +343,7 @@ abstract class AppLocalizations {
   /// No description provided for @location.
   ///
   /// In en, this message translates to:
-  /// **'Location'**
+  /// **'City'**
   String get location;
 
   /// No description provided for @create_an_order.
@@ -967,7 +967,7 @@ abstract class AppLocalizations {
   /// No description provided for @location2.
   ///
   /// In en, this message translates to:
-  /// **'Location: '**
+  /// **'City: '**
   String get location2;
 
   /// No description provided for @description2.
@@ -1293,12 +1293,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Account deleted'**
   String get account_deleted_successfully;
-
-  /// No description provided for @aboutText.
-  ///
-  /// In en, this message translates to:
-  /// **'\"Orders\" — a list of orders placed on the platform to find the best offer from executors.\n\"Rolled metal\" — a list of companies selling finished products.\n\"+\" (Order) — create an order to find executors.\n\"+\" (Services) — create services to promote your offerings.\n\"+\" (Ad) — create an ad to sell goods or provide mechanical engineering services.\n\"Marketplace\" — a list of ads for selling goods or providing mechanical engineering services.\n\"Profile\" — user profile.'**
-  String get aboutText;
 
   /// No description provided for @introOrders.
   ///
@@ -2209,7 +2203,7 @@ abstract class AppLocalizations {
   /// No description provided for @subscriptionActiveHint.
   ///
   /// In en, this message translates to:
-  /// **'All executor features are unlocked. Renew in advance so you don\'t lose access.'**
+  /// **'Responding to orders, calls, chat and service adverts are available.'**
   String get subscriptionActiveHint;
 
   /// No description provided for @subscriptionInactive.
@@ -2221,7 +2215,7 @@ abstract class AppLocalizations {
   /// No description provided for @subscriptionInactiveHint.
   ///
   /// In en, this message translates to:
-  /// **'Pick a period below — access opens right after payment.'**
+  /// **'Pick a period below. The subscription is enabled once the payment is confirmed.'**
   String get subscriptionInactiveHint;
 
   /// No description provided for @subscriptionExecutorBenefitsTitle.
@@ -2239,74 +2233,62 @@ abstract class AppLocalizations {
   /// No description provided for @subscriptionExecutorBenefit1Title.
   ///
   /// In en, this message translates to:
-  /// **'Calls and chat with customers'**
+  /// **'Responding to an order'**
   String get subscriptionExecutorBenefit1Title;
 
   /// No description provided for @subscriptionExecutorBenefit1Text.
   ///
   /// In en, this message translates to:
-  /// **'The advert author\'s contacts are open: call and message them directly, with no middlemen.'**
+  /// **'The “Offer services” button on an order works only with an active subscription.'**
   String get subscriptionExecutorBenefit1Text;
 
   /// No description provided for @subscriptionExecutorBenefit2Title.
   ///
   /// In en, this message translates to:
-  /// **'Your own adverts'**
+  /// **'Calls and chat'**
   String get subscriptionExecutorBenefit2Title;
 
   /// No description provided for @subscriptionExecutorBenefit2Text.
   ///
   /// In en, this message translates to:
-  /// **'Publish and edit service adverts so customers find you on their own.'**
+  /// **'Calling the phone number and messaging the customer, the advert author and a user profile.'**
   String get subscriptionExecutorBenefit2Text;
 
   /// No description provided for @subscriptionExecutorBenefit3Title.
   ///
   /// In en, this message translates to:
-  /// **'Every order at hand'**
+  /// **'Service adverts'**
   String get subscriptionExecutorBenefit3Title;
 
   /// No description provided for @subscriptionExecutorBenefit3Text.
   ///
   /// In en, this message translates to:
-  /// **'Respond to orders first and take on as much work as you can handle.'**
+  /// **'Creating and editing adverts of the “service” type.'**
   String get subscriptionExecutorBenefit3Text;
 
   /// No description provided for @subscriptionStoreBenefit1Title.
   ///
   /// In en, this message translates to:
-  /// **'Your store in the catalogue'**
+  /// **'Store in the catalogue'**
   String get subscriptionStoreBenefit1Title;
 
   /// No description provided for @subscriptionStoreBenefit1Text.
   ///
   /// In en, this message translates to:
-  /// **'Without an active subscription the store is hidden from the metal rolling section and nobody can find it.'**
+  /// **'Without an active subscription the store is not shown in the metal rolling section.'**
   String get subscriptionStoreBenefit1Text;
 
   /// No description provided for @subscriptionStoreBenefit2Title.
   ///
   /// In en, this message translates to:
-  /// **'Price lists and contacts'**
+  /// **'Service adverts'**
   String get subscriptionStoreBenefit2Title;
 
   /// No description provided for @subscriptionStoreBenefit2Text.
   ///
   /// In en, this message translates to:
-  /// **'Buyers see your store\'s address, phone number and uploaded price lists.'**
+  /// **'Creating and editing adverts of the “service” type.'**
   String get subscriptionStoreBenefit2Text;
-
-  /// No description provided for @subscriptionStoreBenefit3Title.
-  ///
-  /// In en, this message translates to:
-  /// **'Direct enquiries'**
-  String get subscriptionStoreBenefit3Title;
-
-  /// No description provided for @subscriptionStoreBenefit3Text.
-  ///
-  /// In en, this message translates to:
-  /// **'Customers call and message you themselves — no commission on deals.'**
-  String get subscriptionStoreBenefit3Text;
 
   /// No description provided for @subscriptionChoosePeriod.
   ///
@@ -2323,7 +2305,7 @@ abstract class AppLocalizations {
   /// No description provided for @subscriptionBadgeBest.
   ///
   /// In en, this message translates to:
-  /// **'Save {percent}%'**
+  /// **'−{percent}% per month'**
   String subscriptionBadgeBest(String percent);
 
   /// No description provided for @subscriptionBadgeFree.
@@ -2335,7 +2317,7 @@ abstract class AppLocalizations {
   /// No description provided for @subscriptionFootnote.
   ///
   /// In en, this message translates to:
-  /// **'The subscription activates right after payment. Renewal is manual — no automatic charges.'**
+  /// **'The subscription is enabled once the payment is confirmed. Renewal is manual — no automatic charges.'**
   String get subscriptionFootnote;
 
   /// No description provided for @subscriptionPlansEmpty.
@@ -2799,6 +2781,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Contacts are not fully filled out'**
   String get form_error_contacts_incomplete;
+
+  /// No description provided for @fileDownloadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to download file'**
+  String get fileDownloadFailed;
+
+  /// No description provided for @metricOrdersCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} orders'**
+  String metricOrdersCount(String count);
+
+  /// No description provided for @metricOrdersCountDot.
+  ///
+  /// In en, this message translates to:
+  /// **'· {count} orders'**
+  String metricOrdersCountDot(String count);
+
+  /// No description provided for @dotSeparated.
+  ///
+  /// In en, this message translates to:
+  /// **'{left} · {right}'**
+  String dotSeparated(String left, String right);
+
+  /// No description provided for @plusCount.
+  ///
+  /// In en, this message translates to:
+  /// **'+{count}'**
+  String plusCount(String count);
+
+  /// No description provided for @aboutOrdersText.
+  ///
+  /// In en, this message translates to:
+  /// **'Orders placed on the platform. Open a card, compare offers from executors with their price and lead time, and pick the best one.'**
+  String get aboutOrdersText;
+
+  /// No description provided for @aboutStoresText.
+  ///
+  /// In en, this message translates to:
+  /// **'Companies selling finished products: price lists, addresses, contacts and ratings.'**
+  String get aboutStoresText;
+
+  /// No description provided for @aboutAdsText.
+  ///
+  /// In en, this message translates to:
+  /// **'The marketplace: ads for selling goods and offering mechanical engineering services.'**
+  String get aboutAdsText;
+
+  /// No description provided for @aboutProfileText.
+  ///
+  /// In en, this message translates to:
+  /// **'Your details, your customer, executor and store roles, subscription and order history.'**
+  String get aboutProfileText;
+
+  /// No description provided for @aboutCreateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The “+” button'**
+  String get aboutCreateTitle;
+
+  /// No description provided for @aboutCreateText.
+  ///
+  /// In en, this message translates to:
+  /// **'Creates something new: an order to find executors, a service category, or an ad.'**
+  String get aboutCreateText;
 }
 
 class _AppLocalizationsDelegate

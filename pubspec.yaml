@@ -68,6 +68,7 @@ dependencies:
   shared_preferences: ^2.5.3
   flutter_secure_storage: ^10.3.1
   share_plus: ^12.0.2
+  flutter_native_splash: ^2.4.8
 
 dev_dependencies:
   flutter_test:
@@ -81,11 +82,7 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   auto_route_generator: ^5.0.3
   flutter_launcher_icons: ^0.14.4
-
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
-
-# The following section is specific to Flutter packages.
+  
 flutter:
 
   # The following line ensures that the Material Icons font is
@@ -142,3 +139,16 @@ flutter_launcher_icons:
   image_path: "assets/logo/logo.png"
   min_sdk_android: 21
   remove_alpha_ios: true
+  adaptive_icon_background: "#FFC327"
+
+flutter_native_splash:
+  color: "#FFC327"
+  image: "assets/logo/logo.png"
+  android: true
+  ios: true
+  web: false
+
+  android_12:
+    color: "#FFC327"
+    image: "assets/logo/logo.png"
+    icon_background_color: "#FFC327"

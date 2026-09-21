@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:megaladon/data/models/chat/chat_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/presentation/routing/router.dart';
+import 'package:megaladon/presentation/widgets/avatar/avatar.dart';
 import 'package:megaladon/presentation/widgets/badge/unread_badge.dart';
-import 'package:megaladon/presentation/widgets/chat/companion_avatar.dart';
 
 class ChatCard extends StatelessWidget {
   const ChatCard({
@@ -20,9 +20,8 @@ class ChatCard extends StatelessWidget {
   /// Превью последнего сообщения. Сообщения отсортированы по возрастанию,
   /// поэтому свежее — последнее в списке.
   String _preview(BuildContext context) {
-    final text = chat.messages.isNotEmpty
-        ? chat.messages.last.text
-        : chat.lastMessage;
+    final text =
+        chat.messages.isNotEmpty ? chat.messages.last.text : chat.lastMessage;
     return (text == null || text.isEmpty)
         ? AppLocalizations.of(context)!.noMessagesInChat
         : text;
@@ -54,8 +53,11 @@ class ChatCard extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8),
-                  child: CompanionAvatar(
-                      photoUrl: chat.companion?.photoUrl, size: 50),
+                  child: Avatar(
+                    name: companionName,
+                    photoUrl: chat.companion?.photoUrl,
+                    size: 50,
+                  ),
                 ),
                 Expanded(
                   child: Padding(

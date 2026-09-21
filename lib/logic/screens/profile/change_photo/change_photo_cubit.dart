@@ -69,9 +69,6 @@ class ChangePhotoCubit extends Cubit<ChangePhotoState> {
     } on DioException catch (error) {
       log('changePhoto: DioException ${error.response?.statusCode} ${error.message}',
           name: 'ChangePhoto', error: error);
-      if (error.response?.statusCode == 403) {
-        authBloc.add(AuthLogoutEvent());
-      }
       emit(ChangePhotoState(
           status: PhotoStatus.error, error: ErrorModel.parseDio(error)));
     } catch (e, st) {

@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -14,6 +13,7 @@ import 'package:megaladon/logic/screens/profile/change_photo/change_photo_cubit.
 import 'package:megaladon/logic/screens/profile/delete_account/delete_account_cubit.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
+import 'package:megaladon/presentation/widgets/avatar/avatar.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/dialogs/delete_account_dialog.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
@@ -57,7 +57,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       CustomSnackBar.success(
         Text(AppLocalizations.of(context)!.account_deleted_successfully),
       ).view(context);
-      context.read<AuthBloc>().add(AuthLogoutEvent());
+      // Аккаунт вместе с токенами уже удалён — звать DELETE /auth/logout
+      // нечем, он вернёт 401.
+      context.read<AuthBloc>().add(const AuthLogoutEvent(notifyServer: false));
     } else if (state.status == DeleteAccountStatus.error) {
       CustomSnackBar.error(
         Text(state.error?.messages.isNotEmpty == true
@@ -69,9 +71,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future _fetch() async {
     // Гость сюда попадает штатно: ProfileScreenCubit при отсутствии токена
-    // выставляет notAuth (показывается AuthMessage). Если дёрнуть /user/profile
-    // без токена — придёт 403, и updateData() пошлёт AuthLogoutEvent, который
-    // теперь уводит на логин. Поэтому гостя здесь не трогаем.
+    // выставляет notAuth (показывается AuthMessage). Дёргать /user/profile за
+    // гостя всё равно нет смысла — придёт 401.
     final state = context.read<AuthBloc>().state;
     if (state is AuthLoginState) {
       return context.read<ProfileScreenCubit>().fetch();
@@ -242,7 +243,12 @@ class _Header extends StatelessWidget {
       children: [
         BlocConsumer<ChangePhotoCubit, ChangePhotoState>(
           listener: onPhotoError,
-          builder: (context, state) => _Avatar(state: state),
+          builder: (context, state) => Avatar(
+            name: user.name,
+            photoUrl: state.url,
+            bytes: state.status == PhotoStatus.bytes ? state.imageData : null,
+            size: 56,
+          ),
         ),
         const SizedBox(width: 12),
         Expanded(
@@ -276,39 +282,6 @@ class _Header extends StatelessWidget {
           icon: Icon(Icons.photo_camera_outlined, color: scheme.primary),
         ),
       ],
-    );
-  }
-}
-
-class _Avatar extends StatelessWidget {
-  const _Avatar({required this.state});
-  final ChangePhotoState state;
-
-  static const double _size = 56;
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    final placeholder = Container(
-      color: scheme.secondaryContainer,
-      alignment: Alignment.center,
-      child: Icon(Icons.person, size: 30, color: scheme.secondary),
-    );
-
-    return ClipOval(
-      child: SizedBox(
-        width: _size,
-        height: _size,
-        child: state.status == PhotoStatus.bytes
-            ? Image.memory(state.imageData!, fit: BoxFit.cover)
-            : CachedNetworkImage(
-                imageUrl: state.url ?? '',
-                fit: BoxFit.cover,
-                fadeInDuration: Duration.zero,
-                progressIndicatorBuilder: (_, __, ___) => placeholder,
-                errorWidget: (_, __, ___) => placeholder,
-              ),
-      ),
     );
   }
 }
@@ -492,7 +465,9 @@ class _ExecutorTab extends StatelessWidget {
                   if (executor.countOrders != null) ...[
                     const SizedBox(width: 6),
                     Text(
-                      '· ${executor.countOrders} ${l10n.metricOrders}',
+                      l10n.metricOrdersCountDot(
+                        executor.countOrders.toString(),
+                      ),
                       style: TextStyle(fontSize: 11.5, color: scheme.secondary),
                     ),
                   ],
@@ -547,8 +522,7 @@ class _ExecutorTab extends StatelessWidget {
                 icon: Icons.workspace_premium_outlined,
                 title: l10n.subscriptions,
                 trailing: const SettingsChevron(),
-                onTap: () =>
-                    context.router.navigate(InitialRouter(children: [
+                onTap: () => context.router.navigate(InitialRouter(children: [
                   OrderRouter(children: [
                     SubscribeRoute(initialType: SubscribeType.executor)
                   ])
@@ -699,8 +673,7 @@ class _StoreTab extends StatelessWidget {
                 icon: Icons.workspace_premium_outlined,
                 title: l10n.subscriptions,
                 trailing: const SettingsChevron(),
-                onTap: () =>
-                    context.router.navigate(InitialRouter(children: [
+                onTap: () => context.router.navigate(InitialRouter(children: [
                   OrderRouter(children: [
                     SubscribeRoute(initialType: SubscribeType.store)
                   ])

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:megaladon/data/models/review_model.dart';
+import 'package:megaladon/presentation/widgets/avatar/avatar.dart';
 import 'package:megaladon/presentation/widgets/image_viewer.dart';
 import 'package:megaladon/presentation/widgets/rating/rating_stars.dart';
 
@@ -37,7 +38,7 @@ class ReviewRow extends StatelessWidget {
         children: [
           Row(
             children: [
-              _Avatar(photo: review.authorPhoto, name: name, size: _avatar),
+              Avatar(name: name, photoUrl: review.authorPhoto, size: _avatar),
               const SizedBox(width: 9),
               Expanded(
                 child: Column(
@@ -114,46 +115,6 @@ class ReviewRow extends StatelessWidget {
             ),
           ],
         ],
-      ),
-    );
-  }
-}
-
-class _Avatar extends StatelessWidget {
-  const _Avatar({required this.photo, required this.name, required this.size});
-  final String? photo;
-  final String name;
-  final double size;
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    final initial = name.isNotEmpty ? name[0].toUpperCase() : '?';
-    final placeholder = Container(
-      color: scheme.secondaryContainer,
-      alignment: Alignment.center,
-      child: Text(
-        initial,
-        style: TextStyle(
-          fontSize: size * 0.36,
-          fontWeight: FontWeight.w700,
-          color: scheme.secondary,
-        ),
-      ),
-    );
-
-    return ClipOval(
-      child: SizedBox(
-        width: size,
-        height: size,
-        child: photo == null || photo!.isEmpty
-            ? placeholder
-            : CachedNetworkImage(
-                imageUrl: photo!,
-                fit: BoxFit.cover,
-                progressIndicatorBuilder: (_, __, ___) => placeholder,
-                errorWidget: (_, __, ___) => placeholder,
-              ),
       ),
     );
   }
