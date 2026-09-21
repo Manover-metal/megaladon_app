@@ -10,11 +10,15 @@ import 'package:megaladon/logic/auth/auth_bloc.dart';
 part 'order_screen_my_state.dart';
 
 class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
-  OrderScreenMyCubit(this.authBloc) : super(const OrderScreenMyState()) {
+  /// [repository] подменяется только в тестах: в приложении cubit собирает
+  /// зависимость сам. Так же устроен AuthBloc.
+  OrderScreenMyCubit(this.authBloc, {OrderRepository? repository})
+      : _repository = repository ?? OrderRepository(),
+        super(const OrderScreenMyState()) {
     _listenAuth(authBloc.state);
     authBloc.stream.listen(_listenAuth);
   }
-  final OrderRepository _repository = OrderRepository();
+  final OrderRepository _repository;
   final AuthBloc authBloc;
 
   void _listenAuth(stateAuth) {
@@ -33,7 +37,7 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
     var mainParams = params ?? state.params;
     emit(state.copyWith(
       status: OrderScreenMyStatus.loading,
-      error: null,
+      resetError: true,
     ));
     return await _repository.indexMy(mainParams).then((value) {
       final my = value;
@@ -57,9 +61,9 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
       print(error);
       print(stackTrace);
       if (error is DioException) {
-        _emitError(ErrorModel.parseDio(error));
+        _emitMyError(ErrorModel.parseDio(error));
       } else {
-        _emitError(ErrorModel.nothing);
+        _emitMyError(ErrorModel.nothing);
       }
     });
   }
@@ -71,8 +75,8 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
 
     var mainParams = params ?? state.params;
     emit(state.copyWith(
-      status: OrderScreenMyStatus.loading,
-      error: null,
+      statusResponded: OrderScreenMyStatus.loading,
+      resetErrorResponded: true,
     ));
     return await _repository.indexMyResponded(mainParams).then((value) {
       final myResponded = value;
@@ -82,12 +86,12 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
         emit(state.copyWith(
             ordersResponded: myResponded,
             params: mainParams,
-            status: OrderScreenMyStatus.success,
+            statusResponded: OrderScreenMyStatus.success,
             stockResponded: myResponded.length < mainParams.rowsPerPage));
         print('fetch startRow == 0 emit');
       } else {
         emit(state.copyWith(
-            status: OrderScreenMyStatus.success,
+            statusResponded: OrderScreenMyStatus.success,
             ordersResponded: [...state.ordersResponded, ...myResponded],
             params: mainParams,
             stockResponded: myResponded.length < mainParams.rowsPerPage));
@@ -96,9 +100,9 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
     }).catchError((error) {
       print('Error Responded: $error');
       if (error is DioException) {
-        _emitError(ErrorModel.parseDio(error));
+        _emitRespondedError(ErrorModel.parseDio(error));
       } else {
-        _emitError(ErrorModel.nothing);
+        _emitRespondedError(ErrorModel.nothing);
       }
     });
   }
@@ -106,8 +110,18 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
   /// Ошибку обязательно сопровождаем сменой статуса: экран показывает
   /// [ErrorMessage] по `status == error`, а без него оставался бы полностью
   /// пустым — ни списка, ни лоадера, ни текста ошибки.
-  void _emitError(ErrorModel error) => emit(
+  ///
+  /// Эмиттеры раздельные: вкладки независимы, и сбой одной не должен гасить
+  /// вторую.
+  void _emitMyError(ErrorModel error) => emit(
         state.copyWith(status: OrderScreenMyStatus.error, error: error),
+      );
+
+  void _emitRespondedError(ErrorModel error) => emit(
+        state.copyWith(
+          statusResponded: OrderScreenMyStatus.error,
+          errorResponded: error,
+        ),
       );
 
   /// Обновление обоих списков с первой страницы.
@@ -118,8 +132,10 @@ class OrderScreenMyCubit extends Cubit<OrderScreenMyState> {
   /// пустым, хотя ответ по ним пришёл с 200. Теперь сбой одного списка
   /// затрагивает только его.
   Future refresh() async {
-    if (state.status == OrderScreenMyStatus.loading && state.error == null)
-      return;
+    if (state.status == OrderScreenMyStatus.loading &&
+        state.statusResponded == OrderScreenMyStatus.loading &&
+        state.error == null &&
+        state.errorResponded == null) return;
 
     final mainParams = state.params.copyWith(startRow: 0);
 

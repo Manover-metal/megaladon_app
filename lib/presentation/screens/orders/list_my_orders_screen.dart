@@ -43,7 +43,7 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
     if (_scrollControllerResponded.position.maxScrollExtent <
         _scrollControllerResponded.position.pixels) {
       final cubit = context.read<OrderScreenMyCubit>();
-      if (cubit.state.status != OrderScreenMyStatus.loading) {
+      if (cubit.state.statusResponded != OrderScreenMyStatus.loading) {
         var params = cubit.state.params;
         cubit.fetchResponded(
             params: params.copyWith(
@@ -118,7 +118,10 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
                   isMenu: true,
                   title: AppLocalizations.of(context)!.my_orders,
                   onTrailing: _onRefresh,
-                  trailing: state.status != OrderScreenMyStatus.loading
+                  // Обновляются оба списка сразу, поэтому индикатор в шапке
+                  // держим, пока не закончится последний.
+                  trailing: state.status != OrderScreenMyStatus.loading &&
+                          state.statusResponded != OrderScreenMyStatus.loading
                       ? const Icon(Icons.refresh, size: 30)
                       : const CupertinoActivityIndicator(),
                 ),
@@ -219,19 +222,17 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
                             child: BlocBuilder<OrderScreenMyCubit,
                                 OrderScreenMyState>(
                               builder: (context, state) {
-                                print(
-                                    'responded ${state.stockResponded} ${state.ordersResponded} ${state.status}');
                                 return Column(
                                   children: [
                                     ...state.ordersResponded
                                         .map((order) => OrderCard(order: order))
                                         .toList(),
-                                    if (state.status ==
+                                    if (state.statusResponded ==
                                         OrderScreenMyStatus.loading)
                                       const Loader(padding: 10)
-                                    else if (state.status ==
+                                    else if (state.statusResponded ==
                                         OrderScreenMyStatus.error)
-                                      ErrorMessage(error: state.error!)
+                                      ErrorMessage(error: state.errorResponded!)
                                     else if (state.stockResponded)
                                       StockMessage(
                                           name: AppLocalizations.of(context)!
