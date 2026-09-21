@@ -20,6 +20,17 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  /// Группа шагов онбординга, своя на каждый экземпляр экрана.
+  ///
+  /// flutter_intro строит ключ шага как GlobalStringKey('${group}_$order') и
+  /// сравнивает его по строке, а всё состояние Intro статическое. Во время
+  /// replaceAll старый и новый SplashScreen живут в дереве одновременно (см.
+  /// header_drawer_test), и с общей группой 'default' четыре вкладки двух
+  /// экранов делили одни и те же GlobalKey — консоль заливало «Multiple
+  /// widgets used the same GlobalKey», особенно после удаления аккаунта с
+  /// повторной регистрацией, где replaceAll корня идёт дважды подряд.
+  final String _introGroup = 'shell-${identityHashCode(Object())}';
+
   Null Function() _doubleTap(BuildContext context, PageRouteInfo page) => () {
         context.router.navigate(page);
       };
@@ -39,7 +50,9 @@ class _SplashScreenState extends State<SplashScreen> {
       };
 
   Future<void> Function() _introStart(BuildContext context) => () async {
-        if (await IsFirstRun.isFirstCall()) Intro.of(context).start();
+        if (await IsFirstRun.isFirstCall()) {
+          Intro.of(context).start(group: _introGroup);
+        }
       };
 
   @override
@@ -102,6 +115,7 @@ class _SplashScreenState extends State<SplashScreen> {
                                                       ])),
                                             ),
                                         order: 1,
+                                        group: _introGroup,
                                         overlayBuilder: (params) => Text(
                                             AppLocalizations.of(context)!
                                                 .introOrders),
@@ -122,6 +136,7 @@ class _SplashScreenState extends State<SplashScreen> {
                                                 children: [StoreRouter()])),
                                       ),
                                       order: 2,
+                                      group: _introGroup,
                                       overlayBuilder: (params) => Text(
                                           AppLocalizations.of(context)!
                                               .introStores),
@@ -144,6 +159,7 @@ class _SplashScreenState extends State<SplashScreen> {
                                                 children: [AdRouter()])),
                                       ),
                                       order: 3,
+                                      group: _introGroup,
                                       overlayBuilder: (params) => Text(
                                           AppLocalizations.of(context)!
                                               .introAds),
@@ -164,6 +180,7 @@ class _SplashScreenState extends State<SplashScreen> {
                                                 children: [ProfileRouter()])),
                                       ),
                                       order: 4,
+                                      group: _introGroup,
                                       overlayBuilder: (params) => Text(
                                           AppLocalizations.of(context)!
                                               .introProfile),
