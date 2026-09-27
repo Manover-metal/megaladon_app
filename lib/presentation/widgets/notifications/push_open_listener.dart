@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/core/fb_notification/push_presenter.dart';
 import 'package:megaladon/core/fb_notification/push_route.dart';
+import 'package:megaladon/logic/screens/orders/badges/order_badges_cubit.dart';
 
 /// Показывает push-уведомления в foreground и открывает по тапу нужный экран.
 ///
@@ -37,7 +39,14 @@ class _PushOpenListenerState extends State<PushOpenListener> {
     await PushPresenter.initialize(onTap: _open);
     if (!mounted) return;
 
-    _foreground = FirebaseMessaging.onMessage.listen(PushPresenter.show);
+    _foreground = FirebaseMessaging.onMessage.listen((message) {
+      PushPresenter.show(message);
+      // Пуш по заказу (отклик, назначение, завершение) — счётчики уже
+      // другие; без этого бейдж ждал бы опроса до двух минут.
+      if (message.data['order_id'] != null && mounted) {
+        context.read<OrderBadgesCubit>().fetch();
+      }
+    });
     _opened = FirebaseMessaging.onMessageOpenedApp
         .listen((message) => _open(message.data));
 

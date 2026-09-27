@@ -99,10 +99,14 @@ class _ListMyOrdersScreenState extends State<ListMyOrdersScreen> {
   bool _isExecutor(BuildContext context) =>
       context.select((ProfileScreenCubit cubit) => cubit.hasExecutor());
 
+  // Счётчики сменились (опрос, возврат из фона, пуш) — перечитываем и
+  // списки, иначе число на вкладке есть, а метки на карточке нет.
   @override
   Widget build(BuildContext context) => BlocBuilder<AuthBloc, AuthState>(
         builder: (context, authState) =>
-            BlocBuilder<OrderBadgesCubit, OrderBadgesState>(
+            BlocConsumer<OrderBadgesCubit, OrderBadgesState>(
+                listener: (context, _) =>
+                    context.read<OrderScreenMyCubit>().refresh(),
                 builder: (context, badgesState) =>
                     _buildTabs(context, badgesState.badges)),
       );
@@ -298,7 +302,10 @@ class TabBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   double get minExtent => tabBar.preferredSize.height;
 
+  // Раньше здесь был false, и шапка не перестраивалась при новом TabBar:
+  // счётчики на вкладках застывали на открытом экране и обновлялись разве
+  // что при прокрутке.
   @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
-      false;
+  bool shouldRebuild(covariant TabBarDelegate oldDelegate) =>
+      oldDelegate.tabBar != tabBar;
 }
