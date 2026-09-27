@@ -2317,8 +2317,56 @@ abstract class AppLocalizations {
   /// No description provided for @subscriptionFootnote.
   ///
   /// In en, this message translates to:
-  /// **'The subscription is enabled once the payment is confirmed. Renewal is manual — no automatic charges.'**
+  /// **'App Store and Google Play subscriptions renew automatically until you cancel them in the store settings at least 24 hours before the period ends. Payment via manager is renewed manually.'**
   String get subscriptionFootnote;
+
+  /// No description provided for @paymentMethodTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment method'**
+  String get paymentMethodTitle;
+
+  /// No description provided for @paymentMethodAppStore.
+  ///
+  /// In en, this message translates to:
+  /// **'App Store'**
+  String get paymentMethodAppStore;
+
+  /// No description provided for @paymentMethodGooglePlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Google Play'**
+  String get paymentMethodGooglePlay;
+
+  /// No description provided for @paymentMethodManager.
+  ///
+  /// In en, this message translates to:
+  /// **'Via manager'**
+  String get paymentMethodManager;
+
+  /// No description provided for @paymentMethodManagerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The manager will contact you. The subscription is enabled once the payment is confirmed.'**
+  String get paymentMethodManagerHint;
+
+  /// No description provided for @subscriptionPaymentProcessing.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment is being processed. The subscription will turn on within a minute.'**
+  String get subscriptionPaymentProcessing;
+
+  /// No description provided for @subscriptionRestore.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore purchases'**
+  String get subscriptionRestore;
+
+  /// No description provided for @subscriptionTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription terms'**
+  String get subscriptionTerms;
 
   /// No description provided for @subscriptionPlansEmpty.
   ///

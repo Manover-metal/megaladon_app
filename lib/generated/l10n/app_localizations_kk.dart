@@ -1210,7 +1210,33 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get subscriptionFootnote =>
-      'Жазылым төлем расталғаннан кейін қосылады. Ұзарту — қолмен, автоматты түрде ақша алынбайды.';
+      'App Store немесе Google Play арқылы жазылым кезең аяқталғанға дейін кемінде 24 сағат бұрын дүкен баптауларында тоқтатпайынша автоматты түрде ұзартылады. Менеджер арқылы төлем қолмен ұзартылады.';
+
+  @override
+  String get paymentMethodTitle => 'Төлем тәсілі';
+
+  @override
+  String get paymentMethodAppStore => 'App Store';
+
+  @override
+  String get paymentMethodGooglePlay => 'Google Play';
+
+  @override
+  String get paymentMethodManager => 'Менеджер арқылы';
+
+  @override
+  String get paymentMethodManagerHint =>
+      'Менеджер сізбен хабарласады. Жазылым төлем расталғаннан кейін қосылады.';
+
+  @override
+  String get subscriptionPaymentProcessing =>
+      'Төлем өңделуде. Жазылым бір минут ішінде қосылады.';
+
+  @override
+  String get subscriptionRestore => 'Сатып алуларды қалпына келтіру';
+
+  @override
+  String get subscriptionTerms => 'Жазылым шарттары';
 
   @override
   String get subscriptionPlansEmpty => 'Тарифтер әзірге қолжетімді емес';

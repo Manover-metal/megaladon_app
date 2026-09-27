@@ -205,8 +205,10 @@ class App extends StatelessWidget {
               // как пользователь впервые откроет списки заказов.
               BlocProvider<OrderBadgesCubit>(
                   lazy: false, create: (context) => OrderBadgesCubit(authBloc)),
+              // lazy: false — purchaseStream слушаем с запуска, см. listenStore().
               BlocProvider<SubscribeCubit>(
-                  create: (context) => SubscribeCubit()),
+                  lazy: false,
+                  create: (context) => SubscribeCubit()..listenStore()),
               BlocProvider<ReviewCubit>(
                   create: (context) => ReviewCubit(ReviewRepository())),
               BlocProvider<OrderDeleteCubit>(

@@ -1210,7 +1210,33 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get subscriptionFootnote =>
-      'The subscription is enabled once the payment is confirmed. Renewal is manual — no automatic charges.';
+      'App Store and Google Play subscriptions renew automatically until you cancel them in the store settings at least 24 hours before the period ends. Payment via manager is renewed manually.';
+
+  @override
+  String get paymentMethodTitle => 'Payment method';
+
+  @override
+  String get paymentMethodAppStore => 'App Store';
+
+  @override
+  String get paymentMethodGooglePlay => 'Google Play';
+
+  @override
+  String get paymentMethodManager => 'Via manager';
+
+  @override
+  String get paymentMethodManagerHint =>
+      'The manager will contact you. The subscription is enabled once the payment is confirmed.';
+
+  @override
+  String get subscriptionPaymentProcessing =>
+      'Payment is being processed. The subscription will turn on within a minute.';
+
+  @override
+  String get subscriptionRestore => 'Restore purchases';
+
+  @override
+  String get subscriptionTerms => 'Subscription terms';
 
   @override
   String get subscriptionPlansEmpty => 'No plans available yet';
