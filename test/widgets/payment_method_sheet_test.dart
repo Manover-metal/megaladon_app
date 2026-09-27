@@ -25,13 +25,13 @@ void main() {
   testWidgets('показывает магазин с его ценой и менеджера', (tester) async {
     await tester.pumpWidget(_app(const PaymentMethodSheet(
       storeMethod: PaymentMethod.apple,
-      storePrice: '\$9.99',
+      storePrice: r'$9.99',
       manualPrice: '5 000 ₸',
     )));
     final l10n = await AppLocalizations.delegate.load(const Locale('ru'));
 
     expect(find.text(l10n.paymentMethodAppStore), findsOneWidget);
-    expect(find.text('\$9.99'), findsOneWidget);
+    expect(find.text(r'$9.99'), findsOneWidget);
     expect(find.text(l10n.paymentMethodManager), findsOneWidget);
   });
 
@@ -53,7 +53,7 @@ void main() {
       builder: (context) => TextButton(
         onPressed: () async => picked = await PaymentMethodSheet.show(context,
             storeMethod: PaymentMethod.apple,
-            storePrice: '\$9.99',
+            storePrice: r'$9.99',
             manualPrice: '5 000 ₸'),
         child: const Text('open'),
       ),

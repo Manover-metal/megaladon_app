@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/core/fb_notification/push_presenter.dart';
 import 'package:megaladon/core/fb_notification/push_route.dart';
 import 'package:megaladon/logic/screens/orders/badges/order_badges_cubit.dart';
+import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
 
 /// Показывает push-уведомления в foreground и открывает по тапу нужный экран.
 ///
@@ -45,6 +46,10 @@ class _PushOpenListenerState extends State<PushOpenListener> {
       // другие; без этого бейдж ждал бы опроса до двух минут.
       if (message.data['order_id'] != null && mounted) {
         context.read<OrderBadgesCubit>().fetch();
+      }
+      // Вебхук магазина подтвердил оплату — статус подписки в профиле устарел.
+      if (message.data['type'] == 'subscription_paid' && mounted) {
+        context.read<ProfileScreenCubit>().updateData();
       }
     });
     _opened = FirebaseMessaging.onMessageOpenedApp

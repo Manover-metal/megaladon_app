@@ -8,7 +8,7 @@ class SubscribeRepository {
   /// (форма BaseService::result на бэке).
   Future<String> create(
           SubscribeModel plan, PaymentMethod method, TargetPlatform platform) =>
-      ApiService.I.post(
+      ApiService.I.post<dynamic>(
         plan.type == SubscribeType.executor
             ? '/invoice/executor/create'
             : '/invoice/store/create',
@@ -20,7 +20,7 @@ class SubscribeRepository {
       ).then((response) => response.data['data']['uuid'] as String);
 
   /// Показывать ли «Через менеджера» — включается в админке по платформам.
-  Future<bool> manualAvailable(TargetPlatform platform) => ApiService.I.get(
+  Future<bool> manualAvailable(TargetPlatform platform) => ApiService.I.get<dynamic>(
         '/payment-methods',
         queryParameters: {'platform': platformName(platform)},
       ).then((response) => response.data['manual'] == true);

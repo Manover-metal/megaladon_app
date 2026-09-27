@@ -24,3 +24,9 @@ class SubscribeError extends SubscribeState {
   @override
   List<Object?> get props => [error];
 }
+
+/// Магазин принял оплату; подписка включится, когда придёт его вебхук.
+class SubscribePending extends SubscribeState {}
+
+/// Запрос восстановления покупок отправлен в магазин.
+class SubscribeRestored extends SubscribeState {}
