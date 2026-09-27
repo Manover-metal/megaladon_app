@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/core/utils/parser.dart';
 import 'package:megaladon/data/models/dictionary/subscribe_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
-import 'package:megaladon/logic/subscribe/subscribe_cubit.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 
 /// Карточка тарифа: срок, цена, цена за месяц и кнопка покупки.
 ///
-/// Снекбар об успехе/ошибке слушает сам экран подписок — держать
-/// `BlocListener` внутри карточки нельзя, иначе на каждый тариф прилетит
-/// по своему снекбару.
+/// Что делает кнопка, решает экран: карточка не знает ни про способы оплаты,
+/// ни про кубит.
 class SubscribeCard extends StatelessWidget {
   const SubscribeCard({
     required this.subscribe,
+    this.onBuy,
     this.isBest = false,
     this.discountPercent,
     this.isBusy = false,
@@ -22,6 +20,9 @@ class SubscribeCard extends StatelessWidget {
   });
 
   final SubscribeModel subscribe;
+
+  /// null — купить нечем (нет ни магазина, ни менеджера): кнопки нет.
+  final VoidCallback? onBuy;
 
   /// Лучшая цена за месяц среди тарифов — карточка подсвечивается.
   final bool isBest;
@@ -41,8 +42,7 @@ class SubscribeCard extends StatelessWidget {
     final theme = Theme.of(context);
     final primary = theme.colorScheme.primary;
 
-    final onPressed =
-        isBusy ? null : () => context.read<SubscribeCubit>().buy(subscribe);
+    final onPressed = isBusy ? null : onBuy;
     final buttonText = _isFree ? l10n.activate_for_free : l10n.buy;
 
     return Container(
@@ -101,11 +101,13 @@ class SubscribeCard extends StatelessWidget {
               ),
             ),
           ],
-          const SizedBox(height: 16),
-          if (isBest)
-            ElevatedButtonApp(text: buttonText, onPressed: onPressed)
-          else
-            OutlinedButtonApp(text: buttonText, onPressed: onPressed),
+          if (onBuy != null) ...[
+            const SizedBox(height: 16),
+            if (isBest)
+              ElevatedButtonApp(text: buttonText, onPressed: onPressed)
+            else
+              OutlinedButtonApp(text: buttonText, onPressed: onPressed),
+          ],
         ],
       ),
     );
