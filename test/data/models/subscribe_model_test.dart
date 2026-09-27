@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:megaladon/data/models/dictionary/subscribe_model.dart';
 
@@ -23,5 +24,28 @@ void main() {
 
   test('fromJson разбирает строковую цену', () {
     expect(SubscribeModel.fromJson(_json()).price, 5000.0);
+  });
+
+  test('fromJson разбирает product ID магазинов', () {
+    final plan = SubscribeModel.fromJson({
+      ..._json(),
+      'apple_product_id': 'executor_1m',
+      'google_product_id': 'executor_1m_android',
+    });
+
+    expect(plan.storeProductId(TargetPlatform.iOS), 'executor_1m');
+    expect(plan.storeProductId(TargetPlatform.android), 'executor_1m_android');
+  });
+
+  test('пустой или отсутствующий product ID — null', () {
+    final plan = SubscribeModel.fromJson({..._json(), 'apple_product_id': ''});
+
+    expect(plan.appleProductId, isNull);
+    expect(plan.googleProductId, isNull);
+  });
+
+  test('имя платформы для API', () {
+    expect(platformName(TargetPlatform.iOS), 'ios');
+    expect(platformName(TargetPlatform.android), 'android');
   });
 }
