@@ -2320,12 +2320,6 @@ abstract class AppLocalizations {
   /// **'App Store and Google Play subscriptions renew automatically until you cancel them in the store settings at least 24 hours before the period ends. Payment via manager is renewed manually.'**
   String get subscriptionFootnote;
 
-  /// No description provided for @paymentMethodTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Payment method'**
-  String get paymentMethodTitle;
-
   /// No description provided for @paymentMethodAppStore.
   ///
   /// In en, this message translates to:
@@ -2338,17 +2332,35 @@ abstract class AppLocalizations {
   /// **'Google Play'**
   String get paymentMethodGooglePlay;
 
-  /// No description provided for @paymentMethodManager.
+  /// No description provided for @paymentPayIn.
   ///
   /// In en, this message translates to:
-  /// **'Via manager'**
-  String get paymentMethodManager;
+  /// **'Pay in {store}'**
+  String paymentPayIn(String store);
 
-  /// No description provided for @paymentMethodManagerHint.
+  /// No description provided for @paymentOr.
   ///
   /// In en, this message translates to:
-  /// **'The manager will contact you. The subscription is enabled once the payment is confirmed.'**
-  String get paymentMethodManagerHint;
+  /// **'or'**
+  String get paymentOr;
+
+  /// No description provided for @paymentManagerRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Request via manager · {price}'**
+  String paymentManagerRequest(String price);
+
+  /// No description provided for @paymentCancelHintIos.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel anytime in iPhone Settings → Apple ID → Subscriptions.'**
+  String get paymentCancelHintIos;
+
+  /// No description provided for @paymentCancelHintAndroid.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel anytime in Google Play → Payments & subscriptions.'**
+  String get paymentCancelHintAndroid;
 
   /// No description provided for @subscriptionPaymentProcessing.
   ///

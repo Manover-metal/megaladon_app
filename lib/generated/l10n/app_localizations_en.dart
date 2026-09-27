@@ -1213,20 +1213,31 @@ class AppLocalizationsEn extends AppLocalizations {
       'App Store and Google Play subscriptions renew automatically until you cancel them in the store settings at least 24 hours before the period ends. Payment via manager is renewed manually.';
 
   @override
-  String get paymentMethodTitle => 'Payment method';
-
-  @override
   String get paymentMethodAppStore => 'App Store';
 
   @override
   String get paymentMethodGooglePlay => 'Google Play';
 
   @override
-  String get paymentMethodManager => 'Via manager';
+  String paymentPayIn(String store) {
+    return 'Pay in $store';
+  }
 
   @override
-  String get paymentMethodManagerHint =>
-      'The manager will contact you. The subscription is enabled once the payment is confirmed.';
+  String get paymentOr => 'or';
+
+  @override
+  String paymentManagerRequest(String price) {
+    return 'Request via manager · $price';
+  }
+
+  @override
+  String get paymentCancelHintIos =>
+      'Cancel anytime in iPhone Settings → Apple ID → Subscriptions.';
+
+  @override
+  String get paymentCancelHintAndroid =>
+      'Cancel anytime in Google Play → Payments & subscriptions.';
 
   @override
   String get subscriptionPaymentProcessing =>

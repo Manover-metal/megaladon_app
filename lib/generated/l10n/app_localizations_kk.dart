@@ -1213,20 +1213,31 @@ class AppLocalizationsKk extends AppLocalizations {
       'App Store немесе Google Play арқылы жазылым кезең аяқталғанға дейін кемінде 24 сағат бұрын дүкен баптауларында тоқтатпайынша автоматты түрде ұзартылады. Менеджер арқылы төлем қолмен ұзартылады.';
 
   @override
-  String get paymentMethodTitle => 'Төлем тәсілі';
-
-  @override
   String get paymentMethodAppStore => 'App Store';
 
   @override
   String get paymentMethodGooglePlay => 'Google Play';
 
   @override
-  String get paymentMethodManager => 'Менеджер арқылы';
+  String paymentPayIn(String store) {
+    return '$store арқылы төлеу';
+  }
 
   @override
-  String get paymentMethodManagerHint =>
-      'Менеджер сізбен хабарласады. Жазылым төлем расталғаннан кейін қосылады.';
+  String get paymentOr => 'немесе';
+
+  @override
+  String paymentManagerRequest(String price) {
+    return 'Менеджерге өтінім қалдыру · $price';
+  }
+
+  @override
+  String get paymentCancelHintIos =>
+      'iPhone баптаулары → Apple ID → Жазылымдар бөлімінде тоқтатуға болады.';
+
+  @override
+  String get paymentCancelHintAndroid =>
+      'Google Play → Төлемдер және жазылымдар бөлімінде тоқтатуға болады.';
 
   @override
   String get subscriptionPaymentProcessing =>

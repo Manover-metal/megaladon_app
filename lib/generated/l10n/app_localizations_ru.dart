@@ -1216,20 +1216,31 @@ class AppLocalizationsRu extends AppLocalizations {
       'Подписка через App Store или Google Play продлевается автоматически, пока вы не отмените её в настройках магазина не позднее чем за 24 часа до конца периода. Оплата через менеджера продлевается вручную.';
 
   @override
-  String get paymentMethodTitle => 'Способ оплаты';
-
-  @override
   String get paymentMethodAppStore => 'App Store';
 
   @override
   String get paymentMethodGooglePlay => 'Google Play';
 
   @override
-  String get paymentMethodManager => 'Через менеджера';
+  String paymentPayIn(String store) {
+    return 'Оплатить в $store';
+  }
 
   @override
-  String get paymentMethodManagerHint =>
-      'Менеджер свяжется с вами. Подписка включится после подтверждения оплаты.';
+  String get paymentOr => 'или';
+
+  @override
+  String paymentManagerRequest(String price) {
+    return 'Оставить заявку менеджеру · $price';
+  }
+
+  @override
+  String get paymentCancelHintIos =>
+      'Отменить можно в настройках iPhone → Apple ID → Подписки.';
+
+  @override
+  String get paymentCancelHintAndroid =>
+      'Отменить можно в Google Play → Платежи и подписки.';
 
   @override
   String get subscriptionPaymentProcessing =>
