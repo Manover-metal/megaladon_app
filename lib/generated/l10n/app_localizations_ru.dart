@@ -1213,7 +1213,33 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get subscriptionFootnote =>
-      'Подписка включается после подтверждения оплаты. Продление — вручную, автосписаний нет.';
+      'Подписка через App Store или Google Play продлевается автоматически, пока вы не отмените её в настройках магазина не позднее чем за 24 часа до конца периода. Оплата через менеджера продлевается вручную.';
+
+  @override
+  String get paymentMethodTitle => 'Способ оплаты';
+
+  @override
+  String get paymentMethodAppStore => 'App Store';
+
+  @override
+  String get paymentMethodGooglePlay => 'Google Play';
+
+  @override
+  String get paymentMethodManager => 'Через менеджера';
+
+  @override
+  String get paymentMethodManagerHint =>
+      'Менеджер свяжется с вами. Подписка включится после подтверждения оплаты.';
+
+  @override
+  String get subscriptionPaymentProcessing =>
+      'Оплата обрабатывается. Подписка включится в течение минуты.';
+
+  @override
+  String get subscriptionRestore => 'Восстановить покупки';
+
+  @override
+  String get subscriptionTerms => 'Условия подписки';
 
   @override
   String get subscriptionPlansEmpty => 'Тарифы пока недоступны';
