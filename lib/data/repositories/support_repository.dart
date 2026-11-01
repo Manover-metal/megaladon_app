@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:megaladon/core/image/platform_file.dart';
 import 'package:megaladon/core/dio/index.dart';
 import 'package:megaladon/data/models/support_ticket_model.dart';
 

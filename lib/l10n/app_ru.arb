@@ -512,6 +512,8 @@
   "paymentCancelHintIos": "Отменить можно в настройках iPhone → Apple ID → Подписки.",
   "paymentCancelHintAndroid": "Отменить можно в Google Play → Платежи и подписки.",
   "subscriptionPaymentProcessing": "Оплата обрабатывается. Подписка включится в течение минуты.",
+  "subscriptionPurchaseFailed": "Не удалось оформить подписку. Попробуйте ещё раз.",
+  "subscriptionStoreUnavailable": "Магазин сейчас не отдаёт подписки. Покупка временно недоступна.",
   "subscriptionRestore": "Восстановить покупки",
   "subscriptionTerms": "Условия подписки",
   "subscriptionPlansEmpty": "Тарифы пока недоступны",

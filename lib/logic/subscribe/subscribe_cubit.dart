@@ -56,10 +56,11 @@ class SubscribeCubit extends Cubit<SubscribeState> {
       final uuid = await _repository.create(plan, method, _platform);
       // uuid → appAccountToken (iOS) / obfuscatedAccountId (Android): по нему
       // вебхук магазина найдёт заявку.
-      await InAppPurchase.instance.buyNonConsumable(
+      final started = await InAppPurchase.instance.buyNonConsumable(
         purchaseParam:
             PurchaseParam(productDetails: product, applicationUserName: uuid),
       );
+      if (!started) emit(SubscribeError(ErrorModel.nothing));
     } on DioException catch (error) {
       emit(SubscribeError(ErrorModel.parseDio(error)));
     } catch (_) {
@@ -68,8 +69,12 @@ class SubscribeCubit extends Cubit<SubscribeState> {
   }
 
   Future<void> restore() async {
-    await InAppPurchase.instance.restorePurchases();
-    emit(SubscribeRestored());
+    try {
+      await InAppPurchase.instance.restorePurchases();
+      emit(SubscribeRestored());
+    } catch (_) {
+      emit(SubscribeError(ErrorModel.nothing));
+    }
   }
 
   void _onPurchases(List<PurchaseDetails> purchases) {

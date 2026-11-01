@@ -9,7 +9,11 @@ typedef ProductQuery = Future<Map<String, ProductDetails>> Function(
     Set<String> ids);
 
 class PaymentOptionsState extends Equatable {
-  const PaymentOptionsState({this.manual = false, this.products = const {}});
+  const PaymentOptionsState({
+    this.manual = false,
+    this.products = const {},
+    this.storeFailed = false,
+  });
 
   /// Показывать «Через менеджера» — флаг из админки для этой платформы.
   final bool manual;
@@ -17,13 +21,16 @@ class PaymentOptionsState extends Equatable {
   /// Товары магазина по product ID; нет товара — через магазин не купить.
   final Map<String, ProductDetails> products;
 
+  /// Магазин не отдал хотя бы один товар, заведённый в тарифах.
+  final bool storeFailed;
+
   ProductDetails? productFor(SubscribeModel plan, TargetPlatform platform) {
     final id = plan.storeProductId(platform);
     return id == null ? null : products[id];
   }
 
   @override
-  List<Object?> get props => [manual, products];
+  List<Object?> get props => [manual, products, storeFailed];
 }
 
 /// Какие способы оплаты показать: флаг менеджера с бэка и товары магазина.
@@ -54,8 +61,12 @@ class PaymentOptionsCubit extends Cubit<PaymentOptionsState> {
         ? Future.value(<String, ProductDetails>{})
         : _query(ids).catchError((Object _) => <String, ProductDetails>{});
 
-    final state =
-        PaymentOptionsState(manual: await manual, products: await products);
+    final found = await products;
+    final state = PaymentOptionsState(
+      manual: await manual,
+      products: found,
+      storeFailed: !found.keys.toSet().containsAll(ids),
+    );
     if (!isClosed) emit(state);
   }
 

@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:megaladon/core/image/image_service.dart';
 import 'package:megaladon/data/models/dictionary/file_model.dart';
 import 'package:megaladon/data/models/error_model.dart';
 import 'package:megaladon/data/repositories/price_controller.dart';
@@ -42,10 +42,8 @@ class PriceFormCubit extends Cubit<PriceFormState> {
     if (_adding) return;
     _adding = true;
     try {
-      final result = await FilePicker.pickFiles(
-          type: FileType.custom, allowedExtensions: ['pdf']);
-      if (result == null || result.files.isEmpty) return;
-      final file = result.files.first;
+      final file = await ImageService.getPdf();
+      if (file == null) return;
       final contentType = DioMediaType('application', 'pdf');
       final data = FormData.fromMap({
         'file': MultipartFile.fromBytes(file.bytes!,

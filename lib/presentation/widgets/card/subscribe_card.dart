@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:megaladon/core/utils/parser.dart';
 import 'package:megaladon/data/models/dictionary/subscribe_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
@@ -12,6 +13,7 @@ import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 class SubscribeCard extends StatelessWidget {
   const SubscribeCard({
     required this.subscribe,
+    this.product,
     this.onBuy,
     this.isBest = false,
     this.discountPercent,
@@ -20,6 +22,10 @@ class SubscribeCard extends StatelessWidget {
   });
 
   final SubscribeModel subscribe;
+
+  /// Товар магазина: его цену пользователь и заплатит. null — товар не получен,
+  /// показываем цену с сервера.
+  final ProductDetails? product;
 
   /// null — купить нечем (нет ни магазина, ни менеджера): кнопки нет.
   final VoidCallback? onBuy;
@@ -44,6 +50,12 @@ class SubscribeCard extends StatelessWidget {
 
     final onPressed = isBusy ? null : onBuy;
     final buttonText = _isFree ? l10n.activate_for_free : l10n.buy;
+    // Строка «в месяц» только в тенге: в другой валюте магазина её не посчитать.
+    final monthlyBase = product == null
+        ? subscribe.price
+        : product!.currencyCode == 'KZT'
+            ? product!.rawPrice
+            : null;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -87,14 +99,15 @@ class SubscribeCard extends StatelessWidget {
           Text(
             _isFree
                 ? l10n.subscriptionBadgeFree
-                : l10n.tenge_price(Parser.toPrice(subscribe.price)),
+                : product?.price ??
+                    l10n.tenge_price(Parser.toPrice(subscribe.price)),
             style: theme.textTheme.bodyLarge?.copyWith(fontSize: 28),
           ),
-          if (!_isFree && subscribe.duration > 1) ...[
+          if (!_isFree && subscribe.duration > 1 && monthlyBase != null) ...[
             const SizedBox(height: 4),
             Text(
               l10n.subscriptionPerMonth(
-                  Parser.toPrice(subscribe.price / subscribe.duration)),
+                  Parser.toPrice(monthlyBase / subscribe.duration)),
               style: theme.textTheme.bodyMedium?.copyWith(
                 fontSize: 14,
                 color: theme.hintColor,

@@ -1,5 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:megaladon/core/image/platform_file.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/core/image/image_service.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
@@ -36,20 +36,16 @@ class _ImageMultiPickerState extends State<ImageMultiPicker> {
   late CarouselSliderController _carouselController;
 
   Future<void> _addImage() async {
-    final result = await ImageService.getImages();
-
-    if (result != null) {
-      var files = result.files;
-      final max = widget.maxCount;
-      if (max != null) {
-        final remaining = max - widget.controller.value.length;
-        files = remaining <= 0
-            ? <PlatformFile>[]
-            : (files.length > remaining ? files.sublist(0, remaining) : files);
-      }
-      if (files.isNotEmpty) {
-        widget.controller._addFiles(files);
-      }
+    var files = await ImageService.getImages();
+    final max = widget.maxCount;
+    if (max != null) {
+      final remaining = max - widget.controller.value.length;
+      files = remaining <= 0
+          ? <PlatformFile>[]
+          : (files.length > remaining ? files.sublist(0, remaining) : files);
+    }
+    if (files.isNotEmpty) {
+      widget.controller._addFiles(files);
     }
   }
 

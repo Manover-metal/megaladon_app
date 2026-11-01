@@ -59,14 +59,21 @@ class _SubscribeScreenState extends State<SubscribeScreen> {
 
     return BlocProvider.value(
       value: _options,
-      child: BlocListener<DictionaryCubit, DictionaryState>(
-        // Тарифы могли прийти уже после открытия экрана. Остальные поля
-        // словаря (города, категории) товары магазина не меняют.
+      child: BlocListener<PaymentOptionsCubit, PaymentOptionsState>(
         listenWhen: (previous, current) =>
-            previous.subscribesExecutor != current.subscribesExecutor ||
-            previous.subscribesStore != current.subscribesStore,
-        listener: (context, dictionary) => _loadOptions(dictionary),
-        child: _buildScreen(context, l10n),
+            !previous.storeFailed && current.storeFailed,
+        listener: (context, _) =>
+            CustomSnackBar.error(Text(l10n.subscriptionStoreUnavailable))
+                .view(context),
+        child: BlocListener<DictionaryCubit, DictionaryState>(
+          // Тарифы могли прийти уже после открытия экрана. Остальные поля
+          // словаря (города, категории) товары магазина не меняют.
+          listenWhen: (previous, current) =>
+              previous.subscribesExecutor != current.subscribesExecutor ||
+              previous.subscribesStore != current.subscribesStore,
+          listener: (context, dictionary) => _loadOptions(dictionary),
+          child: _buildScreen(context, l10n),
+        ),
       ),
     );
   }
@@ -93,7 +100,7 @@ class _SubscribeScreenState extends State<SubscribeScreen> {
             CustomSnackBar.error(
               Text(state.error.messages.isNotEmpty
                   ? state.error.messages.first
-                  : l10n.unknown_error),
+                  : l10n.subscriptionPurchaseFailed),
             ).view(context);
           }
         },
@@ -235,6 +242,7 @@ class _SubscribeFaceView extends StatelessWidget {
               for (final plan in plans)
                 SubscribeCard(
                   subscribe: plan,
+                  product: options.productFor(plan, platform),
                   isBest: plan.id == bestId,
                   discountPercent: plan.id == bestId ? discount : null,
                   isBusy: isBusy,

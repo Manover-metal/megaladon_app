@@ -845,6 +845,8 @@
   "paymentCancelHintIos": "Cancel anytime in iPhone Settings → Apple ID → Subscriptions.",
   "paymentCancelHintAndroid": "Cancel anytime in Google Play → Payments & subscriptions.",
   "subscriptionPaymentProcessing": "Payment is being processed. The subscription will turn on within a minute.",
+  "subscriptionPurchaseFailed": "Couldn't complete the subscription. Please try again.",
+  "subscriptionStoreUnavailable": "The store isn't returning subscriptions right now. Purchase is temporarily unavailable.",
   "subscriptionRestore": "Restore purchases",
   "subscriptionTerms": "Subscription terms",
   "subscriptionPlansEmpty": "No plans available yet",

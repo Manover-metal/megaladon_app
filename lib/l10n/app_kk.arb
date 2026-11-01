@@ -512,6 +512,8 @@
   "paymentCancelHintIos": "iPhone баптаулары → Apple ID → Жазылымдар бөлімінде тоқтатуға болады.",
   "paymentCancelHintAndroid": "Google Play → Төлемдер және жазылымдар бөлімінде тоқтатуға болады.",
   "subscriptionPaymentProcessing": "Төлем өңделуде. Жазылым бір минут ішінде қосылады.",
+  "subscriptionPurchaseFailed": "Жазылымды рәсімдеу мүмкін болмады. Қайталап көріңіз.",
+  "subscriptionStoreUnavailable": "Дүкен қазір жазылымдарды бермейді. Сатып алу уақытша қолжетімсіз.",
   "subscriptionRestore": "Сатып алуларды қалпына келтіру",
   "subscriptionTerms": "Жазылым шарттары",
   "subscriptionPlansEmpty": "Тарифтер әзірге қолжетімді емес",

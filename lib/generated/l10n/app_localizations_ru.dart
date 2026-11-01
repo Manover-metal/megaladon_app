@@ -1226,6 +1226,14 @@ class AppLocalizationsRu extends AppLocalizations {
       'Оплата обрабатывается. Подписка включится в течение минуты.';
 
   @override
+  String get subscriptionPurchaseFailed =>
+      'Не удалось оформить подписку. Попробуйте ещё раз.';
+
+  @override
+  String get subscriptionStoreUnavailable =>
+      'Магазин сейчас не отдаёт подписки. Покупка временно недоступна.';
+
+  @override
   String get subscriptionRestore => 'Восстановить покупки';
 
   @override

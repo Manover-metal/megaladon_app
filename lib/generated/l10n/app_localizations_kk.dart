@@ -1223,6 +1223,14 @@ class AppLocalizationsKk extends AppLocalizations {
       'Төлем өңделуде. Жазылым бір минут ішінде қосылады.';
 
   @override
+  String get subscriptionPurchaseFailed =>
+      'Жазылымды рәсімдеу мүмкін болмады. Қайталап көріңіз.';
+
+  @override
+  String get subscriptionStoreUnavailable =>
+      'Дүкен қазір жазылымдарды бермейді. Сатып алу уақытша қолжетімсіз.';
+
+  @override
   String get subscriptionRestore => 'Сатып алуларды қалпына келтіру';
 
   @override

@@ -37,13 +37,11 @@ class ChangePhotoCubit extends Cubit<ChangePhotoState> {
   }
 
   Future<void> _changePhoto() async {
-    final result = await ImageService.getImage();
-    if (result == null) {
+    final file = await ImageService.getImage();
+    if (file == null) {
       log('changePhoto: выбор изображения отменён', name: 'ChangePhoto');
       return;
     }
-
-    final file = result.files[0];
 
     // На некоторых платформах path может быть null (только bytes) — тогда
     // MultipartFile.fromFile падал бы и запрос вообще не уходил (без логов).

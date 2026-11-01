@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:megaladon/core/image/platform_file.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/chat/chat_model.dart';

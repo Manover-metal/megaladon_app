@@ -1223,6 +1223,14 @@ class AppLocalizationsEn extends AppLocalizations {
       'Payment is being processed. The subscription will turn on within a minute.';
 
   @override
+  String get subscriptionPurchaseFailed =>
+      'Couldn\'t complete the subscription. Please try again.';
+
+  @override
+  String get subscriptionStoreUnavailable =>
+      'The store isn\'t returning subscriptions right now. Purchase is temporarily unavailable.';
+
+  @override
   String get subscriptionRestore => 'Restore purchases';
 
   @override

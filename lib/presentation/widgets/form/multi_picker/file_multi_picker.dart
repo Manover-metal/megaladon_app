@@ -1,4 +1,5 @@
-import 'package:file_picker/file_picker.dart';
+import 'package:megaladon/core/image/image_service.dart';
+import 'package:megaladon/core/image/platform_file.dart';
 import 'package:flutter/material.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
@@ -31,14 +32,9 @@ class FileMultiPicker extends StatefulWidget {
 
 class _FileMultiPickerState extends State<FileMultiPicker> {
   Future<void> _addFile() async {
-    var result = await FilePicker.pickFiles(
-      allowMultiple: true,
-      type: FileType.custom,
-      allowedExtensions: ['jpg', 'png', 'jpeg', 'pdf', 'doc', 'docx'],
-    );
+    final files = await ImageService.getDocuments();
 
-    if (result != null) {
-      final files = result.files;
+    if (files.isNotEmpty) {
       widget.controller._addFiles(files);
     }
   }

@@ -2326,6 +2326,18 @@ abstract class AppLocalizations {
   /// **'Payment is being processed. The subscription will turn on within a minute.'**
   String get subscriptionPaymentProcessing;
 
+  /// No description provided for @subscriptionPurchaseFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t complete the subscription. Please try again.'**
+  String get subscriptionPurchaseFailed;
+
+  /// No description provided for @subscriptionStoreUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'The store isn\'t returning subscriptions right now. Purchase is temporarily unavailable.'**
+  String get subscriptionStoreUnavailable;
+
   /// No description provided for @subscriptionRestore.
   ///
   /// In en, this message translates to:

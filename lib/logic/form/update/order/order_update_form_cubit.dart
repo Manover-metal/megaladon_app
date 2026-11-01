@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:megaladon/core/image/platform_file.dart';
 import 'package:formz/formz.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/dictionary/category_model.dart';
