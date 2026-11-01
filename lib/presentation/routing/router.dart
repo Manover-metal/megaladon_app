@@ -34,12 +34,14 @@ import 'package:megaladon/presentation/screens/orders/list_my_orders_screen.dart
 import 'package:megaladon/presentation/screens/orders/list_orders_screen.dart';
 import 'package:megaladon/presentation/screens/orders/review_screen.dart';
 import 'package:megaladon/presentation/screens/profile/about_screen.dart';
+import 'package:megaladon/presentation/screens/profile/blocked_users_screen.dart';
 import 'package:megaladon/presentation/screens/profile/change_password_screen.dart';
 import 'package:megaladon/presentation/screens/profile/change_phone_end_screen.dart';
 import 'package:megaladon/presentation/screens/profile/change_phone_start_screen.dart';
 import 'package:megaladon/presentation/screens/profile/my_reviews_screen.dart';
 import 'package:megaladon/presentation/screens/profile/profile_screen.dart';
 import 'package:megaladon/presentation/screens/profile/settings_screen.dart';
+import 'package:megaladon/presentation/screens/profile/support_screen.dart';
 import 'package:megaladon/presentation/screens/splash_screen.dart';
 import 'package:megaladon/presentation/screens/store/details_store_screen.dart';
 import 'package:megaladon/presentation/screens/store/list_stores_screen.dart';
@@ -58,6 +60,10 @@ const List<AutoRoute> profile = [
   AutoRoute(page: MyReviewsScreen, guards: [AuthGuard]),
   AutoRoute(page: StoreMyReviewsScreen, guards: [AuthGuard]),
   AutoRoute(page: AboutScreen),
+  AutoRoute(page: BlockedUsersScreen, guards: [AuthGuard]),
+  AutoRoute(page: SupportScreen, guards: [AuthGuard]),
+  AutoRoute(page: SupportSentScreen, guards: [AuthGuard]),
+  AutoRoute(page: SupportTicketsScreen, guards: [AuthGuard]),
 ];
 
 const List<AutoRoute> ad = [

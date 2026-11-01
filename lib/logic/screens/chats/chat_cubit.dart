@@ -225,7 +225,8 @@ class ChatCubit extends Cubit<ChatState> with WidgetsBindingObserver {
       olderLoading: {...state.olderLoading, chatId: true},
     ));
 
-    final count = await _fetchAndMerge(chatId, chat.messages.length, silent: true);
+    final count =
+        await _fetchAndMerge(chatId, chat.messages.length, silent: true);
 
     final hasMore = {...state.hasMoreOlder};
     if (count >= 0 && count < _pageSize) {

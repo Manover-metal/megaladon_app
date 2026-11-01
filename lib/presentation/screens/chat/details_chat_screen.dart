@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:megaladon/data/models/chat/chat_model.dart';
 import 'package:megaladon/data/models/chat/message_model.dart';
+import 'package:megaladon/data/models/user_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/screens/chats/chat_cubit.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
@@ -17,6 +18,7 @@ import 'package:megaladon/presentation/widgets/chat/attach_source_modal.dart';
 import 'package:megaladon/presentation/widgets/chat/chat_app_bar_title.dart';
 import 'package:megaladon/presentation/widgets/image_viewer.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
+import 'package:megaladon/presentation/widgets/safety/safety_sheets.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DetailsChatScreen extends StatefulWidget {
@@ -138,11 +140,33 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
         .toColor();
   }
 
+  /// Меню «Пожаловаться / Заблокировать» на собеседника. Удалённый аккаунт
+  /// жаловаться не на кого.
+  void _companionActions() {
+    final companion = _chatOf(context.read<ChatCubit>().state).companion ??
+        widget.chat.companion;
+    if (companion == null || companion.isDeleted) return;
+    showUserActionsSheet(
+      context,
+      user: UserModel(
+        id: companion.id,
+        name: companion.name,
+        countOrders: null,
+        phone: null,
+        photo: companion.photoUrl,
+        city: null,
+        executor: null,
+        store: null,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: HeaderAppBar(
           isBack: true,
           centerTitle: false,
+          onTrailing: _companionActions,
           backgroundColor: _darken(Theme.of(context).scaffoldBackgroundColor),
           titleWidget: BlocBuilder<ChatCubit, ChatState>(
             builder: (context, state) {

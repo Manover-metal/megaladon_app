@@ -1,5 +1,5 @@
 import 'package:formz/formz.dart';
-import 'package:megaladon/data/models/dictionary/order_category_model.dart';
+import 'package:megaladon/data/models/dictionary/category_model.dart';
 import 'package:megaladon/data/models/form/localizable_error.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 
@@ -22,7 +22,7 @@ class OrderCategoryFormModel
 
   @override
   OrderCategoryValidationError? validator(int value) {
-    if (value == OrderCategoryModel.nothing.id)
+    if (value == CategoryModel.nothing.id)
       return OrderCategoryValidationError.empty;
     return null;
   }

@@ -9,6 +9,31 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get advertStatusModerate => 'Under review';
+
+  @override
+  String get advertStatusRejected => 'Rejected';
+
+  @override
+  String get advertModerateTitle => 'Listing is under review';
+
+  @override
+  String get advertModerateHint =>
+      'It will appear on the marketplace after moderation, usually within 24 hours.';
+
+  @override
+  String get advertRejectedTitle => 'Listing rejected';
+
+  @override
+  String advertRejectedReason(String reason) {
+    return 'Reason: $reason. Edit the listing and save it to send it for review again.';
+  }
+
+  @override
+  String get advertRejectedHint =>
+      'Edit the listing and save it to send it for review again.';
+
+  @override
   String get pushNotificationsTitle => 'Push notifications';
 
   @override
@@ -332,12 +357,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get full_address => 'Full address';
-
-  @override
-  String get latitude => 'Latitude';
-
-  @override
-  String get longitude => 'Longitude';
 
   @override
   String get by_clicking_on_the_Continue_button_you_accept =>
@@ -775,28 +794,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Response relevance is not filled';
 
   @override
-  String get latitude_not_filled => 'Latitude is not filled';
-
-  @override
-  String get latitude_cannot_be_less_than_90 =>
-      'Latitude cannot be less than -90°';
-
-  @override
-  String get latitude_cannot_be_greater_than_90 =>
-      'Latitude cannot be greater than +90°';
-
-  @override
-  String get longitude_is_not_filled => 'Longitude is not filled';
-
-  @override
-  String get longitude_cannot_be_less_than_180 =>
-      'Longitude cannot be less than -180°';
-
-  @override
-  String get longitude_cannot_be_greater_than_180 =>
-      'Longitude cannot be greater than 180°';
-
-  @override
   String get name_is_empty => 'Name is empty';
 
   @override
@@ -1004,24 +1001,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get form_error_expired_at_empty => 'Response relevance is not filled';
-
-  @override
-  String get form_error_lat_empty => 'Latitude is not filled';
-
-  @override
-  String get form_error_lat_min => 'Latitude cannot be less than -90°';
-
-  @override
-  String get form_error_lat_max => 'Latitude cannot be greater than +90°';
-
-  @override
-  String get form_error_lon_empty => 'Longitude is not filled';
-
-  @override
-  String get form_error_lon_min => 'Longitude cannot be less than -180°';
-
-  @override
-  String get form_error_lon_max => 'Longitude cannot be greater than 180°';
 
   @override
   String get form_error_name_empty => 'Name is empty';
@@ -1497,14 +1476,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Customers look for contractors near them. We will read the coordinates once, when you submit the form.';
 
   @override
-  String get location_service_disabled =>
-      'Turn on location on your phone so we can put you on the map';
-
-  @override
-  String get location_permission_denied =>
-      'Allow the app to use your location so we can put you on the map';
-
-  @override
   String get form_error_contacts_empty => 'Add at least one contact';
 
   @override
@@ -1556,4 +1527,189 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get aboutCreateText =>
       'Creates something new: an order to find executors, a service category, or an ad.';
+
+  @override
+  String get settingsGroupSupport => 'Support';
+
+  @override
+  String get supportTitle => 'Report a problem';
+
+  @override
+  String get supportIntro =>
+      'Tell us what happened. The message goes to our support team, and we will reply here in the app.';
+
+  @override
+  String get supportDescriptionHint => 'What were you doing and what happened?';
+
+  @override
+  String get supportAttach => 'Screenshots (up to 3)';
+
+  @override
+  String get supportSubmit => 'Send';
+
+  @override
+  String get supportSentTitle => 'Thanks, we got it';
+
+  @override
+  String get supportSentBody =>
+      'Our support team will read your message and reply in the app. You will get a push notification.';
+
+  @override
+  String get supportSentDone => 'Done';
+
+  @override
+  String get supportTicketsTitle => 'My requests';
+
+  @override
+  String get supportTicketsEmpty => 'You have no requests yet';
+
+  @override
+  String get supportReplyLabel => 'Support reply';
+
+  @override
+  String get supportStatusOpen => 'Open';
+
+  @override
+  String get supportStatusAnswered => 'Answered';
+
+  @override
+  String get supportStatusClosed => 'Closed';
+
+  @override
+  String get safetyReport => 'Report';
+
+  @override
+  String get safetyReportHint => 'Moderators review reports within 24 hours';
+
+  @override
+  String get safetyBlock => 'Block';
+
+  @override
+  String get safetyBlockHint =>
+      'Neither of you will be able to message or respond to each other';
+
+  @override
+  String get safetyReportTitle => 'What\'s wrong?';
+
+  @override
+  String get safetyReasonSpam => 'Spam or advertising';
+
+  @override
+  String get safetyReasonAbuse => 'Insults, threats or harassment';
+
+  @override
+  String get safetyReasonInappropriate => 'Objectionable content';
+
+  @override
+  String get safetyReasonFake => 'Fake profile or scam';
+
+  @override
+  String get safetyReasonOther => 'Something else';
+
+  @override
+  String get safetyReasonRequired => 'Choose a reason';
+
+  @override
+  String get safetyCommentHint => 'What happened — optional';
+
+  @override
+  String get safetyReportSubmit => 'Send report';
+
+  @override
+  String get safetyReportSent =>
+      'Report sent. We will review it within 24 hours';
+
+  @override
+  String get safetyBlockTitle => 'Block this user?';
+
+  @override
+  String get safetyBlockBody =>
+      'Neither of you will be able to message the other or respond to each other\'s orders. You can unblock them in Settings.';
+
+  @override
+  String get safetyBlockDone => 'User blocked';
+
+  @override
+  String get safetyUnblockDone => 'User unblocked';
+
+  @override
+  String get safetyBlockedTitle => 'Blocked users';
+
+  @override
+  String get safetyBlockedEmpty => 'You haven\'t blocked anyone';
+
+  @override
+  String get safetyUnblock => 'Unblock';
+
+  @override
+  String get safetyBlockedContactHint => 'You have blocked this user';
+
+  @override
+  String supportMinLength(int count) {
+    return 'At least $count characters';
+  }
+
+  @override
+  String get filter_with_photo => 'With photo only';
+
+  @override
+  String get filter_without_offers => 'No offers yet';
+
+  @override
+  String get filter_budget => 'Budget';
+
+  @override
+  String get filter_max_days => 'Deadline up to, days';
+
+  @override
+  String get filter_rating_min => 'Rating from';
+
+  @override
+  String get filter_store_name => 'Store name';
+
+  @override
+  String get filter_search_hint => 'Title or description';
+
+  @override
+  String get filter_reset => 'Reset';
+
+  @override
+  String get sort_newest => 'Newest first';
+
+  @override
+  String get sort_oldest => 'Oldest first';
+
+  @override
+  String get sort_cheap => 'Cheapest first';
+
+  @override
+  String get sort_expensive => 'Most expensive first';
+
+  @override
+  String get sort_by_rating => 'By rating';
+
+  @override
+  String get sort_by_name => 'By name';
+
+  @override
+  String get by_price => 'By budget';
+
+  @override
+  String get by_deadline => 'By deadline';
+
+  @override
+  String category_all_in(String name) {
+    return 'All in «$name»';
+  }
+
+  @override
+  String get category_nothing_found => 'Nothing found';
+
+  @override
+  String get choose_services => 'Choose services';
+
+  @override
+  String select_count(int count) {
+    return 'Select ($count)';
+  }
 }

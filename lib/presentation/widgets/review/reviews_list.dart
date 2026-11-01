@@ -150,7 +150,8 @@ class _Bar extends StatelessWidget {
         const SizedBox(width: 6),
         SizedBox(
           width: 16,
-          child: Text(count.toString(), style: label, textAlign: TextAlign.right),
+          child:
+              Text(count.toString(), style: label, textAlign: TextAlign.right),
         ),
       ],
     );

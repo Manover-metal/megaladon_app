@@ -14,8 +14,6 @@ class StoreModel {
     this.prices = const [],
     this.contacts,
     this.bin,
-    this.lat,
-    this.lon,
     this.name,
     this.city,
     this.type,
@@ -29,8 +27,6 @@ class StoreModel {
   final String? bin;
   final int? rating;
   final String? photo;
-  final double? lat;
-  final double? lon;
   final bool hasPhone;
   final List<FileModel> prices;
   final CityModel? city;
@@ -88,8 +84,6 @@ class StoreModel {
         prices: data['prices'] != null
             ? FileModel.listFromJson(data['prices'] as List<dynamic>)
             : [],
-        lat: Parser.toDouble(data['lat']),
-        lon: Parser.toDouble(data['lon']),
         contacts: contacts,
         hasPhone: (contacts != null) &&
             contacts.any((element) =>
@@ -117,8 +111,6 @@ class StoreModel {
         'full_address': fullAddress,
         'photo_url': photo,
         'rating': rating,
-        'lat': lat,
-        'lon': lon,
         'prices': prices.map((p) => p.toJson()).toList(),
         'city': city?.toJson(),
         'type': type?.toJson(),

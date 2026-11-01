@@ -39,9 +39,8 @@ class OrderRepository {
   /// Тот же `/order/{id}`, но вместе с откликом смотрящего (`my_offer_id`) —
   /// для экрана заказа: откликнувшемуся показываем «Посмотреть предложение»
   /// вместо «Предложить услуги».
-  Future<OrderDetailsModel> details(int id) => ApiService.I
-      .get<dynamic>('/order/$id')
-      .then((value) =>
+  Future<OrderDetailsModel> details(int id) =>
+      ApiService.I.get<dynamic>('/order/$id').then((value) =>
           OrderDetailsModel.fromJson(value.data as Map<String, dynamic>));
 
   Future create(OrderCreateRequestParams params) => ApiService.I

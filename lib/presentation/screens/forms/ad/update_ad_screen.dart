@@ -20,7 +20,7 @@ import 'package:megaladon/presentation/widgets/form/field/phone_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/price_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/form/multi_picker/media_multi_picker.dart';
-import 'package:megaladon/presentation/widgets/form/picker/dictionary/advert_category_picker.dart';
+import 'package:megaladon/presentation/widgets/form/picker/dictionary/category_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
@@ -36,7 +36,7 @@ class UpdateAdScreen extends StatefulWidget {
 }
 
 class _UpdateAdScreenState extends State<UpdateAdScreen> {
-  late AdvertCategoryPickerController _advertCategoryController;
+  late CategoryPickerController _advertCategoryController;
   late TextEditingController _titleController;
   late TextEditingController _descriptionController;
   late TextEditingController _phoneController;
@@ -109,7 +109,7 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
   @override
   void initState() {
     _advertCategoryController =
-        AdvertCategoryPickerController(category: widget.advert.category);
+        CategoryPickerController(category: widget.advert.category);
     _titleController = TextEditingController(text: widget.advert.title);
     _cityController = CityPickerController(city: widget.advert.city);
     _priceController = PriceEditingController(value: widget.advert.price);
@@ -158,7 +158,10 @@ class _UpdateAdScreenState extends State<UpdateAdScreen> {
                                 errorText: state.title.displayError
                                     ?.localize(AppLocalizations.of(context)!),
                               ),
-                              AdvertCategoryPicker(
+                              CategoryPicker(
+                                  kind: widget.type == AdvertType.service
+                                      ? CategoryKind.service
+                                      : CategoryKind.advert,
                                   label: AppLocalizations.of(context)!
                                       .select_a_category,
                                   controller: _advertCategoryController,

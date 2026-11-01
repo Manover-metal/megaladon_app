@@ -95,9 +95,8 @@ class _Segment extends StatelessWidget {
             style: TextStyle(
               fontSize: 13.5,
               fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
-              color: selected
-                  ? scheme.surface
-                  : theme.textTheme.bodyMedium?.color,
+              color:
+                  selected ? scheme.surface : theme.textTheme.bodyMedium?.color,
             ),
           ),
         ),

@@ -7,14 +7,10 @@ class ChangeStoreRequestParams {
   const ChangeStoreRequestParams(
       {required this.name,
       required this.fullAddress,
-      required this.lon,
-      required this.lat,
       required this.city,
       required this.contacts});
   final String name;
   final String fullAddress;
-  final double lon;
-  final double lat;
   final CityModel city;
   final List<ContactModel> contacts;
 
@@ -22,8 +18,6 @@ class ChangeStoreRequestParams {
     final data = {
       'name': name,
       'full_address': fullAddress,
-      'lon': lon,
-      'lat': lat,
       'city_id': city.id,
       'contacts': contacts.map((e) {
         if (e.type == ContactType.phone || e.type == ContactType.home_phone) {

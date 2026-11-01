@@ -10,8 +10,12 @@ import 'package:megaladon/presentation/routing/router.dart';
 /// квадрат слева: раньше она растягивалась на треть высоты экрана, и в ленту
 /// помещалось меньше двух позиций.
 class AdCard extends StatelessWidget {
-  const AdCard({required this.advert, super.key});
+  const AdCard({required this.advert, this.showStatus = false, super.key});
   final AdvertModel advert;
+
+  /// В «Моих объявлениях» показываем статус модерации; в общей ленте он
+  /// всегда «активно» и чип только шумит.
+  final bool showStatus;
 
   static const double _thumb = 92;
 
@@ -71,6 +75,11 @@ class AdCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      if (showStatus &&
+                          advert.status != AdvertStatus.active) ...[
+                        AdvertStatusChip(advert: advert),
+                        const SizedBox(height: 6),
+                      ],
                       Text(
                         advert.title,
                         maxLines: 2,
@@ -146,6 +155,37 @@ class _Thumb extends StatelessWidget {
               Icon(Icons.image_outlined, color: scheme.secondary),
           errorWidget: (_, __, ___) =>
               Icon(Icons.broken_image_outlined, color: scheme.secondary),
+        ),
+      ),
+    );
+  }
+}
+
+/// Чип «На проверке» / «Отклонено». Отклонение красным: автору нужно
+/// открыть карточку и прочитать причину.
+class AdvertStatusChip extends StatelessWidget {
+  const AdvertStatusChip({required this.advert, super.key});
+  final AdvertModel advert;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
+    final rejected = advert.status == AdvertStatus.rejected;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color:
+            rejected ? scheme.error.withValues(alpha: 0.12) : scheme.onTertiary,
+        borderRadius: BorderRadius.circular(100),
+      ),
+      child: Text(
+        rejected ? l10n.advertStatusRejected : l10n.advertStatusModerate,
+        style: TextStyle(
+          fontSize: 12,
+          height: 1.2,
+          fontWeight: FontWeight.w600,
+          color: rejected ? scheme.error : scheme.secondary,
         ),
       ),
     );

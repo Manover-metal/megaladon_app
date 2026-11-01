@@ -5,6 +5,7 @@ import 'package:megaladon/data/models/user_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/screens/chats/chat_cubit.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
+import 'package:megaladon/logic/screens/safety/blocks_cubit.dart';
 import 'package:megaladon/logic/screens/user/user_profile_cubit.dart';
 import 'package:megaladon/presentation/widgets/avatar/avatar.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
@@ -14,6 +15,7 @@ import 'package:megaladon/presentation/widgets/card/order_card.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/review/user_reviews_section.dart';
+import 'package:megaladon/presentation/widgets/safety/safety_sheets.dart';
 import 'package:megaladon/presentation/widgets/section/content_section.dart';
 import 'package:megaladon/presentation/widgets/text/hint_text.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -62,11 +64,19 @@ class _UserProfileViewState extends State<_UserProfileView> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
+    // Меню «Пожаловаться / Заблокировать» — только авторизованному и не на
+    // себя: жалоба и блокировка бьются в защищённые ручки.
+    final me = context.watch<ProfileScreenCubit>().state.user;
+    final target = context.watch<UserProfileCubit>().state.user;
+    final canAct = me != null && target != null && target.id != me.id;
+
     return Scaffold(
       appBar: HeaderAppBar(
         isBack: true,
         compactTitle: true,
         title: l10n.userProfileTitle,
+        onTrailing:
+            canAct ? () => showUserActionsSheet(context, user: target) : null,
       ),
       body: BlocBuilder<UserProfileCubit, UserProfileState>(
         builder: (context, state) => CustomScrollView(
@@ -288,7 +298,11 @@ class _ContactBar extends StatelessWidget {
     final profile = context.watch<ProfileScreenCubit>().state;
     final isGuest = profile.user == null;
     final executor = profile.user?.executor;
-    final contactBlocked = executor != null && !executor.hasActiveSubscription;
+    // Заблокированному писать нельзя — сервер ответит 403, так что кнопку
+    // гасим сразу.
+    final blocked = context.watch<BlocksCubit>().state.isBlocked(user.id);
+    final contactBlocked =
+        blocked || (executor != null && !executor.hasActiveSubscription);
 
     if (user.phone == null && isGuest) return const SizedBox.shrink();
 
@@ -331,7 +345,10 @@ class _ContactBar extends StatelessWidget {
                     ),
                 ],
               ),
-              if (contactBlocked) HintText(l10n.contact_requires_subscription),
+              if (blocked)
+                HintText(l10n.safetyBlockedContactHint)
+              else if (contactBlocked)
+                HintText(l10n.contact_requires_subscription),
             ],
           ),
         ),

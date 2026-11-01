@@ -11,9 +11,9 @@ class ChatRepository {
 
   // Создаёт (или переиспользует существующий) личный чат с пользователем
   // [userId]. Возвращает чат, чтобы экран мог сразу открыть переписку.
-  Future<ChatModel?> create(int userId) => ApiService.I
-          .post<dynamic>('/chat/create', data: {'user_id': userId})
-          .then((value) {
+  Future<ChatModel?> create(int userId) =>
+      ApiService.I.post<dynamic>('/chat/create',
+          data: {'user_id': userId}).then((value) {
         final data = value.data;
         final chat = data is Map ? data['chat'] : null;
         return chat is Map<String, dynamic> ? ChatModel.parse(chat) : null;

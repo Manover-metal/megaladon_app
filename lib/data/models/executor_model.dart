@@ -1,5 +1,5 @@
 import 'package:megaladon/core/utils/parser.dart';
-import 'package:megaladon/data/models/dictionary/service_type_model.dart';
+import 'package:megaladon/data/models/dictionary/category_model.dart';
 
 class ExecutorModel {
   ExecutorModel({
@@ -9,8 +9,6 @@ class ExecutorModel {
     this.description,
     this.rating,
     this.bin,
-    this.lat,
-    this.lon,
     this.fullAddress,
     this.countOrders,
     this.photo,
@@ -29,12 +27,10 @@ class ExecutorModel {
   final String? description;
   final double? rating;
   final String? bin;
-  final double? lat;
-  final double? lon;
   final String? fullAddress;
   final int? countOrders;
   final String? photo;
-  final List<ServiceTypeModel> services;
+  final List<CategoryModel> services;
 
   /// Аккаунт удалён: бэкенд всё равно отдаёт его в откликах и чатах, но уже
   /// обезличенным — имя «Удалённый аккаунт», без фото, телефона и рейтинга.
@@ -70,12 +66,10 @@ class ExecutorModel {
         rating: data['rating'] != null ? Parser.toDouble(data['rating']) : null,
         bin: data['bin'] as String?,
         photo: data['photo_url'] as String?,
-        lat: data['lat'] != null ? Parser.toDouble(data['lat']) : null,
-        lon: data['lon'] != null ? Parser.toDouble(data['lon']) : null,
         fullAddress: data['full_address'] as String?,
         countOrders: data['count_orders'] as int?,
         services: data['services'] != null
-            ? ServiceTypeModel.listFromJson(data['services'] as List<dynamic>)
+            ? CategoryModel.listFromJson(data['services'] as List<dynamic>)
             : [],
         isDeleted: data['is_deleted'] == true,
         subscriptionExpiredAt:
@@ -103,8 +97,6 @@ class ExecutorModel {
         'description': description,
         'rating': rating,
         'bin': bin,
-        'lat': lat,
-        'lon': lon,
         'full_address': fullAddress,
         'count_orders': countOrders,
         'photo_url': photo,

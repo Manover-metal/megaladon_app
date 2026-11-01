@@ -9,6 +9,31 @@ class AppLocalizationsRu extends AppLocalizations {
   AppLocalizationsRu([String locale = 'ru']) : super(locale);
 
   @override
+  String get advertStatusModerate => 'На проверке';
+
+  @override
+  String get advertStatusRejected => 'Отклонено';
+
+  @override
+  String get advertModerateTitle => 'Объявление на проверке';
+
+  @override
+  String get advertModerateHint =>
+      'Оно появится на площадке после модерации. Обычно это занимает до 24 часов.';
+
+  @override
+  String get advertRejectedTitle => 'Объявление отклонено';
+
+  @override
+  String advertRejectedReason(String reason) {
+    return 'Причина: $reason. Исправьте объявление и сохраните — оно снова уйдёт на проверку.';
+  }
+
+  @override
+  String get advertRejectedHint =>
+      'Исправьте объявление и сохраните — оно снова уйдёт на проверку.';
+
+  @override
   String get pushNotificationsTitle => 'Пуш-уведомления';
 
   @override
@@ -332,12 +357,6 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get full_address => 'Полный адрес';
-
-  @override
-  String get latitude => 'Широта';
-
-  @override
-  String get longitude => 'Долгота';
 
   @override
   String get by_clicking_on_the_Continue_button_you_accept =>
@@ -776,28 +795,6 @@ class AppLocalizationsRu extends AppLocalizations {
       'Актуальность отклика не заполнена';
 
   @override
-  String get latitude_not_filled => 'Широта не заполнен';
-
-  @override
-  String get latitude_cannot_be_less_than_90 =>
-      'Широта не может быть меньше -90°';
-
-  @override
-  String get latitude_cannot_be_greater_than_90 =>
-      'Широта не может быть больше +90°';
-
-  @override
-  String get longitude_is_not_filled => 'Долгота не заполнен';
-
-  @override
-  String get longitude_cannot_be_less_than_180 =>
-      'Долгота не может быть меньше -180°';
-
-  @override
-  String get longitude_cannot_be_greater_than_180 =>
-      'Долгота не может быть больше 180°';
-
-  @override
   String get name_is_empty => 'Имя пустое';
 
   @override
@@ -1008,24 +1005,6 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get form_error_expired_at_empty => 'Актуальность отклика не заполнена';
-
-  @override
-  String get form_error_lat_empty => 'Широта не заполнена';
-
-  @override
-  String get form_error_lat_min => 'Широта не может быть меньше -90°';
-
-  @override
-  String get form_error_lat_max => 'Широта не может быть больше +90°';
-
-  @override
-  String get form_error_lon_empty => 'Долгота не заполнена';
-
-  @override
-  String get form_error_lon_min => 'Долгота не может быть меньше -180°';
-
-  @override
-  String get form_error_lon_max => 'Долгота не может быть больше 180°';
 
   @override
   String get form_error_name_empty => 'Имя не заполнено';
@@ -1501,14 +1480,6 @@ class AppLocalizationsRu extends AppLocalizations {
       'Заказчики ищут исполнителей рядом с собой. Координаты определим один раз, когда вы отправите форму.';
 
   @override
-  String get location_service_disabled =>
-      'Включите геолокацию на телефоне, чтобы мы отметили вас на карте';
-
-  @override
-  String get location_permission_denied =>
-      'Разрешите приложению доступ к геопозиции, чтобы мы отметили вас на карте';
-
-  @override
   String get form_error_contacts_empty => 'Добавьте хотя бы один контакт';
 
   @override
@@ -1560,4 +1531,189 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get aboutCreateText =>
       'Создаёт новое: заказ для поиска исполнителей, категорию услуг или объявление.';
+
+  @override
+  String get settingsGroupSupport => 'Поддержка';
+
+  @override
+  String get supportTitle => 'Сообщить о проблеме';
+
+  @override
+  String get supportIntro =>
+      'Опишите, что случилось. Сообщение уходит в поддержку, ответ придёт здесь, в приложении.';
+
+  @override
+  String get supportDescriptionHint => 'Что вы делали и что произошло?';
+
+  @override
+  String get supportAttach => 'Скриншоты (до 3)';
+
+  @override
+  String get supportSubmit => 'Отправить';
+
+  @override
+  String get supportSentTitle => 'Спасибо, получили';
+
+  @override
+  String get supportSentBody =>
+      'Поддержка прочитает сообщение и ответит в приложении. Вы получите пуш-уведомление.';
+
+  @override
+  String get supportSentDone => 'Готово';
+
+  @override
+  String get supportTicketsTitle => 'Мои обращения';
+
+  @override
+  String get supportTicketsEmpty => 'Обращений пока нет';
+
+  @override
+  String get supportReplyLabel => 'Ответ поддержки';
+
+  @override
+  String get supportStatusOpen => 'Открыто';
+
+  @override
+  String get supportStatusAnswered => 'Отвечено';
+
+  @override
+  String get supportStatusClosed => 'Закрыто';
+
+  @override
+  String get safetyReport => 'Пожаловаться';
+
+  @override
+  String get safetyReportHint =>
+      'Модераторы разберут жалобу в течение 24 часов';
+
+  @override
+  String get safetyBlock => 'Заблокировать';
+
+  @override
+  String get safetyBlockHint => 'Вы не сможете писать и откликаться друг другу';
+
+  @override
+  String get safetyReportTitle => 'Что не так?';
+
+  @override
+  String get safetyReasonSpam => 'Спам или реклама';
+
+  @override
+  String get safetyReasonAbuse => 'Оскорбления, угрозы или травля';
+
+  @override
+  String get safetyReasonInappropriate => 'Недопустимый контент';
+
+  @override
+  String get safetyReasonFake => 'Поддельный профиль или обман';
+
+  @override
+  String get safetyReasonOther => 'Другое';
+
+  @override
+  String get safetyReasonRequired => 'Выберите причину';
+
+  @override
+  String get safetyCommentHint => 'Что произошло — по желанию';
+
+  @override
+  String get safetyReportSubmit => 'Отправить жалобу';
+
+  @override
+  String get safetyReportSent =>
+      'Жалоба отправлена. Разберём её в течение 24 часов';
+
+  @override
+  String get safetyBlockTitle => 'Заблокировать пользователя?';
+
+  @override
+  String get safetyBlockBody =>
+      'Вы не сможете писать друг другу и откликаться на заказы друг друга. Разблокировать можно в настройках.';
+
+  @override
+  String get safetyBlockDone => 'Пользователь заблокирован';
+
+  @override
+  String get safetyUnblockDone => 'Пользователь разблокирован';
+
+  @override
+  String get safetyBlockedTitle => 'Заблокированные';
+
+  @override
+  String get safetyBlockedEmpty => 'Вы никого не блокировали';
+
+  @override
+  String get safetyUnblock => 'Разблокировать';
+
+  @override
+  String get safetyBlockedContactHint => 'Вы заблокировали этого пользователя';
+
+  @override
+  String supportMinLength(int count) {
+    return 'Минимум $count символов';
+  }
+
+  @override
+  String get filter_with_photo => 'Только с фото';
+
+  @override
+  String get filter_without_offers => 'Без откликов';
+
+  @override
+  String get filter_budget => 'Бюджет';
+
+  @override
+  String get filter_max_days => 'Срок исполнения до, дней';
+
+  @override
+  String get filter_rating_min => 'Рейтинг от';
+
+  @override
+  String get filter_store_name => 'Название магазина';
+
+  @override
+  String get filter_search_hint => 'Название или описание';
+
+  @override
+  String get filter_reset => 'Сбросить';
+
+  @override
+  String get sort_newest => 'Сначала новые';
+
+  @override
+  String get sort_oldest => 'Сначала старые';
+
+  @override
+  String get sort_cheap => 'Сначала дешёвые';
+
+  @override
+  String get sort_expensive => 'Сначала дорогие';
+
+  @override
+  String get sort_by_rating => 'По рейтингу';
+
+  @override
+  String get sort_by_name => 'По названию';
+
+  @override
+  String get by_price => 'По бюджету';
+
+  @override
+  String get by_deadline => 'По сроку';
+
+  @override
+  String category_all_in(String name) {
+    return 'Все в «$name»';
+  }
+
+  @override
+  String get category_nothing_found => 'Ничего не найдено';
+
+  @override
+  String get choose_services => 'Выбрать услуги';
+
+  @override
+  String select_count(int count) {
+    return 'Выбрать ($count)';
+  }
 }

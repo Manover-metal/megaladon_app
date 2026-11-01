@@ -5,23 +5,23 @@ class DictionaryState extends Equatable {
       {this.cities = const [],
       this.orderCategories = const [],
       this.advertCategories = const [],
-      this.serviceTypes = const [],
       this.companyTypes = const [],
       this.subscribesStore = const [],
       this.subscribesExecutor = const []});
   final List<CityModel> cities;
-  final List<OrderCategoryModel> orderCategories;
-  final List<AdvertCategoryModel> advertCategories;
-  final List<ServiceTypeModel> serviceTypes;
+
+  /// Деревья: корни, дети — в [CategoryModel.children].
+  /// Услуги: заказы, исполнители, объявления-услуги.
+  final List<CategoryModel> orderCategories;
+  final List<CategoryModel> advertCategories;
   final List<CompanyTypeModel> companyTypes;
   final List<SubscribeModel> subscribesStore;
   final List<SubscribeModel> subscribesExecutor;
 
   DictionaryState copyWith(
           {List<CityModel>? cities,
-          List<OrderCategoryModel>? orderCategories,
-          List<AdvertCategoryModel>? advertCategories,
-          List<ServiceTypeModel>? serviceTypes,
+          List<CategoryModel>? orderCategories,
+          List<CategoryModel>? advertCategories,
           List<CompanyTypeModel>? companyTypes,
           List<SubscribeModel>? subscribesStore,
           List<SubscribeModel>? subscribesExecutor}) =>
@@ -29,7 +29,6 @@ class DictionaryState extends Equatable {
           cities: cities ?? this.cities,
           orderCategories: orderCategories ?? this.orderCategories,
           advertCategories: advertCategories ?? this.advertCategories,
-          serviceTypes: serviceTypes ?? this.serviceTypes,
           companyTypes: companyTypes ?? this.companyTypes,
           subscribesExecutor: subscribesExecutor ?? this.subscribesExecutor,
           subscribesStore: subscribesStore ?? this.subscribesStore);
@@ -39,7 +38,6 @@ class DictionaryState extends Equatable {
         cities,
         orderCategories,
         advertCategories,
-        serviceTypes,
         companyTypes,
         subscribesExecutor,
         subscribesStore

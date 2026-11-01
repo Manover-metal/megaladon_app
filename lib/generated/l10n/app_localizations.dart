@@ -100,6 +100,48 @@ abstract class AppLocalizations {
     Locale('ru')
   ];
 
+  /// No description provided for @advertStatusModerate.
+  ///
+  /// In en, this message translates to:
+  /// **'Under review'**
+  String get advertStatusModerate;
+
+  /// No description provided for @advertStatusRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get advertStatusRejected;
+
+  /// No description provided for @advertModerateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Listing is under review'**
+  String get advertModerateTitle;
+
+  /// No description provided for @advertModerateHint.
+  ///
+  /// In en, this message translates to:
+  /// **'It will appear on the marketplace after moderation, usually within 24 hours.'**
+  String get advertModerateHint;
+
+  /// No description provided for @advertRejectedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Listing rejected'**
+  String get advertRejectedTitle;
+
+  /// No description provided for @advertRejectedReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason: {reason}. Edit the listing and save it to send it for review again.'**
+  String advertRejectedReason(String reason);
+
+  /// No description provided for @advertRejectedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit the listing and save it to send it for review again.'**
+  String get advertRejectedHint;
+
   /// No description provided for @pushNotificationsTitle.
   ///
   /// In en, this message translates to:
@@ -735,18 +777,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Full address'**
   String get full_address;
-
-  /// No description provided for @latitude.
-  ///
-  /// In en, this message translates to:
-  /// **'Latitude'**
-  String get latitude;
-
-  /// No description provided for @longitude.
-  ///
-  /// In en, this message translates to:
-  /// **'Longitude'**
-  String get longitude;
 
   /// No description provided for @by_clicking_on_the_Continue_button_you_accept.
   ///
@@ -1558,42 +1588,6 @@ abstract class AppLocalizations {
   /// **'Response relevance is not filled'**
   String get response_relevance_is_not_filled;
 
-  /// No description provided for @latitude_not_filled.
-  ///
-  /// In en, this message translates to:
-  /// **'Latitude is not filled'**
-  String get latitude_not_filled;
-
-  /// No description provided for @latitude_cannot_be_less_than_90.
-  ///
-  /// In en, this message translates to:
-  /// **'Latitude cannot be less than -90°'**
-  String get latitude_cannot_be_less_than_90;
-
-  /// No description provided for @latitude_cannot_be_greater_than_90.
-  ///
-  /// In en, this message translates to:
-  /// **'Latitude cannot be greater than +90°'**
-  String get latitude_cannot_be_greater_than_90;
-
-  /// No description provided for @longitude_is_not_filled.
-  ///
-  /// In en, this message translates to:
-  /// **'Longitude is not filled'**
-  String get longitude_is_not_filled;
-
-  /// No description provided for @longitude_cannot_be_less_than_180.
-  ///
-  /// In en, this message translates to:
-  /// **'Longitude cannot be less than -180°'**
-  String get longitude_cannot_be_less_than_180;
-
-  /// No description provided for @longitude_cannot_be_greater_than_180.
-  ///
-  /// In en, this message translates to:
-  /// **'Longitude cannot be greater than 180°'**
-  String get longitude_cannot_be_greater_than_180;
-
   /// No description provided for @name_is_empty.
   ///
   /// In en, this message translates to:
@@ -1953,42 +1947,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Response relevance is not filled'**
   String get form_error_expired_at_empty;
-
-  /// No description provided for @form_error_lat_empty.
-  ///
-  /// In en, this message translates to:
-  /// **'Latitude is not filled'**
-  String get form_error_lat_empty;
-
-  /// No description provided for @form_error_lat_min.
-  ///
-  /// In en, this message translates to:
-  /// **'Latitude cannot be less than -90°'**
-  String get form_error_lat_min;
-
-  /// No description provided for @form_error_lat_max.
-  ///
-  /// In en, this message translates to:
-  /// **'Latitude cannot be greater than +90°'**
-  String get form_error_lat_max;
-
-  /// No description provided for @form_error_lon_empty.
-  ///
-  /// In en, this message translates to:
-  /// **'Longitude is not filled'**
-  String get form_error_lon_empty;
-
-  /// No description provided for @form_error_lon_min.
-  ///
-  /// In en, this message translates to:
-  /// **'Longitude cannot be less than -180°'**
-  String get form_error_lon_min;
-
-  /// No description provided for @form_error_lon_max.
-  ///
-  /// In en, this message translates to:
-  /// **'Longitude cannot be greater than 180°'**
-  String get form_error_lon_max;
 
   /// No description provided for @form_error_name_empty.
   ///
@@ -2818,18 +2776,6 @@ abstract class AppLocalizations {
   /// **'Customers look for contractors near them. We will read the coordinates once, when you submit the form.'**
   String get executor_location_hint;
 
-  /// No description provided for @location_service_disabled.
-  ///
-  /// In en, this message translates to:
-  /// **'Turn on location on your phone so we can put you on the map'**
-  String get location_service_disabled;
-
-  /// No description provided for @location_permission_denied.
-  ///
-  /// In en, this message translates to:
-  /// **'Allow the app to use your location so we can put you on the map'**
-  String get location_permission_denied;
-
   /// No description provided for @form_error_contacts_empty.
   ///
   /// In en, this message translates to:
@@ -2907,6 +2853,354 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Creates something new: an order to find executors, a service category, or an ad.'**
   String get aboutCreateText;
+
+  /// No description provided for @settingsGroupSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Support'**
+  String get settingsGroupSupport;
+
+  /// No description provided for @supportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Report a problem'**
+  String get supportTitle;
+
+  /// No description provided for @supportIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us what happened. The message goes to our support team, and we will reply here in the app.'**
+  String get supportIntro;
+
+  /// No description provided for @supportDescriptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What were you doing and what happened?'**
+  String get supportDescriptionHint;
+
+  /// No description provided for @supportAttach.
+  ///
+  /// In en, this message translates to:
+  /// **'Screenshots (up to 3)'**
+  String get supportAttach;
+
+  /// No description provided for @supportSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get supportSubmit;
+
+  /// No description provided for @supportSentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Thanks, we got it'**
+  String get supportSentTitle;
+
+  /// No description provided for @supportSentBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Our support team will read your message and reply in the app. You will get a push notification.'**
+  String get supportSentBody;
+
+  /// No description provided for @supportSentDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get supportSentDone;
+
+  /// No description provided for @supportTicketsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'My requests'**
+  String get supportTicketsTitle;
+
+  /// No description provided for @supportTicketsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'You have no requests yet'**
+  String get supportTicketsEmpty;
+
+  /// No description provided for @supportReplyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Support reply'**
+  String get supportReplyLabel;
+
+  /// No description provided for @supportStatusOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get supportStatusOpen;
+
+  /// No description provided for @supportStatusAnswered.
+  ///
+  /// In en, this message translates to:
+  /// **'Answered'**
+  String get supportStatusAnswered;
+
+  /// No description provided for @supportStatusClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed'**
+  String get supportStatusClosed;
+
+  /// No description provided for @safetyReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Report'**
+  String get safetyReport;
+
+  /// No description provided for @safetyReportHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Moderators review reports within 24 hours'**
+  String get safetyReportHint;
+
+  /// No description provided for @safetyBlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Block'**
+  String get safetyBlock;
+
+  /// No description provided for @safetyBlockHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Neither of you will be able to message or respond to each other'**
+  String get safetyBlockHint;
+
+  /// No description provided for @safetyReportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s wrong?'**
+  String get safetyReportTitle;
+
+  /// No description provided for @safetyReasonSpam.
+  ///
+  /// In en, this message translates to:
+  /// **'Spam or advertising'**
+  String get safetyReasonSpam;
+
+  /// No description provided for @safetyReasonAbuse.
+  ///
+  /// In en, this message translates to:
+  /// **'Insults, threats or harassment'**
+  String get safetyReasonAbuse;
+
+  /// No description provided for @safetyReasonInappropriate.
+  ///
+  /// In en, this message translates to:
+  /// **'Objectionable content'**
+  String get safetyReasonInappropriate;
+
+  /// No description provided for @safetyReasonFake.
+  ///
+  /// In en, this message translates to:
+  /// **'Fake profile or scam'**
+  String get safetyReasonFake;
+
+  /// No description provided for @safetyReasonOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Something else'**
+  String get safetyReasonOther;
+
+  /// No description provided for @safetyReasonRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a reason'**
+  String get safetyReasonRequired;
+
+  /// No description provided for @safetyCommentHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What happened — optional'**
+  String get safetyCommentHint;
+
+  /// No description provided for @safetyReportSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Send report'**
+  String get safetyReportSubmit;
+
+  /// No description provided for @safetyReportSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Report sent. We will review it within 24 hours'**
+  String get safetyReportSent;
+
+  /// No description provided for @safetyBlockTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Block this user?'**
+  String get safetyBlockTitle;
+
+  /// No description provided for @safetyBlockBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Neither of you will be able to message the other or respond to each other\'s orders. You can unblock them in Settings.'**
+  String get safetyBlockBody;
+
+  /// No description provided for @safetyBlockDone.
+  ///
+  /// In en, this message translates to:
+  /// **'User blocked'**
+  String get safetyBlockDone;
+
+  /// No description provided for @safetyUnblockDone.
+  ///
+  /// In en, this message translates to:
+  /// **'User unblocked'**
+  String get safetyUnblockDone;
+
+  /// No description provided for @safetyBlockedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Blocked users'**
+  String get safetyBlockedTitle;
+
+  /// No description provided for @safetyBlockedEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'You haven\'t blocked anyone'**
+  String get safetyBlockedEmpty;
+
+  /// No description provided for @safetyUnblock.
+  ///
+  /// In en, this message translates to:
+  /// **'Unblock'**
+  String get safetyUnblock;
+
+  /// No description provided for @safetyBlockedContactHint.
+  ///
+  /// In en, this message translates to:
+  /// **'You have blocked this user'**
+  String get safetyBlockedContactHint;
+
+  /// No description provided for @supportMinLength.
+  ///
+  /// In en, this message translates to:
+  /// **'At least {count} characters'**
+  String supportMinLength(int count);
+
+  /// No description provided for @filter_with_photo.
+  ///
+  /// In en, this message translates to:
+  /// **'With photo only'**
+  String get filter_with_photo;
+
+  /// No description provided for @filter_without_offers.
+  ///
+  /// In en, this message translates to:
+  /// **'No offers yet'**
+  String get filter_without_offers;
+
+  /// No description provided for @filter_budget.
+  ///
+  /// In en, this message translates to:
+  /// **'Budget'**
+  String get filter_budget;
+
+  /// No description provided for @filter_max_days.
+  ///
+  /// In en, this message translates to:
+  /// **'Deadline up to, days'**
+  String get filter_max_days;
+
+  /// No description provided for @filter_rating_min.
+  ///
+  /// In en, this message translates to:
+  /// **'Rating from'**
+  String get filter_rating_min;
+
+  /// No description provided for @filter_store_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Store name'**
+  String get filter_store_name;
+
+  /// No description provided for @filter_search_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Title or description'**
+  String get filter_search_hint;
+
+  /// No description provided for @filter_reset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get filter_reset;
+
+  /// No description provided for @sort_newest.
+  ///
+  /// In en, this message translates to:
+  /// **'Newest first'**
+  String get sort_newest;
+
+  /// No description provided for @sort_oldest.
+  ///
+  /// In en, this message translates to:
+  /// **'Oldest first'**
+  String get sort_oldest;
+
+  /// No description provided for @sort_cheap.
+  ///
+  /// In en, this message translates to:
+  /// **'Cheapest first'**
+  String get sort_cheap;
+
+  /// No description provided for @sort_expensive.
+  ///
+  /// In en, this message translates to:
+  /// **'Most expensive first'**
+  String get sort_expensive;
+
+  /// No description provided for @sort_by_rating.
+  ///
+  /// In en, this message translates to:
+  /// **'By rating'**
+  String get sort_by_rating;
+
+  /// No description provided for @sort_by_name.
+  ///
+  /// In en, this message translates to:
+  /// **'By name'**
+  String get sort_by_name;
+
+  /// No description provided for @by_price.
+  ///
+  /// In en, this message translates to:
+  /// **'By budget'**
+  String get by_price;
+
+  /// No description provided for @by_deadline.
+  ///
+  /// In en, this message translates to:
+  /// **'By deadline'**
+  String get by_deadline;
+
+  /// No description provided for @category_all_in.
+  ///
+  /// In en, this message translates to:
+  /// **'All in «{name}»'**
+  String category_all_in(String name);
+
+  /// No description provided for @category_nothing_found.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing found'**
+  String get category_nothing_found;
+
+  /// No description provided for @choose_services.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose services'**
+  String get choose_services;
+
+  /// No description provided for @select_count.
+  ///
+  /// In en, this message translates to:
+  /// **'Select ({count})'**
+  String select_count(int count);
 }
 
 class _AppLocalizationsDelegate

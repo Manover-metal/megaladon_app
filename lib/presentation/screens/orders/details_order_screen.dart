@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/order_model.dart';
+import 'package:megaladon/data/repositories/safety_repository.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/screens/chats/chat_cubit.dart';
 import 'package:megaladon/logic/screens/orders/badges/order_badges_cubit.dart';
@@ -19,6 +20,7 @@ import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/order/order_status_pill.dart';
 import 'package:megaladon/presentation/widgets/order/order_summary_card.dart';
+import 'package:megaladon/presentation/widgets/safety/safety_sheets.dart';
 import 'package:megaladon/presentation/widgets/section/content_section.dart';
 import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/hint_text.dart';
@@ -41,9 +43,7 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
   Future<void> _createOffer() async {
     await context.router.push(CreateOfferRoute(orderId: widget.orderId));
     if (!mounted) return;
-    await context
-        .read<OrderScreenDetailsCubit>()
-        .refresh(id: widget.orderId);
+    await context.read<OrderScreenDetailsCubit>().refresh(id: widget.orderId);
   }
 
   /// Свой отклик — только для чтения: изменить его нельзя, а второй
@@ -189,6 +189,14 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                   final canManage = order != null &&
                       _isOwner(authState, order) &&
                       order.status.index <= OrderStatus.active.index;
+                  // Чужой заказ: вместо «Изменить/Удалить» — жалоба и
+                  // блокировка автора.
+                  final author = order?.user;
+                  final canReport = order != null &&
+                      author != null &&
+                      !author.isDeleted &&
+                      authState.user != null &&
+                      authState.user!.id != author.id;
 
                   return HeaderAppBar(
                     isBack: true,
@@ -197,7 +205,16 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                         ? AppLocalizations.of(context)!
                             .orderWithId(order.id.toString())
                         : null,
-                    onTrailing: canManage ? _onTrailing(order) : null,
+                    onTrailing: canManage
+                        ? _onTrailing(order)
+                        : canReport
+                            ? () => showUserActionsSheet(
+                                  context,
+                                  user: author,
+                                  target: ReportTarget.order,
+                                  targetId: order.id,
+                                )
+                            : null,
                   );
                 },
               ),

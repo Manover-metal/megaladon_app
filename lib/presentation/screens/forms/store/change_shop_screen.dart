@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:megaladon/data/models/request/params/update/change_store_request_params.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/form/update/store/change_store_form_cubit.dart';
@@ -35,18 +34,12 @@ class _ChangeStoreScreenState extends State<ChangeStoreScreen> {
   late TextEditingController _fullAddressController;
   late ContactTypeMultiPickerController _contactController;
 
-  Future<void> _save() async {
-    // Координаты берём один раз за нажатие. Раньше их запрашивали дважды:
-    // сначала внутри проверки формы, потом ещё раз перед отправкой.
-    final position = await _resolveLocation();
-    if (position == null || !mounted) return;
-    if (!_checkForm(position)) return;
+  void _save() {
+    if (!_checkForm()) return;
 
     context.read<ChangeStoreBloc>().add(ChangeStoreFetchEvent(
           params: ChangeStoreRequestParams(
               name: _nameController.value.text,
-              lat: position.latitude,
-              lon: position.longitude,
               fullAddress: _fullAddressController.value.text,
               city: _cityPickerController.value!,
               contacts:
@@ -78,45 +71,11 @@ class _ChangeStoreScreenState extends State<ChangeStoreScreen> {
         router.navigate(const InitialRouter(children: [ProfileRouter()])));
   }
 
-  /// Одна попытка получить координаты. Причина отказа объясняется на языке
-  /// приложения — раньше это были захардкоженные русские строки.
-  Future<Position?> _resolveLocation() async {
-    final l10n = AppLocalizations.of(context)!;
-
-    if (!await Geolocator.isLocationServiceEnabled()) {
-      if (mounted) {
-        CustomSnackBar.error(Text(l10n.location_service_disabled))
-            .view(context);
-      }
-      return null;
-    }
-
-    var permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-    }
-
-    if (permission == LocationPermission.denied ||
-        permission == LocationPermission.deniedForever) {
-      if (mounted) {
-        CustomSnackBar.error(Text(l10n.location_permission_denied))
-            .view(context);
-      }
-      return null;
-    }
-
-    return Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-    );
-  }
-
-  bool _checkForm(Position position) {
+  bool _checkForm() {
     final form = context.read<ChangeStoreFormCubit>();
     return form.checkChangeForm(
         name: _nameController.value.text,
         fullAddress: _fullAddressController.value.text,
-        lat: position.latitude.toString(),
-        lon: position.longitude.toString(),
         city: _cityPickerController.value,
         contacts: _contactController.value.map((e) => e.getData()).toList());
   }

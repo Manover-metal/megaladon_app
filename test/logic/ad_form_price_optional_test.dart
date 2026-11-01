@@ -1,7 +1,7 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:megaladon/core/dio/index.dart';
-import 'package:megaladon/data/models/dictionary/advert_category_model.dart';
+import 'package:megaladon/data/models/dictionary/category_model.dart';
 import 'package:megaladon/data/models/dictionary/advert_type.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
@@ -18,7 +18,7 @@ void main() {
   });
 
   final city = CityModel(id: 1, name: 'Алматы');
-  final category = AdvertCategoryModel(id: 2, name: 'Токарные работы');
+  final category = CategoryModel(id: 2, name: 'Токарные работы');
 
   bool checkCreate({required int? price, String title = 'Токарные работы'}) =>
       AdCreateFormCubit(AuthBloc()).checkCreate(

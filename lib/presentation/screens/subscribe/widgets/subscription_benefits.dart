@@ -66,8 +66,7 @@ class SubscriptionBenefits extends StatelessWidget {
           style: theme.textTheme.bodyLarge?.copyWith(fontSize: 22),
         ),
         const SizedBox(height: 16),
-        for (final benefit in _benefits(l10n))
-          _BenefitTile(benefit: benefit),
+        for (final benefit in _benefits(l10n)) _BenefitTile(benefit: benefit),
       ],
     );
   }

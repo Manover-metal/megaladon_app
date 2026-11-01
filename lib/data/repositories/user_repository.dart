@@ -39,9 +39,9 @@ class UserRepository {
         'password_confirmation': passwordConfirmation
       }).then((value) => value.data);
 
-  Future deleteAccount(String password) => ApiService.I
-      .delete('/user/delete-account', data: {'password': password}).then(
-          (value) => value.data);
+  Future deleteAccount(String password) =>
+      ApiService.I.delete('/user/delete-account',
+          data: {'password': password}).then((value) => value.data);
 
   Future changePhoneStepStart({
     required String phone,

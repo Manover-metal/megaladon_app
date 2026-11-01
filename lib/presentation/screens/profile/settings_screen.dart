@@ -31,6 +31,12 @@ class SettingsScreen extends StatelessWidget {
     ]));
   }
 
+  void _toProfileRoute(BuildContext context, PageRouteInfo route) {
+    context.router.navigate(InitialRouter(children: [
+      ProfileRouter(children: [route])
+    ]));
+  }
+
   Future<void> _openUrl(BuildContext context, String url) async {
     final uri = Uri.parse(url);
 
@@ -128,6 +134,29 @@ class SettingsScreen extends StatelessWidget {
               title: l10n.settingsGroupNotifications,
               padding: EdgeInsets.zero,
               child: const PushNotificationTile(),
+            ),
+            const SizedBox(height: _sectionGap),
+            ContentSection(
+              title: l10n.settingsGroupSupport,
+              padding: EdgeInsets.zero,
+              child: Column(
+                children: [
+                  SettingsRow(
+                    icon: Icons.support_agent_outlined,
+                    title: l10n.supportTitle,
+                    trailing: const SettingsChevron(),
+                    onTap: () => _toProfileRoute(context, const SupportRoute()),
+                  ),
+                  const SettingsRowDivider(),
+                  SettingsRow(
+                    icon: Icons.block_outlined,
+                    title: l10n.safetyBlockedTitle,
+                    trailing: const SettingsChevron(),
+                    onTap: () =>
+                        _toProfileRoute(context, const BlockedUsersRoute()),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: _sectionGap),
             ContentSection(

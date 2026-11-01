@@ -361,6 +361,30 @@ class _$AppRouter extends RootStackRouter {
         child: const AboutScreen(),
       );
     },
+    BlockedUsersRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const BlockedUsersScreen(),
+      );
+    },
+    SupportRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const SupportScreen(),
+      );
+    },
+    SupportSentRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const SupportSentScreen(),
+      );
+    },
+    SupportTicketsRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const SupportTicketsScreen(),
+      );
+    },
   };
 
   @override
@@ -531,6 +555,30 @@ class _$AppRouter extends RootStackRouter {
                   AboutRoute.name,
                   path: 'about-screen',
                   parent: ProfileRouter.name,
+                ),
+                RouteConfig(
+                  BlockedUsersRoute.name,
+                  path: 'blocked-users-screen',
+                  parent: ProfileRouter.name,
+                  guards: [authGuard],
+                ),
+                RouteConfig(
+                  SupportRoute.name,
+                  path: 'support-screen',
+                  parent: ProfileRouter.name,
+                  guards: [authGuard],
+                ),
+                RouteConfig(
+                  SupportSentRoute.name,
+                  path: 'support-sent-screen',
+                  parent: ProfileRouter.name,
+                  guards: [authGuard],
+                ),
+                RouteConfig(
+                  SupportTicketsRoute.name,
+                  path: 'support-tickets-screen',
+                  parent: ProfileRouter.name,
+                  guards: [authGuard],
                 ),
               ],
             ),
@@ -1540,4 +1588,52 @@ class AboutRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'AboutRoute';
+}
+
+/// generated route for
+/// [BlockedUsersScreen]
+class BlockedUsersRoute extends PageRouteInfo<void> {
+  const BlockedUsersRoute()
+      : super(
+          BlockedUsersRoute.name,
+          path: 'blocked-users-screen',
+        );
+
+  static const String name = 'BlockedUsersRoute';
+}
+
+/// generated route for
+/// [SupportScreen]
+class SupportRoute extends PageRouteInfo<void> {
+  const SupportRoute()
+      : super(
+          SupportRoute.name,
+          path: 'support-screen',
+        );
+
+  static const String name = 'SupportRoute';
+}
+
+/// generated route for
+/// [SupportSentScreen]
+class SupportSentRoute extends PageRouteInfo<void> {
+  const SupportSentRoute()
+      : super(
+          SupportSentRoute.name,
+          path: 'support-sent-screen',
+        );
+
+  static const String name = 'SupportSentRoute';
+}
+
+/// generated route for
+/// [SupportTicketsScreen]
+class SupportTicketsRoute extends PageRouteInfo<void> {
+  const SupportTicketsRoute()
+      : super(
+          SupportTicketsRoute.name,
+          path: 'support-tickets-screen',
+        );
+
+  static const String name = 'SupportTicketsRoute';
 }
