@@ -7,6 +7,7 @@ import 'package:megaladon/logic/screens/service/main/service_screen_main_cubit.d
 import 'package:megaladon/presentation/screens/orders/list_my_orders_screen.dart';
 import 'package:megaladon/presentation/widgets/bottom_sheet/filters/filter_ad_bottom_sheet.dart';
 import 'package:megaladon/presentation/widgets/card/ad_card.dart';
+import 'package:megaladon/presentation/widgets/form/picker/dictionary/category_picker.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/message/stock_message.dart';
@@ -38,7 +39,11 @@ class _TradingAdsScreenState extends State<TradingAdsScreen>
         useRootNavigator: true,
         context: context,
         elevation: 100,
-        builder: (_) => const FilterAdBottomSheet());
+        // Вкладка 0 — услуги, 1 — объявления: у них разные деревья категорий.
+        builder: (_) => FilterAdBottomSheet(
+            kind: _tabController.index == 0
+                ? CategoryKind.service
+                : CategoryKind.advert));
     if (result != null) {
       context.read<AdvertScreenMainCubit>().fetch();
       context.read<ServiceScreenMainCubit>().fetch();

@@ -59,8 +59,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future _sendFbToken() async {
     try {
-      var token =
-          await _fcmTokenReader().timeout(const Duration(seconds: 10));
+      var token = await _fcmTokenReader().timeout(const Duration(seconds: 10));
       if (token != null) {
         _authRepository.sendFB(token: token);
       }

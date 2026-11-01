@@ -1,5 +1,5 @@
 import 'package:formz/formz.dart';
-import 'package:megaladon/data/models/dictionary/service_type_model.dart';
+import 'package:megaladon/data/models/dictionary/category_model.dart';
 import 'package:megaladon/data/models/form/localizable_error.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 
@@ -15,14 +15,14 @@ enum MultiServiceTypeValidationError implements LocalizableError {
   }
 }
 
-class MultiServiceTypeFormModel extends FormzInput<List<ServiceTypeModel>,
-    MultiServiceTypeValidationError> {
+class MultiServiceTypeFormModel
+    extends FormzInput<List<CategoryModel>, MultiServiceTypeValidationError> {
   const MultiServiceTypeFormModel.pure() : super.pure(const []);
   const MultiServiceTypeFormModel.dirty([super.value = const []])
       : super.dirty();
 
   @override
-  MultiServiceTypeValidationError? validator(List<ServiceTypeModel> value) {
+  MultiServiceTypeValidationError? validator(List<CategoryModel> value) {
     if (value.isEmpty) {
       return MultiServiceTypeValidationError.empty;
     }

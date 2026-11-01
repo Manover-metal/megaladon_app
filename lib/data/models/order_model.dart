@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:megaladon/core/utils/parser.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/dictionary/file_model.dart';
-import 'package:megaladon/data/models/dictionary/order_category_model.dart';
+import 'package:megaladon/data/models/dictionary/category_model.dart';
 import 'package:megaladon/data/models/executor_model.dart';
 import 'package:megaladon/data/models/user_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
@@ -90,7 +90,7 @@ class OrderModel extends Equatable {
   final double? priceMax;
   final int? executionDays;
   final UserModel? user;
-  final OrderCategoryModel? category;
+  final CategoryModel? category;
   final ExecutorModel? executor;
   final CityModel? city;
   final List<FileModel> files;
@@ -112,8 +112,7 @@ class OrderModel extends Equatable {
   final int newOffersCount;
 
   /// Заказ изменился с тех пор, как пользователь его открывал.
-  bool get hasUpdates =>
-      statusChanged || contentChanged || newOffersCount > 0;
+  bool get hasUpdates => statusChanged || contentChanged || newOffersCount > 0;
 
   /// Цены с разделителями разрядов — то, что показывают карточка и экран.
   /// Ноль бэкенд присылает вместо «не указана», поэтому показывать его как
@@ -212,8 +211,7 @@ class OrderModel extends Equatable {
           ? ExecutorModel.fromJson(data['executor'] as Map<String, dynamic>)
           : null,
       category: data['category'] != null
-          ? OrderCategoryModel.fromJson(
-              data['category'] as Map<String, dynamic>)
+          ? CategoryModel.fromJson(data['category'] as Map<String, dynamic>)
           : null,
       city: data['city'] != null
           ? CityModel.fromJson(data['city'] as Map<String, dynamic>)

@@ -218,6 +218,9 @@ analyzer:
   - "**.mocks.dart"
   - "*.gr.dart"
   - "**/generated/**"
+  - build/**
+  - android/**
+  - ios/**
 
 
 

@@ -174,7 +174,8 @@ class _MyAdsScreenState extends State<MyAdsScreen>
                           builder: (context, state) => Column(
                             children: [
                               ...state.services
-                                  .map((advert) => AdCard(advert: advert))
+                                  .map((advert) =>
+                                      AdCard(advert: advert, showStatus: true))
                                   .toList(),
                               if (state.status == ServiceScreenMyStatus.loading)
                                 const Loader(padding: 10)
@@ -207,7 +208,8 @@ class _MyAdsScreenState extends State<MyAdsScreen>
                           builder: (context, state) => Column(
                             children: [
                               ...state.adverts
-                                  .map((advert) => AdCard(advert: advert))
+                                  .map((advert) =>
+                                      AdCard(advert: advert, showStatus: true))
                                   .toList(),
                               if (state.status ==
                                   AdverScreenMyMainStatus.loading)

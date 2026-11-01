@@ -293,6 +293,7 @@ class _SubscribeFaceView extends StatelessWidget {
           : PaymentMethod.google;
       final method = await PaymentMethodSheet.show(
         context,
+        plan: plan,
         storeMethod: product == null ? null : storeMethod,
         storePrice: product?.price,
         manualPrice: options.manual

@@ -5,11 +5,6 @@
          ничего не спрашивает, и уведомления не показываются. -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
-    <!-- Геолокация: координаты цеха/компании при регистрации и правке профиля.
-         Только на переднем плане — ACCESS_BACKGROUND_LOCATION не нужен. -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-
     <!-- Выбор изображений (Permission.photos в ImageService).
          На Android 13+ это READ_MEDIA_IMAGES, до 13 — READ_EXTERNAL_STORAGE. -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>

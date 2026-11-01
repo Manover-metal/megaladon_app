@@ -5,8 +5,10 @@ import 'package:megaladon/data/models/order_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/screens/orders/main/order_screen_main_cubit.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
+import 'package:megaladon/presentation/widgets/form/field/number_field.dart';
+import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
-import 'package:megaladon/presentation/widgets/form/picker/dictionary/order_category_picker.dart';
+import 'package:megaladon/presentation/widgets/form/picker/dictionary/category_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/last_day_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/status_picker.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
@@ -35,8 +37,13 @@ class _FilterOrderBottomSheetState extends State<FilterOrderBottomSheet> {
 
   late IndexPeriodPickerController _indexPeriodPickerController;
   late CityPickerController _cityPickerController;
-  late OrderCategoryPickerController _orderCategoryPickerController;
+  late CategoryPickerController _orderCategoryPickerController;
   late StatusPickerController _statusPickerController;
+  late TextEditingController _queryController;
+  late TextEditingController _budgetFromController;
+  late TextEditingController _budgetToController;
+  late TextEditingController _daysController;
+  late bool _withoutOffers;
 
   void _back() {
     var params = context.read<OrderScreenMainCubit>().state.params;
@@ -48,7 +55,12 @@ class _FilterOrderBottomSheetState extends State<FilterOrderBottomSheet> {
         city: city,
         category: category,
         statuses: StatusPickerController.resolve(
-            _statusPickerController.value, _statusOptions)));
+            _statusPickerController.value, _statusOptions),
+        query: _queryController.text,
+        priceMin: int.tryParse(_budgetFromController.text),
+        priceMax: int.tryParse(_budgetToController.text),
+        executionDaysMax: int.tryParse(_daysController.text),
+        withoutOffers: _withoutOffers));
     context.router.pop(true);
   }
 
@@ -59,9 +71,18 @@ class _FilterOrderBottomSheetState extends State<FilterOrderBottomSheet> {
         IndexPeriodPickerController(state.params.last);
     _cityPickerController = CityPickerController(city: state.params.city);
     _orderCategoryPickerController =
-        OrderCategoryPickerController(category: state.params.category);
+        CategoryPickerController(category: state.params.category);
     _statusPickerController = StatusPickerController(
         StatusPickerController.seedFrom(state.params.statuses, _statusOptions));
+    final params = state.params;
+    _queryController = TextEditingController(text: params.query ?? '');
+    _budgetFromController =
+        TextEditingController(text: params.priceMin?.toString() ?? '');
+    _budgetToController =
+        TextEditingController(text: params.priceMax?.toString() ?? '');
+    _daysController =
+        TextEditingController(text: params.executionDaysMax?.toString() ?? '');
+    _withoutOffers = params.withoutOffers;
     super.initState();
   }
 
@@ -71,20 +92,31 @@ class _FilterOrderBottomSheetState extends State<FilterOrderBottomSheet> {
     _cityPickerController.dispose();
     _orderCategoryPickerController.dispose();
     _statusPickerController.dispose();
+    _queryController.dispose();
+    _budgetFromController.dispose();
+    _budgetToController.dispose();
+    _daysController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) => Container(
         color: Theme.of(context).colorScheme.surface,
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: Column(
+        padding: EdgeInsets.fromLTRB(
+            20, 10, 20, 10 + MediaQuery.viewInsetsOf(context).bottom),
+        child: SingleChildScrollView(
+            child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TitleApp(AppLocalizations.of(context)!.filter),
             const Divider(
               thickness: 1,
               height: 20,
+            ),
+            TextFieldApp(
+              controller: _queryController,
+              label: AppLocalizations.of(context)!.search,
+              hintText: AppLocalizations.of(context)!.filter_search_hint,
             ),
             Row(
               children: [
@@ -100,13 +132,44 @@ class _FilterOrderBottomSheetState extends State<FilterOrderBottomSheet> {
             Row(
               children: [
                 Expanded(
-                  child: OrderCategoryPicker(
+                  child: CategoryPicker(
+                    kind: CategoryKind.service,
                     label: AppLocalizations.of(context)!.category,
                     controller: _orderCategoryPickerController,
                     withNull: true,
                   ),
                 )
               ],
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: SubTitleApp(AppLocalizations.of(context)!.filter_budget),
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: NumberFieldApp(
+                      controller: _budgetFromController,
+                      label: AppLocalizations.of(context)!.from),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: NumberFieldApp(
+                      controller: _budgetToController,
+                      label: AppLocalizations.of(context)!.to),
+                ),
+              ],
+            ),
+            NumberFieldApp(
+              controller: _daysController,
+              label: AppLocalizations.of(context)!.filter_max_days,
+            ),
+            SwitchListTile.adaptive(
+              contentPadding: EdgeInsets.zero,
+              title: Text(AppLocalizations.of(context)!.filter_without_offers),
+              value: _withoutOffers,
+              onChanged: (value) => setState(() => _withoutOffers = value),
             ),
             Row(
               children: [
@@ -138,6 +201,6 @@ class _FilterOrderBottomSheetState extends State<FilterOrderBottomSheet> {
               height: 30,
             ),
           ],
-        ),
+        )),
       );
 }

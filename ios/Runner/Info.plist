@@ -40,8 +40,6 @@
 		<string>Manover uses the camera so you can photograph metal products, documents and order details and attach them to your listings, orders and chat messages.</string>
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>Manover needs access to your photo library so you can attach saved photos to your listings, orders and chat messages.</string>
-		<key>NSLocationWhenInUseUsageDescription</key>
-		<string>Manover uses your current location to fill in the address of your company or workshop and to show orders and suppliers nearby.</string>
 		<key>UIApplicationSceneManifest</key>
 		<dict>
 			<key>UIApplicationSupportsMultipleScenes</key>

@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:megaladon/data/models/dictionary/service_type_model.dart';
+import 'package:megaladon/data/models/dictionary/category_model.dart';
 import 'package:megaladon/data/models/executor_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/presentation/routing/router.dart';
@@ -135,7 +135,7 @@ class _RatingLine extends StatelessWidget {
 
 class _Services extends StatelessWidget {
   const _Services({required this.services, required this.visible});
-  final List<ServiceTypeModel> services;
+  final List<CategoryModel> services;
   final int visible;
 
   @override

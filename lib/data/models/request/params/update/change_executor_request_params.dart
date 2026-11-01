@@ -1,4 +1,4 @@
-import 'package:megaladon/data/models/dictionary/service_type_model.dart';
+import 'package:megaladon/data/models/dictionary/category_model.dart';
 
 /// Изменение исполнителя. БИН не отправляем: с экрана он не редактируется, а
 /// бэкенд обновляет только пришедшие поля — сохранённый БИН остаётся.
@@ -6,21 +6,15 @@ class ChangeExecutorRequestParams {
   const ChangeExecutorRequestParams(
       {required this.name,
       required this.fullAddress,
-      required this.lon,
-      required this.lat,
       this.services = const []});
   final String name;
   final String fullAddress;
-  final double lon;
-  final double lat;
-  final List<ServiceTypeModel> services;
+  final List<CategoryModel> services;
 
   Map<String, Object> toData() {
     final data = {
       'name': name,
       'full_address': fullAddress,
-      'lon': lon,
-      'lat': lat,
       'services': services.map((e) => e.id).toList(),
     };
     return data;

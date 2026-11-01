@@ -41,8 +41,7 @@ class _UserAgreementTextState extends State<UserAgreementText> {
     return Text.rich(
       TextSpan(
         children: [
-          TextSpan(
-              text: l10n.by_clicking_on_the_Continue_button_you_accept),
+          TextSpan(text: l10n.by_clicking_on_the_Continue_button_you_accept),
           TextSpan(
             text: l10n.user_Agreement_Terms,
             style: const TextStyle(decoration: TextDecoration.underline),

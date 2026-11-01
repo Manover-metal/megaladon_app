@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:formz/formz.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
-import 'package:megaladon/data/models/dictionary/order_category_model.dart';
+import 'package:megaladon/data/models/dictionary/category_model.dart';
 import 'package:megaladon/data/models/enum_form_state.dart';
 import 'package:megaladon/data/models/error_model.dart';
 import 'package:megaladon/data/models/form/description.dart';
@@ -30,14 +30,15 @@ class OrderCreateFormCubit extends Cubit<OrderCreateFormState> {
       required int? priceMax,
       required String executionDays,
       required CityModel? city,
-      required OrderCategoryModel category,
+      required CategoryModel? category,
       required List<PlatformFile> files}) {
     var titleForm = TitleFormModel.dirty(title);
     var descriptionForm = DescriptionFormModel.dirty(description);
     var priceMaxFormModel = PriceFormModel.dirty(priceMax, false);
     var executionDaysForm = ExecutionDaysFormModel.dirty(executionDays);
     var cityForm = CityFormModel.dirty(city?.id);
-    var categoryForm = OrderCategoryFormModel.dirty(category.id);
+    var categoryForm =
+        OrderCategoryFormModel.dirty(category?.id ?? CategoryModel.nothing.id);
 
     var status = Formz.validate([
       titleForm,

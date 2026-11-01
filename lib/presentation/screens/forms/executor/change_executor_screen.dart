@@ -3,9 +3,7 @@ import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:megaladon/data/models/dictionary/order_category_model.dart';
-import 'package:megaladon/data/models/dictionary/service_type_model.dart';
+import 'package:megaladon/data/models/dictionary/category_model.dart';
 import 'package:megaladon/data/models/request/params/update/change_executor_request_params.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/form/update/executor/change_executor_form_cubit.dart';
@@ -15,7 +13,7 @@ import 'package:megaladon/presentation/routing/router.dart';
 import 'package:megaladon/presentation/widgets/auth/auth_scaffold.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
-import 'package:megaladon/presentation/widgets/form/multi_picker/order_category_multi_picker.dart';
+import 'package:megaladon/presentation/widgets/form/picker/dictionary/category_picker.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
 
@@ -33,24 +31,16 @@ class ChangeExecutorScreen extends StatefulWidget {
 class _ChangeExecutorScreenState extends State<ChangeExecutorScreen> {
   late TextEditingController _nameController;
   late TextEditingController _fullAddressController;
-  late OrderCategoryMultiPickerController _serviceController;
+  late CategoryMultiPickerController _serviceController;
 
-  List<ServiceTypeModel> get _services => _serviceController.value
-      .map((e) => ServiceTypeModel(id: e.value.id, name: e.value.name))
-      .toList();
+  List<CategoryModel> get _services => _serviceController.value;
 
-  Future<void> _save() async {
-    // Координаты берём один раз за нажатие. Раньше их запрашивали дважды:
-    // сначала внутри проверки формы, потом ещё раз перед отправкой.
-    final position = await _resolveLocation();
-    if (position == null || !mounted) return;
-    if (!_checkForm(position)) return;
+  void _save() {
+    if (!_checkForm()) return;
 
     context.read<ChangeExecutorBloc>().add(ChangeExecutorFetchEvent(
           params: ChangeExecutorRequestParams(
               name: _nameController.value.text,
-              lat: position.latitude,
-              lon: position.longitude,
               fullAddress: _fullAddressController.value.text,
               services: _services),
         ));
@@ -80,45 +70,11 @@ class _ChangeExecutorScreenState extends State<ChangeExecutorScreen> {
         router.navigate(const InitialRouter(children: [ProfileRouter()])));
   }
 
-  /// Одна попытка получить координаты. Причина отказа объясняется на языке
-  /// приложения — раньше это были захардкоженные русские строки.
-  Future<Position?> _resolveLocation() async {
-    final l10n = AppLocalizations.of(context)!;
-
-    if (!await Geolocator.isLocationServiceEnabled()) {
-      if (mounted) {
-        CustomSnackBar.error(Text(l10n.location_service_disabled))
-            .view(context);
-      }
-      return null;
-    }
-
-    var permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-    }
-
-    if (permission == LocationPermission.denied ||
-        permission == LocationPermission.deniedForever) {
-      if (mounted) {
-        CustomSnackBar.error(Text(l10n.location_permission_denied))
-            .view(context);
-      }
-      return null;
-    }
-
-    return Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-    );
-  }
-
-  bool _checkForm(Position position) {
+  bool _checkForm() {
     final form = context.read<ChangeExecutorFormCubit>();
     return form.checkChangeForm(
         name: _nameController.value.text,
         fullAddress: _fullAddressController.value.text,
-        lat: position.latitude.toString(),
-        lon: position.longitude.toString(),
         services: _services);
   }
 
@@ -126,12 +82,9 @@ class _ChangeExecutorScreenState extends State<ChangeExecutorScreen> {
   void initState() {
     final executor = context.read<ProfileScreenCubit>().state.user?.executor;
     _nameController = TextEditingController(text: executor?.name);
-    _fullAddressController =
-        TextEditingController(text: executor?.fullAddress);
-    _serviceController = OrderCategoryMultiPickerController(
-        categories: executor?.services
-            .map((s) => OrderCategoryModel(id: s.id, name: s.name))
-            .toList());
+    _fullAddressController = TextEditingController(text: executor?.fullAddress);
+    _serviceController =
+        CategoryMultiPickerController(categories: executor?.services);
     super.initState();
   }
 
@@ -178,7 +131,11 @@ class _ChangeExecutorScreenState extends State<ChangeExecutorScreen> {
                 AuthFieldGroup(
                   title: l10n.services,
                   children: [
-                    OrderCategoryMultiPicker(controllers: _serviceController),
+                    CategoryMultiPicker(
+                      label: l10n.services,
+                      controller: _serviceController,
+                      kind: CategoryKind.service,
+                    ),
                   ],
                 ),
                 if (formState.services.displayError != null)

@@ -129,8 +129,8 @@ class _StatusPickerState extends State<StatusPicker> {
                   child: Row(
                     children: [
                       Expanded(
-                        child: Text(
-                            _label(status, AppLocalizations.of(context)!)),
+                        child:
+                            Text(_label(status, AppLocalizations.of(context)!)),
                       ),
                       const Icon(Icons.keyboard_arrow_down_outlined),
                     ],

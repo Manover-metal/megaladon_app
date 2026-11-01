@@ -5,35 +5,27 @@ class ChangeStoreFormState extends Equatable {
       {this.status = false,
       this.name = const NameFormModel.pure(),
       this.city = const CityFormModel.pure(),
-      this.lat = const LatFormModel.pure(),
-      this.lon = const LonFormModel.pure(),
       this.contacts = const MultiContactFormModel.pure(),
       this.countTry = 0});
   final bool status;
   final NameFormModel name;
   final CityFormModel city;
-  final LatFormModel lat;
-  final LonFormModel lon;
   final MultiContactFormModel contacts;
   final int countTry;
 
   @override
-  List<Object?> get props => [status, name, city, lat, lon, contacts, countTry];
+  List<Object?> get props => [status, name, city, contacts, countTry];
 
   ChangeStoreFormState copyWith(
           {bool? status,
           NameFormModel? name,
           CityFormModel? city,
-          LatFormModel? lat,
-          LonFormModel? lon,
           MultiContactFormModel? contacts,
           int? countTry}) =>
       ChangeStoreFormState(
         status: status ?? this.status,
         name: name ?? this.name,
         city: city ?? this.city,
-        lat: lat ?? this.lat,
-        lon: lon ?? this.lon,
         contacts: contacts ?? this.contacts,
         countTry: countTry ?? this.countTry,
       );

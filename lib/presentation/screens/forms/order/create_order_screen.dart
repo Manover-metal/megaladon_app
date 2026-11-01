@@ -18,7 +18,7 @@ import 'package:megaladon/presentation/widgets/form/field/price_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/form/multi_picker/file_multi_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
-import 'package:megaladon/presentation/widgets/form/picker/dictionary/order_category_picker.dart';
+import 'package:megaladon/presentation/widgets/form/picker/dictionary/category_picker.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
@@ -31,7 +31,7 @@ class CreateOrderScreen extends StatefulWidget {
 }
 
 class _CreateOrderScreenState extends State<CreateOrderScreen> {
-  late OrderCategoryPickerController _orderCategoryController;
+  late CategoryPickerController _orderCategoryController;
   late TextEditingController _titleController;
   late TextEditingController _descriptionController;
 
@@ -101,7 +101,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
 
   @override
   void initState() {
-    _orderCategoryController = OrderCategoryPickerController();
+    _orderCategoryController = CategoryPickerController();
     _titleController = TextEditingController();
     _cityController = CityPickerController();
     _priceMaxController = PriceEditingController();
@@ -139,7 +139,8 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                   BlocBuilder<OrderCreateFormCubit, OrderCreateFormState>(
                     builder: (context, state) => Column(
                       children: [
-                        OrderCategoryPicker(
+                        CategoryPicker(
+                          kind: CategoryKind.service,
                           label:
                               AppLocalizations.of(context)!.select_a_category,
                           controller: _orderCategoryController,

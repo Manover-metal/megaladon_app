@@ -5,7 +5,7 @@ import 'package:megaladon/core/dio/interceptors/auth_interceptors.dart';
 import 'package:megaladon/core/dio/interceptors/error_interceptors.dart';
 import 'package:megaladon/core/dio/interceptors/language_interceptor.dart';
 import 'package:talker/talker.dart';
-import 'package:talker_dio_logger_plus/talker_dio_logger_plus.dart';
+import 'package:talker_dio_logger/talker_dio_logger.dart';
 
 class ApiService {
   ApiService();
@@ -24,9 +24,9 @@ class ApiService {
     // сообщает об 401. См. AuthInterceptor.
     _authInterceptor = AuthInterceptor();
     addInterceptors(_authInterceptor);
-    addInterceptors(AdvancedDioLogger(
+    addInterceptors(TalkerDioLogger(
       talker: Talker(),
-      settings: AdvancedDioLoggerSettings(
+      settings: TalkerDioLoggerSettings(
         printRequestExtra: false,
         printRequestHeaders: false,
         printRequestData: true,
@@ -34,7 +34,7 @@ class ApiService {
         printResponseHeaders: false,
         printErrorMessage: true,
         responseFilter: (response) {
-          if(response.requestOptions.uri.path.contains('api/chat')) {
+          if (response.requestOptions.uri.path.contains('api/chat')) {
             return false;
           }
           return true;

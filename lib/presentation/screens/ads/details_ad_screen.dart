@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/data/models/advert_model.dart';
 import 'package:megaladon/data/models/dictionary/advert_type.dart';
+import 'package:megaladon/data/repositories/safety_repository.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/screens/advert/delete/advert_delete_cubit.dart';
 import 'package:megaladon/logic/screens/advert/details/advert_screen_details_cubit.dart';
@@ -15,6 +16,7 @@ import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/message/error_message.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
+import 'package:megaladon/presentation/widgets/safety/safety_sheets.dart';
 import 'package:megaladon/presentation/widgets/section/content_section.dart';
 import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/hint_text.dart';
@@ -131,6 +133,11 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                   AdvertScreenDetailsCubit, AdvertScreenDetailsState>(
                 builder: (context, state) {
                   if (state is AdvertScreenDetailsSuccess) {
+                    final author = state.advert.user;
+                    final canReport = author != null &&
+                        !author.isDeleted &&
+                        authState.user != null &&
+                        authState.user!.id != author.id;
                     return HeaderAppBar(
                       isBack: true,
                       compactTitle: true,
@@ -139,7 +146,14 @@ class _DetailsAdScreenState extends State<DetailsAdScreen> {
                           : AppLocalizations.of(context)!.service,
                       onTrailing: _isOwner(authState, state.advert)
                           ? _onTrailing(state.advert)
-                          : null,
+                          : canReport
+                              ? () => showUserActionsSheet(
+                                    context,
+                                    user: author,
+                                    target: ReportTarget.advert,
+                                    targetId: state.advert.id,
+                                  )
+                              : null,
                     );
                   }
                   return HeaderAppBar(isBack: true, onTrailing: _refresh);
@@ -202,6 +216,10 @@ class _AdvertBody extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          if (advert.status != AdvertStatus.active) ...[
+            _ModerationBanner(advert: advert),
+            const SizedBox(height: 12),
+          ],
           Row(
             children: [
               _TypeChip(isService: isService),
@@ -256,6 +274,49 @@ class _AdvertBody extends StatelessWidget {
             SizedBox(height: gap),
             _Author(advert: advert, isService: isService),
           ],
+        ],
+      ),
+    );
+  }
+}
+
+/// Автору: объявление на проверке или отклонено (с причиной). Чужие сюда не
+/// попадают — бэкенд отдаёт 404 на непрошедшие модерацию объявления.
+class _ModerationBanner extends StatelessWidget {
+  const _ModerationBanner({required this.advert});
+  final AdvertModel advert;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
+    final rejected = advert.status == AdvertStatus.rejected;
+    final color = rejected ? scheme.error : scheme.secondary;
+    final reason = advert.rejectReason;
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: color.withValues(alpha: 0.4)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            rejected ? l10n.advertRejectedTitle : l10n.advertModerateTitle,
+            style: TextStyle(fontWeight: FontWeight.w700, color: color),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            rejected
+                ? (reason != null && reason.isNotEmpty
+                    ? l10n.advertRejectedReason(reason)
+                    : l10n.advertRejectedHint)
+                : l10n.advertModerateHint,
+            style: TextStyle(fontSize: 13, color: scheme.secondary),
+          ),
         ],
       ),
     );

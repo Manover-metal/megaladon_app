@@ -8,8 +8,6 @@ import 'package:megaladon/data/models/form/bin.dart';
 import 'package:megaladon/data/models/form/dictionary/city.dart';
 import 'package:megaladon/data/models/form/dictionary/company_type.dart';
 import 'package:megaladon/data/models/form/dictionary/multy_contact_model.dart';
-import 'package:megaladon/data/models/form/lat.dart';
-import 'package:megaladon/data/models/form/lon.dart';
 import 'package:megaladon/data/models/form/name.dart';
 
 part 'register_store_form_state.dart';
@@ -21,37 +19,24 @@ class RegisterStoreFormCubit extends Cubit<RegisterStoreFormState> {
     required String name,
     required String fullAddress,
     required String bin,
-    required String lat,
-    required String lon,
     required CityModel? city,
     required CompanyTypeModel? type,
     required List<ContactModel> contacts,
   }) {
     var nameForm = NameFormModel.dirty(name);
     var binForm = BinFormModel.dirty(bin);
-    var latForm = LatFormModel.dirty(lat);
-    var lonForm = LonFormModel.dirty(lon);
     var cityForm = CityFormModel.dirty(city?.id);
     var typeForm = CompanyTypeFormModel.dirty(type?.id);
     var contactsForm = MultiContactFormModel.dirty(contacts);
 
-    var status = Formz.validate([
-      nameForm,
-      binForm,
-      latForm,
-      lonForm,
-      cityForm,
-      typeForm,
-      contactsForm
-    ]);
+    var status =
+        Formz.validate([nameForm, binForm, cityForm, typeForm, contactsForm]);
 
     var stateNew = state.copyWith(
         name: nameForm,
         bin: binForm,
         city: cityForm,
         type: typeForm,
-        lat: latForm,
-        lon: lonForm,
         contacts: contactsForm,
         status: status,
         countTry: state.countTry + 1);

@@ -70,8 +70,7 @@ class ChatModel extends Equatable {
     for (final m in incoming) {
       byId[m.id] = m;
     }
-    final merged = byId.values.toList()
-      ..sort((a, b) => a.id.compareTo(b.id));
+    final merged = byId.values.toList()..sort((a, b) => a.id.compareTo(b.id));
     return copyWith(messages: merged);
   }
 

@@ -20,7 +20,8 @@ class SubscribeRepository {
       ).then((response) => response.data['data']['uuid'] as String);
 
   /// Показывать ли «Через менеджера» — включается в админке по платформам.
-  Future<bool> manualAvailable(TargetPlatform platform) => ApiService.I.get<dynamic>(
+  Future<bool> manualAvailable(TargetPlatform platform) =>
+      ApiService.I.get<dynamic>(
         '/payment-methods',
         queryParameters: {'platform': platformName(platform)},
       ).then((response) => response.data['manual'] == true);

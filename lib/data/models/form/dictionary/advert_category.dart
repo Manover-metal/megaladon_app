@@ -1,5 +1,5 @@
 import 'package:formz/formz.dart';
-import 'package:megaladon/data/models/dictionary/advert_category_model.dart';
+import 'package:megaladon/data/models/dictionary/category_model.dart';
 import 'package:megaladon/data/models/form/localizable_error.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 
@@ -22,7 +22,7 @@ class AdvertCategoryFormModel
 
   @override
   AdvertCategoryValidationError? validator(int? value) {
-    if (value == null || value == AdvertCategoryModel.nothing.id)
+    if (value == null || value == CategoryModel.nothing.id)
       return AdvertCategoryValidationError.empty;
     return null;
   }

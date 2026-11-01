@@ -135,8 +135,7 @@ class _CreateOfferScreenState extends State<CreateOfferScreen> {
                     TextFieldApp(
                       label: l10n.commentLabel,
                       controller: _descriptionController,
-                      errorText:
-                          state.description.displayError?.localize(l10n),
+                      errorText: state.description.displayError?.localize(l10n),
                     ),
                   ],
                 ),

@@ -6,7 +6,7 @@ import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/screens/orders/my/order_screen_my_cubit.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
-import 'package:megaladon/presentation/widgets/form/picker/dictionary/order_category_picker.dart';
+import 'package:megaladon/presentation/widgets/form/picker/dictionary/category_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/last_day_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/status_picker.dart';
 import 'package:megaladon/presentation/widgets/text/title.dart';
@@ -33,7 +33,7 @@ class _FilterMyOrderBottomSheetState extends State<FilterMyOrderBottomSheet> {
 
   late IndexPeriodPickerController _indexPeriodPickerController;
   late CityPickerController _cityPickerController;
-  late OrderCategoryPickerController _orderCategoryPickerController;
+  late CategoryPickerController _orderCategoryPickerController;
   late StatusPickerController _statusPickerController;
 
   void _back() {
@@ -57,7 +57,7 @@ class _FilterMyOrderBottomSheetState extends State<FilterMyOrderBottomSheet> {
         IndexPeriodPickerController(state.params.last);
     _cityPickerController = CityPickerController(city: state.params.city);
     _orderCategoryPickerController =
-        OrderCategoryPickerController(category: state.params.category);
+        CategoryPickerController(category: state.params.category);
     _statusPickerController = StatusPickerController(
         StatusPickerController.seedFrom(state.params.statuses, _statusAll));
 
@@ -100,7 +100,8 @@ class _FilterMyOrderBottomSheetState extends State<FilterMyOrderBottomSheet> {
             Row(
               children: [
                 Expanded(
-                  child: OrderCategoryPicker(
+                  child: CategoryPicker(
+                    kind: CategoryKind.service,
                     label: AppLocalizations.of(context)!.category,
                     controller: _orderCategoryPickerController,
                     withNull: true,

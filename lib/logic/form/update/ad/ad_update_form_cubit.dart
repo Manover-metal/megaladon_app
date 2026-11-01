@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:formz/formz.dart';
-import 'package:megaladon/data/models/dictionary/advert_category_model.dart';
+import 'package:megaladon/data/models/dictionary/category_model.dart';
 import 'package:megaladon/data/models/dictionary/advert_type.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
 import 'package:megaladon/data/models/enum_form_state.dart';
@@ -30,7 +30,7 @@ class AdUpdateFormCubit extends Cubit<AdUpdateFormState> {
     required String description,
     required int? price,
     required CityModel? city,
-    required AdvertCategoryModel? category,
+    required CategoryModel? category,
     required String phone,
     required List<PlatformFile> media,
     required AdvertType type,

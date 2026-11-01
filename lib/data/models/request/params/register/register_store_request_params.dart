@@ -7,16 +7,12 @@ class RegisterStoreRequestParams {
       {required this.name,
       required this.bin,
       required this.fullAddress,
-      required this.lon,
-      required this.lat,
       required this.city,
       required this.type,
       required this.contacts});
   final String name;
   final String bin;
   final String fullAddress;
-  final double lon;
-  final double lat;
   final CityModel city;
   final CompanyTypeModel type;
   final List<ContactModel> contacts;
@@ -26,8 +22,6 @@ class RegisterStoreRequestParams {
       'name': name,
       'bin': bin,
       'full_address': fullAddress,
-      'lon': lon,
-      'lat': lat,
       'city_id': city.id,
       'type_id': type.id,
       'contacts': contacts

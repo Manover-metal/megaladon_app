@@ -3,8 +3,7 @@ import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:megaladon/data/models/dictionary/service_type_model.dart';
+import 'package:megaladon/data/models/dictionary/category_model.dart';
 import 'package:megaladon/data/models/request/params/register/register_executor_request_params.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/form/register/register_executor/register_executor_form_cubit.dart';
@@ -15,7 +14,7 @@ import 'package:megaladon/presentation/widgets/auth/auth_scaffold.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/form/field/number_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
-import 'package:megaladon/presentation/widgets/form/multi_picker/order_category_multi_picker.dart';
+import 'package:megaladon/presentation/widgets/form/picker/dictionary/category_picker.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
 import 'package:megaladon/presentation/widgets/text/user_agreement_text.dart';
@@ -31,25 +30,17 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
   late TextEditingController _nameController;
   late TextEditingController _binController;
   late TextEditingController _fullAddressController;
-  late OrderCategoryMultiPickerController _serviceController;
+  late CategoryMultiPickerController _serviceController;
 
-  List<ServiceTypeModel> get _services => _serviceController.value
-      .map((e) => ServiceTypeModel(id: e.value.id, name: e.value.name))
-      .toList();
+  List<CategoryModel> get _services => _serviceController.value;
 
-  Future<void> _register() async {
-    // Координаты берём один раз за нажатие: раньше GPS опрашивался дважды —
-    // в проверке формы и ещё раз перед отправкой.
-    final position = await _resolveLocation();
-    if (position == null || !mounted) return;
-    if (!_checkForm(position)) return;
+  void _register() {
+    if (!_checkForm()) return;
 
     context.read<RegisterExecutorBloc>().add(RegisterExecutorFetchEvent(
           params: RegisterExecutorRequestParams(
               name: _nameController.value.text,
               bin: _binController.value.text,
-              lat: position.latitude,
-              lon: position.longitude,
               fullAddress: _fullAddressController.value.text,
               services: _services),
         ));
@@ -80,46 +71,12 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
         router.navigate(const InitialRouter(children: [ProfileRouter()])));
   }
 
-  /// Одна попытка получить координаты. Причина отказа объясняется на языке
-  /// приложения — раньше это были захардкоженные русские строки.
-  Future<Position?> _resolveLocation() async {
-    final l10n = AppLocalizations.of(context)!;
-
-    if (!await Geolocator.isLocationServiceEnabled()) {
-      if (mounted) {
-        CustomSnackBar.error(Text(l10n.location_service_disabled))
-            .view(context);
-      }
-      return null;
-    }
-
-    var permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-    }
-
-    if (permission == LocationPermission.denied ||
-        permission == LocationPermission.deniedForever) {
-      if (mounted) {
-        CustomSnackBar.error(Text(l10n.location_permission_denied))
-            .view(context);
-      }
-      return null;
-    }
-
-    return Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-    );
-  }
-
-  bool _checkForm(Position position) {
+  bool _checkForm() {
     var form = context.read<RegisterExecutorFormCubit>();
     return form.checkRegisterForm(
         name: _nameController.value.text,
         fullAddress: _fullAddressController.value.text,
         bin: _binController.value.text,
-        lat: position.latitude.toString(),
-        lon: position.longitude.toString(),
         services: _services);
   }
 
@@ -128,7 +85,7 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
     _nameController = TextEditingController();
     _fullAddressController = TextEditingController();
     _binController = TextEditingController();
-    _serviceController = OrderCategoryMultiPickerController();
+    _serviceController = CategoryMultiPickerController();
     super.initState();
   }
 
@@ -182,7 +139,11 @@ class _RegisterExecutorScreenState extends State<RegisterExecutorScreen> {
                 AuthFieldGroup(
                   title: l10n.services,
                   children: [
-                    OrderCategoryMultiPicker(controllers: _serviceController),
+                    CategoryMultiPicker(
+                      label: l10n.services,
+                      controller: _serviceController,
+                      kind: CategoryKind.service,
+                    ),
                   ],
                 ),
                 if (formState.services.displayError != null)

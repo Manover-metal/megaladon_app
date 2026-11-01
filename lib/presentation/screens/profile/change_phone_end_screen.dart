@@ -81,7 +81,8 @@ class _ChangePhoneEndScreenState extends State<ChangePhoneEndScreen> {
             alignment: Alignment.centerLeft,
             child: GestureDetector(
               // Шаг 1 закрыт через popAndPush — возвращаемся заменой, а не pop.
-              onTap: () => context.router.replace(const ChangePhoneStartRoute()),
+              onTap: () =>
+                  context.router.replace(const ChangePhoneStartRoute()),
               child: Text(
                 l10n.change_number,
                 style: Theme.of(context).textTheme.bodySmall,

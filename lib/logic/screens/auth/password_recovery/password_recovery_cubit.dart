@@ -40,8 +40,8 @@ class PasswordRecoveryCubit extends Cubit<PasswordRecoveryState> {
     final passwordConfirmationForm =
         PasswordConfirmationFormModel.dirty(password, passwordConfirmation);
 
-    final status = Formz.validate(
-        [codeForm, passwordForm, passwordConfirmationForm]);
+    final status =
+        Formz.validate([codeForm, passwordForm, passwordConfirmationForm]);
 
     emit(state.copyWith(
       code: codeForm,

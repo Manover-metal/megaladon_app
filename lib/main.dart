@@ -58,11 +58,13 @@ import 'package:megaladon/logic/screens/profile/change_photo/change_photo_cubit.
 import 'package:megaladon/logic/screens/profile/change_store/change_store_bloc.dart';
 import 'package:megaladon/logic/screens/profile/delete_account/delete_account_cubit.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
+import 'package:megaladon/logic/screens/safety/blocks_cubit.dart';
 import 'package:megaladon/logic/screens/service/main/service_screen_main_cubit.dart';
 import 'package:megaladon/logic/screens/service/my/service_screen_my_cubit.dart';
 import 'package:megaladon/logic/screens/store/details/store_screen_details_cubit.dart';
 import 'package:megaladon/logic/screens/store/main/store_screen_main_cubit.dart';
 import 'package:megaladon/logic/screens/store/rate/rate_store_cubit.dart';
+import 'package:megaladon/logic/screens/support/support_cubit.dart';
 import 'package:megaladon/logic/subscribe/subscribe_cubit.dart';
 import 'package:megaladon/logic/theme/theme_cubit.dart';
 import 'package:megaladon/presentation/routing/guards/auth_guard.dart';
@@ -219,6 +221,11 @@ class App extends StatelessWidget {
                   create: (context) => RateStoreCubit()),
               BlocProvider<AdvertDeleteCubit>(
                   create: (context) => AdvertDeleteCubit()),
+              // lazy: false — список блокировок нужен экранам чужих
+              // профилей ещё до того, как откроют «Заблокированные».
+              BlocProvider<BlocksCubit>(
+                  lazy: false, create: (context) => BlocksCubit(authBloc)),
+              BlocProvider<SupportCubit>(create: (context) => SupportCubit()),
             ],
             child: MultiBlocProvider(
               providers: [

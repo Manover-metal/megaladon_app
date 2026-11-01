@@ -1,5 +1,5 @@
 import 'package:megaladon/data/models/dictionary/city_model.dart';
-import 'package:megaladon/data/models/dictionary/order_category_model.dart';
+import 'package:megaladon/data/models/dictionary/category_model.dart';
 import 'package:megaladon/data/models/order_model.dart';
 import 'package:megaladon/data/models/request/index_period_enum.dart';
 import 'package:megaladon/data/models/request/order_index_sort_enum.dart';
@@ -18,12 +18,17 @@ class OrderIndexRequestParams {
         OrderStatus.hasExecutor,
         OrderStatus.completed,
       ],
+      this.query,
+      this.priceMin,
+      this.priceMax,
+      this.executionDaysMax,
+      this.withoutOffers = false,
       this.userId});
   final int startRow;
   final int rowsPerPage;
   final bool desc;
   final CityModel? city;
-  final OrderCategoryModel? category;
+  final CategoryModel? category;
   final IndexPeriod last;
   final OrderIndexSort sort;
 
@@ -36,6 +41,17 @@ class OrderIndexRequestParams {
   /// в обычной выдаче ленты заказов не задаётся.
   final int? userId;
 
+  /// Поиск по заголовку и описанию.
+  final String? query;
+
+  /// Границы бюджета заказа (price_max).
+  final int? priceMin;
+  final int? priceMax;
+  final int? executionDaysMax;
+
+  /// Только заказы, на которые ещё никто не откликнулся.
+  final bool withoutOffers;
+
   Map<String, Object?> toData() {
     final data = {
       'startRow': startRow,
@@ -45,9 +61,14 @@ class OrderIndexRequestParams {
       'sortBy': sort.name,
       'city_id': city?.id,
       'category':
-          category?.id == OrderCategoryModel.nothing.id ? null : category?.id,
+          category?.id == CategoryModel.nothing.id ? null : category?.id,
       'statuses': statuses.map((status) => status.index).toList(),
-    };
+      'q': query,
+      'price_min': priceMin,
+      'price_max': priceMax,
+      'execution_days_max': executionDaysMax,
+      'without_offers': withoutOffers ? 1 : 0,
+    }..removeWhere((_, value) => value == null);
     if (userId != null) {
       data['user_id'] = userId;
     }
@@ -59,7 +80,7 @@ class OrderIndexRequestParams {
           int? rowsPerPage,
           bool? desc,
           CityModel? city,
-          OrderCategoryModel? category,
+          CategoryModel? category,
           IndexPeriod? last,
           OrderIndexSort? sort,
           List<OrderStatus>? statuses,
@@ -73,9 +94,15 @@ class OrderIndexRequestParams {
           last: last ?? this.last,
           sort: sort ?? this.sort,
           statuses: statuses ?? this.statuses,
+          query: query,
+          priceMin: priceMin,
+          priceMax: priceMax,
+          executionDaysMax: executionDaysMax,
+          withoutOffers: withoutOffers,
           userId: userId ?? this.userId);
 
-  /// Like [copyWith], but [city] and [category] are taken verbatim — passing
+  /// Like [copyWith], but [city], [category] and the search/budget/deadline
+  /// filters are taken verbatim — passing
   /// `null` clears the filter instead of keeping the previous value. Used when
   /// applying filters so a deselected city/category actually resets.
   OrderIndexRequestParams copyWithNull(
@@ -83,15 +110,25 @@ class OrderIndexRequestParams {
           int? rowsPerPage,
           bool? desc,
           CityModel? city,
-          OrderCategoryModel? category,
+          CategoryModel? category,
           IndexPeriod? last,
           OrderIndexSort? sort,
           List<OrderStatus>? statuses,
+          String? query,
+          int? priceMin,
+          int? priceMax,
+          int? executionDaysMax,
+          bool withoutOffers = false,
           int? userId}) =>
       OrderIndexRequestParams(
           startRow: startRow ?? this.startRow,
           rowsPerPage: rowsPerPage ?? this.rowsPerPage,
           desc: desc ?? this.desc,
+          query: (query?.trim().isEmpty ?? true) ? null : query!.trim(),
+          priceMin: priceMin,
+          priceMax: priceMax,
+          executionDaysMax: executionDaysMax,
+          withoutOffers: withoutOffers,
           city: city,
           category: category,
           last: last ?? this.last,

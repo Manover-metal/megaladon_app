@@ -1,27 +1,21 @@
-import 'package:megaladon/data/models/dictionary/service_type_model.dart';
+import 'package:megaladon/data/models/dictionary/category_model.dart';
 
 class RegisterExecutorRequestParams {
   const RegisterExecutorRequestParams(
       {required this.name,
       required this.bin,
       required this.fullAddress,
-      required this.lon,
-      required this.lat,
       this.services = const []});
   final String name;
   final String bin;
   final String fullAddress;
-  final double lon;
-  final double lat;
-  final List<ServiceTypeModel> services;
+  final List<CategoryModel> services;
 
   Map<String, Object> toData() {
     final data = {
       'name': name,
       'bin': bin,
       'full_address': fullAddress,
-      'lon': lon,
-      'lat': lat,
       'services': services.map((e) => e.id).toList()
     };
     return data;

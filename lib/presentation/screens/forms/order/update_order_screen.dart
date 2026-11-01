@@ -19,7 +19,7 @@ import 'package:megaladon/presentation/widgets/form/field/price_field.dart';
 import 'package:megaladon/presentation/widgets/form/field/text_field.dart';
 import 'package:megaladon/presentation/widgets/form/multi_picker/file_multi_picker.dart';
 import 'package:megaladon/presentation/widgets/form/picker/dictionary/city_picker.dart';
-import 'package:megaladon/presentation/widgets/form/picker/dictionary/order_category_picker.dart';
+import 'package:megaladon/presentation/widgets/form/picker/dictionary/category_picker.dart';
 import 'package:megaladon/presentation/widgets/loader.dart';
 import 'package:megaladon/presentation/widgets/navigate/header.dart';
 import 'package:megaladon/presentation/widgets/snackbars/custom_snackbar.dart';
@@ -33,7 +33,7 @@ class UpdateOrderScreen extends StatefulWidget {
 }
 
 class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
-  late OrderCategoryPickerController _orderCategoryController;
+  late CategoryPickerController _orderCategoryController;
   late TextEditingController _titleController;
   late TextEditingController _descriptionController;
 
@@ -99,7 +99,7 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
   @override
   void initState() {
     _orderCategoryController =
-        OrderCategoryPickerController(category: widget.order.category);
+        CategoryPickerController(category: widget.order.category);
     _titleController = TextEditingController(text: widget.order.title);
     _cityController = CityPickerController(city: widget.order.city);
     _priceMaxController =
@@ -137,7 +137,8 @@ class _UpdateOrderScreenState extends State<UpdateOrderScreen> {
                 children: [
                   const SizedBox(height: 30),
                   BlocBuilder<OrderUpdateFormCubit, OrderUpdateFormState>(
-                    builder: (context, state) => OrderCategoryPicker(
+                    builder: (context, state) => CategoryPicker(
+                      kind: CategoryKind.service,
                       label: AppLocalizations.of(context)!.category,
                       controller: _orderCategoryController,
                       errorText: state.category.displayError

@@ -9,6 +9,31 @@ class AppLocalizationsKk extends AppLocalizations {
   AppLocalizationsKk([String locale = 'kk']) : super(locale);
 
   @override
+  String get advertStatusModerate => 'Тексеруде';
+
+  @override
+  String get advertStatusRejected => 'Қабылданбады';
+
+  @override
+  String get advertModerateTitle => 'Хабарландыру тексеруде';
+
+  @override
+  String get advertModerateHint =>
+      'Модерациядан кейін ол алаңда пайда болады. Әдетте бұл 24 сағатқа дейін алады.';
+
+  @override
+  String get advertRejectedTitle => 'Хабарландыру қабылданбады';
+
+  @override
+  String advertRejectedReason(String reason) {
+    return 'Себебі: $reason. Хабарландыруды түзетіп сақтаңыз — ол қайта тексеруге жіберіледі.';
+  }
+
+  @override
+  String get advertRejectedHint =>
+      'Хабарландыруды түзетіп сақтаңыз — ол қайта тексеруге жіберіледі.';
+
+  @override
   String get pushNotificationsTitle => 'Push-хабарламалар';
 
   @override
@@ -332,12 +357,6 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get full_address => 'Полный адрес';
-
-  @override
-  String get latitude => 'Ендік';
-
-  @override
-  String get longitude => 'Бойлық';
 
   @override
   String get by_clicking_on_the_Continue_button_you_accept =>
@@ -776,28 +795,6 @@ class AppLocalizationsKk extends AppLocalizations {
       'Жауаптың өзектілігі толтырылмаған';
 
   @override
-  String get latitude_not_filled => 'Ендік толтырылмаған';
-
-  @override
-  String get latitude_cannot_be_less_than_90 =>
-      'Ендік -90° - тан кем бола алмайды';
-
-  @override
-  String get latitude_cannot_be_greater_than_90 =>
-      'Ендік +90° - тан артық бола алмайды';
-
-  @override
-  String get longitude_is_not_filled => 'Бойлық толтырылмаған';
-
-  @override
-  String get longitude_cannot_be_less_than_180 =>
-      ' Бойлық -180° - тан кем бола алмайды';
-
-  @override
-  String get longitude_cannot_be_greater_than_180 =>
-      'Бойлық 180° - тан артық бола алмайды';
-
-  @override
   String get name_is_empty => 'Аты бос';
 
   @override
@@ -1007,24 +1004,6 @@ class AppLocalizationsKk extends AppLocalizations {
       'Өтінімнің өзектілігі толтырылмаған';
 
   @override
-  String get form_error_lat_empty => 'Ендік толтырылмаған';
-
-  @override
-  String get form_error_lat_min => 'Ендік -90°-тан аз болмауы тиіс';
-
-  @override
-  String get form_error_lat_max => 'Ендік +90°-тан көп болмауы тиіс';
-
-  @override
-  String get form_error_lon_empty => 'Бойлық толтырылмаған';
-
-  @override
-  String get form_error_lon_min => 'Бойлық -180°-тан аз болмауы тиіс';
-
-  @override
-  String get form_error_lon_max => 'Бойлық 180°-тан көп болмауы тиіс';
-
-  @override
   String get form_error_name_empty => 'Аты толтырылмаған';
 
   @override
@@ -1213,20 +1192,31 @@ class AppLocalizationsKk extends AppLocalizations {
       'App Store немесе Google Play арқылы жазылым кезең аяқталғанға дейін кемінде 24 сағат бұрын дүкен баптауларында тоқтатпайынша автоматты түрде ұзартылады. Менеджер арқылы төлем қолмен ұзартылады.';
 
   @override
-  String get paymentMethodTitle => 'Төлем тәсілі';
-
-  @override
   String get paymentMethodAppStore => 'App Store';
 
   @override
   String get paymentMethodGooglePlay => 'Google Play';
 
   @override
-  String get paymentMethodManager => 'Менеджер арқылы';
+  String paymentPayIn(String store) {
+    return '$store арқылы төлеу';
+  }
 
   @override
-  String get paymentMethodManagerHint =>
-      'Менеджер сізбен хабарласады. Жазылым төлем расталғаннан кейін қосылады.';
+  String get paymentOr => 'немесе';
+
+  @override
+  String paymentManagerRequest(String price) {
+    return 'Менеджерге өтінім қалдыру · $price';
+  }
+
+  @override
+  String get paymentCancelHintIos =>
+      'iPhone баптаулары → Apple ID → Жазылымдар бөлімінде тоқтатуға болады.';
+
+  @override
+  String get paymentCancelHintAndroid =>
+      'Google Play → Төлемдер және жазылымдар бөлімінде тоқтатуға болады.';
 
   @override
   String get subscriptionPaymentProcessing =>
@@ -1487,14 +1477,6 @@ class AppLocalizationsKk extends AppLocalizations {
       'Тапсырыс берушілер жақын маңдағы орындаушыларды іздейді. Координаттарды форманы жібергенде бір рет анықтаймыз.';
 
   @override
-  String get location_service_disabled =>
-      'Картада көріну үшін телефонда геолокацияны қосыңыз';
-
-  @override
-  String get location_permission_denied =>
-      'Картада көріну үшін қолданбаға геопозицияға рұқсат беріңіз';
-
-  @override
   String get form_error_contacts_empty => 'Кемінде бір байланыс қосыңыз';
 
   @override
@@ -1546,4 +1528,189 @@ class AppLocalizationsKk extends AppLocalizations {
   @override
   String get aboutCreateText =>
       'Жаңасын жасайды: орындаушыларды іздеуге арналған тапсырыс, қызмет санаты немесе хабарландыру.';
+
+  @override
+  String get settingsGroupSupport => 'Қолдау';
+
+  @override
+  String get supportTitle => 'Мәселе туралы хабарлау';
+
+  @override
+  String get supportIntro =>
+      'Не болғанын сипаттаңыз. Хабарлама қолдау қызметіне жіберіледі, жауап осы қолданбада келеді.';
+
+  @override
+  String get supportDescriptionHint => 'Не істеп жатқан едіңіз және не болды?';
+
+  @override
+  String get supportAttach => 'Скриншоттар (3-ке дейін)';
+
+  @override
+  String get supportSubmit => 'Жіберу';
+
+  @override
+  String get supportSentTitle => 'Рақмет, алдық';
+
+  @override
+  String get supportSentBody =>
+      'Қолдау қызметі хабарламаңызды оқып, қолданбада жауап береді. Сізге push-хабарлама келеді.';
+
+  @override
+  String get supportSentDone => 'Дайын';
+
+  @override
+  String get supportTicketsTitle => 'Менің өтініштерім';
+
+  @override
+  String get supportTicketsEmpty => 'Өтініштер әлі жоқ';
+
+  @override
+  String get supportReplyLabel => 'Қолдау қызметінің жауабы';
+
+  @override
+  String get supportStatusOpen => 'Ашық';
+
+  @override
+  String get supportStatusAnswered => 'Жауап берілді';
+
+  @override
+  String get supportStatusClosed => 'Жабық';
+
+  @override
+  String get safetyReport => 'Шағымдану';
+
+  @override
+  String get safetyReportHint => 'Модераторлар шағымды 24 сағат ішінде қарайды';
+
+  @override
+  String get safetyBlock => 'Бұғаттау';
+
+  @override
+  String get safetyBlockHint =>
+      'Бір-біріңізге жаза және жауап бере алмайсыздар';
+
+  @override
+  String get safetyReportTitle => 'Не болды?';
+
+  @override
+  String get safetyReasonSpam => 'Спам немесе жарнама';
+
+  @override
+  String get safetyReasonAbuse => 'Қорлау, қорқыту немесе қудалау';
+
+  @override
+  String get safetyReasonInappropriate => 'Жол берілмейтін контент';
+
+  @override
+  String get safetyReasonFake => 'Жалған профиль немесе алаяқтық';
+
+  @override
+  String get safetyReasonOther => 'Басқа';
+
+  @override
+  String get safetyReasonRequired => 'Себебін таңдаңыз';
+
+  @override
+  String get safetyCommentHint => 'Не болды — қаласаңыз';
+
+  @override
+  String get safetyReportSubmit => 'Шағым жіберу';
+
+  @override
+  String get safetyReportSent =>
+      'Шағым жіберілді. Оны 24 сағат ішінде қараймыз';
+
+  @override
+  String get safetyBlockTitle => 'Пайдаланушыны бұғаттау керек пе?';
+
+  @override
+  String get safetyBlockBody =>
+      'Бір-біріңізге жаза және тапсырыстарға жауап бере алмайсыздар. Бұғаттан баптаулардан шығаруға болады.';
+
+  @override
+  String get safetyBlockDone => 'Пайдаланушы бұғатталды';
+
+  @override
+  String get safetyUnblockDone => 'Пайдаланушы бұғаттан шығарылды';
+
+  @override
+  String get safetyBlockedTitle => 'Бұғатталғандар';
+
+  @override
+  String get safetyBlockedEmpty => 'Сіз ешкімді бұғаттамағансыз';
+
+  @override
+  String get safetyUnblock => 'Бұғаттан шығару';
+
+  @override
+  String get safetyBlockedContactHint => 'Сіз бұл пайдаланушыны бұғаттадыңыз';
+
+  @override
+  String supportMinLength(int count) {
+    return 'Кемінде $count таңба';
+  }
+
+  @override
+  String get filter_with_photo => 'Тек суреті барлар';
+
+  @override
+  String get filter_without_offers => 'Ұсыныссыз';
+
+  @override
+  String get filter_budget => 'Бюджет';
+
+  @override
+  String get filter_max_days => 'Орындау мерзімі, күнге дейін';
+
+  @override
+  String get filter_rating_min => 'Рейтинг, бастап';
+
+  @override
+  String get filter_store_name => 'Дүкен атауы';
+
+  @override
+  String get filter_search_hint => 'Атауы немесе сипаттамасы';
+
+  @override
+  String get filter_reset => 'Тазарту';
+
+  @override
+  String get sort_newest => 'Алдымен жаңалары';
+
+  @override
+  String get sort_oldest => 'Алдымен ескілері';
+
+  @override
+  String get sort_cheap => 'Алдымен арзандары';
+
+  @override
+  String get sort_expensive => 'Алдымен қымбаттары';
+
+  @override
+  String get sort_by_rating => 'Рейтинг бойынша';
+
+  @override
+  String get sort_by_name => 'Атауы бойынша';
+
+  @override
+  String get by_price => 'Бюджет бойынша';
+
+  @override
+  String get by_deadline => 'Мерзім бойынша';
+
+  @override
+  String category_all_in(String name) {
+    return '«$name» ішіндегінің барлығы';
+  }
+
+  @override
+  String get category_nothing_found => 'Ештеңе табылмады';
+
+  @override
+  String get choose_services => 'Қызметтерді таңдау';
+
+  @override
+  String select_count(int count) {
+    return 'Таңдау ($count)';
+  }
 }

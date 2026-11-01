@@ -4,7 +4,9 @@ enum OrderIndexSort {
   id,
   created_at,
   status,
-  category_id;
+  category_id,
+  price_max,
+  execution_days;
 
   String localize(AppLocalizations l10n) {
     switch (this) {
@@ -16,6 +18,10 @@ enum OrderIndexSort {
         return l10n.by_status;
       case OrderIndexSort.category_id:
         return l10n.by_category;
+      case OrderIndexSort.price_max:
+        return l10n.by_price;
+      case OrderIndexSort.execution_days:
+        return l10n.by_deadline;
       default:
         return l10n.by_creation;
     }
