@@ -5,13 +5,6 @@
          ничего не спрашивает, и уведомления не показываются. -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
-    <!-- Выбор изображений (Permission.photos в ImageService).
-         На Android 13+ это READ_MEDIA_IMAGES, до 13 — READ_EXTERNAL_STORAGE. -->
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
-    <uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32"/>
-
     <!-- Provide required visibility configuration for API level 30 and above -->
     <queries>
         <!-- Звонки по контактам магазина/исполнителя -->

@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     // START: FlutterFire Configuration
@@ -10,7 +12,7 @@ plugins {
 
 android {
     namespace = "com.bangertstudio.manover"
-    compileSdk = 36
+    compileSdk = 37
     ndkVersion = "28.2.13676358"
 
     compileOptions {
@@ -34,11 +36,26 @@ android {
         versionName = flutter.versionName
     }
 
+    // Ключ загрузки лежит вне git в android/key.properties. Без него релиз
+    // подписывается отладочным ключом — такую сборку Google Play не примет.
+    val keyProperties = Properties().apply {
+        rootProject.file("key.properties").takeIf { it.exists() }?.inputStream()?.use { load(it) }
+    }
+
+    signingConfigs {
+        if (!keyProperties.isEmpty) {
+            create("upload") {
+                keyAlias = keyProperties.getProperty("keyAlias")
+                keyPassword = keyProperties.getProperty("keyPassword")
+                storeFile = rootProject.file(keyProperties.getProperty("storeFile"))
+                storePassword = keyProperties.getProperty("storePassword")
+            }
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName(if (keyProperties.isEmpty) "debug" else "upload")
         }
     }
 }
