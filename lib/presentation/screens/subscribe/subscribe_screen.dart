@@ -94,7 +94,8 @@ class _SubscribeScreenState extends State<SubscribeScreen> {
           } else if (state is SubscribePending) {
             CustomSnackBar.success(Text(l10n.subscriptionPaymentProcessing))
                 .view(context);
-          } else if (state is SubscribeRestored) {
+          } else if (state is SubscribeRestored ||
+              state is SubscribeActivated) {
             context.read<ProfileScreenCubit>().updateData();
           } else if (state is SubscribeError) {
             CustomSnackBar.error(
@@ -122,9 +123,21 @@ class _SubscribeScreenState extends State<SubscribeScreen> {
                     profile.status == ProfileScreenStatus.loading) {
                   return const Loader(padding: 10);
                 }
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Center(child: HintText(l10n.subscriptionNoFaces)),
+                return RefreshIndicator(
+                  onRefresh: () => _refresh(context),
+                  child: CustomScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    slivers: [
+                      SliverFillRemaining(
+                        hasScrollBody: false,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child:
+                              Center(child: HintText(l10n.subscriptionNoFaces)),
+                        ),
+                      ),
+                    ],
+                  ),
                 );
               }
 
@@ -216,69 +229,73 @@ class _SubscribeFaceView extends StatelessWidget {
         final bestId = _bestPlanId(plans);
         final discount = _discountPercent(plans);
 
-        return ListView(
-          padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
-          children: [
-            // Дату окончания отдаёт только ExecutorPresenter, у магазина
-            // такого поля в ответе нет — статус показываем исполнителю.
-            if (type == SubscribeType.executor) ...[
-              BlocBuilder<ProfileScreenCubit, ProfileScreenState>(
-                builder: (context, profile) => SubscriptionStatusBanner(
-                  expiredAt: profile.user?.executor?.subscriptionExpiredAt,
+        return RefreshIndicator(
+          onRefresh: () => _refresh(context),
+          child: ListView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
+            children: [
+              // Дату окончания отдаёт только ExecutorPresenter, у магазина
+              // такого поля в ответе нет — статус показываем исполнителю.
+              if (type == SubscribeType.executor) ...[
+                BlocBuilder<ProfileScreenCubit, ProfileScreenState>(
+                  builder: (context, profile) => SubscriptionStatusBanner(
+                    expiredAt: profile.user?.executor?.subscriptionExpiredAt,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 24),
-            ],
-            SubscriptionBenefits(type: type),
-            const SizedBox(height: 8),
-            Text(
-              l10n.subscriptionChoosePeriod,
-              style: theme.textTheme.bodyLarge?.copyWith(fontSize: 22),
-            ),
-            const SizedBox(height: 14),
-            if (plans.isEmpty)
-              HintText(l10n.subscriptionPlansEmpty)
-            else
-              for (final plan in plans)
-                SubscribeCard(
-                  subscribe: plan,
-                  product: options.productFor(plan, platform),
-                  isBest: plan.id == bestId,
-                  discountPercent: plan.id == bestId ? discount : null,
-                  isBusy: isBusy,
-                  onBuy: _onBuy(context, plan, options, platform),
-                ),
-            const SizedBox(height: 6),
-            Text(
-              l10n.subscriptionFootnote,
-              textAlign: TextAlign.center,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontSize: 13,
-                height: 1.35,
-                color: theme.hintColor,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Wrap(
-              alignment: WrapAlignment.center,
-              children: [
-                TextButton(
-                  onPressed: () => context.read<SubscribeCubit>().restore(),
-                  child: Text(l10n.subscriptionRestore),
-                ),
-                TextButton(
-                  onPressed: () => launchUrl(Uri.parse(subscriptionTermsUrl),
-                      mode: LaunchMode.externalApplication),
-                  child: Text(l10n.subscriptionTerms),
-                ),
-                TextButton(
-                  onPressed: () => launchUrl(Uri.parse(privacyPolicyUrl),
-                      mode: LaunchMode.externalApplication),
-                  child: Text(l10n.privacy_policy),
-                ),
+                const SizedBox(height: 24),
               ],
-            ),
-          ],
+              SubscriptionBenefits(type: type),
+              const SizedBox(height: 8),
+              Text(
+                l10n.subscriptionChoosePeriod,
+                style: theme.textTheme.bodyLarge?.copyWith(fontSize: 22),
+              ),
+              const SizedBox(height: 14),
+              if (plans.isEmpty)
+                HintText(l10n.subscriptionPlansEmpty)
+              else
+                for (final plan in plans)
+                  SubscribeCard(
+                    subscribe: plan,
+                    product: options.productFor(plan, platform),
+                    isBest: plan.id == bestId,
+                    discountPercent: plan.id == bestId ? discount : null,
+                    isBusy: isBusy,
+                    onBuy: _onBuy(context, plan, options, platform),
+                  ),
+              const SizedBox(height: 6),
+              Text(
+                l10n.subscriptionFootnote,
+                textAlign: TextAlign.center,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontSize: 13,
+                  height: 1.35,
+                  color: theme.hintColor,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Wrap(
+                alignment: WrapAlignment.center,
+                children: [
+                  TextButton(
+                    onPressed: () => context.read<SubscribeCubit>().restore(),
+                    child: Text(l10n.subscriptionRestore),
+                  ),
+                  TextButton(
+                    onPressed: () => launchUrl(Uri.parse(subscriptionTermsUrl),
+                        mode: LaunchMode.externalApplication),
+                    child: Text(l10n.subscriptionTerms),
+                  ),
+                  TextButton(
+                    onPressed: () => launchUrl(Uri.parse(privacyPolicyUrl),
+                        mode: LaunchMode.externalApplication),
+                    child: Text(l10n.privacy_policy),
+                  ),
+                ],
+              ),
+            ],
+          ),
         );
       },
     );
@@ -316,6 +333,23 @@ class _SubscribeFaceView extends StatelessWidget {
       }
     };
   }
+}
+
+/// Pull-to-refresh: статус подписки из профиля, тарифы и цены магазина.
+Future<void> _refresh(BuildContext context) async {
+  final profile = context.read<ProfileScreenCubit>();
+  final dictionary = context.read<DictionaryCubit>();
+  final options = context.read<PaymentOptionsCubit>();
+
+  await Future.wait([
+    profile.updateData(),
+    dictionary.fetchSubscribesExecutor(),
+    dictionary.fetchSubscribesStore(),
+  ]);
+  await options.load([
+    ...dictionary.state.subscribesExecutor,
+    ...dictionary.state.subscribesStore,
+  ]);
 }
 
 /// Платные тарифы, по которым осмысленно считать цену за месяц.

@@ -30,3 +30,6 @@ class SubscribePending extends SubscribeState {}
 
 /// Запрос восстановления покупок отправлен в магазин.
 class SubscribeRestored extends SubscribeState {}
+
+/// Бэк проверил транзакцию магазина и включил подписку.
+class SubscribeActivated extends SubscribeState {}

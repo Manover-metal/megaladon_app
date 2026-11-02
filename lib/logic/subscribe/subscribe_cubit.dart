@@ -77,7 +77,9 @@ class SubscribeCubit extends Cubit<SubscribeState> {
     }
   }
 
-  void _onPurchases(List<PurchaseDetails> purchases) {
+  Future<void> _onPurchases(List<PurchaseDetails> purchases) async {
+    var activated = false;
+
     for (final purchase in purchases) {
       if (purchase.status == PurchaseStatus.purchased) {
         emit(SubscribePending());
@@ -91,10 +93,24 @@ class SubscribeCubit extends Cubit<SubscribeState> {
         emit(SubscribeInitial());
       }
 
+      // На iOS транзакция подписана Apple — отдаём её бэку, не дожидаясь вебхука.
+      // Сбой не страшен: остаются вебхук и «Восстановить покупки».
+      if (_platform == TargetPlatform.iOS &&
+          (purchase.status == PurchaseStatus.purchased ||
+              purchase.status == PurchaseStatus.restored)) {
+        try {
+          await _repository
+              .verifyApple(purchase.verificationData.serverVerificationData);
+          activated = true;
+        } catch (_) {}
+      }
+
       if (purchase.pendingCompletePurchase) {
-        InAppPurchase.instance.completePurchase(purchase);
+        await InAppPurchase.instance.completePurchase(purchase);
       }
     }
+
+    if (activated && !isClosed) emit(SubscribeActivated());
   }
 
   @override

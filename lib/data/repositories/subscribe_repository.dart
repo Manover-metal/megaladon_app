@@ -19,6 +19,13 @@ class SubscribeRepository {
         },
       ).then((response) => response.data['data']['uuid'] as String);
 
+  /// Подписанная транзакция App Store: бэк проверяет её и включает подписку.
+  Future<void> verifyApple(String signedTransaction) =>
+      ApiService.I.post<dynamic>(
+        '/invoice/apple/verify',
+        data: {'signed_transaction': signedTransaction},
+      );
+
   /// Показывать ли «Через менеджера» — включается в админке по платформам.
   Future<bool> manualAvailable(TargetPlatform platform) =>
       ApiService.I.get<dynamic>(
