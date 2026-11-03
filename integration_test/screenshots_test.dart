@@ -29,8 +29,13 @@ void main() {
     await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
     ApiService.initialize();
 
-    final auth = AuthRepository(localeStorage: SecureLocaleStorageImpl());
-    await auth.write(await auth.login(phone: '+77010000001', password: 'demo12345'));
+    // STORE=1: снимки для App Store — без DemoSeeder, на уже залогиненной
+    // сессии симулятора (вход руками), только списки и экран подписки.
+    const store = bool.fromEnvironment('STORE');
+    if (!store) {
+      final auth = AuthRepository(localeStorage: SecureLocaleStorageImpl());
+      await auth.write(await auth.login(phone: '+77010000001', password: 'demo12345'));
+    }
     await IsFirstRun.isFirstCall(); // гасим онбординг
 
     runApp(App());
@@ -45,6 +50,14 @@ void main() {
       await _wait(tester, 3);
     }
 
+    if (store) {
+      await shot('orders', const InitialRouter(children: [OrderRouter(children: [ListOrdersRoute()])]));
+      await shot('stores', const InitialRouter(children: [StoreRouter(children: [ListStoresRoute()])]));
+      await shot('ads', const InitialRouter(children: [AdRouter(children: [TradingAdsRoute()])]));
+      await shot('chats', const InitialRouter(children: [ProfileRouter(children: [ListChatsRoute()])]));
+      await shot('subscribe', InitialRouter(children: [OrderRouter(children: [SubscribeRoute()])]));
+      return;
+    }
     await shot('orders', const InitialRouter(children: [OrderRouter(children: [ListOrdersRoute()])]));
     await shot('order', InitialRouter(children: [OrderRouter(children: [DetailsOrderRoute(orderId: 1)])]));
     await shot('offers', InitialRouter(children: [OrderRouter(children: [ListExecutorsRoute(orderId: 1)])]));
