@@ -33,7 +33,7 @@ android {
     }
 
     // Ключ загрузки лежит вне git в android/key.properties. Без него релиз
-    // подписывается отладочным ключом — такую сборку Google Play не примет.
+    // подписывается отладочным ключом — такую сборку магазин не примет.
     val keyProperties = Properties().apply {
         rootProject.file("key.properties").takeIf { it.exists() }?.inputStream()?.use { load(it) }
     }

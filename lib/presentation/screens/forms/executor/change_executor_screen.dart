@@ -153,12 +153,6 @@ class _ChangeExecutorScreenState extends State<ChangeExecutorScreen> {
             ),
           ),
           const SizedBox(height: 20),
-          AuthNote(
-            icon: Icons.location_on_outlined,
-            title: l10n.map_point,
-            text: l10n.executor_location_hint,
-          ),
-          const SizedBox(height: 20),
           BlocBuilder<ChangeExecutorBloc, ChangeExecutorState>(
             builder: (context, state) {
               if (state is ChangeExecutorLoading) {

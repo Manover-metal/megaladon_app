@@ -266,7 +266,9 @@ class _SubscribeFaceView extends StatelessWidget {
                   ),
               const SizedBox(height: 6),
               Text(
-                l10n.subscriptionFootnote,
+                platform == TargetPlatform.iOS
+                    ? l10n.subscriptionFootnoteIos
+                    : l10n.subscriptionFootnoteAndroid,
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodyMedium?.copyWith(
                   fontSize: 13,

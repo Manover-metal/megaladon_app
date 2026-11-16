@@ -1,7 +1,7 @@
 #!/bin/bash
 # Снимает экраны на запущенном iOS-симуляторе или Android-эмуляторе:
 #   ./integration_test/screenshots.sh [out_dir]
-# Для Google Play нужен AVD с экраном 9:16 (напр. 1080x1920): скриншоты
+# Для Android нужен AVD с экраном 9:16 (напр. 1080x1920): скриншоты
 # снимаются как есть, без обрезки.
 set -eu
 OUT=${1:-build/screenshots}; mkdir -p "$OUT"

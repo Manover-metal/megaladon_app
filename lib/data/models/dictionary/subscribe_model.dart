@@ -37,7 +37,7 @@ class SubscribeModel {
   final int duration;
   final double price;
 
-  /// product ID в App Store / Google Play; null — через магазин не купить.
+  /// product ID в магазине приложений; null — через магазин не купить.
   final String? appleProductId;
   final String? googleProductId;
 

@@ -1189,13 +1189,21 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get subscriptionFootnote =>
-      'App Store немесе Google Play арқылы жазылым кезең аяқталғанға дейін кемінде 24 сағат бұрын дүкен баптауларында тоқтатпайынша автоматты түрде ұзартылады. Менеджер арқылы төлем қолмен ұзартылады.';
+      'Жазылым кезең аяқталғанға дейін кемінде 24 сағат бұрын баптауларда тоқтатпайынша автоматты түрде ұзартылады. Менеджер арқылы төлем қолмен ұзартылады.';
+
+  @override
+  String get subscriptionFootnoteIos =>
+      'App Store арқылы жазылым кезең аяқталғанға дейін кемінде 24 сағат бұрын баптауларда тоқтатпайынша автоматты түрде ұзартылады. Менеджер арқылы төлем қолмен ұзартылады.';
+
+  @override
+  String get subscriptionFootnoteAndroid =>
+      'Жазылым кезең аяқталғанға дейін кемінде 24 сағат бұрын дүкен баптауларында тоқтатпайынша автоматты түрде ұзартылады. Менеджер арқылы төлем қолмен ұзартылады.';
 
   @override
   String get paymentMethodAppStore => 'App Store';
 
   @override
-  String get paymentMethodGooglePlay => 'Google Play';
+  String get paymentMethodGooglePlay => 'Google';
 
   @override
   String paymentPayIn(String store) {
@@ -1216,7 +1224,7 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get paymentCancelHintAndroid =>
-      'Google Play → Төлемдер және жазылымдар бөлімінде тоқтатуға болады.';
+      'Тіркелгі баптаулары → Төлемдер және жазылымдар бөлімінде тоқтатуға болады.';
 
   @override
   String get subscriptionPaymentProcessing =>

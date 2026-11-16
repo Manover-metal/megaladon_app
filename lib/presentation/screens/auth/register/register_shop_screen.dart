@@ -177,12 +177,6 @@ class _RegisterStoreScreenState extends State<RegisterStoreScreen> {
             ),
           ),
           const SizedBox(height: 20),
-          AuthNote(
-            icon: Icons.location_on_outlined,
-            title: l10n.map_point,
-            text: l10n.store_location_hint,
-          ),
-          const SizedBox(height: 20),
           BlocBuilder<RegisterStoreBloc, RegisterStoreState>(
             builder: (context, state) {
               if (state is RegisterStoreLoading) {

@@ -77,7 +77,7 @@ class PaymentOptionsCubit extends Cubit<PaymentOptionsState> {
 
     final response = await store.queryProductDetails(ids);
     // ponytail: на Android подписка с несколькими предложениями даёт по
-    // ProductDetails на каждое — берём первое. В Play Console держать один
+    // ProductDetails на каждое — берём первое. В консоли разработчика держать один
     // базовый план без предложений; иначе выбирать предложение явно.
     final products = <String, ProductDetails>{};
     for (final product in response.productDetails) {
