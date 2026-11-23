@@ -1539,7 +1539,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get aboutProfileText =>
-      'Ваши данные, роли заказчика, исполнителя и магазина, подписка и история заказов.';
+      'Ваши данные, роли заказчика, исполнителя и магазина и история заказов.';
 
   @override
   String get aboutCreateTitle => 'Кнопка «+»';
@@ -1731,5 +1731,23 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String select_count(int count) {
     return 'Выбрать ($count)';
+  }
+
+  @override
+  String subscriptionTrialBadge(String period) {
+    return '$period бесплатно';
+  }
+
+  @override
+  String subscriptionTrialTerms(String period, String price) {
+    return 'Первые $period бесплатно, затем $price. Спишем оплату, только если не отмените подписку до конца пробного периода.';
+  }
+
+  @override
+  String get subscriptionTryFree => 'Попробовать бесплатно';
+
+  @override
+  String subscriptionThen(String price) {
+    return 'затем $price';
   }
 }

@@ -1,3 +1,4 @@
+import 'package:megaladon/core/app_config.dart';
 import 'package:megaladon/core/utils/parser.dart';
 import 'package:megaladon/data/models/dictionary/category_model.dart';
 
@@ -43,8 +44,10 @@ class ExecutorModel {
   final DateTime? subscriptionExpiredAt;
 
   /// Подписка куплена и ещё не истекла — исполнителю доступны отклики и звонки.
+  /// При выключенных подписках (AppConfig) доступ открыт всем.
   bool get hasActiveSubscription =>
-      subscriptionExpiredAt?.isAfter(DateTime.now()) ?? false;
+      !AppConfig.subscriptionsEnabled.value ||
+      (subscriptionExpiredAt?.isAfter(DateTime.now()) ?? false);
 
   /// Секунды, а не миллисекунды: так это поле приходит с бэкенда и в таком же
   /// виде уходит в localStorage через [toJson].

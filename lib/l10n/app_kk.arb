@@ -601,7 +601,7 @@
   "aboutOrdersText": "Платформада орналастырылған тапсырыстар. Картаны ашып, орындаушылардың бағасы мен мерзімі көрсетілген ұсыныстарын салыстырыңыз да, ең жақсысын таңдаңыз.",
   "aboutStoresText": "Дайын өнім сататын компаниялар: прайс-парақтар, мекенжайлар, байланыстар және рейтинг.",
   "aboutAdsText": "Сауда алаңы: тауар сату және машина жасау қызметтері туралы хабарландырулар.",
-  "aboutProfileText": "Сіздің деректеріңіз, тапсырыс беруші, орындаушы және дүкен рөлдері, жазылым мен тапсырыстар тарихы.",
+  "aboutProfileText": "Сіздің деректеріңіз, тапсырыс беруші, орындаушы және дүкен рөлдері және тапсырыстар тарихы.",
   "aboutCreateTitle": "«+» түймесі",
   "aboutCreateText": "Жаңасын жасайды: орындаушыларды іздеуге арналған тапсырыс, қызмет санаты немесе хабарландыру.",
   "settingsGroupSupport": "Қолдау",
@@ -705,5 +705,33 @@
   "category_all_in": "«{name}» ішіндегінің барлығы",
   "category_nothing_found": "Ештеңе табылмады",
   "choose_services": "Қызметтерді таңдау",
-  "select_count": "Таңдау ({count})"
+  "select_count": "Таңдау ({count})",
+  "subscriptionTrialBadge": "{period} тегін",
+  "@subscriptionTrialBadge": {
+    "placeholders": {
+      "period": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionTrialTerms": "Алғашқы {period} тегін, содан кейін {price}. Сынақ кезеңі аяқталғанша жазылымнан бас тартпасаңыз ғана төлем алынады.",
+  "@subscriptionTrialTerms": {
+    "placeholders": {
+      "period": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionTryFree": "Тегін байқап көру",
+  "subscriptionThen": "содан кейін {price}",
+  "@subscriptionThen": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  }
 }

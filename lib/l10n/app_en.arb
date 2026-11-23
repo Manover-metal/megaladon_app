@@ -4,7 +4,13 @@
   "advertModerateTitle": "Listing is under review",
   "advertModerateHint": "It will appear on the marketplace after moderation, usually within 24 hours.",
   "advertRejectedTitle": "Listing rejected",
-  "@advertRejectedReason": {"placeholders": {"reason": {"type": "String"}}},
+  "@advertRejectedReason": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
   "advertRejectedReason": "Reason: {reason}. Edit the listing and save it to send it for review again.",
   "advertRejectedHint": "Edit the listing and save it to send it for review again.",
   "@@locale": "en",
@@ -1055,7 +1061,7 @@
   "@aboutStoresText": {},
   "aboutAdsText": "The marketplace: ads for selling goods and offering mechanical engineering services.",
   "@aboutAdsText": {},
-  "aboutProfileText": "Your details, your customer, executor and store roles, subscription and order history.",
+  "aboutProfileText": "Your details, your customer, executor and store roles, and order history.",
   "@aboutProfileText": {},
   "aboutCreateTitle": "The “+” button",
   "@aboutCreateTitle": {},
@@ -1160,9 +1166,49 @@
   "by_price": "By budget",
   "by_deadline": "By deadline",
   "category_all_in": "All in «{name}»",
-  "@category_all_in": {"placeholders": {"name": {"type": "String"}}},
+  "@category_all_in": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "category_nothing_found": "Nothing found",
   "choose_services": "Choose services",
   "select_count": "Select ({count})",
-  "@select_count": {"placeholders": {"count": {"type": "int"}}}
+  "@select_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "subscriptionTrialBadge": "{period} free",
+  "@subscriptionTrialBadge": {
+    "placeholders": {
+      "period": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionTrialTerms": "First {period} free, then {price}. You will only be charged if you don't cancel before the trial ends.",
+  "@subscriptionTrialTerms": {
+    "placeholders": {
+      "period": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionTryFree": "Try for free",
+  "subscriptionThen": "then {price}",
+  "@subscriptionThen": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:megaladon/core/app_config.dart';
 import 'package:megaladon/core/dio/index.dart';
 import 'package:megaladon/core/fb_notification/index.dart';
 import 'package:megaladon/core/get.dart';
@@ -106,6 +107,7 @@ void main() async {
   );
   await FbNotificationService.initialize();
   ApiService.initialize();
+  await AppConfig.init();
 
   runApp(App());
 }

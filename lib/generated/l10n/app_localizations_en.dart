@@ -1535,7 +1535,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aboutProfileText =>
-      'Your details, your customer, executor and store roles, subscription and order history.';
+      'Your details, your customer, executor and store roles, and order history.';
 
   @override
   String get aboutCreateTitle => 'The “+” button';
@@ -1727,5 +1727,23 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String select_count(int count) {
     return 'Select ($count)';
+  }
+
+  @override
+  String subscriptionTrialBadge(String period) {
+    return '$period free';
+  }
+
+  @override
+  String subscriptionTrialTerms(String period, String price) {
+    return 'First $period free, then $price. You will only be charged if you don\'t cancel before the trial ends.';
+  }
+
+  @override
+  String get subscriptionTryFree => 'Try for free';
+
+  @override
+  String subscriptionThen(String price) {
+    return 'then $price';
   }
 }

@@ -3,6 +3,7 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:megaladon/core/utils/parser.dart';
 import 'package:megaladon/data/models/dictionary/subscribe_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
+import 'package:megaladon/logic/subscribe/payment_options_cubit.dart';
 import 'package:megaladon/presentation/widgets/buttons/elevated_button.dart';
 import 'package:megaladon/presentation/widgets/buttons/outlined_button.dart';
 
@@ -18,6 +19,7 @@ class SubscribeCard extends StatelessWidget {
     this.isBest = false,
     this.discountPercent,
     this.isBusy = false,
+    this.trialMonths,
     super.key,
   });
 
@@ -40,6 +42,10 @@ class SubscribeCard extends StatelessWidget {
   /// Покупка уже отправлена: кнопки заблокированы, чтобы не купить дважды.
   final bool isBusy;
 
+  /// Бесплатный пробный период магазина, мес.; null — покупателю он не
+  /// положен (уже пользовался) или не заведён.
+  final int? trialMonths;
+
   bool get _isFree => subscribe.price == 0.0;
 
   @override
@@ -49,12 +55,22 @@ class SubscribeCard extends StatelessWidget {
     final primary = theme.colorScheme.primary;
 
     final onPressed = isBusy ? null : onBuy;
-    final buttonText = _isFree ? l10n.activate_for_free : l10n.buy;
+    final trial = _isFree ? null : trialMonths;
+    final buttonText = _isFree
+        ? l10n.activate_for_free
+        : trial != null
+            ? l10n.subscriptionTryFree
+            : l10n.buy;
+    // Регулярная цена: у предложения Google с пробным периодом
+    // product.price — цена бесплатной фазы.
+    final price = product == null
+        ? l10n.tenge_price(Parser.toPrice(subscribe.price))
+        : recurringPrice(product!);
     // Строка «в месяц» только в тенге: в другой валюте магазина её не посчитать.
     final monthlyBase = product == null
         ? subscribe.price
         : product!.currencyCode == 'KZT'
-            ? product!.rawPrice
+            ? recurringRawPrice(product!)
             : null;
 
     return Container(
@@ -88,6 +104,11 @@ class SubscribeCard extends StatelessWidget {
               ),
               if (_isFree)
                 _Badge(text: l10n.subscriptionBadgeFree, color: primary)
+              else if (trial != null)
+                _Badge(
+                  text: l10n.subscriptionTrialBadge(l10n.months_count(trial)),
+                  color: primary,
+                )
               else if (discountPercent != null)
                 _Badge(
                   text: l10n.subscriptionBadgeBest(discountPercent.toString()),
@@ -97,10 +118,7 @@ class SubscribeCard extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Text(
-            _isFree
-                ? l10n.subscriptionBadgeFree
-                : product?.price ??
-                    l10n.tenge_price(Parser.toPrice(subscribe.price)),
+            _isFree ? l10n.subscriptionBadgeFree : price,
             style: theme.textTheme.bodyLarge?.copyWith(fontSize: 28),
           ),
           if (!_isFree && subscribe.duration > 1 && monthlyBase != null) ...[
@@ -112,6 +130,14 @@ class SubscribeCard extends StatelessWidget {
                 fontSize: 14,
                 color: theme.hintColor,
               ),
+            ),
+          ],
+          // Apple требует рядом с пробным периодом его срок и цену после него.
+          if (trial != null) ...[
+            const SizedBox(height: 8),
+            Text(
+              l10n.subscriptionTrialTerms(l10n.months_count(trial), price),
+              style: theme.textTheme.bodyMedium?.copyWith(fontSize: 14),
             ),
           ],
           if (onBuy != null) ...[

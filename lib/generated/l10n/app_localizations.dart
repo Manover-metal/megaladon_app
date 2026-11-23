@@ -2863,7 +2863,7 @@ abstract class AppLocalizations {
   /// No description provided for @aboutProfileText.
   ///
   /// In en, this message translates to:
-  /// **'Your details, your customer, executor and store roles, subscription and order history.'**
+  /// **'Your details, your customer, executor and store roles, and order history.'**
   String get aboutProfileText;
 
   /// No description provided for @aboutCreateTitle.
@@ -3225,6 +3225,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select ({count})'**
   String select_count(int count);
+
+  /// No description provided for @subscriptionTrialBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'{period} free'**
+  String subscriptionTrialBadge(String period);
+
+  /// No description provided for @subscriptionTrialTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'First {period} free, then {price}. You will only be charged if you don\'t cancel before the trial ends.'**
+  String subscriptionTrialTerms(String period, String price);
+
+  /// No description provided for @subscriptionTryFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Try for free'**
+  String get subscriptionTryFree;
+
+  /// No description provided for @subscriptionThen.
+  ///
+  /// In en, this message translates to:
+  /// **'then {price}'**
+  String subscriptionThen(String price);
 }
 
 class _AppLocalizationsDelegate

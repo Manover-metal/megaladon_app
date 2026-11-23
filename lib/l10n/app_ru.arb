@@ -601,7 +601,7 @@
   "aboutOrdersText": "Заказы, размещённые на платформе. Откройте карточку, сравните отклики исполнителей с ценой и сроком и выберите лучшее предложение.",
   "aboutStoresText": "Компании, которые продают готовую продукцию: прайс-листы, адреса, контакты и рейтинг.",
   "aboutAdsText": "Торговая площадка: объявления о продаже товара и услугах машиностроения.",
-  "aboutProfileText": "Ваши данные, роли заказчика, исполнителя и магазина, подписка и история заказов.",
+  "aboutProfileText": "Ваши данные, роли заказчика, исполнителя и магазина и история заказов.",
   "aboutCreateTitle": "Кнопка «+»",
   "aboutCreateText": "Создаёт новое: заказ для поиска исполнителей, категорию услуг или объявление.",
   "settingsGroupSupport": "Поддержка",
@@ -705,5 +705,33 @@
   "category_all_in": "Все в «{name}»",
   "category_nothing_found": "Ничего не найдено",
   "choose_services": "Выбрать услуги",
-  "select_count": "Выбрать ({count})"
+  "select_count": "Выбрать ({count})",
+  "subscriptionTrialBadge": "{period} бесплатно",
+  "@subscriptionTrialBadge": {
+    "placeholders": {
+      "period": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionTrialTerms": "Первые {period} бесплатно, затем {price}. Спишем оплату, только если не отмените подписку до конца пробного периода.",
+  "@subscriptionTrialTerms": {
+    "placeholders": {
+      "period": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionTryFree": "Попробовать бесплатно",
+  "subscriptionThen": "затем {price}",
+  "@subscriptionThen": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  }
 }

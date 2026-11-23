@@ -1,3 +1,4 @@
+import 'package:megaladon/core/app_config.dart';
 import 'package:megaladon/core/utils/parser.dart';
 import 'package:megaladon/data/models/contact_model.dart';
 import 'package:megaladon/data/models/dictionary/city_model.dart';
@@ -39,8 +40,10 @@ class StoreModel {
   final DateTime? subscriptionExpiredAt;
 
   /// Подписка куплена и не истекла. Без неё магазин скрыт из каталога.
+  /// При выключенных подписках (AppConfig) доступ открыт всем.
   bool get hasActiveSubscription =>
-      subscriptionExpiredAt?.isAfter(DateTime.now()) ?? false;
+      !AppConfig.subscriptionsEnabled.value ||
+      (subscriptionExpiredAt?.isAfter(DateTime.now()) ?? false);
 
   /// Секунды, а не миллисекунды — как у [ExecutorModel]: в таком виде поле
   /// приходит с бэкенда и в таком же уходит в localStorage через [toJson].

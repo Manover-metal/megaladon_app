@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:megaladon/core/app_config.dart';
 import 'package:megaladon/core/icons/icons.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/auth/auth_bloc.dart';
@@ -133,7 +134,8 @@ class DrawerApp extends StatelessWidget {
 
                                 if (!hasFace) return const SizedBox.shrink();
 
-                                return DrawerRouteTile(
+                                return SubscriptionsVisible(
+                                    child: DrawerRouteTile(
                                   icon: Icons.workspace_premium_outlined,
                                   text: l10n.subscriptions,
                                   activeRouteName: SubscribeRoute.name,
@@ -142,7 +144,7 @@ class DrawerApp extends StatelessWidget {
                                       OrderRouter(children: [SubscribeRoute()])
                                     ],
                                   ),
-                                );
+                                ));
                               },
                             ),
                             _Hair(color: scheme.onTertiary, inset: true),

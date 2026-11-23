@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:megaladon/core/app_config.dart';
 import 'package:megaladon/data/models/dictionary/subscribe_model.dart';
 import 'package:megaladon/data/models/executor_model.dart';
 import 'package:megaladon/data/models/store_model.dart';
@@ -444,7 +445,10 @@ class _ExecutorTab extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 8),
-                  _SubscriptionChip(expiredAt: executor.subscriptionExpiredAt),
+                  SubscriptionsVisible(
+                    child: _SubscriptionChip(
+                        expiredAt: executor.subscriptionExpiredAt),
+                  ),
                 ],
               ),
               const SizedBox(height: 7),
@@ -517,16 +521,24 @@ class _ExecutorTab extends StatelessWidget {
                   ProfileRouter(children: [MyReviewsRoute()])
                 ])),
               ),
-              const SettingsRowDivider(),
-              SettingsRow(
-                icon: Icons.workspace_premium_outlined,
-                title: l10n.subscriptions,
-                trailing: const SettingsChevron(),
-                onTap: () => context.router.navigate(InitialRouter(children: [
-                  OrderRouter(children: [
-                    SubscribeRoute(initialType: SubscribeType.executor)
-                  ])
-                ])),
+              SubscriptionsVisible(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SettingsRowDivider(),
+                    SettingsRow(
+                      icon: Icons.workspace_premium_outlined,
+                      title: l10n.subscriptions,
+                      trailing: const SettingsChevron(),
+                      onTap: () =>
+                          context.router.navigate(InitialRouter(children: [
+                        OrderRouter(children: [
+                          SubscribeRoute(initialType: SubscribeType.executor)
+                        ])
+                      ])),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -610,7 +622,10 @@ class _StoreTab extends StatelessWidget {
                     ),
                   const Spacer(),
                   const SizedBox(width: 8),
-                  _SubscriptionChip(expiredAt: store.subscriptionExpiredAt),
+                  SubscriptionsVisible(
+                    child: _SubscriptionChip(
+                        expiredAt: store.subscriptionExpiredAt),
+                  ),
                 ],
               ),
               const SizedBox(height: 11),
@@ -668,16 +683,24 @@ class _StoreTab extends StatelessWidget {
                       children: [StoreMyReviewsRoute(storeId: store.id)])
                 ])),
               ),
-              const SettingsRowDivider(),
-              SettingsRow(
-                icon: Icons.workspace_premium_outlined,
-                title: l10n.subscriptions,
-                trailing: const SettingsChevron(),
-                onTap: () => context.router.navigate(InitialRouter(children: [
-                  OrderRouter(children: [
-                    SubscribeRoute(initialType: SubscribeType.store)
-                  ])
-                ])),
+              SubscriptionsVisible(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SettingsRowDivider(),
+                    SettingsRow(
+                      icon: Icons.workspace_premium_outlined,
+                      title: l10n.subscriptions,
+                      trailing: const SettingsChevron(),
+                      onTap: () =>
+                          context.router.navigate(InitialRouter(children: [
+                        OrderRouter(children: [
+                          SubscribeRoute(initialType: SubscribeType.store)
+                        ])
+                      ])),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

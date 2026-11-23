@@ -69,6 +69,10 @@ dependencies:
   flutter_native_splash: ^2.4.8
   flutter_local_notifications: ^20.1.0
   in_app_purchase: ^3.2.3
+  # Выбор предложения с пробным периодом (Android) и проверка права на
+  # вводное предложение (iOS, StoreKit 2) — их API нет в общем пакете.
+  in_app_purchase_android: ^0.5.3
+  in_app_purchase_storekit: ^0.4.13
 
 dev_dependencies:
   flutter_test:

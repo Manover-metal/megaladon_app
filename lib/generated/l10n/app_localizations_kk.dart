@@ -1536,7 +1536,7 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get aboutProfileText =>
-      'Сіздің деректеріңіз, тапсырыс беруші, орындаушы және дүкен рөлдері, жазылым мен тапсырыстар тарихы.';
+      'Сіздің деректеріңіз, тапсырыс беруші, орындаушы және дүкен рөлдері және тапсырыстар тарихы.';
 
   @override
   String get aboutCreateTitle => '«+» түймесі';
@@ -1728,5 +1728,23 @@ class AppLocalizationsKk extends AppLocalizations {
   @override
   String select_count(int count) {
     return 'Таңдау ($count)';
+  }
+
+  @override
+  String subscriptionTrialBadge(String period) {
+    return '$period тегін';
+  }
+
+  @override
+  String subscriptionTrialTerms(String period, String price) {
+    return 'Алғашқы $period тегін, содан кейін $price. Сынақ кезеңі аяқталғанша жазылымнан бас тартпасаңыз ғана төлем алынады.';
+  }
+
+  @override
+  String get subscriptionTryFree => 'Тегін байқап көру';
+
+  @override
+  String subscriptionThen(String price) {
+    return 'содан кейін $price';
   }
 }

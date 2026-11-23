@@ -9,6 +9,7 @@ import 'package:megaladon/data/models/dictionary/subscribe_model.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
 import 'package:megaladon/logic/dictionary/dictionary_cubit.dart';
 import 'package:megaladon/logic/screens/profile/profile_screen_cubit.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:megaladon/logic/subscribe/payment_options_cubit.dart';
 import 'package:megaladon/logic/subscribe/subscribe_cubit.dart';
 import 'package:megaladon/presentation/screens/subscribe/widgets/payment_method_sheet.dart';
@@ -262,6 +263,7 @@ class _SubscribeFaceView extends StatelessWidget {
                     isBest: plan.id == bestId,
                     discountPercent: plan.id == bestId ? discount : null,
                     isBusy: isBusy,
+                    trialMonths: options.trialMonthsFor(plan, platform),
                     onBuy: _onBuy(context, plan, options, platform),
                   ),
               const SizedBox(height: 6),
@@ -322,7 +324,9 @@ class _SubscribeFaceView extends StatelessWidget {
         context,
         plan: plan,
         storeMethod: product == null ? null : storeMethod,
-        storePrice: product?.price,
+        storePrice: product == null
+            ? null
+            : _storePrice(l10n, plan, product, options, platform),
         manualPrice: options.manual
             ? l10n.tenge_price(Parser.toPrice(plan.price))
             : null,
@@ -335,6 +339,20 @@ class _SubscribeFaceView extends StatelessWidget {
       }
     };
   }
+}
+
+/// Цена в магазине для шторки: регулярная, а при пробном периоде — с ним.
+String _storePrice(
+    AppLocalizations l10n,
+    SubscribeModel plan,
+    ProductDetails product,
+    PaymentOptionsState options,
+    TargetPlatform platform) {
+  final trial = options.trialMonthsFor(plan, platform);
+  final price = recurringPrice(product);
+  return trial == null
+      ? price
+      : '${l10n.subscriptionTrialBadge(l10n.months_count(trial))}, ${l10n.subscriptionThen(price)}';
 }
 
 /// Pull-to-refresh: статус подписки из профиля, тарифы и цены магазина.

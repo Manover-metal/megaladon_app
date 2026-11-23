@@ -28,7 +28,8 @@ class SubscribeModel {
       required this.duration,
       required this.price,
       this.appleProductId,
-      this.googleProductId});
+      this.googleProductId,
+      this.trialMonths});
   final int id;
   final SubscribeType type;
 
@@ -41,6 +42,10 @@ class SubscribeModel {
   final String? appleProductId;
   final String? googleProductId;
 
+  /// Бесплатный пробный период магазина, мес. — только для подписи: сам
+  /// период и право на него задают App Store / Google Play. null — нет.
+  final int? trialMonths;
+
   String? storeProductId(TargetPlatform platform) =>
       platform == TargetPlatform.iOS ? appleProductId : googleProductId;
 
@@ -52,7 +57,13 @@ class SubscribeModel {
       duration: Parser.toInt(data['duration']),
       price: Parser.toDouble(data['price']),
       appleProductId: _productId(data['apple_product_id']),
-      googleProductId: _productId(data['google_product_id']));
+      googleProductId: _productId(data['google_product_id']),
+      trialMonths: _trial(data['trial_months']));
+
+  static int? _trial(dynamic value) {
+    final months = value == null ? 0 : Parser.toInt(value);
+    return months > 0 ? months : null;
+  }
 
   // Админка сохраняет очищенное поле пустой строкой.
   static String? _productId(dynamic value) =>
