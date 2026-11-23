@@ -2,7 +2,13 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:megaladon/core/locale_storage/locale_storage.dart';
 
 class SecureLocaleStorageImpl extends LocaleStorage {
-  SecureLocaleStorageImpl() : _storage = const FlutterSecureStorage();
+  // first_unlock, а не дефолтный unlocked: иначе при фоновом запуске на
+  // заблокированном iPhone (пуш) Keychain не отдаёт токен, AuthBloc остаётся
+  // гостем, и пользователь видит себя разлогиненным до перезапуска.
+  SecureLocaleStorageImpl()
+      : _storage = const FlutterSecureStorage(
+            iOptions:
+                IOSOptions(accessibility: KeychainAccessibility.first_unlock));
   final FlutterSecureStorage _storage;
 
   @override

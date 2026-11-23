@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:megaladon/core/constants/legal_urls.dart';
 import 'package:megaladon/generated/l10n/app_localizations.dart';
+import 'package:megaladon/logic/auth/auth_bloc.dart';
 import 'package:megaladon/logic/locale/locale_cubit.dart';
 import 'package:megaladon/logic/theme/theme_cubit.dart';
 import 'package:megaladon/presentation/routing/router.dart';
@@ -97,6 +98,8 @@ class SettingsScreen extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final currentLocale = context.watch<LocaleCubit>().state;
     final currentTheme = context.watch<ThemeCubit>().state;
+    // Пуши привязаны к аккаунту (device_token на бэке) — гостю нечего настраивать.
+    final isAuth = context.watch<AuthBloc>().state is AuthLoginState;
 
     return Scaffold(
       appBar:
@@ -129,12 +132,14 @@ class SettingsScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: _sectionGap),
-            ContentSection(
-              title: l10n.settingsGroupNotifications,
-              padding: EdgeInsets.zero,
-              child: const PushNotificationTile(),
-            ),
+            if (isAuth) ...[
+              const SizedBox(height: _sectionGap),
+              ContentSection(
+                title: l10n.settingsGroupNotifications,
+                padding: EdgeInsets.zero,
+                child: const PushNotificationTile(),
+              ),
+            ],
             const SizedBox(height: _sectionGap),
             ContentSection(
               title: l10n.settingsGroupSupport,

@@ -22,7 +22,7 @@ class ApiService {
     addInterceptors(_languageInterceptor);
     // Один на всё приложение: токен в него кладёт AuthRepository, он же
     // сообщает об 401. См. AuthInterceptor.
-    _authInterceptor = AuthInterceptor();
+    _authInterceptor = AuthInterceptor(_dio);
     addInterceptors(_authInterceptor);
     addInterceptors(TalkerDioLogger(
       talker: Talker(),

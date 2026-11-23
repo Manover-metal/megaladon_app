@@ -1,6 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:megaladon/core/dio/index.dart';
+import 'package:megaladon/core/dio/interceptors/auth_interceptors.dart';
 import 'package:megaladon/core/locale_storage/locale_storage.dart';
 import 'package:megaladon/data/models/auth/auth_model.dart';
 
@@ -55,6 +58,52 @@ class AuthRepository {
     });
   }
 
+  /// Ротация пары для [AuthInterceptor.onRefresh]: новый access-токен, или
+  /// null, если сервер refresh не принял. Сетевые ошибки пробрасываются —
+  /// из-за них из аккаунта не выходим.
+  ///
+  /// Пара сохраняется до возврата: refresh-токен одноразовый, и потерянный
+  /// новый означал бы выход при следующем обновлении.
+  Future<String?> refreshSession() async {
+    final current = await read();
+    final refreshToken = current?.refreshToken;
+    if (refreshToken == null) return null;
+
+    try {
+      final response = await ApiService.I.post<Map<String, dynamic>>(
+        '/auth/refresh',
+        data: {'refresh_token': refreshToken},
+        options: Options(extra: {AuthInterceptor.skipKey: true}),
+      );
+      final auth = AuthModel.fromJson(response.data!);
+      await write(auth);
+      return auth.token;
+    } on DioException catch (e) {
+      if (_isRejection(e)) return null;
+      rethrow;
+    }
+  }
+
+  /// Обмен вечного токена старой версии приложения на пару. null — токен уже
+  /// не принимается. Сетевые ошибки пробрасываются: обменяем в другой раз.
+  Future<AuthModel?> upgradeLegacy() async {
+    try {
+      final response =
+          await ApiService.I.post<Map<String, dynamic>>('/auth/upgrade-token');
+      final auth = AuthModel.fromJson(response.data!);
+      await write(auth);
+      return auth;
+    } on DioException catch (e) {
+      if (_isRejection(e)) return null;
+      rethrow;
+    }
+  }
+
+  static bool _isRejection(DioException e) {
+    final code = e.response?.statusCode;
+    return code == 401 || code == 403 || code == 422;
+  }
+
   Future forgotPassword({required String phone}) async =>
       ApiService.I.post('/auth/forgot-password',
           data: {'phone': phone}).then((value) => value);
@@ -78,6 +127,10 @@ class AuthRepository {
     try {
       final auth = AuthModel.fromJson(jsonDecode(json) as Map<String, dynamic>);
       _applyToken(auth);
+      // Перезапись переводит запись, сохранённую до смены accessibility
+      // (unlocked → first_unlock), на новый уровень доступа.
+      unawaited(Future(() => localeStorage.setString(_authKey, json))
+          .catchError((Object _) {}));
       return auth;
     } catch (e) {
       return null;

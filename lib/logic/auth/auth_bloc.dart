@@ -38,6 +38,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     // из аккаунта на ровном месте, в том числе из фонового опроса чатов.
     _unauthenticatedSub = ApiService.auth.onUnauthenticated
         .listen((_) => add(const AuthLogoutEvent(notifyServer: false)));
+
+    // На 401 интерцептор сам обновляет пару (один refresh на все запросы) и
+    // выходит только если сервер refresh не принял — см. AuthInterceptor.
+    ApiService.auth.onRefresh = _authRepository.refreshSession;
   }
 
   static Future<String?> _defaultFcmTokenReader() =>
@@ -49,12 +53,36 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final Future<String?> Function() _fcmTokenReader;
 
   Future<void> _initial(AuthInitialEvent event, Emitter emit) async {
-    var auth = await _authRepository.read();
-    if (auth != null) {
-      print(auth.token);
-      emit(AuthLoginState(auth));
-      _sendFbToken();
+    AuthModel? auth;
+    try {
+      auth = await _authRepository.read();
+    } catch (e) {
+      // Хранилище недоступно (Keychain заблокирован) — раньше исключение
+      // улетало из обработчика молча и оставляло приложение «гостем».
+      print('auth read failed: $e');
+      return;
     }
+    if (auth == null) return;
+    var session = auth;
+
+    // Сессия старой версии: вечный токен без refresh. Меняем на пару, пока он
+    // ещё принимается (сервер даёт таким токенам 30 дней).
+    if (session.refreshToken == null) {
+      try {
+        final upgraded = await _authRepository.upgradeLegacy();
+        if (upgraded == null) {
+          await _authRepository.delete();
+          return;
+        }
+        session = upgraded;
+      } catch (e) {
+        // Нет сети — живём на старом токене, обменяем при следующем запуске.
+        print('token upgrade failed: $e');
+      }
+    }
+
+    emit(AuthLoginState(session));
+    _sendFbToken();
   }
 
   Future _sendFbToken() async {
